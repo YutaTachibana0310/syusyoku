@@ -6,6 +6,7 @@
 #include "desertField.h"
 #include "fractal.h"
 #include "input.h"
+#include "MyLibrary.h"
 
 /**********************************************
 ƒ}ƒNƒ’è‹`
@@ -13,7 +14,7 @@
 #define DESERTFIELD_TEXNAME		 "data/TEXTURE/desert1.jpg"
 #define DESERTFIELD_BLOCK_NUM	(128)
 #define DESERTFIELD_BLOCK_SIZE	(50.0f * 128.0f / DESERTFIELD_BLOCK_NUM)
-#define DESERTFIELD_MAX			(2)
+#define DESERTFIELD_MAX			(4)
 #define DESERTFIELD_INITPOS_Y	(-150.0f)
 #define DESERTFIELD_SCROLLSPEED	(-50.0f)
 
@@ -127,10 +128,9 @@ void UpdateDesertField(void)
 
 		if (ptr->pos.z < -(numBlock / 2.0f) * sizeBlock)
 		{
-			ptr->pos.z += (2.0f * numBlock) * sizeBlock;
+			ptr->pos.z += (DESERTFIELD_MAX * numBlock) * sizeBlock;
 			InitializeHeightMap2(ptr->heightMap, DESERTFIELD_BLOCK_NUM);
 			CreateDesertField(i);
-
 		}
 	}
 
@@ -194,8 +194,8 @@ void SetDesertFieldVtxBuffer(LPDIRECT3DVERTEXBUFFER9 vtxBuff, float *heightMap)
 		for (int x = 0; x < (numBlock + 1); x++)
 		{
 			pVtx[z * (numBlock + 1) + x].vtx.x = -(numBlock / 2.0f) * sizeBlock + x * sizeBlock;
-			//pVtx[z * (numBlock + 1) + x].vtx.y = heightMap[z * (numBlock + 1) + x];
-			pVtx[z * (numBlock + 1) + x].vtx.y = map[z * (numBlock + 1) + x];
+			pVtx[z * (numBlock + 1) + x].vtx.y = heightMap[z * (numBlock + 1) + x];
+			//pVtx[z * (numBlock + 1) + x].vtx.y = map[z * (numBlock + 1) + x];
 			pVtx[z * (numBlock + 1) + x].vtx.z = (numBlock / 2.0f) * sizeBlock - z * sizeBlock;
 
 			pVtx[z * (numBlock + 1) + x].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -270,21 +270,17 @@ void SetDesertFieldIndexBuffer(void)
 
 void CreateDesertField(int n)
 {
-	if (n > 1 && n < DESERTFIELD_MAX)
+	int prev = WrapAround(0, DESERTFIELD_MAX, n - 1);
+	float topAvr = 0.0f;
+
+	if (n < DESERTFIELD_MAX)
 	{
 		for (int x = 0; x < (numBlock + 1); x++)
 		{
-			float average = (field[n].heightMap[x] + field[n - 1].heightMap[(numBlock * (numBlock + 1) + x)]) / 2;
-			field[n].heightMap[x] = field[n - 1].heightMap[(numBlock * (numBlock + 1) + x)] = average;
+			topAvr = (field[n].heightMap[numBlock * (numBlock + 1) + x] + field[prev].heightMap[x]) / 2.0f;
+			field[n].heightMap[numBlock * (numBlock + 1) + x] = field[prev].heightMap[x] = topAvr;
 		}
-	}
-
-	else
-	{
-		for (int x = 0; x < DESERTFIELD_MAX; x++)
-		{
-			float average = (field[n].heightMap[x] + field[DESERTFIELD_MAX - 1].heightMap[(numBlock * (numBlock + 1) + x)]) / 2;
-			field[n].heightMap[x] = field[DESERTFIELD_MAX - 1].heightMap[(numBlock * (numBlock + 1) + x)] = average;
-		}
+		SetDesertFieldVtxBuffer(field[n].vtxBuff, field[n].heightMap);
+		SetDesertFieldVtxBuffer(field[prev].vtxBuff, field[prev].heightMap);
 	}
 }

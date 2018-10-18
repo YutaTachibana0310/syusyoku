@@ -30,7 +30,7 @@ void CreateHeightMap2o(Point tr, Point tl, Point br, Point bl, float range);
 /***************************************************
 グローバル変数
 ***************************************************/
-static const float d = 2.4f;
+static const float d = 2.0f;
 static const float minHeight = -400.0f, maxHeight = 400.0f;
 
 /*************************************************
@@ -88,35 +88,40 @@ void InitializeHeightMap2(float *map, int elemNum)
 {
 	InitializeHeightMap2o();
 
-	//四隅の設定
 	Point bottomL = { elemNum, 0, RandomRange(minHeight, maxHeight) };
+	bottomL.height = Clampf(minHeight, maxHeight, bottomL.height);
 	map[bottomL.z * (elemNum + 1) + bottomL.x] = bottomL.height;
 
 	Point bottomR = { elemNum, elemNum, RandomRange(minHeight, maxHeight) };
+	bottomR.height = Clampf(minHeight, maxHeight, bottomR.height);
 	map[bottomR.z * (elemNum + 1) + bottomR.x] = bottomR.height;
 
 	Point topL = { 0, 0, RandomRange(minHeight, maxHeight) };
+	topL.height = Clampf(minHeight, maxHeight, topL.height);
 	map[topL.z * (elemNum + 1) + topL.x] = topL.height;
 
 	Point topR = { 0, elemNum, RandomRange(minHeight, maxHeight) };
+	topR.height = Clampf(minHeight, maxHeight, topR.height);
 	map[topR.z * (elemNum + 1) + topR.x] = topR.height;
 
-	//中心の設定
-	int centerX = 64;//rand() % (elemNum - 1) + 1;
-	int centerZ = 64;//rand() % (elemNum - 1) + 1;
-	Point center = { centerZ, centerX, maxHeight };
+	Point center = { elemNum / 2, elemNum / 2, maxHeight };
+	center.height = Clampf(minHeight, maxHeight, center.height);
 	map[center.z * (elemNum + 1) + center.x] = center.height;
 
-	Point bottom = { bottomL.z, center.x, (bottomL.height + bottomR.height) / 2 };
+	Point bottom = { bottomL.z, center.x, (bottomL.height + bottomR.height) / 2.0f };
+	bottom.height = Clampf(minHeight, maxHeight, bottom.height);
 	map[bottom.z * (elemNum + 1) + bottom.x] = bottom.height;
 
-	Point top = { topR.z, center.x, (topL.height + topR.height) / 2 };
+	Point top = { topR.z, center.x, (topL.height + topR.height) / 2.0f };
+	top.height = Clampf(minHeight, maxHeight, top.height);
 	map[top.z * (elemNum + 1) + top.x] = top.height;
 
-	Point left = { center.z, topL.x, (topL.height + bottomL.height) / 2 };
+	Point left = { center.z, topL.x, (topL.height + bottomL.height) / 2.0f };
+	left.height = Clampf(minHeight, maxHeight, left.height);
 	map[left.z * (elemNum + 1) + left.x] = left.height;
 
-	Point right = { center.z, topR.x, (topR.height + bottomR.height) / 2 };
+	Point right = { center.z, topR.x, (topR.height + bottomR.height) / 2.0f };
+	right.height = Clampf(minHeight, maxHeight, right.height);
 	map[right.z * (elemNum + 1) + right.x] = right.height;
 
 	float initRand = 2000.0f;
@@ -125,6 +130,7 @@ void InitializeHeightMap2(float *map, int elemNum)
 	CreateHeightMap2(topR, top, right, center, initRand, map, elemNum);
 	CreateHeightMap2(center, left, bottom, bottomL, initRand, map, elemNum);
 	CreateHeightMap2(right, center, bottomR, bottom, initRand, map, elemNum);
+
 }
 
 /*************************************************
@@ -141,40 +147,38 @@ void InitializeHeightMap2(float *map, int elemNum)
 **************************************************/
 void CreateHeightMap2(Point tr, Point tl, Point br, Point bl, float range, float *map, int elemNum)
 {
-	if (abs(tr.x - tl.x) <= 1 && abs(br.z - tr.z) <= 1)
+	if (abs(tr.x - tl.x) <= 1 || abs(br.z - tr.z) <= 1)
 	{
 		return;
 	}
 
 	int z = (br.z + tr.z) / 2;
 	int x = (tr.x + tl.x) / 2;
-	float height = (tr.height + tl.height + br.height + bl.height) / 4;
-	height = Clampf(minHeight, maxHeight, height + RandomRange(-range / 2, range / 2));
-	Point c = { z, x,  height };
-	map[z * (elemNum + 1) + x] = height;
+	map[z * (elemNum + 1) + x] = (tr.height + tl.height + br.height + bl.height) / 4.0f;
+	map[z * (elemNum + 1) + x] += RandomRange(-range / 2.0f, range / 2.0f);
+	map[z * (elemNum + 1) + x] = Clampf(minHeight, maxHeight, map[z * (elemNum + 1) + x]);
+	Point c = { z, x, map[z * (elemNum + 1) + x] };
 
-
-	Point t = { tl.z, c.x, (tl.height + tr.height) / 2 };
-	t.height = Clampf(minHeight, maxHeight, t.height + RandomRange(-range / 2, range / 2));
+	Point t = { tl.z, c.x, (tl.height + tr.height) / 2.0f };
+	t.height = Clampf(minHeight, maxHeight, t.height);
 	map[t.z * (elemNum + 1) + t.x] = t.height;
 
-	Point b = { bl.z, c.x, (bl.height + br.height) / 2 };
-	b.height = Clampf(minHeight, maxHeight, b.height + RandomRange(-range / 2, range / 2));
+	Point b = { bl.z, c.x, (bl.height + br.height) / 2.0f };
+	b.height = Clampf(minHeight, maxHeight, b.height);
 	map[b.z * (elemNum + 1) + b.x] = b.height;
 
-	Point r = { c.z, tr.x, (tr.height + br.height) / 2 };
-	r.height = Clampf(minHeight, maxHeight, r.height + RandomRange(-range / 2, range / 2));
+	Point r = { c.z, tr.x, (tr.height + br.height) / 2.0f };
+	r.height = Clampf(minHeight, maxHeight, r.height);
 	map[r.z * (elemNum + 1) + r.x] = r.height;
 
-	Point l = { c.z, tl.x, (tl.height + bl.height) / 2 };
-	l.height = Clampf(minHeight, maxHeight, l.height + RandomRange(-range / 2, range / 2));
+	Point l = { c.z, bl.x, (tl.height + bl.height) / 2.0f };
+	l.height = Clampf(minHeight, maxHeight, l.height);
 	map[l.z * (elemNum + 1) + l.x] = l.height;
 
 	CreateHeightMap2(t, tl, c, l, range / d, map, elemNum);
 	CreateHeightMap2(tr, t, r, c, range / d, map, elemNum);
 	CreateHeightMap2(c, l, b, bl, range / d, map, elemNum);
 	CreateHeightMap2(r, c, br, b, range / d, map, elemNum);
-
 	return;
 }
 
