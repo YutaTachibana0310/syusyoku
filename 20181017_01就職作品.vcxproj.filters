@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{f5c85321-c97b-4206-99a8-72949871d35d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Battle">
+      <UniqueIdentifier>{8b009549-16ac-40f8-8b5e-5ead9d414d1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Battle\Player">
+      <UniqueIdentifier>{eb954f66-1da8-4b58-ad1a-c16fdaf0e917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Battle\BattleSystem">
+      <UniqueIdentifier>{76215a4c-b1a1-4454-bc16-014a6391ac05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle">
+      <UniqueIdentifier>{74cea5b6-7538-468b-bae9-fb185d6a5218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\BattleSystem">
+      <UniqueIdentifier>{cb2cc480-669b-463b-8a4c-aaebc8b3f4d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Player">
+      <UniqueIdentifier>{d6ece643-a10e-4105-9cea-8b85bca442e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\System">
+      <UniqueIdentifier>{172fdd20-7507-46f2-96e9-861878777005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Battle\BackGround">
+      <UniqueIdentifier>{65d253ab-c219-4aeb-8781-92e1cf93df3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\BackGround">
+      <UniqueIdentifier>{f53e8a93-413c-4406-ab50-9b00710cb687}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="quadTree.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLibrary.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="fractal.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="collider.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="debugproc.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="desertField.cpp">
+      <Filter>ソース ファイル\Battle\BackGround</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camera.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="collider.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="debugproc.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="fractal.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLibrary.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="quadTree.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="desertField.h">
+      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
