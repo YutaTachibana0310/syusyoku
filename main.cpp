@@ -11,6 +11,7 @@
 #include "debugproc.h"
 #include <time.h>
 #include "desertField.h"
+#include "enemyMissile.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -317,6 +318,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// 地面の初期化
 	InitDesertField(0);
 
+	InitEnemyMissile(0);
+
 	// ライトの初期化
 	InitLight();
 
@@ -350,6 +353,7 @@ void Uninit(void)
 	UninitDesertField();
 
 	// 影の終了処理
+	UninitEnemyMissile();
 
 }
 
@@ -376,6 +380,7 @@ void Update(void)
 		return;
 	}
 
+	UpdateEnemyMissile();
 	UpdateDesertField();
 	UpdateCamera();
 
@@ -394,6 +399,8 @@ void Draw(void)
 	{
 		// カメラの設定
 		SetCamera();
+
+		DrawEnemyMissile();
 
 		// 地面処理の描画
 		DrawDesertField();
