@@ -214,7 +214,7 @@ void InitializeHeightMap2o(void)
 	Point right = { center.z, topR.x, (topR.height + bottomR.height) / 2 };
 	heightMap2[right.z][right.x] = right.height;
 
-	float initRand = 2000.0f;
+	float initRand = 40000.0f;
 
 	CreateHeightMap2o(top, topL, center, left, initRand);
 	CreateHeightMap2o(topR, top, right, center, initRand);

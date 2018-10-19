@@ -13,9 +13,9 @@
 ***********************************************/
 #define DESERTFIELD_TEXNAME		 "data/TEXTURE/desert1.jpg"
 #define DESERTFIELD_BLOCK_NUM	(128)
-#define DESERTFIELD_BLOCK_SIZE	(50.0f * 128.0f / DESERTFIELD_BLOCK_NUM)
-#define DESERTFIELD_MAX			(4)
-#define DESERTFIELD_INITPOS_Y	(-150.0f)
+#define DESERTFIELD_BLOCK_SIZE	(100.0f * 128.0f / DESERTFIELD_BLOCK_NUM)
+#define DESERTFIELD_MAX			(3)
+#define DESERTFIELD_INITPOS_Y	(-250.0f)
 #define DESERTFIELD_SCROLLSPEED	(-50.0f)
 
 /**********************************************
