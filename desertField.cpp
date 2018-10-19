@@ -183,8 +183,6 @@ void SetDesertFieldVtxBuffer(LPDIRECT3DVERTEXBUFFER9 vtxBuff, float *heightMap)
 	const float texSizeX = 0.5f;
 	const float texSizeZ = 0.5f;
 
-	float *map = getHeightMap2();
-
 	//頂点データの範囲をロック
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
