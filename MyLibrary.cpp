@@ -390,65 +390,6 @@ void ArrayCopy(int *dst, int *src, int size)
 }
 
 /*******************************************************************
-//関数名	：float EaseInCubic
-//引数1		：float time		：現在の進行度
-//引数2		：float start		：初期値
-//引数3		：float goal		：目標値
-//引数4		：float duration	：進行度の採集地
-//戻り値	：イージングの値
-//説明		：イージング計算処理
-********************************************************************/
-float EaseInCubic(float time, float start, float goal, float duration)
-{
-	float diff = goal - start;
-	float t = time / duration;
-
-	return diff * t * t + start;
-}
-
-/*******************************************************************
-//関数名	：float EaseOutCubic
-//引数1		：float time		：現在の進行度
-//引数2		：float start		：初期値
-//引数3		：float goal		：目標値
-//引数4		：float duration	：進行度の採集地
-//戻り値	：イージングの値
-//説明		：イージング計算処理
-********************************************************************/
-float EaseOutCubic(float time, float start, float goal, float duration)
-{
-	float diff = goal - start;
-	float t = time / duration;
-
-	return -diff * t * (t - 2.0f) + start;
-}
-
-/*******************************************************************
-//関数名	：float EaseInOutCubic
-//引数1		：float time		：現在の進行度
-//引数2		：float start		：初期値
-//引数3		：float goal		：目標値
-//引数4		：float duration	：進行度の採集地
-//戻り値	：イージングの値
-//説明		：イージング計算処理
-********************************************************************/
-float EaseInOutCubic(float time, float start, float goal, float duration)
-{
-	float diff = goal - start;
-	float t = 2.0f * time / duration;
-
-	if (t < 1)
-	{
-		return diff / 2.0f * t * t + start;
-	}
-	else
-	{
-		t -= 1.0f;
-		return -diff / 2.0f * (t * (t - 2) - 1) + start;
-	}
-}
-
-/*******************************************************************
 //関数名	：void RotateByQuaternion(D3DXVECTOR3 *initPos, D3DXVECTOR3 *axis, FLOAT deg, D3DXVECTOR3 *out)
 //引数1		：D3DXVECTOR3 *initPos	回転させたい対象の座標
 //引数2		：D3DXVECTOR3 *axis		回転軸
@@ -473,12 +414,4 @@ void RotateByQuaternion(const D3DXVECTOR3 *initPos, const D3DXVECTOR3 *axis, con
 	out->x = ans.x;
 	out->y = ans.y;
 	out->z = ans.z;
-}
-
-void TransformQuaternionToRotMtx(D3DXMATRIX *mtx, D3DXQUATERNION *quaternion)
-{
-	D3DXMatrixIdentity(mtx);
-
-	mtx->_11 = 1.0f - 2.0f * quaternion->y * quaternion->y - 2.0f * quaternion->z * quaternion->z;
-//	mtx->_12 = 2.0f * quaternion->x * quaternion->y + 2.0f * quaternion->w * quaternion->
 }

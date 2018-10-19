@@ -139,6 +139,11 @@
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="desertField.cpp" />
+    <ClCompile Include="Easing.cpp" />
+    <ClCompile Include="enemyMissile.cpp" />
+    <ClCompile Include="enemyMissileHoming.cpp" />
+    <ClCompile Include="enemyMissileLaunch.cpp" />
+    <ClCompile Include="enemyMissileStraight.cpp" />
     <ClCompile Include="fractal.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
@@ -152,6 +157,11 @@
     <ClInclude Include="collider.h" />
     <ClInclude Include="debugproc.h" />
     <ClInclude Include="desertField.h" />
+    <ClInclude Include="Easing.h" />
+    <ClInclude Include="enemyMissile.h" />
+    <ClInclude Include="enemyMissileHoming.h" />
+    <ClInclude Include="enemyMissileLaunch.h" />
+    <ClInclude Include="enemyMissileStraight.h" />
     <ClInclude Include="fractal.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
