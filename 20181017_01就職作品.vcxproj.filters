@@ -105,6 +105,9 @@
     <ClCompile Include="debugproc.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
+    <ClCompile Include="perlinNoise.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -153,6 +156,9 @@
       <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
     </ClInclude>
     <ClInclude Include="Easing.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="perlinNoise.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
   </ItemGroup>
