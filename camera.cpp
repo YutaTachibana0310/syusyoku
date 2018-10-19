@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // カメラ処理 [camera.cpp]
-// Author : 
+// Author : GP11A341 21 立花雄太
 //
 //=============================================================================
 #include "camera.h"
@@ -17,13 +17,6 @@
 #define	VIEW_FAR_Z			(20000.0f)				// ビュー平面のFarZ値
 #define	VALUE_MOVE_CAMERA	(20.0f)					// カメラの移動量
 #define	VALUE_ROTATE_CAMERA	(D3DX_PI * 0.01f)		// カメラの回転量
-
-#define	INTERVAL_CAMERA_R	(12.5f)					// モデルの視線の先までの距離
-#define	RATE_CHASE_CAMERA_P	(0.35f)					// カメラの視点への補正係数
-#define	RATE_CHASE_CAMERA_R	(0.20f)					// カメラの注視点への補正係数
-
-#define	CHASE_HEIGHT_P		(100.0f)				// 追跡時の視点の高さ
-#define	CHASE_HEIGHT_R		(10.0f)					// 追跡時の注視点の高さ
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -139,6 +132,9 @@ D3DXMATRIX GetMtxView(void)
 	return g_mtxView;
 }
 
+//=============================================================================
+// カメラを向く回転行列の取得
+//=============================================================================
 D3DXMATRIX GetInvCameraRotMtx(D3DXVECTOR3 *objPos)
 {
 	D3DXMATRIX inv;

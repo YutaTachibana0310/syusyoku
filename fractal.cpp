@@ -25,8 +25,6 @@ typedef struct
 void CreateHeightMap1(int start, int end, float range, float *map);
 void CreateHeightMap2(Point tr, Point tl, Point br, Point bl, float range, float *map, int elemNum);
 
-void InitializeHeightMap2o(void);
-void CreateHeightMap2o(Point tr, Point tl, Point br, Point bl, float range);
 /***************************************************
 ÉOÉçÅ[ÉoÉãïœêî
 ***************************************************/
@@ -86,8 +84,6 @@ void CreateHeightMap1(int start, int end, float range, float *map)
 **************************************************/
 void InitializeHeightMap2(float *map, int elemNum)
 {
-	InitializeHeightMap2o();
-
 	Point bottomL = { elemNum, 0, RandomRange(minHeight, maxHeight) };
 	bottomL.height = Clampf(minHeight, maxHeight, bottomL.height);
 	map[bottomL.z * (elemNum + 1) + bottomL.x] = bottomL.height;
@@ -180,96 +176,4 @@ void CreateHeightMap2(Point tr, Point tl, Point br, Point bl, float range, float
 	CreateHeightMap2(c, l, b, bl, range / d, map, elemNum);
 	CreateHeightMap2(r, c, br, b, range / d, map, elemNum);
 	return;
-}
-
-static float heightMap2[129][129];
-static float heightMap2Inv[129][129];
-
-void InitializeHeightMap2o(void)
-{
-	Point bottomL = { MESH_BLOCK_NUM, 0, RandomRange(0.0f, maxHeight) };
-	heightMap2[bottomL.x][bottomL.x] = bottomL.height;
-
-	Point bottomR = { MESH_BLOCK_NUM, MESH_BLOCK_NUM, RandomRange(0.0f, maxHeight) };
-	heightMap2[bottomR.z][bottomR.x] = bottomR.height;
-
-	Point topL = { 0, 0, RandomRange(0.0f, maxHeight) };
-	heightMap2[topL.z][topL.x] = topL.height;
-
-	Point topR = { 0, MESH_BLOCK_NUM, RandomRange(0.0f, maxHeight) };
-	heightMap2[topR.z][topR.x] = topR.height;
-
-	Point center = { MESH_BLOCK_NUM / 2, MESH_BLOCK_NUM / 2, maxHeight };
-	heightMap2[center.z][center.x] = center.height;
-
-	Point bottom = { bottomL.z, center.x, (bottomL.height + bottomR.height) / 2 };
-	heightMap2[bottom.z][bottom.x] = bottom.height;
-
-	Point top = { topR.z, center.x, (topL.height + topR.height) / 2 };
-	heightMap2[top.z][top.x] = top.height;
-
-	Point left = { center.z, topL.x, (topL.height + bottomL.height) / 2 };
-	heightMap2[left.z][left.x] = left.height;
-
-	Point right = { center.z, topR.x, (topR.height + bottomR.height) / 2 };
-	heightMap2[right.z][right.x] = right.height;
-
-	float initRand = 40000.0f;
-
-	CreateHeightMap2o(top, topL, center, left, initRand);
-	CreateHeightMap2o(topR, top, right, center, initRand);
-	CreateHeightMap2o(center, left, bottom, bottomL, initRand);
-	CreateHeightMap2o(right, center, bottomR, bottom, initRand);
-
-	for (int i = 0; i < MESH_BLOCK_NUM + 1; i++)
-	{
-		for (int j = 0; j < MESH_BLOCK_NUM + 1; j++)
-		{
-			heightMap2Inv[i][j] = heightMap2[MESH_BLOCK_NUM - i][j];
-		}
-	}
-}
-
-void CreateHeightMap2o(Point tr, Point tl, Point br, Point bl, float range)
-{
-	if (abs(tr.x - tl.x) <= 1 && abs(br.z - tr.z) <= 1)
-	{
-		return;
-	}
-
-	int z = (br.z + tr.z) / 2;
-	int x = (tr.x + tl.x) / 2;
-	heightMap2[z][x] = (tr.height + tl.height + br.height + bl.height) / 4;
-	heightMap2[z][x] += RandomRange(-range / 2, range / 2);
-	heightMap2[z][x] = Clampf(minHeight, maxHeight, heightMap2[z][x]);
-	Point c = { z, x, heightMap2[z][x] };
-
-	Point t = { tl.z, c.x, (tl.height + tr.height) / 2 };
-	t.height = Clampf(minHeight, maxHeight, t.height);
-	heightMap2[t.z][t.x] = t.height;
-
-	Point b = { bl.z, c.x, (bl.height + br.height) / 2 };
-	b.height = Clampf(minHeight, maxHeight, b.height);
-	heightMap2[b.z][b.x] = b.height;
-
-	Point r = { c.z, tr.x, (tr.height + br.height) / 2 };
-	r.height = Clampf(minHeight, maxHeight, r.height);
-	heightMap2[r.z][r.x] = r.height;
-
-	Point l = { c.z, tl.x, (tl.height + bl.height) / 2 };
-	l.height = Clampf(minHeight, maxHeight, l.height);
-	heightMap2[l.z][l.x] = l.height;
-
-	CreateHeightMap2o(t, tl, c, l, range / d);
-	CreateHeightMap2o(tr, t, r, c, range / d);
-	CreateHeightMap2o(c, l, b, bl, range / d);
-	CreateHeightMap2o(r, c, br, b, range / d);
-
-	return;
-}
-
-float *getHeightMap2(void)
-{
-	static int cnt = 0;
-	return (cnt++ & 1) ? &heightMap2[0][0] : &heightMap2Inv[0][0];
 }
