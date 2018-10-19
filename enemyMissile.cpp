@@ -5,6 +5,9 @@
 //
 //=====================================
 #include "enemyMissile.h"
+#include "enemyMissileLaunch.h"
+#include "enemyMissileHoming.h"
+#include "enemyMissileStraight.h"
 
 /**************************************
 マクロ定義
@@ -16,13 +19,7 @@
 /**************************************
 構造体定義
 **************************************/
-enum ENEMYMISSILE_STATE
-{
-	ENEMYMISSILE_LAUNCH,			//発射直後状態
-	ENEMYMISSILE_HOMING,			//ホーミング状態
-	ENEMYMISSILE_STRAIGHT,			//直進状態
-	ENEMYMISSILE_STATEMAX
-};
+typedef void(*funcEnemyMissile)(ENEMYMISSILE*);
 
 /*************************************
 プロトタイプ宣言
@@ -36,6 +33,27 @@ static LPD3DXBUFFER materials;								//マテリアル情報
 static DWORD numMaterial;									//属性情報の総数
 static D3DXMATRIX worldMtx;									//ワールドマトリクス
 static ENEMYMISSILE missile[ENEMYMISSILE_MAX];				//エネミーミサイル構造体
+
+//更新処理の関数テーブル
+static funcEnemyMissile Update[ENEMYMISSILE_STATEMAX] = { 
+	EnemyMissileLaunchUpdate,
+	EnemyMissileHomingUpdate,
+	EnemyMissileStraightUpdate
+};
+
+//入場処理の関数テーブル
+static funcEnemyMissile Enter[ENEMYMISSILE_STATEMAX] = {
+	EnemyMissileLaunchEnter,
+	EnemyMissileHomingEnter,
+	EnemyMissileStraightEnter,
+};
+
+//退場処理の関数テーブル
+static funcEnemyMissile Exit[ENEMYMISSILE_STATEMAX] = {
+	EnemyMissileLaunchExit,
+	EnemyMissileHomingExit,
+	EnemyMissileStraightExit
+};
 
 /*************************************
 初期化処理
@@ -71,7 +89,14 @@ void InitEnemyMissile(int num)
 		ptr->moveDir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->speed = 0.0f;
 		ptr->collider.active = false;
+#if 0
 		ptr->flgHoming = false;
+#else
+		ptr->active = true;
+		ptr->pos = D3DXVECTOR3(RandomRange(-500.0f, 500.0f), 200.0f, 10000);
+		ptr->moveDir = D3DXVECTOR3(0.0f, 1.0f, 0.0);
+		ptr->targetPos = D3DXVECTOR3(RandomRange(-100.0f, 100.0f), 200.0f, 0.0f);
+#endif
 	}
 }
 
@@ -99,7 +124,7 @@ void UpdateEnemyMissile(void)
 			continue;
 		}
 
-
+		Update[ptr->state](ptr);
 	}
 }
 
@@ -164,25 +189,16 @@ ENEMYMISSILE *GetEnemyMissileAdr(int n)
 }
 
 /*****************************************
-発射直後の更新処理
+エネミーミサイル状態遷移関数
 ******************************************/
-void UpdateEnemyMissileLaunch(ENEMYMISSILE *ptr)
+void ChangeStateEnemyMissile(ENEMYMISSILE *ptr, int targetState)
 {
+	//退場処理を呼び出し
+	Exit[ptr->state];
 
-}
+	//状態遷移
+	ptr->state = targetState;
 
-/******************************************
-ホーミング時の更新処理
-*******************************************/
-void UpdateEnemyMissileHoming(ENEMYMISSILE *ptr)
-{
-
-}
-
-/********************************************
-直進時の更新処理
-*********************************************/
-void UpdateEnemyMissileStraight(ENEMYMISSILE *ptr)
-{
-
+	//入場処理を呼び出し
+	Enter[ptr->state];
 }

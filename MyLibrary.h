@@ -28,4 +28,5 @@ void ArrayShiftUp(int *buff, int startNum, int size);									//配列を上へ�
 void VectorArrayShiftUp(D3DXVECTOR3 *array, int startNum, int size);					//ベクトル配列を上へシフトする関数
 void ArrayCopy(int *dst, int *src, int size);											//配列コピー関数
 void RotateByQuaternion(const D3DXVECTOR3 *initPos, const D3DXVECTOR3 *axis, const FLOAT deg, D3DXVECTOR3 *out); //クォータニオンによる任意軸回転
+float GetAngleFromTwoVector(D3DXVECTOR3 *pV1, D3DXVECTOR3 *pV2);						//2つのベクトルがなす角度
 #endif

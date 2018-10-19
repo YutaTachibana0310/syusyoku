@@ -415,3 +415,20 @@ void RotateByQuaternion(const D3DXVECTOR3 *initPos, const D3DXVECTOR3 *axis, con
 	out->y = ans.y;
 	out->z = ans.z;
 }
+
+/********************************************************************
+//関数名	：float GetAngleFromTwoVector(D3DXVECTOR3 *pV1, D3DXVECTOR3 *pV2)
+//引数1		：D3DXVECTOR3 *pV1 ベクトル1
+//引数2		：D3DXVECTOR3 *pV2 ベクトル2
+//戻り値	：float 2つのベクトルがなす角度
+//説明		：2つのベクトルがなす角度
+********************************************************************/
+float GetAngleFromTwoVector(D3DXVECTOR3 *pV1, D3DXVECTOR3 *pV2)
+{
+	D3DXVECTOR3 v1, v2;
+
+	D3DXVec3Normalize(&v1, pV1);
+	D3DXVec3Normalize(&v2, pV2);
+
+	return acosf(D3DXVec3Dot(&v1, &v2));
+}

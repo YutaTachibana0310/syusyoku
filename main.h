@@ -15,6 +15,7 @@
 
 #define DIRECTINPUT_VERSION (0x0800)	// Œx‘Îô
 #include "dinput.h"
+#include "MyLibrary.h"
 
 //*****************************************************************************
 // ƒ‰ƒCƒuƒ‰ƒŠ‚ÌƒŠƒ“ƒN

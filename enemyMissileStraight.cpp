@@ -7,11 +7,16 @@
 #include "enemyMissileStraight.h"
 
 /***********************************
+マクロ定義
+************************************/
+#define ENEMYMISSILE_BORDER_Z		(-200.0f)		//ミサイルのZ座標限界値
+
+/***********************************
 開始動作
 ************************************/
 void EnemyMissileStraightEnter(ENEMYMISSILE *ptr)
 {
-
+	
 }
 
 /***********************************
@@ -19,7 +24,14 @@ void EnemyMissileStraightEnter(ENEMYMISSILE *ptr)
 ************************************/
 void EnemyMissileStraightUpdate(ENEMYMISSILE *ptr)
 {
+	//座標の更新
+	ptr->pos += ptr->speed * ptr->moveDir;
 
+	//非アクティブ化
+	if (ptr->pos.z < ENEMYMISSILE_BORDER_Z)
+	{
+		ptr->active = false;
+	}
 }
 
 /***********************************
