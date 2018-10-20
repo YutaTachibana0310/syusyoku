@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="buildingField.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="cloud.cpp" />
     <ClCompile Include="collider.cpp" />
     <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="desertField.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="buildingField.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="cloud.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="debugproc.h" />
     <ClInclude Include="desertField.h" />
