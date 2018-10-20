@@ -12,6 +12,7 @@
 #include <time.h>
 #include "desertField.h"
 #include "enemyMissile.h"
+#include "cloud.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -320,6 +321,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	InitEnemyMissile(0);
 
+	InitCloud(0);
+
 	// ライトの初期化
 	InitLight();
 
@@ -355,6 +358,8 @@ void Uninit(void)
 	// 影の終了処理
 	UninitEnemyMissile();
 
+	UninitCloud();
+
 }
 
 //=============================================================================
@@ -383,6 +388,7 @@ void Update(void)
 	UpdateEnemyMissile();
 	UpdateDesertField();
 	UpdateCamera();
+	UpdateCloud();
 
 }
 
@@ -406,7 +412,7 @@ void Draw(void)
 		DrawDesertField();
 
 		// 影処理の描画
-
+		DrawCloud();
 
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)
