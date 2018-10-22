@@ -292,7 +292,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	ZeroMemory(&caps, sizeof(D3DCAPS9));
 	g_pD3DDevice->GetDeviceCaps(&caps);
 
-#if 1
+#if 0
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
 		FLOAT StartPos = 15000;
