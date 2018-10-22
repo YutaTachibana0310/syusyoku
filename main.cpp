@@ -13,6 +13,7 @@
 #include "desertField.h"
 #include "enemyMissile.h"
 #include "cloud.h"
+#include "flare.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -292,7 +293,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	ZeroMemory(&caps, sizeof(D3DCAPS9));
 	g_pD3DDevice->GetDeviceCaps(&caps);
 
-#if 1
+#if 0
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
 		FLOAT StartPos = 15000;
@@ -325,6 +326,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// ライトの初期化
 	InitLight();
+
+	InitFlare(0);
 
 	return S_OK;
 }
@@ -360,6 +363,8 @@ void Uninit(void)
 
 	UninitCloud();
 
+	UninitFlare();
+
 }
 
 //=============================================================================
@@ -389,6 +394,7 @@ void Update(void)
 	UpdateDesertField();
 	UpdateCamera();
 	UpdateCloud();
+	UpdateFlare();
 
 }
 
@@ -409,10 +415,12 @@ void Draw(void)
 		DrawEnemyMissile();
 
 		// 地面処理の描画
-		DrawDesertField();
+		//DrawDesertField();
 
 		// 影処理の描画
 		DrawCloud();
+
+		DrawFlare();
 
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)

@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="desertScene.cpp" />
     <ClCompile Include="buildingField.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cloud.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="enemyMissileHoming.cpp" />
     <ClCompile Include="enemyMissileLaunch.cpp" />
     <ClCompile Include="enemyMissileStraight.cpp" />
+    <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
@@ -154,6 +156,7 @@
     <ClCompile Include="quadTree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="desertScene.h" />
     <ClInclude Include="buildingField.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cloud.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="enemyMissileHoming.h" />
     <ClInclude Include="enemyMissileLaunch.h" />
     <ClInclude Include="enemyMissileStraight.h" />
+    <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />

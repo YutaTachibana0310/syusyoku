@@ -4,13 +4,15 @@
 //Author:GP11A341 21 立花雄太
 //
 //==========================================
+#include "camera.h"
 #include "cloud.h"
 
 /******************************************
 マクロ定義
 *******************************************/
 #define CLOUD_TEXNAME		"data/TEXTURE/cloud.png"
-#define CLOUD_SIZE			(1024)
+#define CLOUD_SIZE			(512)
+#define CLOUD_MAX			(1024)
 
 /******************************************
 構造体定義
@@ -20,7 +22,6 @@
 プロトタイプ宣言
 *******************************************/
 void MakeVertexCloud(void);
-void SetTextureCloud(void);
 
 /******************************************
 グローバル変数
@@ -31,7 +32,9 @@ static const int heightTex = 512;
 static LPDIRECT3DTEXTURE9 texture = NULL;
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff = NULL;
 static D3DXMATRIX mtxWorld;
-static D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 500.0f, 1000.0f);
+static D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, -200.0f, 0.0f);
+
+static CLOUD* root = NULL;
 
 #if 0
 static LPDIRECT3DSURFACE9 surface = NULL;
@@ -52,7 +55,7 @@ void InitCloud(int num)
 		texture = CreateTextureFromFile((LPSTR)CLOUD_TEXNAME, pDevice);
 #if 0
 		pDevice->GetRenderTarget(0, &defaultSurface);
-		pDevice->GetDepthStencilSurface(&defaultDepth); 
+		pDevice->GetDepthStencilSurface(&defaultDepth);
 
 		//テクスチャ作成
 		if (FAILED(D3DXCreateTexture(
@@ -87,7 +90,11 @@ void InitCloud(int num)
 
 	MakeVertexCloud();
 
-
+	for (int i = 0; i < CLOUD_MAX; i++)
+	{
+		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRange(-10000.0f, 10000.0f), RandomRange(0.0f, 200.0f), i * 10);
+		SetCloud(pos + offset);
+	}
 }
 
 /******************************************
@@ -96,6 +103,14 @@ void InitCloud(int num)
 void UninitCloud(void)
 {
 	SAFE_RELEASE(texture);
+
+	CLOUD *ptr = root, *tmp;
+	while (ptr != NULL)
+	{
+		tmp = ptr->next;
+		free(ptr);
+		ptr = tmp;
+	}
 }
 
 /******************************************
@@ -103,7 +118,19 @@ void UninitCloud(void)
 *******************************************/
 void UpdateCloud(void)
 {
-	SetTextureCloud();
+	CLOUD* ptr = root;
+	while (ptr != NULL)
+	{
+		ptr->pos.z -= 500.0f;
+
+		if (ptr->pos.z <= 0.0f)
+		{
+			ptr->pos.z += 10000.0f;
+		}
+
+		ptr = ptr->next;
+
+	}
 }
 
 /******************************************
@@ -114,24 +141,31 @@ void DrawCloud(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxRot, mtxTranslate;
 
-	//pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	pDevice->SetTexture(0, texture);
 
-	D3DXMatrixIdentity(&mtxWorld);
+	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
-	D3DXMatrixTranslation(&mtxTranslate, pos.x, pos.y, pos.z);
-	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+	for (CLOUD *ptr = root; ptr != NULL; ptr = ptr->next)
+	{
+		D3DXMatrixIdentity(&mtxWorld);
+		D3DXMatrixIdentity(&mtxRot);
 
-	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		mtxRot = GetInvCameraRotMtx(&ptr->pos);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
-	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
+		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
+
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+	}
+
+	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
 /******************************************
@@ -155,15 +189,15 @@ void MakeVertexCloud(void)
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].vtx = pos + D3DXVECTOR3(-CLOUD_SIZE, 0.0f, -CLOUD_SIZE);
-	pVtx[1].vtx = pos + D3DXVECTOR3(CLOUD_SIZE, 0.0f, -CLOUD_SIZE);
-	pVtx[2].vtx = pos + D3DXVECTOR3(-CLOUD_SIZE, 0.0f, CLOUD_SIZE);
-	pVtx[3].vtx = pos + D3DXVECTOR3(CLOUD_SIZE, 0.0f, CLOUD_SIZE);
+	pVtx[0].vtx = pos + D3DXVECTOR3(-CLOUD_SIZE, CLOUD_SIZE, 0.0f);
+	pVtx[1].vtx = pos + D3DXVECTOR3(CLOUD_SIZE, CLOUD_SIZE, 0.0f);
+	pVtx[2].vtx = pos + D3DXVECTOR3(-CLOUD_SIZE, -CLOUD_SIZE, 0.0f);
+	pVtx[3].vtx = pos + D3DXVECTOR3(CLOUD_SIZE, -CLOUD_SIZE, 0.0f);
 
 	pVtx[0].nor =
 		pVtx[1].nor =
 		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 0.0f);
+		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
 
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
@@ -180,27 +214,52 @@ void MakeVertexCloud(void)
 	return;
 }
 
-/******************************************
-テクスチャ座標設定
-*******************************************/
-void  SetTextureCloud(void)
+/**********************************************
+関数	：void SetCloud(D3DXVRECTOR3 pos)
+引数	：雲をセットしたい座標
+戻り値	：void
+説明	：雲をゲーム内にセットする関数
+**********************************************/
+void SetCloud(D3DXVECTOR3 pos)
 {
-	static float offset = 0.0f;
-	VERTEX_3D *pVtx;
+	CLOUD *ptr = root, *prev = NULL;
 
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	offset += 0.1f;
-
-	if (offset > 5.0f)
+	//ルートの雲生成
+	if (root == NULL)
 	{
-		offset -=5.0f;
+		root = (CLOUD*)malloc(sizeof(CLOUD));
+		root->pos = pos;
+		root->prev = NULL;
+		root->next = NULL;
+		root->active = true;
+
+		return;
 	}
 
-	pVtx[0].tex = D3DXVECTOR2(0.0f, offset);
-	pVtx[1].tex = D3DXVECTOR2(5.0f, offset);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, offset + 5.0f);
-	pVtx[3].tex = D3DXVECTOR2(5.0f, offset + 5.0f);
+	//リスト内の使用可能な雲を探索
+	while (ptr != NULL)
+	{
+		if (!ptr->active)
+		{
+			ptr->pos = pos;
+			ptr->active = true;
+			return;
+		}
 
-	vtxBuff->Unlock();
+		if (ptr->next == NULL)
+		{
+			break;
+		}
+
+		ptr = ptr->next;
+	}
+
+	//リスト内に使用可能な雲がないので追加
+	ptr->next = (CLOUD*)malloc(sizeof(CLOUD));
+	ptr->next->pos = pos;
+	ptr->next->active = true;
+	ptr->next->next = NULL;
+	ptr->next->prev = ptr;
+
+	return;
 }
