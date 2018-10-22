@@ -32,7 +32,7 @@ static const int heightTex = 512;
 static LPDIRECT3DTEXTURE9 texture = NULL;
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff = NULL;
 static D3DXMATRIX mtxWorld;
-static D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 2000.0f, 6000.0f);
+static D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, -200.0f, 0.0f);
 
 static CLOUD* root = NULL;
 
@@ -90,9 +90,10 @@ void InitCloud(int num)
 
 	MakeVertexCloud();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < CLOUD_MAX; i++)
 	{
-		SetCloud(pos);
+		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRange(-10000.0f, 10000.0f), RandomRange(0.0f, 200.0f), i * 10);
+		SetCloud(pos + offset);
 	}
 }
 
@@ -118,8 +119,16 @@ void UninitCloud(void)
 void UpdateCloud(void)
 {
 	CLOUD* ptr = root;
-	for (; ptr != NULL; ptr = ptr->next)
+	while (ptr != NULL)
 	{
+		ptr->pos.z -= 500.0f;
+
+		if (ptr->pos.z <= 0.0f)
+		{
+			ptr->pos.z += 10000.0f;
+		}
+
+		ptr = ptr->next;
 
 	}
 }
@@ -188,7 +197,7 @@ void MakeVertexCloud(void)
 	pVtx[0].nor =
 		pVtx[1].nor =
 		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 0.0f);
+		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
 
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =

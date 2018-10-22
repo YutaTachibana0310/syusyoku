@@ -409,7 +409,7 @@ void Draw(void)
 		DrawEnemyMissile();
 
 		// ’n–Êˆ—‚Ì•`‰æ
-		DrawDesertField();
+		//DrawDesertField();
 
 		// ‰eˆ—‚Ì•`‰æ
 		DrawCloud();

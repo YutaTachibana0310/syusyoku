@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="desertScene.cpp" />
     <ClCompile Include="buildingField.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cloud.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="quadTree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="desertScene.h" />
     <ClInclude Include="buildingField.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cloud.h" />
