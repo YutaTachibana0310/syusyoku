@@ -22,6 +22,7 @@ typedef struct _CLOUD
 	D3DXVECTOR3 pos;		//座標
 	float rot;				//回転量
 	_CLOUD* next;			//リスト構造の次の雲へのポインタ
+	_CLOUD* prev;			//リスト構造の前の雲へのポインタ
 }CLOUD;
 
 /******************************************

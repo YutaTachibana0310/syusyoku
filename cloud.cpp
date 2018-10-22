@@ -90,7 +90,10 @@ void InitCloud(int num)
 
 	MakeVertexCloud();
 
-
+	for (int i = 0; i < 10; i++)
+	{
+		SetCloud(pos);
+	}
 }
 
 /******************************************
@@ -100,12 +103,12 @@ void UninitCloud(void)
 {
 	SAFE_RELEASE(texture);
 
-	CLOUD *ptr = root, *next = root->next;
-	for (; next != NULL; )
+	CLOUD *ptr = root, *tmp;
+	while (ptr != NULL)
 	{
-		next = ptr->next;
+		tmp = ptr->next;
 		free(ptr);
-		ptr = next;
+		ptr = tmp;
 	}
 }
 
@@ -222,6 +225,7 @@ void SetCloud(D3DXVECTOR3 pos)
 	{
 		root = (CLOUD*)malloc(sizeof(CLOUD));
 		root->pos = pos;
+		root->prev = NULL;
 		root->next = NULL;
 		root->active = true;
 
@@ -229,7 +233,7 @@ void SetCloud(D3DXVECTOR3 pos)
 	}
 
 	//リスト内の使用可能な雲を探索
-	for (ptr = root; ptr != NULL; ptr = ptr->next)
+	while (ptr != NULL)
 	{
 		if (!ptr->active)
 		{
@@ -237,15 +241,21 @@ void SetCloud(D3DXVECTOR3 pos)
 			ptr->active = true;
 			return;
 		}
-		prev = ptr;
+
+		if (ptr->next == NULL)
+		{
+			break;
+		}
+
+		ptr = ptr->next;
 	}
 
 	//リスト内に使用可能な雲がないので追加
-	ptr = (CLOUD*)malloc(sizeof(CLOUD));
-	ptr->pos = pos;
-	ptr->active = true;
-	ptr->next = NULL;
-	prev->next = ptr;
+	ptr->next = (CLOUD*)malloc(sizeof(CLOUD));
+	ptr->next->pos = pos;
+	ptr->next->active = true;
+	ptr->next->next = NULL;
+	ptr->next->prev = ptr;
 
 	return;
 }
