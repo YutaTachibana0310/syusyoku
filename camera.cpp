@@ -147,3 +147,10 @@ D3DXMATRIX GetInvCameraRotMtx(D3DXVECTOR3 *objPos)
 	return inv;
 }
 
+//=============================================================================
+// ÉJÉÅÉâç¿ïWÇÃéÊìæ
+//=============================================================================
+D3DXVECTOR3 GetCameraPos(void)
+{
+	return cameraPos;
+}

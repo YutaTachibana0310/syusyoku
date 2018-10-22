@@ -61,6 +61,12 @@
     <Filter Include="ヘッダー ファイル\Battle\BattleScene">
       <UniqueIdentifier>{b85dd407-10c2-4c8f-a9a7-f7709c6169ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Effect">
+      <UniqueIdentifier>{4890a305-a6f0-44b3-9316-be8f22060071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect">
+      <UniqueIdentifier>{731cdec6-b18a-451f-a6a6-1a79c651d8fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="quadTree.cpp">
@@ -120,6 +126,9 @@
     <ClCompile Include="desertScene.cpp">
       <Filter>ソース ファイル\Battle\BattleScene</Filter>
     </ClCompile>
+    <ClCompile Include="flare.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -178,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="desertScene.h">
       <Filter>ヘッダー ファイル\Battle\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="flare.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
