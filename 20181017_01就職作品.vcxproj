@@ -154,6 +154,7 @@
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="quadTree.cpp" />
+    <ClCompile Include="skyBG.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="desertScene.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="MyLibrary.h" />
     <ClInclude Include="perlinNoise.h" />
     <ClInclude Include="quadTree.h" />
+    <ClInclude Include="skyBG.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

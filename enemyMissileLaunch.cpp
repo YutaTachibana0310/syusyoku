@@ -17,7 +17,6 @@ void EnemyMissileLaunchEnter(ENEMYMISSILE *ptr)
 {
 	ptr->active = true;
 	ptr->cntFrame = 0;
-	ptr->flgHoming = false;
 	ptr->speed = 0.0f;
 }
 

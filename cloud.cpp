@@ -92,7 +92,7 @@ void InitCloud(int num)
 
 	for (int i = 0; i < CLOUD_MAX; i++)
 	{
-		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRange(-10000.0f, 10000.0f), RandomRange(0.0f, 200.0f), i * 10);
+		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRange(-10000.0f, 10000.0f), RandomRange(0.0f, 200.0f), i * 10.0f);
 		SetCloud(pos + offset);
 	}
 }
@@ -152,8 +152,7 @@ void DrawCloud(void)
 		D3DXMatrixIdentity(&mtxWorld);
 		D3DXMatrixIdentity(&mtxRot);
 
-		mtxRot = GetInvCameraRotMtx(&ptr->pos);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+		GetInvCameraRotMtx(&mtxWorld);
 
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);

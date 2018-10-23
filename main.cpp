@@ -10,10 +10,10 @@
 #include "camera.h"
 #include "debugproc.h"
 #include <time.h>
-#include "desertField.h"
-#include "enemyMissile.h"
 #include "cloud.h"
 #include "flare.h"
+#include "skyBG.h"
+#include "enemyMissile.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -317,12 +317,11 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// カメラの初期化
 	InitCamera();
 
-	// 地面の初期化
-	InitDesertField(0);
+	InitCloud(0);
+
+	InitSkyBG(0);
 
 	InitEnemyMissile(0);
-
-	InitCloud(0);
 
 	// ライトの初期化
 	InitLight();
@@ -355,16 +354,13 @@ void Uninit(void)
 	// デバッグ表示処理の終了処理
 	UninitDebugProc();
 
-	// 地面の終了処理
-	UninitDesertField();
-
-	// 影の終了処理
-	UninitEnemyMissile();
+	UninitSkyBG();
 
 	UninitCloud();
 
 	UninitFlare();
 
+	UninitEnemyMissile();
 }
 
 //=============================================================================
@@ -390,12 +386,11 @@ void Update(void)
 		return;
 	}
 
-	UpdateEnemyMissile();
-	UpdateDesertField();
+	UpdateSkyBG();
 	UpdateCamera();
 	UpdateCloud();
 	UpdateFlare();
-
+	UpdateEnemyMissile();
 }
 
 //=============================================================================
@@ -412,16 +407,15 @@ void Draw(void)
 		// カメラの設定
 		SetCamera();
 
-		DrawEnemyMissile();
-
-		// 地面処理の描画
-		//DrawDesertField();
-
-		// 影処理の描画
-		DrawCloud();
+		DrawSkyBG();
 
 		DrawFlare();
 
+		DrawEnemyMissile();
+
+		// 影処理の描画
+		DrawCloud();
+	
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)
 		{

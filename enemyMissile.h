@@ -27,8 +27,8 @@ typedef struct
 	SPHERE collider;				//当たり判定
 
 	float speed;					//移動スピード
-	bool flgHoming;					//ホーミングフラグ
 	int cntFrame;					//フレームカウント
+	
 
 	int state;						//状態
 	int nextState;					//次の状態
@@ -54,4 +54,5 @@ void UpdateEnemyMissile(void);
 void DrawEnemyMissile(void);
 ENEMYMISSILE *GetEnemyMissileAdr(int n);
 void ChangeStateEnemyMissile(ENEMYMISSILE *ptr, int targetState);
+void SetEnemyMissile(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, D3DXVECTOR3 targetPos);
 #endif

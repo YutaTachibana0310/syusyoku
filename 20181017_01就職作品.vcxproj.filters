@@ -120,14 +120,17 @@
     <ClCompile Include="perlinNoise.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="cloud.cpp">
-      <Filter>ソース ファイル\Battle\BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="desertScene.cpp">
       <Filter>ソース ファイル\Battle\BattleScene</Filter>
     </ClCompile>
     <ClCompile Include="flare.cpp">
       <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="cloud.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="skyBG.cpp">
+      <Filter>ソース ファイル\Battle\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,14 +185,17 @@
     <ClInclude Include="perlinNoise.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="cloud.h">
-      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
-    </ClInclude>
     <ClInclude Include="desertScene.h">
       <Filter>ヘッダー ファイル\Battle\BattleScene</Filter>
     </ClInclude>
     <ClInclude Include="flare.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="cloud.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="skyBG.h">
+      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

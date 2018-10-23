@@ -13,7 +13,7 @@
 //*****************************************************************************
 #define	VIEW_ANGLE			(D3DXToRadian(45.0f))	// 視野角
 #define	VIEW_ASPECT			((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
-#define	VIEW_NEAR_Z			(10.0f)					// ビュー平面のNearZ値
+#define	VIEW_NEAR_Z			(100.0f)					// ビュー平面のNearZ値
 #define	VIEW_FAR_Z			(20000.0f)				// ビュー平面のFarZ値
 #define	VALUE_MOVE_CAMERA	(20.0f)					// カメラの移動量
 #define	VALUE_ROTATE_CAMERA	(D3DX_PI * 0.01f)		// カメラの回転量
@@ -135,8 +135,9 @@ D3DXMATRIX GetMtxView(void)
 //=============================================================================
 // カメラを向く回転行列の取得
 //=============================================================================
-D3DXMATRIX GetInvCameraRotMtx(D3DXVECTOR3 *objPos)
+void GetInvCameraRotMtx(D3DXMATRIX *mtx)
 {
+	/*
 	D3DXMATRIX inv;
 	D3DXMatrixIdentity(&inv);
 	D3DXMatrixLookAtLH(&inv, &cameraPos, objPos, &g_posCameraU);
@@ -144,7 +145,23 @@ D3DXMATRIX GetInvCameraRotMtx(D3DXVECTOR3 *objPos)
 	inv._41 = 0.0f;
 	inv._42 = 0.0f;
 	inv._43 = 0.0f;
-	return inv;
+	*/
+
+	mtx->_11 = g_mtxView._11;
+	mtx->_12 = g_mtxView._21;
+	mtx->_13 = g_mtxView._31;
+
+	mtx->_21 = g_mtxView._12;
+	mtx->_22 = g_mtxView._22;
+	mtx->_23 = g_mtxView._32;
+
+	mtx->_31 = g_mtxView._13;
+	mtx->_32 = g_mtxView._23;
+	mtx->_33 = g_mtxView._33;
+
+	mtx->_41 = 0.0f;
+	mtx->_42 = 0.0f;
+	mtx->_43 = 0.0f;
 }
 
 //=============================================================================

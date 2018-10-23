@@ -8,6 +8,7 @@
 #include "enemyMissileLaunch.h"
 #include "enemyMissileHoming.h"
 #include "enemyMissileStraight.h"
+#include "camera.h"
 
 /**************************************
 マクロ定義
@@ -33,6 +34,8 @@ static LPD3DXBUFFER materials;								//マテリアル情報
 static DWORD numMaterial;									//属性情報の総数
 static D3DXMATRIX worldMtx;									//ワールドマトリクス
 static ENEMYMISSILE missile[ENEMYMISSILE_MAX];				//エネミーミサイル構造体
+
+static int cntFrame = 0;
 
 //更新処理の関数テーブル
 static funcEnemyMissile Update[ENEMYMISSILE_STATEMAX] = { 
@@ -89,8 +92,8 @@ void InitEnemyMissile(int num)
 		ptr->moveDir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->speed = 0.0f;
 		ptr->collider.active = false;
-#if 0
-		ptr->flgHoming = false;
+#if 1
+				
 #else
 		ptr->active = true;
 		ptr->pos = D3DXVECTOR3(RandomRange(-500.0f, 500.0f), 200.0f, 10000);
@@ -114,6 +117,14 @@ void UninitEnemyMissile(void)
 *****************************************/
 void UpdateEnemyMissile(void)
 {
+
+	cntFrame++;
+	if (cntFrame % 20 == 0)
+	{
+		float angle = RandomRange(45.0f, 135.0f);
+		D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
+		SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), 200.0f, 5000), target, GetCameraPos() + D3DXVECTOR3(50.0f, 50.0f, 0.0f));
+	}
 
 	ENEMYMISSILE *ptr = &missile[0];
 
@@ -201,4 +212,27 @@ void ChangeStateEnemyMissile(ENEMYMISSILE *ptr, int targetState)
 
 	//入場処理を呼び出し
 	Enter[ptr->state];
+}
+
+/*****************************************
+エネミーミサイルセット関数
+******************************************/
+void SetEnemyMissile(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, D3DXVECTOR3 targetPos)
+{
+	ENEMYMISSILE *ptr = &missile[0];
+
+	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
+	{
+		if (ptr->active)
+		{
+			continue;
+		}
+
+		ptr->pos = pos;
+		ptr->moveDir = moveDir;
+		ptr->targetPos = targetPos;
+		ptr->active = true;
+
+		return;
+	}
 }
