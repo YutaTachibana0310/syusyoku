@@ -17,7 +17,7 @@
 ************************************/
 void EnemyMissileHomingEnter(ENEMYMISSILE *ptr)
 {
-	ptr->flgHoming = true;
+
 }
 
 /***********************************
@@ -29,7 +29,7 @@ void EnemyMissileHomingUpdate(ENEMYMISSILE *ptr)
 	D3DXVECTOR3 axis;
 	D3DXVECTOR3 targetDir = ptr->targetPos - ptr->pos;
 	D3DXVec3Cross(&axis, &ptr->moveDir, &targetDir);
-	RotateByQuaternion(&ptr->moveDir, &axis, ENEMYMISSILE_HOMINGANGLE, &ptr->moveDir);
+	RotateByQuaternion(&ptr->moveDir, &axis, ENEMYMISSILE_HOMINGANGLE , &ptr->moveDir);
 
 	//回転クォータニオンを設定
 	D3DXVec3Cross(&axis, &ENEMYMISSILE_FORWORD, &ptr->moveDir);
@@ -50,5 +50,5 @@ void EnemyMissileHomingUpdate(ENEMYMISSILE *ptr)
 ************************************/
 void EnemyMissileHomingExit(ENEMYMISSILE *ptr)
 {
-	ptr->flgHoming = false;
+
 }
