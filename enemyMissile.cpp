@@ -8,7 +8,12 @@
 #include "enemyMissileLaunch.h"
 #include "enemyMissileHoming.h"
 #include "enemyMissileStraight.h"
+
+#if 1
 #include "camera.h"
+#include "explosionFire.h"
+#include "input.h"
+#endif
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -92,14 +97,6 @@ void InitEnemyMissile(int num)
 		ptr->moveDir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->speed = 0.0f;
 		ptr->collider.active = false;
-#if 1
-				
-#else
-		ptr->active = true;
-		ptr->pos = D3DXVECTOR3(RandomRange(-500.0f, 500.0f), 200.0f, 10000);
-		ptr->moveDir = D3DXVECTOR3(0.0f, 1.0f, 0.0);
-		ptr->targetPos = D3DXVECTOR3(RandomRange(-100.0f, 100.0f), 200.0f, 0.0f);
-#endif
 	}
 }
 
@@ -123,10 +120,11 @@ void UpdateEnemyMissile(void)
 	{
 		float angle = RandomRange(45.0f, 135.0f);
 		D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
-		SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), 200.0f, 5000), target, GetCameraPos() + D3DXVECTOR3(50.0f, 50.0f, 0.0f));
+		SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), 200.0f, 5000), target, GetCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
 	}
 
 	ENEMYMISSILE *ptr = &missile[0];
+	bool flgInput = GetKeyboardTrigger(DIK_Z);
 
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
@@ -136,6 +134,12 @@ void UpdateEnemyMissile(void)
 		}
 
 		Update[ptr->state](ptr);
+
+		if (flgInput)
+		{
+			SetExplosionFire(&ptr->pos);
+			ptr->active = false;
+		}
 	}
 }
 

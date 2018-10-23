@@ -132,6 +132,9 @@
     <ClCompile Include="skyBG.cpp">
       <Filter>ソース ファイル\Battle\BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="explosionFire.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="skyBG.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="explosionFire.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

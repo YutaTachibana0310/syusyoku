@@ -14,6 +14,7 @@
 #include "flare.h"
 #include "skyBG.h"
 #include "enemyMissile.h"
+#include "explosionFire.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -323,6 +324,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	InitEnemyMissile(0);
 
+	InitExplosionFire(0);
+
 	// ライトの初期化
 	InitLight();
 
@@ -361,6 +364,8 @@ void Uninit(void)
 	UninitFlare();
 
 	UninitEnemyMissile();
+
+	UninitExplosionFire();
 }
 
 //=============================================================================
@@ -391,6 +396,7 @@ void Update(void)
 	UpdateCloud();
 	UpdateFlare();
 	UpdateEnemyMissile();
+	UpdateExplosionFire();
 }
 
 //=============================================================================
@@ -412,6 +418,8 @@ void Draw(void)
 		DrawFlare();
 
 		DrawEnemyMissile();
+
+		DrawExplosionFire();
 
 		// 影処理の描画
 		DrawCloud();
