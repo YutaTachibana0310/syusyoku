@@ -1,11 +1,11 @@
 //=====================================
 //
-//エクスプロージョンファイアヘッダ[explosionFire.h]
+//エクスプロージョンフレア[explosionFire.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _EXPLOSIONFIRE_H_
-#define _EXPLOSIONFIRE_H_
+#ifndef _EXPLOSIONFLARE_H_
+#define _EXPLOSIONFLARE_H_
 
 #include "main.h"
 
@@ -28,15 +28,16 @@ typedef struct
 	int cntFrame;
 	float scale;
 	float alpha;
+	float initScale;
 
-}EXPLOSIONFIRE;
+}EXPLOSIONFLARE;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitExplosionFire(int num);
-void UninitExplosionFire(void);
-void UpdateExplosionFire(void);
-void DrawExplosionFire(void);
-void SetExplosionFire(const D3DXVECTOR3 *pos);
+void InitExplosionFlare(int num);
+void UninitExplosionFlare(void);
+void UpdateExplosionFlare(void);
+void DrawExplosionFlare(void);
+void SetExplosionFlare(const D3DXVECTOR3 *pos);
 
 #endif

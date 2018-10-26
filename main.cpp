@@ -14,7 +14,10 @@
 #include "flare.h"
 #include "skyBG.h"
 #include "enemyMissile.h"
+#include "explosionFlare.h"
 #include "explosionFire.h"
+#include "explosionSmog.h"
+#include "enemyMissileSmog.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -274,7 +277,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// レンダリングステートパラメータの設定
     g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);				// 裏面をカリング
-	g_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);						// Zバッファを使用
+	g_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);						// Zバッファを使用n
 	g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);				// αブレンドを行う
 	g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// αソースカラーの指定
 	g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// αデスティネーションカラーの指定
@@ -324,7 +327,14 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	InitEnemyMissile(0);
 
+	InitExplosionSmog(0);
+
+	InitExplosionFlare(0);
+
 	InitExplosionFire(0);
+
+	InitEnemyMissileSmog(0);
+
 
 	// ライトの初期化
 	InitLight();
@@ -365,7 +375,13 @@ void Uninit(void)
 
 	UninitEnemyMissile();
 
+	UninitExplosionSmog();
+
+	UninitExplosionFlare();
+
 	UninitExplosionFire();
+
+	UninitEnemyMissileSmog();
 }
 
 //=============================================================================
@@ -396,6 +412,9 @@ void Update(void)
 	UpdateCloud();
 	UpdateFlare();
 	UpdateEnemyMissile();
+	UpdateEnemyMissileSmog();
+	UpdateExplosionSmog();
+	UpdateExplosionFlare();
 	UpdateExplosionFire();
 }
 
@@ -415,14 +434,21 @@ void Draw(void)
 
 		DrawSkyBG();
 
+		DrawCloud();
+
 		DrawFlare();
 
+		DrawEnemyMissileSmog();
+
 		DrawEnemyMissile();
+
+		DrawExplosionSmog();
+
+		DrawExplosionFlare();
 
 		DrawExplosionFire();
 
 		// 影処理の描画
-		DrawCloud();
 	
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)

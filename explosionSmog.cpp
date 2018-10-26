@@ -1,19 +1,19 @@
 //=====================================
 //
-//エクスプロージョンスモッグ処理[explosionFire.cpp]
+//エクスプロージョンスモッグ処理[explosionSmog.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "explosionFire.h"
+#include "explosionSmog.h"
 #include "camera.h"
 #include "Easing.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define EXPLOSIONFIRE_TEXNAME	"data/TEXTURE/explosionFire.png"
-#define EXPLOSIONFIRE_SIZE		(24)
-#define EXPLOSIONFIRE_MAX		(2048)
+#define EXPLOSIONSMOG_TEXNAME	"data/TEXTURE/explosionSmog.png"
+#define EXPLOSIONSMOG_SIZE		(16)
+#define EXPLOSIONSMOG_MAX		(128)
 
 /**************************************
 構造体定義
@@ -24,31 +24,31 @@
 ***************************************/
 static LPDIRECT3DTEXTURE9 texture = NULL;
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff = NULL;
-static EXPLOSIONFIRE smog[EXPLOSIONFIRE_MAX];
+static EXPLOSIONSMOG smog[EXPLOSIONSMOG_MAX];
 static D3DXMATRIX mtxWorld;
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void MakeVertexExplosionFire(void);
-void SetExplosionFireDiffuse(EXPLOSIONFIRE *ptr, VERTEX_3D *pVtx);
+void MakeVertexExplosionSmog(void);
+void SetExplosionSmogDiffuse(EXPLOSIONSMOG *ptr, VERTEX_3D *pVtx);
 
 /**************************************
 初期化処理
 ***************************************/
-void InitExplosionFire(int num)
+void InitExplosionSmog(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	if (num == 0)
 	{
-		MakeVertexExplosionFire();
+		MakeVertexExplosionSmog();
 
-		texture = CreateTextureFromFile((LPSTR)EXPLOSIONFIRE_TEXNAME, pDevice);
+		texture = CreateTextureFromFile((LPSTR)EXPLOSIONSMOG_TEXNAME, pDevice);
 	}
 
-	EXPLOSIONFIRE *ptr = &smog[0];
-	for (int i = 0; i < EXPLOSIONFIRE_MAX; i++, ptr++)
+	EXPLOSIONSMOG *ptr = &smog[0];
+	for (int i = 0; i < EXPLOSIONSMOG_MAX; i++, ptr++)
 	{
 		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
@@ -57,7 +57,7 @@ void InitExplosionFire(int num)
 /**************************************
 終了処理
 ***************************************/
-void UninitExplosionFire(void)
+void UninitExplosionSmog(void)
 {
 	SAFE_RELEASE(texture);
 	SAFE_RELEASE(vtxBuff);
@@ -66,15 +66,14 @@ void UninitExplosionFire(void)
 /**************************************
 更新処理
 ***************************************/
-void UpdateExplosionFire(void)
+void UpdateExplosionSmog(void)
 {
-	EXPLOSIONFIRE *ptr = &smog[0];
+	EXPLOSIONSMOG *ptr = &smog[0];
 
-	for (int i = 0; i < EXPLOSIONFIRE_MAX; i++, ptr++)
+	for (int i = 0; i < EXPLOSIONSMOG_MAX; i++, ptr++)
 	{
-		if (ptr->cntFrame == ptr->lifeFrame)
+		if (!ptr->active)
 		{
-			ptr->active = false;
 			continue;
 		}
 
@@ -82,13 +81,18 @@ void UpdateExplosionFire(void)
 		ptr->alpha = EaseInOutCubic((float)ptr->cntFrame, 0.5f, 0.0f, (float)ptr->lifeFrame);
 		ptr->pos += ptr->moveDir * EaseOutExponential((float)ptr->cntFrame, ptr->initSpeed, ptr->endSpeed, (float)ptr->lifeFrame);
 		ptr->cntFrame++;
+
+		if (ptr->cntFrame == ptr->lifeFrame)
+		{
+			ptr->active = false;
+		}
 	}
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawExplosionFire(void)
+void DrawExplosionSmog(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxTranslate, mtxScale;
@@ -98,12 +102,10 @@ void DrawExplosionFire(void)
 
 	pDevice->SetTexture(0, texture);
 
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	EXPLOSIONFIRE *ptr = &smog[0];
-	for (int i = 0; i < EXPLOSIONFIRE_MAX; i++, ptr++)
+	EXPLOSIONSMOG *ptr = &smog[0];
+	for (int i = 0; i < EXPLOSIONSMOG_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
 		{
@@ -122,35 +124,7 @@ void DrawExplosionFire(void)
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		SetExplosionFireDiffuse(ptr, pVtx);
-
-		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
-
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
-	}
-
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-	ptr = &smog[0];
-	for (int i = 0; i < EXPLOSIONFIRE_MAX; i++, ptr++)
-	{
-		if (!ptr->active)
-		{
-			continue;
-		}
-
-		D3DXMatrixIdentity(&mtxWorld);
-
-		GetInvCameraRotMtx(&mtxWorld);
-
-		D3DXMatrixScaling(&mtxScale, ptr->scale, ptr->scale, ptr->scale);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
-
-		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
-
-		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
-
-		SetExplosionFireDiffuse(ptr, pVtx);
+		SetExplosionSmogDiffuse(ptr, pVtx);
 
 		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
@@ -158,13 +132,12 @@ void DrawExplosionFire(void)
 	}
 
 	vtxBuff->Unlock();
-	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
 /**************************************
 頂点作成処理
 ***************************************/
-void MakeVertexExplosionFire(void)
+void MakeVertexExplosionSmog(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -182,10 +155,10 @@ void MakeVertexExplosionFire(void)
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].vtx = D3DXVECTOR3(-EXPLOSIONFIRE_SIZE, EXPLOSIONFIRE_SIZE, 0.0f);
-	pVtx[1].vtx = D3DXVECTOR3(EXPLOSIONFIRE_SIZE, EXPLOSIONFIRE_SIZE, 0.0f);
-	pVtx[2].vtx = D3DXVECTOR3(-EXPLOSIONFIRE_SIZE, -EXPLOSIONFIRE_SIZE, 0.0f);
-	pVtx[3].vtx = D3DXVECTOR3(EXPLOSIONFIRE_SIZE, -EXPLOSIONFIRE_SIZE, 0.0f);
+	pVtx[0].vtx = D3DXVECTOR3(-EXPLOSIONSMOG_SIZE, EXPLOSIONSMOG_SIZE, 0.0f);
+	pVtx[1].vtx = D3DXVECTOR3(EXPLOSIONSMOG_SIZE, EXPLOSIONSMOG_SIZE, 0.0f);
+	pVtx[2].vtx = D3DXVECTOR3(-EXPLOSIONSMOG_SIZE, -EXPLOSIONSMOG_SIZE, 0.0f);
+	pVtx[3].vtx = D3DXVECTOR3(EXPLOSIONSMOG_SIZE, -EXPLOSIONSMOG_SIZE, 0.0f);
 
 	pVtx[0].nor =
 		pVtx[1].nor =
@@ -195,7 +168,7 @@ void MakeVertexExplosionFire(void)
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.5f);
+		pVtx[3].diffuse = D3DXCOLOR(0.5f, 0.5f, 0.5f ,0.5f);
 
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -208,11 +181,11 @@ void MakeVertexExplosionFire(void)
 /**************************************
 エクスプロージョンファイアセット処理
 ***************************************/
-void SetExplosionFire(const D3DXVECTOR3 *pos)
+void SetExplosionSmog(const D3DXVECTOR3 *pos)
 {
-	EXPLOSIONFIRE *ptr = &smog[0];
+	EXPLOSIONSMOG *ptr = &smog[0];
 
-	for (int i = 0; i < EXPLOSIONFIRE_MAX; i++, ptr++)
+	for (int i = 0; i < EXPLOSIONSMOG_MAX; i++, ptr++)
 	{
 		if (ptr->active)
 		{
@@ -220,24 +193,24 @@ void SetExplosionFire(const D3DXVECTOR3 *pos)
 		}
 
 		ptr->pos = *pos;
-		ptr->initSpeed = RandomRange(0.3f, 1.0f);
+		ptr->initSpeed = RandomRange(0.5f, 3.0f);
 		ptr->endSpeed = 0.0f;
-		ptr->lifeFrame = 60;
+		ptr->lifeFrame = 90;
 		ptr->cntFrame = 0;
 		ptr->rot = RandomRange(0.0f, 360.0f);
 		ptr->moveDir = D3DXVECTOR3(cosf(D3DXToRadian(ptr->rot)), sinf(D3DXToRadian(ptr->rot)), RandomRange(-1, 1));
 		//ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
-		ptr->scale = RandomRange(0.8f, 1.3f);
+		ptr->scale = RandomRange(1.5f, 1.8f);
 		ptr->alpha = 1.0f;
 		ptr->active = true;
 		return;
 	}
 }
 
-void SetExplosionFireDiffuse(EXPLOSIONFIRE *ptr, VERTEX_3D *pVtx)
+void SetExplosionSmogDiffuse(EXPLOSIONSMOG *ptr, VERTEX_3D *pVtx)
 {
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, ptr->alpha);
+		pVtx[3].diffuse = D3DXCOLOR(0.5f, 0.5f, 0.5f, ptr->alpha);
 }

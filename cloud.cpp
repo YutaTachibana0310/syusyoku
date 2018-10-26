@@ -145,7 +145,9 @@ void DrawCloud(void)
 
 	pDevice->SetTexture(0, texture);
 
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	for (CLOUD *ptr = root; ptr != NULL; ptr = ptr->next)
 	{
@@ -163,8 +165,6 @@ void DrawCloud(void)
 
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 	}
-
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
 /******************************************

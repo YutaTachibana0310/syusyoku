@@ -67,6 +67,12 @@
     <Filter Include="ヘッダー ファイル\Effect">
       <UniqueIdentifier>{731cdec6-b18a-451f-a6a6-1a79c651d8fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Effect\Particle">
+      <UniqueIdentifier>{8a3bd624-bdd7-4edb-a5a2-2c9f6ae2e500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\Particle">
+      <UniqueIdentifier>{9f9b978b-1d06-4b82-a1f2-bc0278d4c20f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="quadTree.cpp">
@@ -133,7 +139,16 @@
       <Filter>ソース ファイル\Battle\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="explosionFire.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="explosionFlare.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="explosionSmog.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyMissileSmog.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="quadTree.h">
       <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="desertField.h">
-      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="buildingField.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
@@ -200,8 +212,20 @@
     <ClInclude Include="skyBG.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
+    <ClInclude Include="desertField.h">
+      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
+    </ClInclude>
     <ClInclude Include="explosionFire.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="explosionFlare.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="explosionSmog.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyMissileSmog.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

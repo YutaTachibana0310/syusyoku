@@ -89,7 +89,7 @@ void DrawFlare(void)
 
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	//pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 

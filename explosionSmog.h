@@ -1,11 +1,11 @@
 //=====================================
 //
-//エクスプロージョンファイアヘッダ[explosionFire.h]
+//エクスプロージョンスモッグヘッダ[explosionSmog.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _EXPLOSIONFIRE_H_
-#define _EXPLOSIONFIRE_H_
+#ifndef _EXPLOSIONSMOG_H_
+#define _EXPLOSIONSMOG_H_
 
 #include "main.h"
 
@@ -29,14 +29,14 @@ typedef struct
 	float scale;
 	float alpha;
 
-}EXPLOSIONFIRE;
+}EXPLOSIONSMOG;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitExplosionFire(int num);
-void UninitExplosionFire(void);
-void UpdateExplosionFire(void);
-void DrawExplosionFire(void);
-void SetExplosionFire(const D3DXVECTOR3 *pos);
+void InitExplosionSmog(int num);
+void UninitExplosionSmog(void);
+void UpdateExplosionSmog(void);
+void DrawExplosionSmog(void);
+void SetExplosionSmog(const D3DXVECTOR3 *pos);
 
 #endif

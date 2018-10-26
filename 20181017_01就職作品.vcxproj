@@ -145,8 +145,11 @@
     <ClCompile Include="enemyMissile.cpp" />
     <ClCompile Include="enemyMissileHoming.cpp" />
     <ClCompile Include="enemyMissileLaunch.cpp" />
+    <ClCompile Include="enemyMissileSmog.cpp" />
     <ClCompile Include="enemyMissileStraight.cpp" />
     <ClCompile Include="explosionFire.cpp" />
+    <ClCompile Include="explosionFlare.cpp" />
+    <ClCompile Include="explosionSmog.cpp" />
     <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
     <ClCompile Include="input.cpp" />
@@ -169,8 +172,11 @@
     <ClInclude Include="enemyMissile.h" />
     <ClInclude Include="enemyMissileHoming.h" />
     <ClInclude Include="enemyMissileLaunch.h" />
+    <ClInclude Include="enemyMissileSmog.h" />
     <ClInclude Include="enemyMissileStraight.h" />
     <ClInclude Include="explosionFire.h" />
+    <ClInclude Include="explosionFlare.h" />
+    <ClInclude Include="explosionSmog.h" />
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
     <ClInclude Include="input.h" />

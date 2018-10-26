@@ -1,11 +1,11 @@
 //=====================================
 //
-//エクスプロージョンファイアヘッダ[explosionFire.h]
+//エネミーミサイルスモッグヘッダ[enemyMissileSmog.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _EXPLOSIONFIRE_H_
-#define _EXPLOSIONFIRE_H_
+#ifndef _ENEMYMISSILESMOG_H_
+#define _ENEMYMISSILESMOG_H_
 
 #include "main.h"
 
@@ -19,24 +19,16 @@
 typedef struct
 {
 	D3DXVECTOR3 pos;
-	float rot;
-	bool active;
-	float initSpeed;
-	float endSpeed;
-	D3DXVECTOR3 moveDir;
-	int lifeFrame;
 	int cntFrame;
-	float scale;
-	float alpha;
-
-}EXPLOSIONFIRE;
+	bool active;
+}EnemyMissileSmog;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitExplosionFire(int num);
-void UninitExplosionFire(void);
-void UpdateExplosionFire(void);
-void DrawExplosionFire(void);
-void SetExplosionFire(const D3DXVECTOR3 *pos);
+void InitEnemyMissileSmog(int num);
+void UninitEnemyMissileSmog(void);
+void UpdateEnemyMissileSmog(void);
+void DrawEnemyMissileSmog(void);
+void SetEnemyMissileSmog(D3DXVECTOR3 pos);
 
 #endif
