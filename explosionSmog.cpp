@@ -31,7 +31,7 @@ static D3DXMATRIX mtxWorld;
 プロトタイプ宣言
 ***************************************/
 void MakeVertexExplosionSmog(void);
-void SetExplosionSmogDiffuse(EXPLOSIONSMOG *ptr, VERTEX_3D *pVtx);
+void SetExplosionSmogDiffuse(EXPLOSIONSMOG *ptr);
 
 /**************************************
 初期化処理
@@ -96,13 +96,11 @@ void DrawExplosionSmog(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxTranslate, mtxScale;
-	VERTEX_3D *pVtx = NULL;
 
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	pDevice->SetTexture(0, texture);
 
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	EXPLOSIONSMOG *ptr = &smog[0];
 	for (int i = 0; i < EXPLOSIONSMOG_MAX; i++, ptr++)
@@ -124,14 +122,12 @@ void DrawExplosionSmog(void)
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		SetExplosionSmogDiffuse(ptr, pVtx);
+		SetExplosionSmogDiffuse(ptr);
 
 		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 	}
-
-	vtxBuff->Unlock();
 }
 
 /**************************************
@@ -207,10 +203,16 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 	}
 }
 
-void SetExplosionSmogDiffuse(EXPLOSIONSMOG *ptr, VERTEX_3D *pVtx)
+void SetExplosionSmogDiffuse(EXPLOSIONSMOG *ptr)
 {
+	VERTEX_3D *pVtx;
+
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =
 		pVtx[3].diffuse = D3DXCOLOR(0.5f, 0.5f, 0.5f, ptr->alpha);
+
+	vtxBuff->Unlock();
 }

@@ -131,11 +131,6 @@ void UpdateEnemyMissile(void)
 		Update[ptr->state](ptr);
 		ptr->cntFrame++;
 
-		if (ptr->cntFrame % 2 == 0)
-		{
-			SetEnemyMissileSmog(ptr->pos);
-		}
-
 		if (flgInput)
 		{
 			for (int j = 0; j < 200; j++)

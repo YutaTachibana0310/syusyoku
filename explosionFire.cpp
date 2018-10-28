@@ -31,7 +31,7 @@ static D3DXMATRIX mtxWorld;
 プロトタイプ宣言
 ***************************************/
 void MakeVertexExplosionFire(void);
-void SetExplosionFireDiffuse(EXPLOSIONFIRE *ptr, VERTEX_3D *pVtx);
+void SetExplosionFireDiffuse(EXPLOSIONFIRE *ptr);
 
 /**************************************
 初期化処理
@@ -100,8 +100,6 @@ void DrawExplosionFire(void)
 
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
 	EXPLOSIONFIRE *ptr = &smog[0];
 	for (int i = 0; i < EXPLOSIONFIRE_MAX; i++, ptr++)
 	{
@@ -122,7 +120,7 @@ void DrawExplosionFire(void)
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		SetExplosionFireDiffuse(ptr, pVtx);
+		SetExplosionFireDiffuse(ptr);
 
 		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
@@ -150,14 +148,13 @@ void DrawExplosionFire(void)
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		SetExplosionFireDiffuse(ptr, pVtx);
+		SetExplosionFireDiffuse(ptr);
 
 		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 	}
 
-	vtxBuff->Unlock();
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
@@ -190,7 +187,7 @@ void MakeVertexExplosionFire(void)
 	pVtx[0].nor =
 		pVtx[1].nor =
 		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
+		pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 1.0f);
 
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
@@ -234,10 +231,16 @@ void SetExplosionFire(const D3DXVECTOR3 *pos)
 	}
 }
 
-void SetExplosionFireDiffuse(EXPLOSIONFIRE *ptr, VERTEX_3D *pVtx)
+void SetExplosionFireDiffuse(EXPLOSIONFIRE *ptr)
 {
+	VERTEX_3D *pVtx = NULL;
+
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =
 		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, ptr->alpha);
+
+	vtxBuff->Unlock();
 }

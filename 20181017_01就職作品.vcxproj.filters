@@ -150,6 +150,9 @@
     <ClCompile Include="enemyMissileSmog.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
     </ClCompile>
+    <ClCompile Include="particleManager.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="enemyMissileSmog.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
+    </ClInclude>
+    <ClInclude Include="particleManager.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

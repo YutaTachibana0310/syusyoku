@@ -189,6 +189,8 @@ void SetDiffuseEnemyMissileSmog(EnemyMissileSmog *ptr, VERTEX_3D *pVtx)
 	float alpha = 1.0f - (float)ptr->cntFrame / ENEMYMISSILESMOG_LIFEFRAME;
 	alpha = Clampf(0.0f, 1.0f, alpha);
 
+	return;
+
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =

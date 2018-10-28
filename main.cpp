@@ -13,10 +13,8 @@
 #include "cloud.h"
 #include "flare.h"
 #include "skyBG.h"
+#include "particleManager.h"
 #include "enemyMissile.h"
-#include "explosionFlare.h"
-#include "explosionFire.h"
-#include "explosionSmog.h"
 #include "enemyMissileSmog.h"
 
 //*****************************************************************************
@@ -327,11 +325,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	InitEnemyMissile(0);
 
-	InitExplosionSmog(0);
-
-	InitExplosionFlare(0);
-
-	InitExplosionFire(0);
+	InitParticleManager(0);
 
 	InitEnemyMissileSmog(0);
 
@@ -375,11 +369,7 @@ void Uninit(void)
 
 	UninitEnemyMissile();
 
-	UninitExplosionSmog();
-
-	UninitExplosionFlare();
-
-	UninitExplosionFire();
+	UninitParticleManager();
 
 	UninitEnemyMissileSmog();
 }
@@ -413,9 +403,7 @@ void Update(void)
 	UpdateFlare();
 	UpdateEnemyMissile();
 	UpdateEnemyMissileSmog();
-	UpdateExplosionSmog();
-	UpdateExplosionFlare();
-	UpdateExplosionFire();
+	UpdateParticleManager();
 }
 
 //=============================================================================
@@ -442,11 +430,7 @@ void Draw(void)
 
 		DrawEnemyMissile();
 
-		DrawExplosionSmog();
-
-		DrawExplosionFlare();
-
-		DrawExplosionFire();
+		DrawParticleManager();
 
 		// âeèàóùÇÃï`âÊ
 	

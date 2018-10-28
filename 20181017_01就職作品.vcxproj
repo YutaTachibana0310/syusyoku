@@ -156,6 +156,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
+    <ClCompile Include="particleManager.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="quadTree.cpp" />
     <ClCompile Include="skyBG.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MyLibrary.h" />
+    <ClInclude Include="particleManager.h" />
     <ClInclude Include="perlinNoise.h" />
     <ClInclude Include="quadTree.h" />
     <ClInclude Include="skyBG.h" />

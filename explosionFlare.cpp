@@ -31,7 +31,7 @@ static D3DXMATRIX mtxWorld;
 プロトタイプ宣言
 ***************************************/
 void MakeVertexExplosionFlare(void);
-void SetExplosionFlareDiffuse(EXPLOSIONFLARE *ptr, VERTEX_3D *pVtx);
+void SetExplosionFlareDiffuse(EXPLOSIONFLARE *ptr);
 
 /**************************************
 初期化処理
@@ -103,9 +103,6 @@ void DrawExplosionFlare(void)
 
 	pDevice->SetTexture(0, texture);
 
-	VERTEX_3D *pVtx;
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -135,7 +132,7 @@ void DrawExplosionFlare(void)
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		SetExplosionFlareDiffuse(ptr, pVtx);
+		SetExplosionFlareDiffuse(ptr);
 
 		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
@@ -164,7 +161,7 @@ void DrawExplosionFlare(void)
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		SetExplosionFlareDiffuse(ptr, pVtx);
+		SetExplosionFlareDiffuse(ptr);
 
 		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
@@ -175,8 +172,6 @@ void DrawExplosionFlare(void)
 
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLEND_INVSRCALPHA);
-
-	vtxBuff->Unlock();
 }
 
 /**************************************
@@ -226,12 +221,18 @@ void MakeVertexExplosionFlare(void)
 /**************************************
 ディフューズ設定処理
 ***************************************/
-void SetExplosionFlareDiffuse(EXPLOSIONFLARE *ptr, VERTEX_3D *pVtx)
+void SetExplosionFlareDiffuse(EXPLOSIONFLARE *ptr)
 {
+	VERTEX_3D *pVtx = NULL;
+
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =
 		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, ptr->alpha);
+
+	vtxBuff->Unlock();
 }
 
 /**************************************
