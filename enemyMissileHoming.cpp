@@ -9,7 +9,7 @@
 /***********************************
 マクロ定義
 ***********************************/
-#define ENEMYMISSILE_HOMINGANGLE	(1.0f)			//ホーミングの回転角度
+#define ENEMYMISSILE_HOMINGANGLE	(1.8f)			//ホーミングの回転角度
 #define ENEMYMISSILE_FORWORD		(D3DXVECTOR3(0.0f, 0.0f, -1.0f))	//基準となる進行方向
 
 /***********************************
@@ -42,6 +42,10 @@ void EnemyMissileHomingUpdate(ENEMYMISSILE *ptr)
 	if (GetAngleFromTwoVector(&targetDir, &ptr->moveDir) <= 0.0f)
 	{
 		ChangeStateEnemyMissile(ptr, ENEMYMISSILE_STRAIGHT);
+	}
+	if (ptr->pos.z < -10.0f)
+	{
+		ptr->active = false;
 	}
 }
 

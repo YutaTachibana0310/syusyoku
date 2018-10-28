@@ -9,7 +9,7 @@
 
 #define ENEMYMISSILE_INITSPEED		(5.0f)		//初期スピード
 #define ENEMYMISSILE_TARGETSPEED	(20.0f)		//目標スピード
-#define ENEMYMISSILE_LAUNCHDURATION	(10)		//発射からホーミングに遷移するフレーム
+#define ENEMYMISSILE_LAUNCHDURATION	(5)		//発射からホーミングに遷移するフレーム
 /***********************************
 開始動作
 ************************************/

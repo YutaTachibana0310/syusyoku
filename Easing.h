@@ -14,4 +14,8 @@ float EaseInCubic(float time, float start, float goal, float duration);			//InCu
 float EaseOutCubic(float time, float start, float goal, float duration);		//OutCubic計算処理
 float EaseInOutCubic(float time, float start, float goal, float duration);		//InOutCubic計算処理
 float EaseLinear(float time, float start, float goal, float duration);			//Linear計算処理
+float EaseInExponential(float time, float start, float goal, float duration);	//InExponential計算処理
+float EaseOutExponential(float time, float start, float goal, float duration);	//OutExponential計算処理
+float EaseInOutExponential(float time, float start, float goal, float duration);//InOutExponential計算処理
+
 #endif

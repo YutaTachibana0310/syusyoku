@@ -5,6 +5,7 @@
 //
 //=============================================================================
 #include "Easing.h"
+#include <math.h>
 
 /*****************************************************************************
 マクロ定義
@@ -92,4 +93,52 @@ float EaseLinear(float time, float start, float goal, float duration)
 	float t = time / duration;
 
 	return diff * t + start;
+}
+
+/*******************************************************************
+//関数名	：float EaseInExponential
+//引数1		：float time		：現在の進行度
+//引数2		：float start		：初期値
+//引数3		：float goal		：目標値
+//引数4		：float duration	：進行度の採集地
+//戻り値	：イージングの値
+//説明		：イージング計算処理
+********************************************************************/
+float EaseInExponential(float time, float start, float goal, float duration)
+{
+	float diff = goal - start;
+	float t = time / duration;
+
+	return diff *  powf(2, 10 * (t - 1)) + start;
+}
+
+/*******************************************************************
+//関数名	：float EaseOuntExponential
+//引数1		：float time		：現在の進行度
+//引数2		：float start		：初期値
+//引数3		：float goal		：目標値
+//引数4		：float duration	：進行度の採集地
+//戻り値	：イージングの値
+//説明		：イージング計算処理
+********************************************************************/
+float EaseOutExponential(float time, float start, float goal, float duration)
+{
+	float diff = goal - start;
+	float t = time / duration;
+
+	return diff * (-powf(2, (-10 * t)) + 1) + start;
+}
+
+/*******************************************************************
+//関数名	：float EaseInOutExponential
+//引数1		：float time		：現在の進行度
+//引数2		：float start		：初期値
+//引数3		：float goal		：目標値
+//引数4		：float duration	：進行度の採集地
+//戻り値	：イージングの値
+//説明		：イージング計算処理
+********************************************************************/
+float EaseInOutExponential(float time, float start, float goal, float duration)
+{
+	return 0.0f;
 }

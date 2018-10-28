@@ -85,7 +85,7 @@ void DrawSkyBG(void)
 	D3DMATERIAL9 mtrDefault;
 	D3DXMATERIAL *pMat;
 
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	//pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
