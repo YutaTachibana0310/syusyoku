@@ -432,3 +432,21 @@ float GetAngleFromTwoVector(D3DXVECTOR3 *pV1, D3DXVECTOR3 *pV2)
 
 	return acosf(D3DXVec3Dot(&v1, &v2));
 }
+
+/********************************************************************
+//関数名	：void CopyVtxBuff(unsigned size, void** src, LPDIRECT3DVERTEXBUFFER9 buff)
+//引数1		：D3DXVECTOR3 *pV1 ベクトル1
+//引数2		：D3DXVECTOR3 *pV2 ベクトル2
+//戻り値	：float 2つのベクトルがなす角度
+//説明		：2つのベクトルがなす角度
+********************************************************************/
+void CopyVtxBuff(unsigned size, void* src, LPDIRECT3DVERTEXBUFFER9 buff)
+{
+	void *p = NULL;
+
+	buff->Lock(0, 0, &p, 0);
+
+	memcpy(p, src, size);
+
+	buff->Unlock();
+}

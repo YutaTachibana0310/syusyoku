@@ -20,6 +20,7 @@ void SetCamera(void);
 
 D3DXVECTOR3 GetRotCamera(void);
 D3DXMATRIX GetMtxView(void);
+D3DXMATRIX GetMtxProjection(void);
 void GetInvCameraRotMtx(D3DXMATRIX *mtx);
 D3DXVECTOR3 GetCameraPos(void);
 #endif

@@ -37,7 +37,7 @@ typedef struct
 void InitExplosionFlare(int num);
 void UninitExplosionFlare(void);
 void UpdateExplosionFlare(void);
-void DrawExplosionFlare(void);
+void DrawExplosionFlare(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect);
 void SetExplosionFlare(const D3DXVECTOR3 *pos);
 
 #endif

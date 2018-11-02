@@ -8,14 +8,29 @@
 #define _EASING_H_
 
 //*****************************************************************************
+// 列挙体定義
+//*****************************************************************************
+enum EASING_TYPE
+{
+	InCubic,
+	OutCubic,
+	InOutCubic,
+	Linear,
+	InExponential,
+	OutExponential,
+	InOutExponential,
+	EasingMax
+};
+
+//*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-float EaseInCubic(float time, float start, float goal, float duration);			//InCubic計算処理
-float EaseOutCubic(float time, float start, float goal, float duration);		//OutCubic計算処理
-float EaseInOutCubic(float time, float start, float goal, float duration);		//InOutCubic計算処理
-float EaseLinear(float time, float start, float goal, float duration);			//Linear計算処理
-float EaseInExponential(float time, float start, float goal, float duration);	//InExponential計算処理
-float EaseOutExponential(float time, float start, float goal, float duration);	//OutExponential計算処理
-float EaseInOutExponential(float time, float start, float goal, float duration);//InOutExponential計算処理
-
+float GetEasingValue(float time, float start, float goal, EASING_TYPE type);
+float EaseInCubic(float time, float start, float goal);			//InCubic計算処理
+float EaseOutCubic(float time, float start, float goal);		//OutCubic計算処理
+float EaseInOutCubic(float time, float start, float goal);		//InOutCubic計算処理
+float EaseLinear(float time, float start, float goal);			//Linear計算処理
+float EaseInExponential(float time, float start, float goal);	//InExponential計算処理
+float EaseOutExponential(float time, float start, float goal);	//OutExponential計算処理
+float EaseInOutExponential(float time, float start, float goal);//InOutExponential計算処理
 #endif

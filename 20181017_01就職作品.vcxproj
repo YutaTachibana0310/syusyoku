@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="battleScene.cpp" />
     <ClCompile Include="desertScene.cpp" />
     <ClCompile Include="buildingField.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -154,14 +155,20 @@
     <ClCompile Include="fractal.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
+    <ClCompile Include="logoScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
+    <ClCompile Include="particle.cpp" />
+    <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="quadTree.cpp" />
+    <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="skyBG.cpp" />
+    <ClCompile Include="titleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="battleScene.h" />
     <ClInclude Include="desertScene.h" />
     <ClInclude Include="buildingField.h" />
     <ClInclude Include="camera.h" />
@@ -182,12 +189,23 @@
     <ClInclude Include="fractal.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
+    <ClInclude Include="logoScene.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MyLibrary.h" />
+    <ClInclude Include="particle.h" />
+    <ClInclude Include="particleFramework.h" />
     <ClInclude Include="particleManager.h" />
     <ClInclude Include="perlinNoise.h" />
     <ClInclude Include="quadTree.h" />
+    <ClInclude Include="sceneManager.h" />
     <ClInclude Include="skyBG.h" />
+    <ClInclude Include="titleScene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="data\EFFECT\particle.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

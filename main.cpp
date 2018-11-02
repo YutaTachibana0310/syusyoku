@@ -16,6 +16,8 @@
 #include "particleManager.h"
 #include "enemyMissile.h"
 #include "enemyMissileSmog.h"
+#include "particle.h"
+#include "sceneManager.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -319,21 +321,14 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// カメラの初期化
 	InitCamera();
 
-	InitCloud(0);
-
-	InitSkyBG(0);
-
-	InitEnemyMissile(0);
-
-	InitParticleManager(0);
-
-	InitEnemyMissileSmog(0);
-
-
 	// ライトの初期化
 	InitLight();
 
-	InitFlare(0);
+	//シーンマネージャ初期化
+	InitSceneManager(0);
+
+	//パーティクルマネージャ初期化
+	InitParticleManager(0);
 
 	return S_OK;
 }
@@ -361,17 +356,18 @@ void Uninit(void)
 	// デバッグ表示処理の終了処理
 	UninitDebugProc();
 
-	UninitSkyBG();
-
-	UninitCloud();
-
-	UninitFlare();
-
-	UninitEnemyMissile();
+	//シーンマネージャ終了処理
+	UninitSceneManager();
 
 	UninitParticleManager();
 
-	UninitEnemyMissileSmog();
+	//UninitSkyBG();
+	//UninitCloud();
+	//UninitFlare();
+	//UninitEnemyMissile();
+	//UninitParticleManager();
+	//UninitEnemyMissileSmog();
+	//UninitParticle();
 }
 
 //=============================================================================
@@ -397,13 +393,19 @@ void Update(void)
 		return;
 	}
 
-	UpdateSkyBG();
 	UpdateCamera();
-	UpdateCloud();
-	UpdateFlare();
-	UpdateEnemyMissile();
-	UpdateEnemyMissileSmog();
+
+	UpdateSceneManager();
+
 	UpdateParticleManager();
+
+	//UpdateSkyBG();
+	//UpdateCloud();
+	//UpdateFlare();
+	//UpdateEnemyMissile();
+	//UpdateEnemyMissileSmog();
+	//UpdateParticleManager();
+	//UpdateParticle();
 }
 
 //=============================================================================
@@ -420,17 +422,17 @@ void Draw(void)
 		// カメラの設定
 		SetCamera();
 
-		DrawSkyBG();
-
-		DrawCloud();
-
-		DrawFlare();
-
-		DrawEnemyMissileSmog();
-
-		DrawEnemyMissile();
+		DrawSceneManager();
 
 		DrawParticleManager();
+
+		//DrawSkyBG();
+		//DrawCloud();
+		//DrawFlare();
+		//DrawEnemyMissileSmog();
+		//DrawEnemyMissile();
+		//DrawParticleManager();
+		//DrawParticle();
 
 		// 影処理の描画
 	

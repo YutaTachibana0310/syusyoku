@@ -16,6 +16,7 @@
 #include "camera.h"
 #include "explosionFlare.h"
 #include "input.h"
+#include "particle.h"
 #endif
 
 /**************************************
@@ -141,7 +142,7 @@ void UpdateEnemyMissile(void)
 			{
 				SetExplosionFire(&ptr->pos);
 			}
-			for (int j = 0; j < 10; j++)
+			for (int j = 0; j < 100; j++)
 			{
 				SetExplosionSmog(&ptr->pos);
 			}

@@ -1,11 +1,11 @@
 //=====================================
 //
-//エクスプロージョンスモッグヘッダ[explosionSmog.h]
+//シーンマネージャヘッダ[sceneManager.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _EXPLOSIONSMOG_H_
-#define _EXPLOSIONSMOG_H_
+#ifndef _SCENEMANAGER_H_
+#define _SCENEMANAGER_H_
 
 #include "main.h"
 
@@ -16,14 +16,26 @@
 /**************************************
 構造体定義
 ***************************************/
+enum DefineScene
+{
+	LogoScene = 0,
+	TitleScene,
+	BattleScene,
+	DefineSceneMax
+};
 
+enum SceneResult
+{
+	SceneRunning,
+	SceneFinished,
+	SceneResultMax
+};
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitExplosionSmog(int num);
-void UninitExplosionSmog(void);
-void UpdateExplosionSmog(void);
-void DrawExplosionSmog(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect);
-void SetExplosionSmog(const D3DXVECTOR3 *pos);
-
+void InitSceneManager(int num);
+void UninitSceneManager(void);
+void UpdateSceneManager(void);
+void DrawSceneManager(void);
+void SetScene(DefineScene sceneId);
 #endif

@@ -8,16 +8,35 @@
 #include <math.h>
 
 /*****************************************************************************
-マクロ定義
+プロトタイプ宣言
 *****************************************************************************/
 
 /*****************************************************************************
-マクロ定義
+構造体定義
 *****************************************************************************/
+typedef float(*Easing)(float, float, float);
 
 /*****************************************************************************
 グローバル変数
 *****************************************************************************/
+static Easing EasingProcess[EasingMax] = {
+	EaseInCubic,
+	EaseOutCubic,
+	EaseInOutCubic,
+	EaseLinear,
+	EaseInExponential,
+	EaseOutExponential,
+	EaseInOutExponential
+};
+
+/*******************************************************************
+//関数名	：float GetEasingValue(float, float, float, float, EASING_TYPE type)
+//指定したイージングタイプの値を取得する関数
+********************************************************************/
+float GetEasingValue(float time, float start, float goal, EASING_TYPE type)
+{
+	return EasingProcess[type](time, start, goal);
+}
 
 /*******************************************************************
 //関数名	：float EaseInCubic
@@ -28,12 +47,9 @@
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-float EaseInCubic(float time, float start, float goal, float duration)
+float EaseInCubic(float time, float start, float goal)
 {
-	float diff = goal - start;
-	float t = time / duration;
-
-	return diff * t * t + start;
+	return (goal - start) * time * time + start;
 }
 
 /*******************************************************************
@@ -45,12 +61,9 @@ float EaseInCubic(float time, float start, float goal, float duration)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-float EaseOutCubic(float time, float start, float goal, float duration)
+float EaseOutCubic(float time, float start, float goal)
 {
-	float diff = goal - start;
-	float t = time / duration;
-
-	return -diff * t * (t - 2.0f) + start;
+	return -(goal - start) * time * (time - 2.0f) + start;
 }
 
 /*******************************************************************
@@ -62,19 +75,18 @@ float EaseOutCubic(float time, float start, float goal, float duration)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-float EaseInOutCubic(float time, float start, float goal, float duration)
+float EaseInOutCubic(float time, float start, float goal)
 {
-	float diff = goal - start;
-	float t = 2.0f * time / duration;
+	time *= 2.0f;
 
-	if (t < 1)
+	if (time < 1)
 	{
-		return diff / 2.0f * t * t + start;
+		return (goal - start) / 2.0f * time * time + start;
 	}
 	else
 	{
-		t -= 1.0f;
-		return -diff / 2.0f * (t * (t - 2) - 1) + start;
+		time -= 1.0f;
+		return -(goal - start) / 2.0f * (time * (time - 2) - 1) + start;
 	}
 }
 
@@ -87,12 +99,9 @@ float EaseInOutCubic(float time, float start, float goal, float duration)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-float EaseLinear(float time, float start, float goal, float duration)
+float EaseLinear(float time, float start, float goal)
 {
-	float diff = goal - start;
-	float t = time / duration;
-
-	return diff * t + start;
+	return (goal - start) * time + start;
 }
 
 /*******************************************************************
@@ -104,12 +113,9 @@ float EaseLinear(float time, float start, float goal, float duration)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-float EaseInExponential(float time, float start, float goal, float duration)
+float EaseInExponential(float time, float start, float goal)
 {
-	float diff = goal - start;
-	float t = time / duration;
-
-	return diff *  powf(2, 10 * (t - 1)) + start;
+	return (goal - start) *  powf(2, 10 * (time - 1)) + start;
 }
 
 /*******************************************************************
@@ -121,12 +127,9 @@ float EaseInExponential(float time, float start, float goal, float duration)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-float EaseOutExponential(float time, float start, float goal, float duration)
+float EaseOutExponential(float time, float start, float goal)
 {
-	float diff = goal - start;
-	float t = time / duration;
-
-	return diff * (-powf(2, (-10 * t)) + 1) + start;
+	return (goal - start) * (-powf(2, (-10 * time)) + 1) + start;
 }
 
 /*******************************************************************
@@ -138,7 +141,7 @@ float EaseOutExponential(float time, float start, float goal, float duration)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-float EaseInOutExponential(float time, float start, float goal, float duration)
+float EaseInOutExponential(float time, float start, float goal)
 {
 	return 0.0f;
 }

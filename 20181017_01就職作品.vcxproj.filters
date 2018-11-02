@@ -73,21 +73,21 @@
     <Filter Include="ヘッダー ファイル\Effect\Particle">
       <UniqueIdentifier>{9f9b978b-1d06-4b82-a1f2-bc0278d4c20f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{af46a365-3fa9-4caa-a7cb-b2bbe49a60a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scene">
+      <UniqueIdentifier>{b8d915eb-957f-4a48-97a0-c1a12ecc2ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\FrameWork">
+      <UniqueIdentifier>{e0e4bd73-9b21-4ae5-9581-b78b60b6565e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\FrameWork">
+      <UniqueIdentifier>{2c189c24-965f-49e6-bf55-ef4d50cd05ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="quadTree.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="MyLibrary.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
     <ClCompile Include="light.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="fractal.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
@@ -117,15 +117,6 @@
     <ClCompile Include="enemyMissileStraight.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
     </ClCompile>
-    <ClCompile Include="Easing.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="debugproc.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
-    <ClCompile Include="perlinNoise.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
     <ClCompile Include="desertScene.cpp">
       <Filter>ソース ファイル\Battle\BattleScene</Filter>
     </ClCompile>
@@ -153,6 +144,45 @@
     <ClCompile Include="particleManager.cpp">
       <Filter>ソース ファイル\Effect\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="particleFramework.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="logoScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="debugproc.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Easing.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="fractal.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="MyLibrary.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="perlinNoise.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="quadTree.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="titleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="battleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -161,25 +191,10 @@
     <ClInclude Include="collider.h">
       <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="debugproc.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="fractal.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
     <ClInclude Include="light.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="MyLibrary.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="quadTree.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="buildingField.h">
@@ -196,12 +211,6 @@
     </ClInclude>
     <ClInclude Include="enemyMissileStraight.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClInclude>
-    <ClInclude Include="Easing.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
-    <ClInclude Include="perlinNoise.h">
-      <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="desertScene.h">
       <Filter>ヘッダー ファイル\Battle\BattleScene</Filter>
@@ -233,5 +242,49 @@
     <ClInclude Include="particleManager.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="particleFramework.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="logoScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="debugproc.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Easing.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="fractal.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="MyLibrary.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="perlinNoise.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="quadTree.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneManager.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="titleScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="battleScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="data\EFFECT\particle.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

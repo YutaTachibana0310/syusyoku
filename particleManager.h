@@ -8,22 +8,53 @@
 #define _PARTICLEMANAGER_H_
 
 #include "main.h"
+#include "Easing.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define FVF_PARTICLE	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1)
+#define PARTICLE_INITPOS (D3DXVECTOR3(-9999.9f, -9999.9f, -9999.9f))	//初期位置
 
 /**************************************
 構造体定義
 ***************************************/
 typedef struct
 {
-	D3DXVECTOR3 vtx;		// 頂点座標
-	D3DCOLOR diffuse;		// 反射光
-	D3DXVECTOR2 tex;		// テクスチャ座標
-} VERTEX_PRATICLE;
+	float x, y, z;
+	float u, v;
+} VERTEX_PARTICLE;		//パーティクル頂点構造体
 
+typedef struct
+{
+	float u, v;
+} VERTEX_UV;			//パーティクルUV構造体
+
+typedef struct
+{
+	float r, g, b, a;
+} VERTEX_COLOR;			//パーティクルカラー構造体
+
+typedef struct
+{
+	bool active;
+	int cntFrame, lifeFrame;
+
+	//スピード
+	float initSpeed, endSpeed;
+	EASING_TYPE speedType;
+
+	//スケール
+	float initScale, endScale;
+	EASING_TYPE scaleType;
+
+	//カラー
+	float initRed, initGreen, initBlue, initAlpha;
+	float endRed, endGreen, endBlue, endAlpha;
+	EASING_TYPE colorType;
+
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 moveDir;	
+}PARTICLE;				//パーティクル構造体
 
 /**************************************
 プロトタイプ宣言

@@ -27,8 +27,9 @@ void EnemyMissileLaunchUpdate(ENEMYMISSILE *ptr)
 {
 	//速度更新
 	ptr->cntFrame++;
-	ptr->speed = EaseInOutCubic((float)ptr->cntFrame, ENEMYMISSILE_INITSPEED, ENEMYMISSILE_TARGETSPEED, ENEMYMISSILE_LAUNCHDURATION);
-	
+	//ptr->speed = EaseInOutCubic((float)ptr->cntFrame/ ENEMYMISSILE_LAUNCHDURATION, ENEMYMISSILE_INITSPEED, ENEMYMISSILE_TARGETSPEED);
+	ptr->speed = 20.0f;
+
 	//座標更新
 	ptr->pos += ptr->speed * ptr->moveDir;
 
