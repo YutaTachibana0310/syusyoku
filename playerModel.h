@@ -34,6 +34,7 @@ enum PlayerState
 typedef struct
 {
 	bool active;
+	int id;
 
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;

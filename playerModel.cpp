@@ -76,10 +76,10 @@ void InitPlayerModel(int num)
 		ptr->rot = ptr->destRot = D3DXVECTOR3(0, D3DXToRadian(180.0f), 0);
 		ptr->scale = D3DXVECTOR3(10.0f, 10.0f, 10.0f);
 
-		
+		ptr->id = i;
 	}
 
-	playerState = PlayerFPS;
+	ChangeStatePlayerModel(PlayerFPS);
 	model[0].active = true;
 }
 
@@ -122,7 +122,7 @@ void UpdatePlayerModel(void)
 		ptr->rot.y += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.y * PLAYER_ROTATEMAGNI);
 		ptr->rot.z += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.z * PLAYER_ROTATEMAGNI);
 
-		PrintDebugProc("playerpos[%d]:%f %f %f", i, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		PrintDebugProc("playerpos[%d]:%f %f %f\n", i, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 	}
 
 
@@ -185,7 +185,7 @@ PLAYERMODEL *GetPlayerAdr(int num)
 
 /*********************************************
 関数名	：PLAYERMODEL *GetPlayerModelAdr(int num)
-引数	：int num … アドレスを取得したいプレイヤーのインデックス
+引数	：int next 次の状態
 戻り値	：プレイヤー構造体のアドレス
 *********************************************/
 void ChangeStatePlayerModel(int next)
@@ -195,6 +195,9 @@ void ChangeStatePlayerModel(int next)
 	PLAYERMODEL *ptr = &model[0];
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
 	{
+		if (!ptr->active)
+			continue;
+
 		Enter[playerState](ptr);
 	}
 }

@@ -230,3 +230,4 @@ BATTLECAMERA *GetBattleCameraAdr(void)
 {
 	return &camera;
 }
+
