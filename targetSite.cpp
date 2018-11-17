@@ -9,6 +9,7 @@
 #include "battleCamera.h"
 #include "enemyMissile.h"
 #include "debugproc.h"
+#include "rockonSite.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -120,7 +121,7 @@ void UpdateTargetSite(void)
 void DrawTargetSite(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	D3DXMATRIX mtxRot, mtxTranslate;
+	D3DXMATRIX mtxTranslate;
 
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
@@ -130,7 +131,7 @@ void DrawTargetSite(void)
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
@@ -157,6 +158,7 @@ void DrawTargetSite(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESS);
 }
 
 /**************************************
@@ -188,7 +190,7 @@ void MakeVertexTargetSite(void)
 	pVtx[0].nor =
 		pVtx[1].nor =
 		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
+		pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -249,7 +251,6 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 void RockonEnemy(int id)
 {
 	ENEMYMISSILE *enemy = GetEnemyMissileAdr(0);
-	bool hitFlg = false;
 
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, enemy++)
 	{
@@ -258,19 +259,10 @@ void RockonEnemy(int id)
 			continue;
 		}
 
-		hitFlg = CollisionTargetSite(i, &enemy->pos);
-		if (hitFlg)
+		if (CollisionTargetSite(id, &enemy->pos))
 		{
-			break;
+			SetRockonSite(id, &enemy->pos);
 		}
-	}
 
-	if (hitFlg)
-	{
-		PrintDebugProc("hit!!\n");
-	}
-	else
-	{
-		PrintDebugProc("no hit...\n");
 	}
 }

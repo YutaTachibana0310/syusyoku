@@ -96,7 +96,7 @@ void InitEnemyMissile(int num)
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
 		ptr->active = false;
-		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, -9999.0f);
 		ptr->rot = D3DXQUATERNION(0.0f, 0.0f, 0.0f, 0.0f);
 		ptr->velocity = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->speed = 0.0f;

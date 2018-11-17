@@ -13,6 +13,7 @@
 #include "battleCamera.h"
 #include "playerBullet.h"
 #include "targetSite.h"
+#include "rockonSite.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -45,6 +46,7 @@ HRESULT InitBattleScene(int num)
 	InitPlayerBullet(num);
 	InitBattleCamera();
 	InitTargetSite(num);
+	InitRockonSite(num);
 
 	return S_OK;
 }
@@ -59,6 +61,7 @@ void UninitBattleScene(int num)
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
 	UninitTargetSite(num);
+	UninitRockonSite(num);
 }
 
 /******************************************************************************
@@ -72,6 +75,7 @@ void UpdateBattleScene(void)
 	UpdatePlayerModel();
 	UpdateBattleCamera();
 	UpdateTargetSite();
+	UpdateRockonSite();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -90,4 +94,5 @@ void DrawBattleScene(void)
 	DrawPlayerModel();
 	DrawPlayerBullet();
 	DrawTargetSite();
+	DrawRockonSite();
 }
