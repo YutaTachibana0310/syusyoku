@@ -7,6 +7,9 @@
 #include "targetSite.h"
 #include "playerModel.h"
 #include "battleCamera.h"
+#include "enemyMissile.h"
+#include "debugproc.h"
+#include "rockonSite.h"
 
 /**************************************
 マクロ定義
@@ -77,7 +80,39 @@ void UninitTargetSite(int num)
 ***************************************/
 void UpdateTargetSite(void)
 {
+	TARGETSITE *ptr = &targetSite[0];
+	D3DXVECTOR3 tmpPos;
+	VERTEX_3D *pVtx = NULL;
 
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		//topLをプロジェクション変換
+		D3DXVec3TransformCoord(&ptr->topL, &(ptr->pos + pVtx[0].vtx), &GetBattleCameraView());
+		D3DXVec3TransformCoord(&ptr->topL, &ptr->topL, &GetBattleCameraProjection());
+
+		//topRをプロジェクション変換
+		D3DXVec3TransformCoord(&ptr->topR, &(ptr->pos + pVtx[1].vtx), &GetBattleCameraView());
+		D3DXVec3TransformCoord(&ptr->topR, &ptr->topR, &GetBattleCameraProjection());
+
+		//bottomLをプロジェクション変換
+		D3DXVec3TransformCoord(&ptr->bottomL, &(ptr->pos + pVtx[2].vtx), &GetBattleCameraView());
+		D3DXVec3TransformCoord(&ptr->bottomL, &ptr->bottomL, &GetBattleCameraProjection());
+
+		//bottomRをプロジェクション変換
+		D3DXVec3TransformCoord(&ptr->bottomR, &(ptr->pos + pVtx[3].vtx), &GetBattleCameraView());
+		D3DXVec3TransformCoord(&ptr->bottomR, &ptr->bottomR, &GetBattleCameraProjection());
+
+		RockonEnemy(i);
+	}
+
+	vtxBuff->Unlock();
 }
 
 /**************************************
@@ -86,7 +121,7 @@ void UpdateTargetSite(void)
 void DrawTargetSite(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	D3DXMATRIX mtxRot, mtxTranslate;
+	D3DXMATRIX mtxTranslate;
 
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
@@ -96,7 +131,7 @@ void DrawTargetSite(void)
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	pDevice->SetRenderState(D3DRS_LIGHTING, false);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
@@ -107,6 +142,7 @@ void DrawTargetSite(void)
 		}
 
 		D3DXMatrixIdentity(&mtxWorld);
+		D3DXMatrixIdentity(&mtxTranslate);
 
 		GetInvRotBattleCamera(&mtxWorld);
 
@@ -122,6 +158,7 @@ void DrawTargetSite(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESS);
 }
 
 /**************************************
@@ -153,12 +190,17 @@ void MakeVertexTargetSite(void)
 	pVtx[0].nor =
 		pVtx[1].nor =
 		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
+		pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
 
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+	pVtx[0].diffuse =
+		pVtx[1].diffuse =
+		pVtx[2].diffuse =
+		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	vtxBuff->Unlock();
 
@@ -179,4 +221,48 @@ void SetTargetSitePosition(D3DXVECTOR3 pos, int id)
 TARGETSITE *GetTargetSiteADr(int id)
 {
 	return &targetSite[id];
+}
+
+/**************************************
+当たり判定
+***************************************/
+bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
+{
+	D3DXVECTOR3 screenPos;
+	TARGETSITE *ptr = &targetSite[id];
+
+	D3DXVec3TransformCoord(&screenPos, pos, &GetBattleCameraView());
+	D3DXVec3TransformCoord(&screenPos, &screenPos, &GetBattleCameraProjection());
+
+	if (screenPos.x > ptr->topL.x && screenPos.x < ptr->topR.x)
+	{
+		if (screenPos.y > ptr->bottomL.y && screenPos.y < ptr->topL.y)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**************************************
+エネミーロックオン判定
+***************************************/
+void RockonEnemy(int id)
+{
+	ENEMYMISSILE *enemy = GetEnemyMissileAdr(0);
+
+	for (int i = 0; i < ENEMYMISSILE_MAX; i++, enemy++)
+	{
+		if (!enemy->active)
+		{
+			continue;
+		}
+
+		if (CollisionTargetSite(id, &enemy->pos))
+		{
+			SetRockonSite(id, &enemy->pos);
+		}
+
+	}
 }

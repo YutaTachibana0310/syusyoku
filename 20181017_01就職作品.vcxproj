@@ -172,6 +172,7 @@
     <ClCompile Include="playerModelTopView.cpp" />
     <ClCompile Include="quadTree.cpp" />
     <ClCompile Include="resultScene.cpp" />
+    <ClCompile Include="rockonSite.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="skyBG.cpp" />
     <ClCompile Include="targetSite.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="playerModelTopView.h" />
     <ClInclude Include="quadTree.h" />
     <ClInclude Include="resultScene.h" />
+    <ClInclude Include="rockonSite.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="skyBG.h" />
     <ClInclude Include="targetSite.h" />

@@ -1,11 +1,11 @@
 //=====================================
 //
-//ターゲットサイトヘッダ[targetSite.h]
+//ロックオンサイトヘッダ[rockonSite.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TARGETSITE_H_
-#define _TARGETSITE_H_
+#ifndef _ROCKONSITE_H_
+#define _ROCKONSITE_H_
 
 #include "main.h"
 
@@ -19,20 +19,19 @@
 typedef struct
 {
 	bool active;
+	int id;
+
 	D3DXVECTOR3 pos;
+	D3DXVECTOR3 *target;
+}ROCKONSITE;
 
-	D3DXVECTOR3 topL, topR, bottomL, bottomR;
-
-}TARGETSITE;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitTargetSite(int num);
-void UninitTargetSite(int num);
-void UpdateTargetSite(void);
-void DrawTargetSite(void);
-void SetTargetSitePosition(D3DXVECTOR3 pos, int id);
-TARGETSITE *GetTargetSiteADr(int id);
-bool CollisionTargetSite(int id, const D3DXVECTOR3* pos);
-void RockonEnemy(int id);
+void InitRockonSite(int num);
+void UninitRockonSite(int num);
+void UpdateRockonSite(void);
+void DrawRockonSite(void);
+void SetRockonSite(int id, D3DXVECTOR3 *target);
+
 #endif

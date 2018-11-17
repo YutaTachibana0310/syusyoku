@@ -23,7 +23,6 @@
 /**************************************
 マクロ定義
 **************************************/
-#define ENEMYMISSILE_MAX			(128)						//ミサイル最大数
 #define ENEMYMISSILE_MODEL			"data/MODEL/missile.x"		//モデル名
 #define ENEMYMISSILE_ROTATEVALUE	(0.017f)					//1フレームあたりの回転量
 
@@ -97,7 +96,7 @@ void InitEnemyMissile(int num)
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
 		ptr->active = false;
-		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, -9999.0f);
 		ptr->rot = D3DXQUATERNION(0.0f, 0.0f, 0.0f, 0.0f);
 		ptr->velocity = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->speed = 0.0f;
@@ -170,6 +169,7 @@ void UpdateEnemyMissile(void)
 	}
 
 	CollisionEnemyMissileAndBullet();
+	
 }
 
 /*****************************************
@@ -281,6 +281,7 @@ void CollisionEnemyMissileAndBullet(void)
 	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
 	float distSq;
 
+	//プレイヤーバレットとの当たり判定
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
 		if (!ptr->active)

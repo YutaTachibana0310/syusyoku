@@ -7,6 +7,7 @@
 #include "playerModelFPS.h"
 #include "playerBullet.h"
 #include "input.h"
+#include "targetSite.h"
 
 /**************************************
 マクロ定義
@@ -14,6 +15,8 @@
 #define PLAYERFPS_BULLETSPEED		(10.0f)
 #define PLAYERFPS_RANGE_X			(85.0f)
 #define PLAYERFPS_RANGE_Y			(55.0f)
+
+#define PLAYERFPS_TARGETSITE_POS	(D3DXVECTOR3(0.0f, 0.0f, 200.0f))
 
 /**************************************
 構造体定義
@@ -69,10 +72,13 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 		}
 	}
 
-	SetPlayerBullet(player->pos, PLAYERFPS_BULLETSPEED);
+	//SetPlayerBullet(player->pos, PLAYERFPS_BULLETSPEED);
 
 	player->pos.x = Clampf(-PLAYERFPS_RANGE_X, PLAYERFPS_RANGE_X, player->pos.x);
 	player->pos.y = Clampf(-PLAYERFPS_RANGE_Y, PLAYERFPS_RANGE_Y, player->pos.y);
+
+	GetTargetSiteADr(player->id)->pos = player->pos + PLAYERFPS_TARGETSITE_POS;
+	SetTargetSitePosition(player->pos + PLAYERFPS_TARGETSITE_POS, player->id);
 }
 
 /**************************************
@@ -83,4 +89,8 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 	player->flgMove = true;
 	player->cntFrame = 0;
 	player->initPos = player->pos;
+
+	GetTargetSiteADr(player->id)->active = true;
+	GetTargetSiteADr(player->id)->pos = player->pos + PLAYERFPS_TARGETSITE_POS;
+
 }
