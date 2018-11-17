@@ -5,7 +5,7 @@
 //
 //=====================================
 #include "particleManager.h"
-#include "camera.h"
+#include "battleCamera.h"
 #include "debugproc.h"
 
 /**********************************************
@@ -39,7 +39,6 @@ static LPDIRECT3DVERTEXBUFFER9 colorBuff = NULL;
 static LPDIRECT3DTEXTURE9 texture;					//テクスチャ
 static LPDIRECT3DINDEXBUFFER9 indexBuff;			//インデックスバッファ
 static PARTICLE smog[EXPLOSIONSMOG_MAX];			//パーティクル構造体
-static int cntExplosionSmog = 0;					//パーティクルカウント
 
 /**********************************************
 プロトタイプ宣言
@@ -93,13 +92,33 @@ void InitExplosionSmog(int num)
 /**********************************************
 終了処理
 **********************************************/
-void UninitExplosionSmog(void)
+void UninitExplosionSmog(int num)
 {
-	SAFE_RELEASE(vtxBuff);
-	SAFE_RELEASE(uvBuff);
-	SAFE_RELEASE(posBuff);
-	SAFE_RELEASE(colorBuff);
-	SAFE_RELEASE(texture);
+	PARTICLE *ptr = &smog[0];
+	D3DXMATRIX mtxScale, mtxTranslate;
+
+	for (int i = 0; i < EXPLOSIONSMOG_MAX; i++, ptr++)
+	{
+		ptr->pos.z = -10000.0f;
+		ptr->active = false;
+
+		D3DXMatrixIdentity(&pos[i]);
+		GetInvRotBattleCamera(&pos[i]);
+		D3DXMatrixScaling(&mtxScale, 1.0f, 1.0f, 1.0f);
+		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxScale);
+		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxTranslate);
+	}
+	CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, pos, posBuff);
+
+	if (num == 0)
+	{
+		SAFE_RELEASE(vtxBuff);
+		SAFE_RELEASE(uvBuff);
+		SAFE_RELEASE(posBuff);
+		SAFE_RELEASE(colorBuff);
+		SAFE_RELEASE(texture);
+	}
 }
 
 /**********************************************
@@ -127,13 +146,12 @@ void UpdateExplosionSmog(void)
 		if (ptr->cntFrame == ptr->lifeFrame)
 		{
 			ptr->pos.z = -10000.0f;
-			cntExplosionSmog--;
 			ptr->active = false;
 		}
 
 		//座標に応じたワールド変換行列にpos配列を更新
 		D3DXMatrixIdentity(&pos[i]);
-		GetInvCameraRotMtx(&pos[i]);
+		GetInvRotBattleCamera(&pos[i]);
 		D3DXMatrixScaling(&mtxScale, 1.0f, 1.0f, 1.0f);
 		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxScale);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -143,8 +161,6 @@ void UpdateExplosionSmog(void)
 	//頂点バッファにメモリコピー
 	CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, pos, posBuff);
 	CopyVtxBuff(sizeof(VERTEX_COLOR) * EXPLOSIONSMOG_MAX, vtxColor, colorBuff);
-
-	PrintDebugProc("ExplosionSmog:%d\n", cntExplosionSmog);
 }
 
 /**********************************************
@@ -174,8 +190,8 @@ void DrawExplosionSmog(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect
 
 	//シェーダのグローバル変数を設定
 	effect->SetTexture("tex", texture);
-	effect->SetMatrix("mtxView", &GetMtxView());
-	effect->SetMatrix("mtxProj", &GetMtxProjection());
+	effect->SetMatrix("mtxView", &GetBattleCameraView());
+	effect->SetMatrix("mtxProj", &GetBattleCameraProjection());
 
 	//使用シェーダ設定
 	effect->SetTechnique("tech");
@@ -255,7 +271,6 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
-		cntExplosionSmog++;
 		return;
 	}
 }

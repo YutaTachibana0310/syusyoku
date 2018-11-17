@@ -60,7 +60,7 @@ typedef struct
 プロトタイプ宣言
 ***************************************/
 void InitParticleManager(int num);
-void UninitParticleManager(void);
+void UninitParticleManager(int num);
 void UpdateParticleManager(void);
 void DrawParticleManager(void);
 

@@ -1,42 +1,39 @@
 //=====================================
 //
-//エクスプロージョンファイアヘッダ[explosionFire.h]
+//テンプレートヘッダ[playerBullet.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _EXPLOSIONFIRE_H_
-#define _EXPLOSIONFIRE_H_
+#ifndef _PLAYERBULLET_H_
+#define _PLAYERBULLET_H_
 
 #include "main.h"
 
 /**************************************
 マクロ定義
 ***************************************/
+#define PLAYERBULLET_MAX		(128)
 
 /**************************************
 構造体定義
 ***************************************/
 typedef struct
 {
-	D3DXVECTOR3 pos;
-	float rot;
 	bool active;
-	float initSpeed;
-	float endSpeed;
-	D3DXVECTOR3 moveDir;
-	int lifeFrame;
-	int cntFrame;
-	float scale;
-	float alpha;
 
-}EXPLOSIONFIRE;
+	D3DXVECTOR3 pos, rot, scale;
+	D3DXVECTOR3 moveDir;
+	float rotation;
+	float speed;
+
+}PLAYERBULLET;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitExplosionFire(int num);
-void UninitExplosionFire(int num);
-void UpdateExplosionFire(void);
-void DrawExplosionFire(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect);
-void SetExplosionFire(const D3DXVECTOR3 *pos);
-
+void InitPlayerBullet(int num);
+void UninitPlayerBullet(int num);
+void UpdatePlayerBullet(void);
+void DrawPlayerBullet(void);
+void SetPlayerBullet(D3DXVECTOR3 pos, float speed);
+PLAYERBULLET *GetPlayerBulletAdr(int id);
 #endif

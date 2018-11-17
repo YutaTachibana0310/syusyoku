@@ -1,28 +1,31 @@
 //=============================================================================
 //
-// ロゴシーン処理 [logoScene.cpp]
+// リザルトシーン処理 [resultScene.cpp]
 // Author : GP11A341 21 立花雄太
 //
 //=============================================================================
 #include "main.h"
-#include "camera.h"
-#include "logoScene.h"
+#include "resultScene.h"
 #include "input.h"
+#include "cloud.h"
+#include "enemyMissile.h"
+#include "playerModel.h"
+#include "camera.h"
 
 /*****************************************************************************
 マクロ定義
 *****************************************************************************/
-#define LOGOSCENE_TEXTURE_NAME	_T("data/TEXTURE/UI/logo.png")	// プレイヤーバレットのテクスチャ
+#define RESULTSCENE_TEXTURE_NAME	_T("data/TEXTURE/UI/result.png")	// プレイヤーバレットのテクスチャ
 
-#define LOGOSCENE_TEXTURE_SIZE_X (200)			// テクスチャサイズX
-#define LOGOSCENE_TEXTURE_SIZE_Y (200)			// テクスチャサイズY
+#define RESULTSCENE_TEXTURE_SIZE_X (200)			// テクスチャサイズX
+#define RESULTSCENE_TEXTURE_SIZE_Y (200)			// テクスチャサイズY
 
 /*****************************************************************************
 プロトタイプ宣言
 *****************************************************************************/
-HRESULT MakeVertexLogoScene(void);	//頂点作成関数
-void SetTextureLogoScene(void);		// テクスチャ座標の計算処理
-void SetVertexLogoScene(void);		// 頂点の計算処理
+HRESULT MakeVertexResultScene(void);	//頂点作成関数
+void SetTextureResultScene(void);		// テクスチャ座標の計算処理
+void SetVertexResultScene(void);		// 頂点の計算処理
 
 /*****************************************************************************
 構造体定義
@@ -39,23 +42,25 @@ static float angle, radius;
 /******************************************************************************
 初期化処理
 ******************************************************************************/
-HRESULT InitLogoScene(int num)
+HRESULT InitResultScene(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	pos = D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
 
-	angle = atan2f(LOGOSCENE_TEXTURE_SIZE_Y, LOGOSCENE_TEXTURE_SIZE_X);
-	radius = D3DXVec2Length(&D3DXVECTOR2(LOGOSCENE_TEXTURE_SIZE_X, LOGOSCENE_TEXTURE_SIZE_Y));
+	angle = atan2f(RESULTSCENE_TEXTURE_SIZE_Y, RESULTSCENE_TEXTURE_SIZE_X);
+	radius = D3DXVec2Length(&D3DXVECTOR2(RESULTSCENE_TEXTURE_SIZE_X, RESULTSCENE_TEXTURE_SIZE_Y));
 
 	// 頂点情報の作成
-	MakeVertexLogoScene();
+	MakeVertexResultScene();
 
 	if (num == 0)
 	{
 		// テクスチャの読み込み
-		texture = CreateTextureFromFile((LPSTR)LOGOSCENE_TEXTURE_NAME, pDevice);
+		texture = CreateTextureFromFile((LPSTR)RESULTSCENE_TEXTURE_NAME, pDevice);
 	}
+
+	return S_OK;
 
 	return S_OK;
 }
@@ -63,7 +68,7 @@ HRESULT InitLogoScene(int num)
 /******************************************************************************
 終了処理
 ******************************************************************************/
-void UninitLogoScene(int num)
+void UninitResultScene(int num)
 {
 	if (num == 0)
 	{
@@ -73,26 +78,27 @@ void UninitLogoScene(int num)
 			texture = NULL;
 		}
 	}
+
 }
 
 /******************************************************************************
 更新処理
 ******************************************************************************/
-void UpdateLogoScene(void)
+void UpdateResultScene(void)
 {
 	if (GetKeyboardPress(DIK_Z))
 	{
 		SetScene(TitleScene);
 		return;
 	}
-
 }
 
 /******************************************************************************
 描画処理
 ******************************************************************************/
-void DrawLogoScene(void)
+void DrawResultScene(void)
 {
+	SetCamera();
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	SetCamera();
@@ -107,11 +113,10 @@ void DrawLogoScene(void)
 	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
 }
 
-
 /******************************************************************************
 頂点の作成
 ******************************************************************************/
-HRESULT MakeVertexLogoScene(void)
+HRESULT MakeVertexResultScene(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -127,8 +132,8 @@ HRESULT MakeVertexLogoScene(void)
 	vertexWk[2].diffuse = D3DCOLOR_RGBA(255, 255, 255, 255);
 	vertexWk[3].diffuse = D3DCOLOR_RGBA(255, 255, 255, 255);
 
-	SetVertexLogoScene();
-	SetTextureLogoScene();
+	SetVertexResultScene();
+	SetTextureResultScene();
 
 	return S_OK;
 }
@@ -136,7 +141,7 @@ HRESULT MakeVertexLogoScene(void)
 /******************************************************************************
 テクスチャ座標の設定
 ******************************************************************************/
-void SetTextureLogoScene(void)
+void SetTextureResultScene(void)
 {
 	// テクスチャ座標の設定
 	vertexWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -149,7 +154,7 @@ void SetTextureLogoScene(void)
 /******************************************************************************
 頂点座標の設定
 ******************************************************************************/
-void SetVertexLogoScene(void)
+void SetVertexResultScene(void)
 {
 	// 頂点座標の設定
 	vertexWk[0].vtx.x = pos.x - cosf(angle) * radius;

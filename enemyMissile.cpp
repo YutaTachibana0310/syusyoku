@@ -11,9 +11,10 @@
 #include "explosionFire.h"
 #include "explosionSmog.h"
 #include "enemyMissileSmog.h"
+#include "playerBullet.h"
 
 #if 1
-#include "camera.h"
+#include "battleCamera.h"
 #include "explosionFlare.h"
 #include "input.h"
 #include "particle.h"
@@ -98,7 +99,7 @@ void InitEnemyMissile(int num)
 		ptr->active = false;
 		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->rot = D3DXQUATERNION(0.0f, 0.0f, 0.0f, 0.0f);
-		ptr->moveDir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->velocity = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->speed = 0.0f;
 		ptr->collider.active = false;
 	}
@@ -107,10 +108,19 @@ void InitEnemyMissile(int num)
 /****************************************
 終了処理
 *****************************************/
-void UninitEnemyMissile(void)
+void UninitEnemyMissile(int num)
 {
-	SAFE_RELEASE(mesh);
-	SAFE_RELEASE(materials);
+	ENEMYMISSILE *ptr = &missile[0];
+	for (int i = 0; i < ENEMYMISSILE_MAX; i++)
+	{
+		missile[0].active = false;
+	}
+
+	if(num == 0)
+	{
+		SAFE_RELEASE(mesh);
+		SAFE_RELEASE(materials);
+	}
 }
 
 /****************************************
@@ -156,8 +166,10 @@ void UpdateEnemyMissile(void)
 	{
 		float angle = RandomRange(45.0f, 135.0f);
 		D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
-		SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), 200.0f, 2000), target, GetCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
+		SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
 	}
+
+	CollisionEnemyMissileAndBullet();
 }
 
 /*****************************************
@@ -226,13 +238,13 @@ ENEMYMISSILE *GetEnemyMissileAdr(int n)
 void ChangeStateEnemyMissile(ENEMYMISSILE *ptr, int targetState)
 {
 	//退場処理を呼び出し
-	Exit[ptr->state];
+	Exit[ptr->state](ptr);
 
 	//状態遷移
 	ptr->state = targetState;
 
 	//入場処理を呼び出し
-	Enter[ptr->state];
+	Enter[ptr->state](ptr);
 }
 
 /*****************************************
@@ -250,12 +262,52 @@ void SetEnemyMissile(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, D3DXVECTOR3 targetPos
 		}
 
 		ptr->pos = pos;
-		ptr->moveDir = moveDir;
-		ptr->targetPos = targetPos;
+		ptr->velocity = moveDir;
 		ptr->cntFrame = 0;
-		ptr->state = ENEMYMISSILE_LAUNCH;
+		//ptr->state = ENEMYMISSILE_LAUNCH;
+		ChangeStateEnemyMissile(ptr, ENEMYMISSILE_LAUNCH);
 		ptr->active = true;
 
 		return;
+	}
+}
+
+/*****************************************
+エネミーミサイル当たり判定
+******************************************/
+void CollisionEnemyMissileAndBullet(void)
+{
+	ENEMYMISSILE *ptr = &missile[0];
+	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
+	float distSq;
+
+	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		bullet = GetPlayerBulletAdr(0);
+		for (int j = 0; j < PLAYERBULLET_MAX; j++, bullet++)
+		{
+			distSq = D3DXVec3LengthSq(&(bullet->pos - ptr->pos));
+			if (distSq < 400.0f)
+			{
+				for (int j = 0; j < 200; j++)
+				{
+					SetExplosionFlare(&ptr->pos);
+				}
+				for (int j = 0; j < 10; j++)
+				{
+					SetExplosionFire(&ptr->pos);
+				}
+				for (int j = 0; j < 100; j++)
+				{
+					SetExplosionSmog(&ptr->pos);
+				}
+				ptr->active = false;
+			}
+		}
 	}
 }

@@ -19,9 +19,9 @@
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-HRESULT InitBattleScene(int num);							//プレイヤーバレット初期化処理
-void UninitBattleScene(void);								//プレイヤーバレット終了処理
-void UpdateBattleScene(void);								//プレイヤーバレット更新処理
-void DrawBattleScene(void);								//プレイヤーバレット描画処理
+HRESULT InitBattleScene(int num);		//バトルシーン初期化処理
+void UninitBattleScene(int num);		//バトルシーン終了処理
+void UpdateBattleScene(void);			//バトルシーン更新処理
+void DrawBattleScene(void);				//バトルシーン描画処理
 
 #endif

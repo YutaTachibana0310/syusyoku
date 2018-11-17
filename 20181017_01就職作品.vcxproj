@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="battleCamera.cpp" />
     <ClCompile Include="battleScene.cpp" />
     <ClCompile Include="desertScene.cpp" />
     <ClCompile Include="buildingField.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="desertField.cpp" />
     <ClCompile Include="Easing.cpp" />
+    <ClCompile Include="EasingVector.cpp" />
     <ClCompile Include="enemyMissile.cpp" />
     <ClCompile Include="enemyMissileHoming.cpp" />
     <ClCompile Include="enemyMissileLaunch.cpp" />
@@ -162,12 +164,21 @@
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
+    <ClCompile Include="playerBullet.cpp" />
+    <ClCompile Include="playerModel.cpp" />
+    <ClCompile Include="playerModelFPS.cpp" />
+    <ClCompile Include="playerModelQuaterView.cpp" />
+    <ClCompile Include="playerModelSIdeView.cpp" />
+    <ClCompile Include="playerModelTopView.cpp" />
     <ClCompile Include="quadTree.cpp" />
+    <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="skyBG.cpp" />
+    <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="battleCamera.h" />
     <ClInclude Include="battleScene.h" />
     <ClInclude Include="desertScene.h" />
     <ClInclude Include="buildingField.h" />
@@ -177,6 +188,7 @@
     <ClInclude Include="debugproc.h" />
     <ClInclude Include="desertField.h" />
     <ClInclude Include="Easing.h" />
+    <ClInclude Include="EasingVector.h" />
     <ClInclude Include="enemyMissile.h" />
     <ClInclude Include="enemyMissileHoming.h" />
     <ClInclude Include="enemyMissileLaunch.h" />
@@ -187,6 +199,8 @@
     <ClInclude Include="explosionSmog.h" />
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
+    <ClInclude Include="playerBullet.h" />
+    <ClInclude Include="playerModelQuaterView.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="logoScene.h" />
@@ -196,9 +210,15 @@
     <ClInclude Include="particleFramework.h" />
     <ClInclude Include="particleManager.h" />
     <ClInclude Include="perlinNoise.h" />
+    <ClInclude Include="playerModel.h" />
+    <ClInclude Include="playerModelFPS.h" />
+    <ClInclude Include="playerModelSideView.h" />
+    <ClInclude Include="playerModelTopView.h" />
     <ClInclude Include="quadTree.h" />
+    <ClInclude Include="resultScene.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="skyBG.h" />
+    <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />
   </ItemGroup>
   <ItemGroup>

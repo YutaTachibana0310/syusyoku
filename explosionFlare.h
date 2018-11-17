@@ -35,7 +35,7 @@ typedef struct
 プロトタイプ宣言
 ***************************************/
 void InitExplosionFlare(int num);
-void UninitExplosionFlare(void);
+void UninitExplosionFlare(int num);
 void UpdateExplosionFlare(void);
 void DrawExplosionFlare(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect);
 void SetExplosionFlare(const D3DXVECTOR3 *pos);

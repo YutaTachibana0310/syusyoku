@@ -21,6 +21,7 @@ enum DefineScene
 	LogoScene = 0,
 	TitleScene,
 	BattleScene,
+	ResultScene,
 	DefineSceneMax
 };
 
@@ -34,7 +35,8 @@ enum SceneResult
 プロトタイプ宣言
 ***************************************/
 void InitSceneManager(int num);
-void UninitSceneManager(void);
+void UninitSceneManager(int num);
+void UninitScene(int num);
 void UpdateSceneManager(void);
 void DrawSceneManager(void);
 void SetScene(DefineScene sceneId);

@@ -29,7 +29,7 @@ typedef struct _CLOUD
 プロトタイプ宣言
 *******************************************/
 void InitCloud(int num);
-void UninitCloud(void);
+void UninitCloud(int num);
 void UpdateCloud(void);
 void DrawCloud(void);
 void SetCloud(D3DXVECTOR3 pos);

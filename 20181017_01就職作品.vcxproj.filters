@@ -183,6 +183,36 @@
     <ClCompile Include="battleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="playerModel.cpp">
+      <Filter>ソース ファイル\Battle\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="battleCamera.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="resultScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelFPS.cpp">
+      <Filter>ソース ファイル\Battle\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelTopView.cpp">
+      <Filter>ソース ファイル\Battle\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EasingVector.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelSIdeView.cpp">
+      <Filter>ソース ファイル\Battle\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelQuaterView.cpp">
+      <Filter>ソース ファイル\Battle\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerBullet.cpp">
+      <Filter>ソース ファイル\Battle\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="targetSite.cpp">
+      <Filter>ソース ファイル\Battle\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -280,6 +310,36 @@
     </ClInclude>
     <ClInclude Include="battleScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModel.h">
+      <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="battleCamera.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="resultScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelFPS.h">
+      <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelTopView.h">
+      <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EasingVector.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelSideView.h">
+      <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelQuaterView.h">
+      <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerBullet.h">
+      <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="targetSite.h">
+      <Filter>ヘッダー ファイル\Battle\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

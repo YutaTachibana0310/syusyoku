@@ -1,13 +1,14 @@
 //=====================================
 //
-//エクスプロージョンスモッグヘッダ[explosionSmog.h]
+//プレイヤーモデル一人称ヘッダ[playerModelQuaterView.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _EXPLOSIONSMOG_H_
-#define _EXPLOSIONSMOG_H_
+#ifndef _PLAYERMODELQUATERVIEW_H_
+#define _PLAYERMODELQUATERVIEW_H_
 
 #include "main.h"
+#include "playerModel.h"
 
 /**************************************
 マクロ定義
@@ -20,10 +21,7 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitExplosionSmog(int num);
-void UninitExplosionSmog(int num);
-void UpdateExplosionSmog(void);
-void DrawExplosionSmog(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect);
-void SetExplosionSmog(const D3DXVECTOR3 *pos);
+void UpdatePlayerModelQuaterView(PLAYERMODEL *player);
+void EnterPlayerModelQuaterView(PLAYERMODEL *player);
 
 #endif

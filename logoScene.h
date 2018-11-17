@@ -20,7 +20,7 @@
 // プロトタイプ宣言
 //*****************************************************************************
 HRESULT InitLogoScene(int num);							//プレイヤーバレット初期化処理
-void UninitLogoScene(void);								//プレイヤーバレット終了処理
+void UninitLogoScene(int num);								//プレイヤーバレット終了処理
 void UpdateLogoScene(void);								//プレイヤーバレット更新処理
 void DrawLogoScene(void);								//プレイヤーバレット描画処理
 

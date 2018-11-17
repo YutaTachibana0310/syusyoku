@@ -357,17 +357,9 @@ void Uninit(void)
 	UninitDebugProc();
 
 	//シーンマネージャ終了処理
-	UninitSceneManager();
+	UninitSceneManager(0);
 
-	UninitParticleManager();
-
-	//UninitSkyBG();
-	//UninitCloud();
-	//UninitFlare();
-	//UninitEnemyMissile();
-	//UninitParticleManager();
-	//UninitEnemyMissileSmog();
-	//UninitParticle();
+	UninitParticleManager(0);
 }
 
 //=============================================================================
@@ -398,14 +390,6 @@ void Update(void)
 	UpdateSceneManager();
 
 	UpdateParticleManager();
-
-	//UpdateSkyBG();
-	//UpdateCloud();
-	//UpdateFlare();
-	//UpdateEnemyMissile();
-	//UpdateEnemyMissileSmog();
-	//UpdateParticleManager();
-	//UpdateParticle();
 }
 
 //=============================================================================
@@ -419,23 +403,10 @@ void Draw(void)
 	// Direct3Dによる描画の開始
 	if(SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
-		// カメラの設定
-		SetCamera();
-
 		DrawSceneManager();
 
 		DrawParticleManager();
 
-		//DrawSkyBG();
-		//DrawCloud();
-		//DrawFlare();
-		//DrawEnemyMissileSmog();
-		//DrawEnemyMissile();
-		//DrawParticleManager();
-		//DrawParticle();
-
-		// 影処理の描画
-	
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)
 		{

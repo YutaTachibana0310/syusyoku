@@ -22,7 +22,7 @@ typedef struct
 	bool active;					//使用フラグ
 	D3DXVECTOR3 pos;				//座標
 	D3DXQUATERNION rot;				//回転クォータニオン
-	D3DXVECTOR3 moveDir;			//移動方向
+	D3DXVECTOR3 velocity;			//移動方向
 	D3DXVECTOR3 targetPos;			//目標座標
 	SPHERE collider;				//当たり判定
 
@@ -32,6 +32,8 @@ typedef struct
 
 	int state;						//状態
 	int nextState;					//次の状態
+
+	int period;
 }ENEMYMISSILE;
 
 /********************************************
@@ -49,10 +51,11 @@ enum ENEMYMISSILE_STATE
 プロトタイプ宣言
 **********************************************/
 void InitEnemyMissile(int num);
-void UninitEnemyMissile(void);
+void UninitEnemyMissile(int num);
 void UpdateEnemyMissile(void);
 void DrawEnemyMissile(void);
 ENEMYMISSILE *GetEnemyMissileAdr(int n);
 void ChangeStateEnemyMissile(ENEMYMISSILE *ptr, int targetState);
 void SetEnemyMissile(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, D3DXVECTOR3 targetPos);
+void CollisionEnemyMissileAndBullet(void);
 #endif

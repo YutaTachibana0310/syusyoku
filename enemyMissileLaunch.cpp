@@ -9,7 +9,7 @@
 
 #define ENEMYMISSILE_INITSPEED		(5.0f)		//初期スピード
 #define ENEMYMISSILE_TARGETSPEED	(20.0f)		//目標スピード
-#define ENEMYMISSILE_LAUNCHDURATION	(5)		//発射からホーミングに遷移するフレーム
+#define ENEMYMISSILE_LAUNCHDURATION	(30)			//発射からホーミングに遷移するフレーム
 /***********************************
 開始動作
 ************************************/
@@ -28,14 +28,15 @@ void EnemyMissileLaunchUpdate(ENEMYMISSILE *ptr)
 	//速度更新
 	ptr->cntFrame++;
 	//ptr->speed = EaseInOutCubic((float)ptr->cntFrame/ ENEMYMISSILE_LAUNCHDURATION, ENEMYMISSILE_INITSPEED, ENEMYMISSILE_TARGETSPEED);
-	ptr->speed = 20.0f;
+	ptr->speed = 15.0f;
 
 	//座標更新
-	ptr->pos += ptr->speed * ptr->moveDir;
+	ptr->pos += ptr->speed * ptr->velocity;
 
 	//目標スピードに到達していたら遷移
-	if (ptr->cntFrame == ENEMYMISSILE_LAUNCHDURATION)
+	if (ptr->cntFrame >= ENEMYMISSILE_LAUNCHDURATION)
 	{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 		ChangeStateEnemyMissile(ptr, ENEMYMISSILE_HOMING);
 	}
 }

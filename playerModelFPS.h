@@ -1,13 +1,14 @@
 //=====================================
 //
-//エクスプロージョンスモッグヘッダ[explosionSmog.h]
+//プレイヤーモデル一人称ヘッダ[playerModelFPS.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _EXPLOSIONSMOG_H_
-#define _EXPLOSIONSMOG_H_
+#ifndef _PLAYERMODELFPS_H_
+#define _PLAYERMODELFPS_H_
 
 #include "main.h"
+#include "playerModel.h"
 
 /**************************************
 マクロ定義
@@ -20,10 +21,7 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitExplosionSmog(int num);
-void UninitExplosionSmog(int num);
-void UpdateExplosionSmog(void);
-void DrawExplosionSmog(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect);
-void SetExplosionSmog(const D3DXVECTOR3 *pos);
+void UpdatePlayerModelFPS(PLAYERMODEL *player);
+void EnterPlayerModelFPS(PLAYERMODEL *player);
 
 #endif

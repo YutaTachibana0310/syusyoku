@@ -25,7 +25,7 @@ void EnemyMissileStraightEnter(ENEMYMISSILE *ptr)
 void EnemyMissileStraightUpdate(ENEMYMISSILE *ptr)
 {
 	//座標の更新
-	ptr->pos += ptr->speed * ptr->moveDir;
+	ptr->pos += ptr->speed * ptr->velocity;
 
 	//非アクティブ化
 	if (ptr->pos.z < ENEMYMISSILE_BORDER_Z)

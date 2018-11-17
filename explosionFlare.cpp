@@ -5,7 +5,7 @@
 //
 //=====================================
 #include "particleManager.h"
-#include "camera.h"
+#include "battleCamera.h"
 #include "debugproc.h"
 #include "particleFramework.h"
 
@@ -39,8 +39,7 @@ static LPDIRECT3DVERTEXBUFFER9 colorBuff = NULL;
 
 static LPDIRECT3DTEXTURE9 texture;					//テクスチャ
 static LPDIRECT3DINDEXBUFFER9 indexBuff;			//インデックスバッファ
-static PARTICLE smog[EXPLOSIONFLARE_MAX];			//パーティクル構造体
-static int cntExplosionFlare = 0;					//パーティクルカウント
+static PARTICLE flare[EXPLOSIONFLARE_MAX];			//パーティクル構造体
 
 /**********************************************
 プロトタイプ宣言
@@ -56,7 +55,7 @@ void InitExplosionFlare(int num)
 	//配列初期化
 	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++)
 	{
-		smog[i].pos = D3DXVECTOR3(-99999, -99999, -99999);
+		flare[i].pos = D3DXVECTOR3(-99999, -99999, -99999);
 		D3DXMatrixIdentity(&pos[i]);
 
 		vtxUV[i].u = vtxUV[i].v = 0.0f;
@@ -64,7 +63,7 @@ void InitExplosionFlare(int num)
 		vtxColor[i].r = vtxColor[i].g = vtxColor[i].g = 1.0f;
 		vtxColor[i].a = 0.0f;
 
-		smog[i].active = false;
+		flare[i].active = false;
 	}
 
 	//頂点バッファ作成
@@ -89,13 +88,33 @@ void InitExplosionFlare(int num)
 /**********************************************
 終了処理
 **********************************************/
-void UninitExplosionFlare(void)
+void UninitExplosionFlare(int num)
 {
-	SAFE_RELEASE(vtxBuff);
-	SAFE_RELEASE(uvBuff);
-	SAFE_RELEASE(posBuff);
-	SAFE_RELEASE(colorBuff);
-	SAFE_RELEASE(texture);
+	PARTICLE *ptr = &flare[0];
+	D3DXMATRIX mtxScale, mtxTranslate;
+
+	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++, ptr++)
+	{
+		ptr->pos.z = -10000.0f;
+		ptr->active = false;
+
+		D3DXMatrixIdentity(&pos[i]);
+		GetInvRotBattleCamera(&pos[i]);
+		D3DXMatrixScaling(&mtxScale, 1.0f, 1.0f, 1.0f);
+		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxScale);
+		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxTranslate);
+	}
+	CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONFLARE_MAX, pos, posBuff);
+
+	if (num == 0)
+	{
+		SAFE_RELEASE(vtxBuff);
+		SAFE_RELEASE(uvBuff);
+		SAFE_RELEASE(posBuff);
+		SAFE_RELEASE(colorBuff);
+		SAFE_RELEASE(texture);
+	}
 }
 
 /**********************************************
@@ -103,7 +122,7 @@ void UninitExplosionFlare(void)
 **********************************************/
 void UpdateExplosionFlare(void)
 {
-	PARTICLE *ptr = &smog[0];
+	PARTICLE *ptr = &flare[0];
 	D3DXMATRIX mtxTranslate, mtxScale;
 
 	//書くパーティクルの更新
@@ -123,13 +142,12 @@ void UpdateExplosionFlare(void)
 		if (ptr->cntFrame == ptr->lifeFrame)
 		{
 			ptr->pos.z = -10000.0f;
-			cntExplosionFlare--;
 			ptr->active = false;
 		}
 
 		//座標に応じたワールド変換行列にpos配列を更新
 		D3DXMatrixIdentity(&pos[i]);
-		GetInvCameraRotMtx(&pos[i]);
+		GetInvRotBattleCamera(&pos[i]);
 		D3DXMatrixScaling(&mtxScale, 1.0f, 1.0f, 1.0f);
 		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxScale);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -139,8 +157,6 @@ void UpdateExplosionFlare(void)
 	//頂点バッファにメモリコピー
 	CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONFLARE_MAX, pos, posBuff);
 	CopyVtxBuff(sizeof(VERTEX_COLOR) * EXPLOSIONFLARE_MAX, vtxColor, colorBuff);
-
-	PrintDebugProc("ExplosionFlare:%d\n", cntExplosionFlare);
 }
 
 /**********************************************
@@ -170,8 +186,8 @@ void DrawExplosionFlare(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effec
 
 	//シェーダのグローバル変数を設定
 	effect->SetTexture("tex", texture);
-	effect->SetMatrix("mtxView", &GetMtxView());
-	effect->SetMatrix("mtxProj", &GetMtxProjection());
+	effect->SetMatrix("mtxView", &GetBattleCameraView());
+	effect->SetMatrix("mtxProj", &GetBattleCameraProjection());
 
 	//使用シェーダ設定
 	effect->SetTechnique("tech");
@@ -208,7 +224,7 @@ void DrawExplosionFlare(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effec
 **********************************************/
 void SetExplosionFlare(const D3DXVECTOR3 *pos)
 {
-	PARTICLE *ptr = &smog[0];
+	PARTICLE *ptr = &flare[0];
 
 	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++, ptr++)
 	{
@@ -245,7 +261,6 @@ void SetExplosionFlare(const D3DXVECTOR3 *pos)
 		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
-		cntExplosionFlare++;
 		return;
 	}
 }

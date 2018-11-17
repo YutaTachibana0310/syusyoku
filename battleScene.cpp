@@ -9,6 +9,9 @@
 #include "input.h"
 #include "cloud.h"
 #include "enemyMissile.h"
+#include "playerModel.h"
+#include "battleCamera.h"
+#include "playerBullet.h"
 
 /*****************************************************************************
 マクロ定義
@@ -35,19 +38,25 @@
 ******************************************************************************/
 HRESULT InitBattleScene(int num)
 {
-	InitCloud(0);
-	InitEnemyMissile(0);
-	
+	InitCloud(num);
+	InitEnemyMissile(num);
+	InitPlayerModel(num);
+	InitPlayerBullet(num);
+	InitBattleCamera();
+
 	return S_OK;
 }
 
 /******************************************************************************
 終了処理
 ******************************************************************************/
-void UninitBattleScene(void)
+void UninitBattleScene(int num)
 {
-	UninitCloud();
-	UninitEnemyMissile();
+	UninitCloud(num);
+	UninitEnemyMissile(num);
+	UninitPlayerModel(num);
+	UninitPlayerBullet(num);
+
 }
 
 /******************************************************************************
@@ -57,6 +66,14 @@ void UpdateBattleScene(void)
 {
 	UpdateCloud();
 	UpdateEnemyMissile();
+	UpdatePlayerBullet();
+	UpdatePlayerModel();
+	UpdateBattleCamera();
+
+	if (GetKeyboardTrigger(DIK_RETURN))
+	{
+		SetScene(ResultScene);
+	}
 }
 
 /******************************************************************************
@@ -64,6 +81,9 @@ void UpdateBattleScene(void)
 ******************************************************************************/
 void DrawBattleScene(void)
 {
+	SetBattleCamera();
 	DrawCloud();
 	DrawEnemyMissile();
+	DrawPlayerModel();
+	DrawPlayerBullet();
 }

@@ -4,7 +4,7 @@
 //Author:GP11A341 21 —§‰Ô—Y‘¾
 //
 //==========================================
-#include "camera.h"
+#include "battleCamera.h"
 #include "cloud.h"
 
 /******************************************
@@ -89,27 +89,30 @@ void InitCloud(int num)
 	}
 
 	MakeVertexCloud();
-
-	for (int i = 0; i < CLOUD_MAX; i++)
-	{
-		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRange(-10000.0f, 10000.0f), RandomRange(0.0f, 200.0f), i * 10.0f);
-		SetCloud(pos + offset);
-	}
 }
 
 /******************************************
 I—¹ˆ—
 *******************************************/
-void UninitCloud(void)
+void UninitCloud(int num)
 {
-	SAFE_RELEASE(texture);
-
 	CLOUD *ptr = root, *tmp;
 	while (ptr != NULL)
 	{
-		tmp = ptr->next;
-		free(ptr);
-		ptr = tmp;
+		ptr->active = false;
+		ptr = ptr->next;
+	}
+
+	if (num == 0)
+	{
+		SAFE_RELEASE(texture);
+		ptr = root;
+		while (ptr != NULL)
+		{
+			tmp = ptr->next;
+			free(ptr);
+			ptr = tmp;
+		}
 	}
 }
 
@@ -123,13 +126,19 @@ void UpdateCloud(void)
 	{
 		ptr->pos.z -= 500.0f;
 
-		if (ptr->pos.z <= 0.0f)
+		if (ptr->pos.z <= -10000.0f)
 		{
-			ptr->pos.z += 10000.0f;
+			ptr->active = false;
 		}
 
 		ptr = ptr->next;
 
+	}
+
+	for (int i = 0; i < 20; i++)
+	{
+		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRange(-10000.0f, 10000.0f), RandomRange(-500.0f, -200.0f), 20000.0f);
+		SetCloud(pos + offset);
 	}
 }
 
@@ -148,14 +157,14 @@ void DrawCloud(void)
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 
 	for (CLOUD *ptr = root; ptr != NULL; ptr = ptr->next)
 	{
 		D3DXMatrixIdentity(&mtxWorld);
-		D3DXMatrixIdentity(&mtxRot);
 
-		GetInvCameraRotMtx(&mtxWorld);
-
+		GetInvRotBattleCamera(&mtxWorld);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
@@ -165,6 +174,9 @@ void DrawCloud(void)
 
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 	}
+
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
+	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
 }
 
 /******************************************

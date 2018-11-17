@@ -5,6 +5,7 @@
 //
 //=============================================================================
 #include "main.h"
+#include "camera.h"
 #include "titleScene.h"
 #include "input.h"
 
@@ -62,12 +63,15 @@ HRESULT InitTitleScene(int num)
 /******************************************************************************
 終了処理
 ******************************************************************************/
-void UninitTitleScene(void)
+void UninitTitleScene(int num)
 {
-	if (texture != NULL)
-	{	// テクスチャの開放
-		texture->Release();
-		texture = NULL;
+	if (num == 0)
+	{
+		if (texture != NULL)
+		{	// テクスチャの開放
+			texture->Release();
+			texture = NULL;
+		}
 	}
 }
 
@@ -88,6 +92,8 @@ void UpdateTitleScene(void)
 void DrawTitleScene(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	SetCamera();
 
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);

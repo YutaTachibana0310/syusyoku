@@ -41,7 +41,7 @@ HRESULT InitLight(void)
 	g_aLight[0].Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 
 	// ライトの方向の設定
-	vecDir = D3DXVECTOR3(0.20f, -0.60f, 0.80f);
+	vecDir = D3DXVECTOR3(-0.20f, -0.60f, 0.80f);
 	D3DXVec3Normalize((D3DXVECTOR3*)&g_aLight[0].Direction, &vecDir);
 
 	// ライトをレンダリングパイプラインに設定
@@ -63,7 +63,7 @@ HRESULT InitLight(void)
 	// 環境光
 	g_aLight[1].Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
 
-    // ライトの方向の設定
+	// ライトの方向の設定
 	vecDir = D3DXVECTOR3(-0.20f, 1.00f, -0.50f);
 	D3DXVec3Normalize((D3DXVECTOR3*)&g_aLight[1].Direction, &vecDir);
 
@@ -85,8 +85,8 @@ HRESULT InitLight(void)
 	// 環境光
 	g_aLight[2].Ambient = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.0f);
 
-    // ライトの方向の設定
-	vecDir = D3DXVECTOR3(0.80f, 0.10f, 0.50f);
+	// ライトの方向の設定
+	vecDir = D3DXVECTOR3(-0.80f, 0.10f, 0.50f);
 	D3DXVec3Normalize((D3DXVECTOR3*)&g_aLight[2].Direction, &vecDir);
 
 	// ライトをレンダリングパイプラインに設定

@@ -62,11 +62,11 @@ void InitParticleManager(int num)
 /**************************************
 èIóπèàóù
 ***************************************/
-void UninitParticleManager(void)
+void UninitParticleManager(int num)
 {
-	UninitExplosionSmog();
-	UninitExplosionFire();
-	UninitExplosionFlare();
+	UninitExplosionSmog(num);
+	UninitExplosionFire(num);
+	UninitExplosionFlare(num);
 }
 
 /**************************************
