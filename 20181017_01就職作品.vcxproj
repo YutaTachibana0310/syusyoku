@@ -159,6 +159,7 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="logoScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="meshCylinder.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleFramework.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="explosionSmog.h" />
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
+    <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerModelQuaterView.h" />
     <ClInclude Include="input.h" />

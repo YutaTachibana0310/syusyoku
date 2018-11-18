@@ -18,7 +18,7 @@
 #define	BATTLECAMERA_NEAR				(50.0f)					// ビュー平面のNearZ値
 #define	BATTLECAMERA_FAR				(20000.0f)				// ビュー平面のFarZ値
 #define BATTLECAMERA_LENGTH				(200.0f)
-#define BATTLECAMERA_TOP_ANGLE_Y		(0.85f)
+#define BATTLECAMERA_TOP_ANGLE_Y		(0.68f)
 #define BATTLECAMERA_QUATER_ANGLE_Y		(0.34f)
 #define BATTLECAMERA_QUATER_ANGLE_XZ	(1.19f)
 

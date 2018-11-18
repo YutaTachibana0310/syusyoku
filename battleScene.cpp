@@ -14,6 +14,7 @@
 #include "playerBullet.h"
 #include "targetSite.h"
 #include "rockonSite.h"
+#include "meshCylinder.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -40,13 +41,14 @@
 ******************************************************************************/
 HRESULT InitBattleScene(int num)
 {
-	InitCloud(num);
+	//InitCloud(num);
 	InitEnemyMissile(num);
 	InitPlayerModel(num);
 	InitPlayerBullet(num);
 	InitBattleCamera();
 	InitTargetSite(num);
 	InitRockonSite(num);
+	InitMeshCylinder(num);
 
 	return S_OK;
 }
@@ -56,12 +58,13 @@ HRESULT InitBattleScene(int num)
 ******************************************************************************/
 void UninitBattleScene(int num)
 {
-	UninitCloud(num);
+	//UninitCloud(num);
 	UninitEnemyMissile(num);
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
 	UninitTargetSite(num);
 	UninitRockonSite(num);
+	UninitMeshCylinder(num);
 }
 
 /******************************************************************************
@@ -69,13 +72,14 @@ void UninitBattleScene(int num)
 ******************************************************************************/
 void UpdateBattleScene(void)
 {
-	UpdateCloud();
+	//UpdateCloud();
 	UpdateEnemyMissile();
 	UpdatePlayerBullet();
 	UpdatePlayerModel();
 	UpdateBattleCamera();
 	UpdateTargetSite();
 	UpdateRockonSite();
+	UpdateMeshCylinder();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -89,7 +93,8 @@ void UpdateBattleScene(void)
 void DrawBattleScene(void)
 {
 	SetBattleCamera();
-	DrawCloud();
+	DrawMeshCylinder();
+	//DrawCloud();
 	DrawEnemyMissile();
 	DrawPlayerModel();
 	DrawPlayerBullet();
