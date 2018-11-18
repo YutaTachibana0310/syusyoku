@@ -216,6 +216,9 @@
     <ClCompile Include="rockonSite.cpp">
       <Filter>ソース ファイル\Battle\Player</Filter>
     </ClCompile>
+    <ClCompile Include="meshCylinder.cpp">
+      <Filter>ソース ファイル\Battle\BackGround</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="rockonSite.h">
       <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="meshCylinder.h">
+      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
