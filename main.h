@@ -16,6 +16,7 @@
 #define DIRECTINPUT_VERSION (0x0800)	// åxçêëŒçÙ
 #include "dinput.h"
 #include "MyLibrary.h"
+#include "debugproc.h"
 #include <tchar.h>
 
 //*****************************************************************************

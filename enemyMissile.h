@@ -35,6 +35,7 @@ typedef struct
 	int nextState;					//Ÿ‚Ìó‘Ô
 
 	int period;
+	float hp;
 }ENEMYMISSILE;
 
 /********************************************

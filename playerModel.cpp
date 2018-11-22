@@ -201,3 +201,58 @@ void ChangeStatePlayerModel(int next)
 		Enter[playerState](ptr);
 	}
 }
+
+/*********************************************
+関数名	：void AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive, float *targetHP)
+引数	：int id：ロックオンしたプレイヤーのID
+引数	：D3DXVECTOR3 *targetPos：ロックオン対象の座標
+引数	：bool *targetActive：ロックオン対象のアクティブ状態
+引数	：float *targetHP：ロックオン対象のHP
+戻り値	：void
+*********************************************/
+ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive, float *targetHP)
+{
+	PLAYERMODEL *ptr = &model[id];
+
+	//ダブリ判定
+	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	{
+		if (ptr->target[i].pos == targetPos)
+		{
+			return NULL;
+		}
+	}
+
+	//未使用のターゲットに設定
+	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	{
+		//ロックオンの空きがあるまでループ
+		if (ptr->target[i].use)
+		{
+			continue;
+		}
+
+		//ロックオン対象に設定しreturn
+		ptr->target[i].pos = targetPos;
+		ptr->target[i].active = targetActive;
+		ptr->target[i].hp = targetHP;
+		ptr->target[i].use = true;
+		return &ptr->target[i];
+	}
+
+	//ロックオンの空きがないのでreturn NULL
+	return NULL;
+}
+
+/*********************************************
+関数名	：ReleaseRockonTarget(ROCKONTARGET *target)
+引数	：ROCKONTARGET *target：ロックオンを解除したいターゲットへのポインタ
+戻り値	：void
+*********************************************/
+void ReleaseRockonTarget(ROCKONTARGET *target)
+{
+	target->active = NULL;
+	target->hp = NULL;
+	target->pos = NULL;
+	//ReleaseRockonSite(target->rockonSite);
+}

@@ -10,11 +10,15 @@
 #include "main.h"
 #include "EasingVector.h"
 #include "battleCamera.h"
+#include "rockonSite.h"
 
 #define PLAYER_INITMOVE_FRAME	(30)
 #define PLAYERMODEL_MAX			(4)
 #define PLAYER_DESTROT_MAX		(0.51f)
 #define PLAYER_MOVERANGE		(50.0f)
+#define PLAYER_ROCKON_MAX		(16)
+#define PLAYER_HOMINGATK_INTERBAL	(60)
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -22,6 +26,7 @@
 /**************************************
 構造体定義
 ***************************************/
+//プレイヤーステート
 enum PlayerState
 {
 	PlayerFPS,
@@ -31,8 +36,19 @@ enum PlayerState
 	PlayerStateMax
 };
 
+//ロックオン対象構造体
 typedef struct
 {
+	bool use;			//使用フラグ
+	D3DXVECTOR3 *pos;	//ターゲット座標
+	bool *active;		//ターゲット状態
+	float *hp;			//ターゲットHP
+}ROCKONTARGET;
+
+//プレイヤー構造体
+typedef struct
+{
+
 	bool active;
 	int id;
 
@@ -43,8 +59,11 @@ typedef struct
 	D3DXVECTOR3 initPos;
 	bool flgMove;
 	int cntFrame;
-
 	D3DXVECTOR3 destRot;
+
+	//ロックオン関連パラメータ
+	ROCKONTARGET target[PLAYER_ROCKON_MAX];
+	int atkInterbal;
 
 }PLAYERMODEL;
 
@@ -57,5 +76,6 @@ void UpdatePlayerModel(void);
 void DrawPlayerModel(void);
 PLAYERMODEL *GetPlayerAdr(int num);
 void ChangeStatePlayerModel(int next);
-
+ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive, float *targetHP);
+void ReleaseRockonTarget(ROCKONTARGET *target);
 #endif

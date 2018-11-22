@@ -23,9 +23,9 @@
 /**************************************
 マクロ定義
 **************************************/
-#define ENEMYMISSILE_MODEL			"data/MODEL/missile.x"		//モデル名
-#define ENEMYMISSILE_ROTATEVALUE	(0.017f)					//1フレームあたりの回転量
-
+#define ENEMYMISSILE_MODEL				"data/MODEL/missile.x"		//モデル名
+#define ENEMYMISSILE_ROTATEVALUE		(0.017f)			//1フレームあたりの回転量
+#define ENEMYMISSILE_COLLIDER_RADIUS	(20.0f)				//当たり判定の半径
 /**************************************
 構造体定義
 **************************************/
@@ -101,6 +101,7 @@ void InitEnemyMissile(int num)
 		ptr->velocity = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->speed = 0.0f;
 		ptr->collider.active = false;
+		ptr->collider.radius = ENEMYMISSILE_COLLIDER_RADIUS;
 	}
 }
 
@@ -129,7 +130,6 @@ void UpdateEnemyMissile(void)
 {
 
 	ENEMYMISSILE *ptr = &missile[0];
-	bool flgInput = GetKeyboardTrigger(DIK_Z);
 
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
@@ -141,7 +141,7 @@ void UpdateEnemyMissile(void)
 		Update[ptr->state](ptr);
 		ptr->cntFrame++;
 
-		if (flgInput)
+		if (ptr->hp <= 0.0f)
 		{
 			for (int j = 0; j < 200; j++)
 			{
@@ -161,11 +161,14 @@ void UpdateEnemyMissile(void)
 	}
 
 	cntFrame++;
-	if (cntFrame % 20 == 0)
+	if (cntFrame % 120 == 0)
 	{
-		float angle = RandomRange(45.0f, 135.0f);
-		D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
-		SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
+		for (int k = 0; k < 16; k++)
+		{
+			float angle = RandomRange(45.0f, 135.0f);
+			D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
+			SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
+		}
 	}
 
 	CollisionEnemyMissileAndBullet();
@@ -266,6 +269,7 @@ void SetEnemyMissile(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, D3DXVECTOR3 targetPos
 		ptr->cntFrame = 0;
 		//ptr->state = ENEMYMISSILE_LAUNCH;
 		ChangeStateEnemyMissile(ptr, ENEMYMISSILE_LAUNCH);
+		ptr->hp = 1.0f;
 		ptr->active = true;
 
 		return;
@@ -279,7 +283,7 @@ void CollisionEnemyMissileAndBullet(void)
 {
 	ENEMYMISSILE *ptr = &missile[0];
 	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
-	float distSq;
+	float distSq, radiusSq;
 
 	//プレイヤーバレットとの当たり判定
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
@@ -292,6 +296,11 @@ void CollisionEnemyMissileAndBullet(void)
 		bullet = GetPlayerBulletAdr(0);
 		for (int j = 0; j < PLAYERBULLET_MAX; j++, bullet++)
 		{
+			if (!bullet->active)
+			{
+				continue;
+			}
+
 			distSq = D3DXVec3LengthSq(&(bullet->pos - ptr->pos));
 			if (distSq < 400.0f)
 			{

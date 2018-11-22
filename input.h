@@ -16,6 +16,9 @@ HRESULT InitInput(HINSTANCE hInst, HWND hWnd);
 void UninitInput(void);
 void UpdateInput(void);
 
+int GetHorizontalInputPress(void);
+int GetVerticalInputPress(void);
+
 bool GetKeyboardPress(int nKey);
 bool GetKeyboardTrigger(int nKey);
 bool GetKeyboardRepeat(int nKey);

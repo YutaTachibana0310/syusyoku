@@ -134,7 +134,8 @@ void UpdateExplosionFlare(void)
 		}
 
 		//パーティクルの移動、透過
-		ptr->pos += ptr->moveDir * GetEasingValue((float)ptr->cntFrame / ptr->lifeFrame, ptr->initSpeed, ptr->endSpeed, ptr->speedType);;
+		ptr->pos += ptr->moveDir * GetEasingValue((float)ptr->cntFrame / ptr->lifeFrame, ptr->initSpeed, ptr->endSpeed, ptr->speedType);
+		ptr->pos.z += PARTICLE_SCROLLSPEED;
 		vtxColor[i].a = GetEasingValue((float)ptr->cntFrame / ptr->lifeFrame, ptr->initAlpha, ptr->endAlpha, ptr->colorType);
 		ptr->cntFrame++;
 

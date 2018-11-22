@@ -22,7 +22,7 @@ typedef struct
 	int id;
 
 	D3DXVECTOR3 pos;
-	D3DXVECTOR3 *target;
+	D3DXVECTOR3 screenPos;
 }ROCKONSITE;
 
 /**************************************
@@ -32,6 +32,7 @@ void InitRockonSite(int num);
 void UninitRockonSite(int num);
 void UpdateRockonSite(void);
 void DrawRockonSite(void);
-void SetRockonSite(int id, D3DXVECTOR3 *target);
-
+ROCKONSITE *SetRockonSite(int id, D3DXVECTOR3 *target, bool *targetActive);
+void ReleaseRockonSite(ROCKONSITE *ptr);
+void SetRockonSitePos(int id, D3DXVECTOR3 pos);
 #endif

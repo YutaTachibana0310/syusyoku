@@ -18,6 +18,10 @@ HRESULT InitKeyboard(HINSTANCE hInst, HWND hWnd);
 void UninitKeyboard(void);
 HRESULT UpdateKeyboard(void);
 
+HRESULT InitializeMouse(HINSTANCE hInst, HWND hWindow); // ƒ}ƒEƒX‚Ì‰Šú‰»
+void UninitMouse();						// ƒ}ƒEƒX‚ÌI—¹ˆ—
+HRESULT UpdateMouse();					// ƒ}ƒEƒX‚ÌXVˆ—
+
 //*****************************************************************************
 // ƒOƒ[ƒoƒ‹•Ï”
 //*****************************************************************************
@@ -28,6 +32,48 @@ BYTE					g_aKeyStateTrigger[NUM_KEY_MAX];	// ƒL[ƒ{[ƒh‚ÌƒgƒŠƒK[ó‘Ô‚ğ•Û‚·‚éƒ
 BYTE					g_aKeyStateRelease[NUM_KEY_MAX];	// ƒL[ƒ{[ƒh‚ÌƒŠƒŠ[ƒXó‘Ô‚ğ•Û‚·‚éƒ[ƒN
 BYTE					g_aKeyStateRepeat[NUM_KEY_MAX];		// ƒL[ƒ{[ƒh‚ÌƒŠƒs[ƒgó‘Ô‚ğ•Û‚·‚éƒ[ƒN
 int						g_aKeyStateRepeatCnt[NUM_KEY_MAX];	// ƒL[ƒ{[ƒh‚ÌƒŠƒs[ƒgƒJƒEƒ“ƒ^
+
+//--------------------------------- mouse
+static LPDIRECTINPUTDEVICE8 pMouse = NULL; // mouse
+
+static DIMOUSESTATE2   mouseState;		// ƒ}ƒEƒX‚Ìƒ_ƒCƒŒƒNƒg‚Èó‘Ô
+static DIMOUSESTATE2   mouseTrigger;	// ‰Ÿ‚³‚ê‚½uŠÔ‚¾‚¯ON
+
+//=============================================================================
+// …•½•ûŒü‚Ì“ü—Í‚Ìæ“¾
+//=============================================================================
+int GetHorizontalInputPress(void)
+{
+	if (GetKeyboardPress(DIK_LEFT))
+	{
+		return -1;
+	}
+
+	if (GetKeyboardPress(DIK_RIGHT))
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+//=============================================================================
+// …•½•ûŒü‚Ì“ü—Í‚Ìæ“¾
+//=============================================================================
+int GetVerticalInputPress(void)
+{
+	if (GetKeyboardPress(DIK_UP))
+	{
+		return 1;
+	}
+
+	if (GetKeyboardPress(DIK_DOWN))
+	{
+		return -1;
+	}
+
+	return 0;
+}
 
 //=============================================================================
 // “ü—Íˆ—‚Ì‰Šú‰»
@@ -46,6 +92,9 @@ HRESULT InitInput(HINSTANCE hInst, HWND hWnd)
 	// ƒL[ƒ{[ƒh‚Ì‰Šú‰»
 	InitKeyboard(hInst, hWnd);
 
+	//ƒ}ƒEƒX‰Šú‰»
+	InitializeMouse(hInst, hWnd);
+
 	return S_OK;
 }
 
@@ -56,6 +105,9 @@ void UninitInput(void)
 {
 	// ƒL[ƒ{[ƒh‚ÌI—¹ˆ—
 	UninitKeyboard();
+
+	//ƒ}ƒEƒXI—¹ˆ—
+	UninitMouse();
 
 	if(g_pDInput)
 	{// DirectInputƒIƒuƒWƒFƒNƒg‚ÌŠJ•ú
@@ -71,6 +123,9 @@ void UpdateInput(void)
 {
 	// ƒL[ƒ{[ƒh‚ÌXV
 	UpdateKeyboard();
+
+	//ƒ}ƒEƒXXVˆ—
+	UpdateMouse();
 }
 
 //=============================================================================
@@ -202,3 +257,133 @@ bool GetKeyboardRelease(int nKey)
 	return (g_aKeyStateRelease[nKey] & 0x80) ? true: false;
 }
 
+//=============================================================================
+// ƒ}ƒEƒXŠÖŒW‚Ìˆ—
+//=============================================================================
+// ƒ}ƒEƒX‚Ì‰Šú‰»
+HRESULT InitializeMouse(HINSTANCE hInst, HWND hWindow)
+{
+	HRESULT result;
+	// ƒfƒoƒCƒXì¬
+	result = g_pDInput->CreateDevice(GUID_SysMouse, &pMouse, NULL);
+	if (FAILED(result) || pMouse == NULL)
+	{
+		MessageBox(hWindow, "No mouse", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+	// ƒf[ƒ^ƒtƒH[ƒ}ƒbƒgİ’è
+	result = pMouse->SetDataFormat(&c_dfDIMouse2);
+	if (FAILED(result))
+	{
+		MessageBox(hWindow, "Can't setup mouse", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+	// ‘¼‚ÌƒAƒvƒŠ‚Æ‹¦’²ƒ‚[ƒh‚Éİ’è
+	result = pMouse->SetCooperativeLevel(hWindow, (DISCL_FOREGROUND | DISCL_NONEXCLUSIVE));
+	if (FAILED(result))
+	{
+		MessageBox(hWindow, "Mouse mode error", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+
+	// ƒfƒoƒCƒX‚Ìİ’è
+	DIPROPDWORD prop;
+
+	prop.diph.dwSize = sizeof(prop);
+	prop.diph.dwHeaderSize = sizeof(prop.diph);
+	prop.diph.dwObj = 0;
+	prop.diph.dwHow = DIPH_DEVICE;
+	prop.dwData = DIPROPAXISMODE_REL;		// ƒ}ƒEƒX‚ÌˆÚ“®’l@‘Š‘Î’l
+
+	result = pMouse->SetProperty(DIPROP_AXISMODE, &prop.diph);
+	if (FAILED(result))
+	{
+		MessageBox(hWindow, "Mouse property error", "Warning", MB_OK | MB_ICONWARNING);
+		return result;
+	}
+
+	// ƒAƒNƒZƒXŒ ‚ğ“¾‚é
+	pMouse->Acquire();
+	return result;
+}
+//---------------------------------------------------------
+void UninitMouse()
+{
+	if (pMouse)
+	{
+		pMouse->Unacquire();
+		pMouse->Release();
+		pMouse = NULL;
+	}
+
+}
+//-----------------------------------------------------------
+HRESULT UpdateMouse()
+{
+	HRESULT result;
+	// ‘O‰ñ‚Ì’l•Û‘¶
+	DIMOUSESTATE2 lastMouseState = mouseState;
+	// ƒf[ƒ^æ“¾
+	result = pMouse->GetDeviceState(sizeof(mouseState), &mouseState);
+	if (SUCCEEDED(result))
+	{
+		mouseTrigger.lX = mouseState.lX;
+		mouseTrigger.lY = mouseState.lY;
+		mouseTrigger.lZ = mouseState.lZ;
+		// ƒ}ƒEƒX‚Ìƒ{ƒ^ƒ“ó‘Ô
+		for (int i = 0; i<8; i++)
+		{
+			mouseTrigger.rgbButtons[i] = ((lastMouseState.rgbButtons[i] ^
+				mouseState.rgbButtons[i]) & mouseState.rgbButtons[i]);
+		}
+	}
+	else	// æ“¾¸”s
+	{
+		// ƒAƒNƒZƒXŒ ‚ğ“¾‚Ä‚İ‚é
+		result = pMouse->Acquire();
+	}
+
+	PrintDebugProc("x:%d y:%d, z:%d\n", mouseState.lX, mouseState.lY, mouseState.lZ);
+
+	return result;
+
+}
+
+//----------------------------------------------
+BOOL IsMouseLeftPressed(void)
+{
+	return (BOOL)(mouseState.rgbButtons[0] & 0x80);	// ‰Ÿ‚³‚ê‚½‚Æ‚«‚É—§‚Âƒrƒbƒg‚ğŒŸ¸
+}
+BOOL IsMouseLeftTriggered(void)
+{
+	return (BOOL)(mouseTrigger.rgbButtons[0] & 0x80);
+}
+BOOL IsMouseRightPressed(void)
+{
+	return (BOOL)(mouseState.rgbButtons[1] & 0x80);
+}
+BOOL IsMouseRightTriggered(void)
+{
+	return (BOOL)(mouseTrigger.rgbButtons[1] & 0x80);
+}
+BOOL IsMouseCenterPressed(void)
+{
+	return (BOOL)(mouseState.rgbButtons[2] & 0x80);
+}
+BOOL IsMouseCenterTriggered(void)
+{
+	return (BOOL)(mouseTrigger.rgbButtons[2] & 0x80);
+}
+//------------------
+long GetMouseX(void)
+{
+	return mouseState.lX;
+}
+long GetMouseY(void)
+{
+	return mouseState.lY;
+}
+long GetMouseZ(void)
+{
+	return mouseState.lZ;
+}

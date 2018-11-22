@@ -14,9 +14,10 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define TARGETSITE_SIZE		(28)
-#define TARGETSITE_TEXTURE	"data/TEXTURE/targetSite.png"
-#define TARGETSITE_MAX		PLAYERMODEL_MAX
+#define TARGETSITE_SIZE			(128)
+#define TARGETSITE_TEXTURE		"data/TEXTURE/targetSite.png"
+#define TARGETSITE_MAX			PLAYERMODEL_MAX
+#define TARGETSITE_MOVEVALUE	(3.0f)
 
 /**************************************
 構造体定義
@@ -93,6 +94,13 @@ void UpdateTargetSite(void)
 			continue;
 		}
 
+		//移動
+		D3DXVECTOR3 diff = ptr->targetPos - ptr->pos;
+		float length = D3DXVec3Length(&diff);
+		D3DXVec3Normalize(&diff, &diff);
+		length = Clampf(0.0f, TARGETSITE_MOVEVALUE, length);
+		ptr->pos += diff * length;
+
 		//topLをプロジェクション変換
 		D3DXVec3TransformCoord(&ptr->topL, &(ptr->pos + pVtx[0].vtx), &GetBattleCameraView());
 		D3DXVec3TransformCoord(&ptr->topL, &ptr->topL, &GetBattleCameraProjection());
@@ -109,7 +117,7 @@ void UpdateTargetSite(void)
 		D3DXVec3TransformCoord(&ptr->bottomR, &(ptr->pos + pVtx[3].vtx), &GetBattleCameraView());
 		D3DXVec3TransformCoord(&ptr->bottomR, &ptr->bottomR, &GetBattleCameraProjection());
 
-		RockonEnemy(i);
+		CollisionTargetSite(i);
 	}
 
 	vtxBuff->Unlock();
@@ -132,6 +140,7 @@ void DrawTargetSite(void)
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
@@ -141,19 +150,20 @@ void DrawTargetSite(void)
 			continue;
 		}
 
-		D3DXMatrixIdentity(&mtxWorld);
-		D3DXMatrixIdentity(&mtxTranslate);
+		for (int j = 0; j < 3; j++)
+		{
+			D3DXMatrixIdentity(&mtxWorld);
+			D3DXMatrixIdentity(&mtxTranslate);
 
-		GetInvRotBattleCamera(&mtxWorld);
+			GetInvRotBattleCamera(&mtxWorld);
 
-		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+			D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z + 50.0f * j);
+			D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
-		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+			pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
-
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+		}
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
@@ -200,7 +210,7 @@ void MakeVertexTargetSite(void)
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.2f);
 
 	vtxBuff->Unlock();
 
@@ -218,7 +228,7 @@ void SetTargetSitePosition(D3DXVECTOR3 pos, int id)
 /**************************************
 アドレス取得処理
 ***************************************/
-TARGETSITE *GetTargetSiteADr(int id)
+TARGETSITE *GetTargetSiteAdr(int id)
 {
 	return &targetSite[id];
 }
@@ -230,6 +240,7 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 {
 	D3DXVECTOR3 screenPos;
 	TARGETSITE *ptr = &targetSite[id];
+	PLAYERMODEL *player = GetPlayerAdr(id);
 
 	D3DXVec3TransformCoord(&screenPos, pos, &GetBattleCameraView());
 	D3DXVec3TransformCoord(&screenPos, &screenPos, &GetBattleCameraProjection());
@@ -248,9 +259,14 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 /**************************************
 エネミーロックオン判定
 ***************************************/
-void RockonEnemy(int id)
+void CollisionTargetSite(int id)
 {
 	ENEMYMISSILE *enemy = GetEnemyMissileAdr(0);
+
+	if (GetPlayerAdr(id)->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
+	{
+		return;
+	}
 
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, enemy++)
 	{
@@ -261,8 +277,12 @@ void RockonEnemy(int id)
 
 		if (CollisionTargetSite(id, &enemy->pos))
 		{
-			SetRockonSite(id, &enemy->pos);
-		}
+			ROCKONTARGET *rockon = AddRockonTarget(id, &enemy->pos, &enemy->active, &enemy->hp);
+			if (rockon != NULL)
+			{
+				//rockon->rockonSite = SetRockonSite(id, &enemy->pos, &enemy->active);
+			}
 
+		}
 	}
 }

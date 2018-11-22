@@ -83,5 +83,6 @@ void EnterPlayerModelSideView(PLAYERMODEL *player)
 {
 	player->flgMove = true;
 	player->cntFrame = 0;
+	player->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	player->initPos = player->pos;
 }

@@ -13,11 +13,11 @@
 #define MESHCYLINDER_TEXTURE        "data/TEXTURE/circuit00.jpg"
 #define MESHCYLINDER_CIRCUIT1		"data/TEXTURE/circuit02.png"
 #define MESHCYLINDER_CIRCUIT2		"data/TEXTURE/circuit04.png"
-#define MESHCYLINDER_BLOCKNUM		(32)
-#define MESHCYLINDER_BLOCKSIZE		(500.0f)
+#define MESHCYLINDER_BLOCKNUM		(50)
+#define MESHCYLINDER_BLOCKSIZE		(800.0f)
 #define MESHCYLINDER_RADIUS			(1000.0f)
 #define MESHCYLINDER_TEXMAX			(3)
-
+#define MESHCYLINDER_TEXSIZE		(0.1f)
 //*****************************************************************************
 // グローバル変数
 //*****************************************************************************
@@ -35,7 +35,9 @@ static int numPolygon;
 static int numIndex;
 static float sizeBlockX, sizeBlockZ;
 static float offset[MESHCYLINDER_TEXMAX];
-static const float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.1f, 0.15f, 0.3f};
+
+static float offsetSpeed[MESHCYLINDER_TEXMAX] = { 0.0015f, 0.0017f, 0.002f};
+static float speedMagni = 2.0f;
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -51,7 +53,7 @@ void InitMeshCylinder(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	pos = D3DXVECTOR3(0.0f, 0.0f, -800.0f);
+	pos = D3DXVECTOR3(0.0f, 0.0f, -2500.0f);
 	rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	numBlockX = MESHCYLINDER_BLOCKNUM;
@@ -100,12 +102,22 @@ void UpdateMeshCylinder(void)
 {
 	for (int i = 0; i < MESHCYLINDER_TEXMAX; i++)
 	{
-		offset[i] += offsetSpeed[i];
+		offset[i] += offsetSpeed[i] * speedMagni;
 		if (offset[i] > 1.0f)
 		{
 			offset[i] -= 1.0f;
 		}
 	}
+
+	if (GetKeyboardPress(DIK_N))
+	{
+		speedMagni += 0.5f;
+	}
+	if (GetKeyboardPress(DIK_B))
+	{
+		speedMagni -= 0.5f;
+	}
+	
 }
 
 //*****************************************************************************
@@ -190,8 +202,8 @@ void SetVertexBufferCylinder(void)
 			pVtx[z * (numBlockZ * 1) + x].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 			//UV座標設定
-			pVtx[z * (numBlockX + 1) + x].tex.x = x * 1.0f;
-			pVtx[z * (numBlockX + 1) + x].tex.y = z * 1.0f;
+			pVtx[z * (numBlockX + 1) + x].tex.x = x * MESHCYLINDER_TEXSIZE;
+			pVtx[z * (numBlockX + 1) + x].tex.y = z * MESHCYLINDER_TEXSIZE;
 		}
 	}
 
@@ -288,8 +300,8 @@ void SetTextureOffsetMeshCylinder(float offset)
 	{
 		for (int x = 0; x < (numBlockX + 1); x++)
 		{
-			pVtx[z * (numBlockX + 1) + x].tex.x = 1.0f * x;
-			pVtx[z * (numBlockX + 1) + x].tex.y = 1.0f * z + offset;
+			pVtx[z * (numBlockX + 1) + x].tex.x = MESHCYLINDER_TEXSIZE * x;
+			pVtx[z * (numBlockX + 1) + x].tex.y = MESHCYLINDER_TEXSIZE * z + offset;
 		}
 	}
 
