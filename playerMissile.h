@@ -28,7 +28,6 @@ typedef struct
 	int cntFrame;			//カウントフレーム
 	int reachFrame;			//着弾タイミング
 	D3DXVECTOR3 velocity;	//進行速度
-
 }PLAYERMISSILE;
 
 /**************************************

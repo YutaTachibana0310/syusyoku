@@ -231,6 +231,9 @@
     <ClCompile Include="playerMissile.cpp">
       <Filter>ソース ファイル\Battle\Player</Filter>
     </ClCompile>
+    <ClCompile Include="playerMissileSmog.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="playerMissile.h">
       <Filter>ヘッダー ファイル\Battle\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerMissileSmog.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

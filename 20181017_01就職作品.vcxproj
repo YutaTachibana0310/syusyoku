@@ -167,6 +167,7 @@
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="playerBullet.cpp" />
     <ClCompile Include="playerMissile.cpp" />
+    <ClCompile Include="playerMissileSmog.cpp" />
     <ClCompile Include="playerModel.cpp" />
     <ClCompile Include="playerModelFPS.cpp" />
     <ClCompile Include="playerModelQuaterView.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerMissile.h" />
+    <ClInclude Include="playerMissileSmog.h" />
     <ClInclude Include="playerModelQuaterView.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />

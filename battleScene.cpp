@@ -17,6 +17,7 @@
 #include "meshCylinder.h"
 #include "scoreGUI.h"
 #include "playerMissile.h"
+#include "playerMissileSmog.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -53,6 +54,7 @@ HRESULT InitBattleScene(int num)
 	InitMeshCylinder(num);
 	InitScoreGUI(num);
 	InitPlayerMissile(num);
+	InitPlayerMissileSmog(num);
 
 	return S_OK;
 }
@@ -71,6 +73,7 @@ void UninitBattleScene(int num)
 	UninitMeshCylinder(num);
 	UninitScoreGUI(num);
 	UninitPlayerMissile(num);
+	UninitPlayerMissileSmog(num);
 }
 
 /******************************************************************************
@@ -88,6 +91,7 @@ void UpdateBattleScene(void)
 	UpdateMeshCylinder();
 	UpdatePlayerMissile();
 	UpdateScoreGUI();
+	UpdatePlayerMissileSmog();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -100,14 +104,15 @@ void UpdateBattleScene(void)
 ******************************************************************************/
 void DrawBattleScene(void)
 {
+	//DrawScoreGUI();
 	SetBattleCamera();
 	DrawMeshCylinder();
 	//DrawCloud();
 	DrawEnemyMissile();
 	DrawPlayerModel();
 	DrawPlayerMissile();
+	DrawPlayerMissileSmog();
 	DrawPlayerBullet();
 	DrawTargetSite();
 	DrawRockonSite();
-	//DrawScoreGUI();
 }

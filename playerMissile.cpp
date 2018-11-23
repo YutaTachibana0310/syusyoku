@@ -6,11 +6,12 @@
 //=====================================
 #include "playerMissile.h"
 #include "enemyMissile.h"
+#include "playerMissileSmog.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERMISSILE_MODEL				"data/MODEL/airplane000.x"
+#define PLAYERMISSILE_MODEL				"data/MODEL/missile.x"
 #define PLAYERMISSILE_COLLIDER_RADIUS	(20.0f);
 #define PLAYERMISSILE_REACEFRAME		(30.0f)
 /**************************************
@@ -60,6 +61,7 @@ void InitPlayerMissile(int num)
 	{
 		ptr->active = false;
 		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, -9999.9f);
+		ptr->rot = D3DXVECTOR3(0.0f, 3.14f, 0.0f);
 		//ptr->collider.active = false;
 		//ptr->collider.radius = false;
 	}
@@ -99,7 +101,7 @@ void UpdatePlayerMissile(void)
 		{
 			continue;
 		}
-#if 1
+#if 0
 		//変数初期化
 		acceleration.x = acceleration.y = acceleration.z = 0.0f;
 		period = ptr->cntFrame / PLAYERMISSILE_REACEFRAME;
@@ -122,12 +124,18 @@ void UpdatePlayerMissile(void)
 		ptr->pos += ptr->velocity / 60.0f;
 		
 #else
+		//差分を取る
+		diff = *ptr->target - ptr->pos;
 		D3DXVec3Normalize(&diff, &diff);
+
 		ptr->pos += diff * 30.0f;
 #endif
+
+		//スモッグセット
+		SetPlayerMissileSmog(ptr->pos);
 	}
 
-	//ColliisonPlayerMissileAndEnemyMissile();
+	ColliisonPlayerMissileAndEnemyMissile();
 }
 
 /**************************************
@@ -155,6 +163,8 @@ void DrawPlayerMissile(void)
 		D3DXMatrixIdentity(&mtxWorld);
 
 		//rotation
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->rot.y, ptr->rot.x, ptr->rot.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		//translate
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -222,7 +232,7 @@ void SetPlayerMissile(D3DXVECTOR3 *pTargetPos, float *pTargetHP, D3DXVECTOR3 pos
 	}
 }
 
-#if 0
+#if 1
 /**************************************
 当たり判定
 ***************************************/
@@ -232,7 +242,7 @@ void ColliisonPlayerMissileAndEnemyMissile(void)
 	PLAYERMISSILE *ptr = &missile[0];
 	float distSq, radiusSq;
 
-	radiusSq = powf(ptr->collider.radius + enemyMissile->collider.radius, 2.0f);
+	radiusSq = powf(10.0f + enemyMissile->collider.radius, 2.0f);
 
 	for(int i = 0; i < PLAYERMISSILE_MAX; i++, ptr++)
 	{
