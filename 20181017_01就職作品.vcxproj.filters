@@ -91,6 +91,12 @@
     <Filter Include="ヘッダー ファイル\GUI">
       <UniqueIdentifier>{d7932e94-de5a-4739-ad0a-a34f0ecf17a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Player\playerMissile">
+      <UniqueIdentifier>{225a9b33-ceb9-4c9e-89a2-657ba45f77db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Player\playerMissile">
+      <UniqueIdentifier>{1e3167ab-2c7f-4182-865d-5dd164e5fad1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -228,11 +234,23 @@
     <ClCompile Include="scoreGUI.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="playerMissile.cpp">
-      <Filter>ソース ファイル\Battle\Player</Filter>
-    </ClCompile>
     <ClCompile Include="playerMissileSmog.cpp">
       <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="playerMissile.cpp">
+      <Filter>ソース ファイル\Battle\Player\playerMissile</Filter>
+    </ClCompile>
+    <ClCompile Include="playerMissileLunch.cpp">
+      <Filter>ソース ファイル\Battle\Player\playerMissile</Filter>
+    </ClCompile>
+    <ClCompile Include="playerMissileAccel.cpp">
+      <Filter>ソース ファイル\Battle\Player\playerMissile</Filter>
+    </ClCompile>
+    <ClCompile Include="playerMissileHoming.cpp">
+      <Filter>ソース ファイル\Battle\Player\playerMissile</Filter>
+    </ClCompile>
+    <ClCompile Include="playerMissileStraight.cpp">
+      <Filter>ソース ファイル\Battle\Player\playerMissile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -371,11 +389,11 @@
     <ClInclude Include="scoreGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="playerMissile.h">
-      <Filter>ヘッダー ファイル\Battle\Player</Filter>
-    </ClInclude>
     <ClInclude Include="playerMissileSmog.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="playerMissile.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerMissile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

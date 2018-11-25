@@ -398,15 +398,15 @@ void ArrayCopy(int *dst, int *src, int size)
 //戻り値	：void
 //説明		：クォータニオンによる任意軸回転
 ********************************************************************/
-void RotateByQuaternion(const D3DXVECTOR3 *initPos, const D3DXVECTOR3 *axis, const FLOAT deg, D3DXVECTOR3 *out)
+void RotateByQuaternion(const D3DXVECTOR3 *initPos, const D3DXVECTOR3 *axis, const FLOAT rad, D3DXVECTOR3 *out)
 {
 	D3DXQUATERNION r, ans;		//r:回転クォータニオンQの共役クォータニオン　ans:回転後の座標
 
 	D3DXQUATERNION p(initPos->x, initPos->y, initPos->z, 0.0f); //回転前の位置のクォータニオンp作成
 	D3DXQUATERNION q(0.0f, 0.0f, 0.0f, 1.0f);					//回転用の単位クォータニオンq作成
-	FLOAT angle = D3DXToRadian(deg);
+	//FLOAT angle = D3DXToRadian(rad);
 
-	D3DXQuaternionRotationAxis(&q, axis, angle);				//回転軸周りの回転クォータニオンqを作成
+	D3DXQuaternionRotationAxis(&q, axis, rad);				//回転軸周りの回転クォータニオンqを作成
 	D3DXQuaternionConjugate(&r, &q);							//共役クォータニオンrを作成
 	D3DXQuaternionMultiply(&ans, &r, &p);						//r・pを計算
 	D3DXQuaternionMultiply(&ans, &ans, &q);						//p・qを計算

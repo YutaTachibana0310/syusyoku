@@ -277,12 +277,7 @@ void CollisionTargetSite(int id)
 
 		if (CollisionTargetSite(id, &enemy->pos))
 		{
-			ROCKONTARGET *rockon = AddRockonTarget(id, &enemy->pos, &enemy->active, &enemy->hp);
-			if (rockon != NULL)
-			{
-				//rockon->rockonSite = SetRockonSite(id, &enemy->pos, &enemy->active);
-			}
-
+			AddRockonTarget(id, &enemy->pos, &enemy->active, &enemy->hp);
 		}
 	}
 }

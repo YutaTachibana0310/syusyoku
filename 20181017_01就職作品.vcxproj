@@ -167,7 +167,11 @@
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="playerBullet.cpp" />
     <ClCompile Include="playerMissile.cpp" />
+    <ClCompile Include="playerMissileAccel.cpp" />
+    <ClCompile Include="playerMissileHoming.cpp" />
+    <ClCompile Include="playerMissileLunch.cpp" />
     <ClCompile Include="playerMissileSmog.cpp" />
+    <ClCompile Include="playerMissileStraight.cpp" />
     <ClCompile Include="playerModel.cpp" />
     <ClCompile Include="playerModelFPS.cpp" />
     <ClCompile Include="playerModelQuaterView.cpp" />

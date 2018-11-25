@@ -12,11 +12,15 @@
 マクロ定義
 ***************************************/
 #define PLAYERMISSILE_MODEL				"data/MODEL/missile.x"
-#define PLAYERMISSILE_COLLIDER_RADIUS	(20.0f);
+#define PLAYERMISSILE_COLLIDER_RADIUS	(20.0f)
 #define PLAYERMISSILE_REACEFRAME		(30.0f)
+#define PLAYERMISSILE_VELOCITY_MAX		(15.0f)
+#define PLAYERMISSILE_VELOCITY_MIN		(5.0f)
+
 /**************************************
 構造体定義
 ***************************************/
+typedef void(*funcPlayerMissile)(PLAYERMISSILE*);
 
 /**************************************
 グローバル変数
@@ -26,6 +30,22 @@ static LPD3DXBUFFER materials;
 static DWORD numMaterial;
 static D3DXMATRIX mtxWorld;
 static PLAYERMISSILE missile[PLAYERMISSILE_MAX];
+
+//入場処理
+static funcPlayerMissile Enter[PLAYERMISSILE_STATEMAX] = {
+	EnterPlayerMissileLaunch,
+	EnterPlayerMissileAccel,
+	EnterPlayerMissileHoming,
+	EnterPlayerMissileStraight
+};
+
+//更新処理
+static funcPlayerMissile Update[PLAYERMISSILE_STATEMAX] = {
+	UpdatePlayerMissileLaunch,
+	UpdatePlayerMissileAccel,
+	UpdatePlayerMissileHoming,
+	UpdatePlayerMissileStraight
+};
 
 /**************************************
 プロトタイプ宣言
@@ -61,7 +81,7 @@ void InitPlayerMissile(int num)
 	{
 		ptr->active = false;
 		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, -9999.9f);
-		ptr->rot = D3DXVECTOR3(0.0f, 3.14f, 0.0f);
+		ptr->rot = D3DXQUATERNION(0.0f, 3.14f, 0.0f, 0.0f);
 		//ptr->collider.active = false;
 		//ptr->collider.radius = false;
 	}
@@ -101,35 +121,8 @@ void UpdatePlayerMissile(void)
 		{
 			continue;
 		}
-#if 0
-		//変数初期化
-		acceleration.x = acceleration.y = acceleration.z = 0.0f;
-		period = ptr->cntFrame / PLAYERMISSILE_REACEFRAME;
 
-		//差分を取る
-		diff = *ptr->target - ptr->pos;
-
-		//加速度計算
-		acceleration = (diff - ptr->velocity * period) * 2.0f / (period * period);
-
-		ptr->cntFrame--;
-		if (ptr->cntFrame < 0)
-		{
-			ptr->active = false;
-			*ptr->targetHP -= 1.0f;
-			continue;
-		}
-
-		ptr->velocity += acceleration / 60.0f;
-		ptr->pos += ptr->velocity / 60.0f;
-		
-#else
-		//差分を取る
-		diff = *ptr->target - ptr->pos;
-		D3DXVec3Normalize(&diff, &diff);
-
-		ptr->pos += diff * 30.0f;
-#endif
+		Update[ptr->state](ptr);
 
 		//スモッグセット
 		SetPlayerMissileSmog(ptr->pos);
@@ -163,7 +156,7 @@ void DrawPlayerMissile(void)
 		D3DXMatrixIdentity(&mtxWorld);
 
 		//rotation
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->rot.y, ptr->rot.x, ptr->rot.z);
+		D3DXMatrixRotationQuaternion(&mtxRot, &ptr->rot);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		//translate
@@ -202,7 +195,7 @@ PLAYERMISSILE *GetPlayerMissileAdr(int id)
 /**************************************
 セッター
 ***************************************/
-void SetPlayerMissile(D3DXVECTOR3 *pTargetPos, float *pTargetHP, D3DXVECTOR3 pos)
+void SetPlayerMissile(D3DXVECTOR3 *pTargetPos, float *pTargetHP, bool *targetActive, D3DXVECTOR3 pos)
 {
 	PLAYERMISSILE *ptr = &missile[0];
 
@@ -217,17 +210,21 @@ void SetPlayerMissile(D3DXVECTOR3 *pTargetPos, float *pTargetHP, D3DXVECTOR3 pos
 		ptr->active = true;
 		ptr->target = pTargetPos;
 		ptr->targetHP = pTargetHP;
+		ptr->targetActive = targetActive;
 
 		//初速度設定
 		float vX = (pTargetPos->x - pos.x) > 0 ? 5.0f : -5.0f;
 		float vY = RandomRange(-50.0f, 50.0f);
 		float vZ = RandomRange(-50.0f, -30.0f);
 		ptr->velocity = D3DXVECTOR3(vX, vY,vZ);
-		ptr->velocity *= 10.0f;
+		D3DXVec3Normalize(&ptr->velocity, &ptr->velocity);
+		ptr->speed = RandomRange(PLAYERMISSILE_VELOCITY_MIN, PLAYERMISSILE_VELOCITY_MAX);
 
 		//パラメータ初期化
-		ptr->cntFrame = ptr->reachFrame = rand() % 40 + 15;
+		ptr->cntFrame = 0;
 		ptr->pos = pos;
+
+		ChangeStatePlayerMissile(ptr, PLAYERMISSILE_LAUNCH);
 		return;
 	}
 }
@@ -238,11 +235,10 @@ void SetPlayerMissile(D3DXVECTOR3 *pTargetPos, float *pTargetHP, D3DXVECTOR3 pos
 ***************************************/
 void ColliisonPlayerMissileAndEnemyMissile(void)
 {
-	ENEMYMISSILE *enemyMissile = GetEnemyMissileAdr(0);
 	PLAYERMISSILE *ptr = &missile[0];
 	float distSq, radiusSq;
 
-	radiusSq = powf(10.0f + enemyMissile->collider.radius, 2.0f);
+	radiusSq = powf(10.0f, 2.0f);
 
 	for(int i = 0; i < PLAYERMISSILE_MAX; i++, ptr++)
 	{
@@ -251,21 +247,27 @@ void ColliisonPlayerMissileAndEnemyMissile(void)
 			continue;
 		}
 
-		enemyMissile = GetEnemyMissileAdr(0);
-		for (int j = 0; j < ENEMYMISSILE_MAX; j++, enemyMissile++)
+		if (!ptr->targetActive)
 		{
-			if (!enemyMissile->active)
-			{
-				continue;
-			}
+			continue;
+		}
 
-			distSq = D3DXVec3LengthSq(&(enemyMissile->pos - ptr->pos));
-			if (distSq < radiusSq)
-			{
-				enemyMissile->hp -= 1.0f;
-				ptr->active = false;
-			}
+
+		distSq = D3DXVec3LengthSq(&(*ptr->target - ptr->pos));
+		if (distSq < radiusSq)
+		{
+			*ptr->targetHP -= 1.0f;
+			ptr->active = false;
 		}
 	}
 }
 #endif
+
+/**************************************
+状態遷移処理
+***************************************/
+void ChangeStatePlayerMissile(PLAYERMISSILE *ptr, int next)
+{
+	ptr->state = next;
+	Enter[ptr->state](ptr);
+}

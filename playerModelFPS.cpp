@@ -151,7 +151,7 @@ void AttackPlayerModelFPS(PLAYERMODEL *player)
 			continue;
 		}
 
-		SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->pos);
+		SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
 		ReleaseRockonTarget(&player->target[i]);
 		player->target[i].use = false;
 	}
