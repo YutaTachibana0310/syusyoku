@@ -22,6 +22,7 @@ typedef struct
 	D3DXVECTOR3 pos;
 
 	int cntFrame;
+	int patternAnim;
 }PLAYERMISSILESMOG;
 
 /**************************************

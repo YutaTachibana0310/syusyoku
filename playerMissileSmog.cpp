@@ -1,18 +1,23 @@
 //=====================================
 //
-//テンプレート処理[playerMissileSmog.cpp]
+//プレイヤーミサイルスモッグ処理[playerMissileSmog.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
+#include "particleManager.h"
 #include "playerMissileSmog.h"
 #include "battleCamera.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERMISSILESMOG_TEXSIZE		(10)
-#define PLAYERMISSILESMOG_TEXTURE		"data/TEXTURE/explosionSmog.png"
-#define PLAYERMISSILESMOG_MAX			(256)
+#define PLAYERMISSILESMOG_TEXSIZE		(5)
+#define PLAYERMISSILESMOG_TEXTURE		"data/TEXTURE/playerMissileSmog.png"
+#define PLAYERMISSILESMOG_MAX			(512)
+#define PLAYERMISSILESMOG_TEXDEVIDE_X	(4)
+#define PLAYERMISSILESMOG_TEXDEVIDE_Y	(2)
+#define PLAYERMISSILESMOG_ANIMMAX		(8)
+#define PLAYERMISSILESMOG_ANIMTIME		(5)
 
 /**************************************
 構造体定義
@@ -30,6 +35,7 @@ static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
 プロトタイプ宣言
 ***************************************/
 void CreateVertexBufferPlayerMissileSmog(void);
+void SetPlayerMissileUV(void);
 
 /**************************************
 初期化処理
@@ -84,9 +90,15 @@ void UpdatePlayerMissileSmog(void)
 		}
 
 		ptr->cntFrame++;
-		if (ptr->cntFrame == 60)
+
+		//アニメーション
+		if (ptr->cntFrame % PLAYERMISSILESMOG_ANIMTIME == 0)
 		{
-			ptr->active = false;
+			ptr->patternAnim++;
+			if (ptr->patternAnim == PLAYERMISSILESMOG_ANIMMAX)
+			{
+				ptr->active = false;
+			}
 		}
 	}
 }
@@ -99,12 +111,16 @@ void DrawPlayerMissileSmog(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxTranslate;
 
+	//set uv
+	SetPlayerMissileUV();
+
 	//rendestate set
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetTexture(0, texture);
 	pDevice->SetFVF(FVF_VERTEX_3D);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	PLAYERMISSILESMOG *ptr = &smog[0];
 	for (int i = 0; i < PLAYERMISSILESMOG_MAX; i++, ptr++)
@@ -129,8 +145,10 @@ void DrawPlayerMissileSmog(void)
 		pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
 		//draw
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, i * 4, NUM_POLYGON);
 	}
+
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
@@ -143,7 +161,7 @@ void CreateVertexBufferPlayerMissileSmog(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX,
+	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX * PLAYERMISSILESMOG_MAX,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_3D,
 		D3DPOOL_MANAGED,
@@ -156,25 +174,28 @@ void CreateVertexBufferPlayerMissileSmog(void)
 	VERTEX_3D *pVtx;
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].vtx = D3DXVECTOR3(-PLAYERMISSILESMOG_TEXSIZE, PLAYERMISSILESMOG_TEXSIZE, 0.0f);
-	pVtx[1].vtx = D3DXVECTOR3(PLAYERMISSILESMOG_TEXSIZE, PLAYERMISSILESMOG_TEXSIZE, 0.0f);
-	pVtx[2].vtx = D3DXVECTOR3(-PLAYERMISSILESMOG_TEXSIZE, -PLAYERMISSILESMOG_TEXSIZE, 0.0f);
-	pVtx[3].vtx = D3DXVECTOR3(PLAYERMISSILESMOG_TEXSIZE, -PLAYERMISSILESMOG_TEXSIZE, 0.0f);
+	for (int i = 0; i < PLAYERMISSILESMOG_MAX; i++, pVtx += 4)
+	{
+		pVtx[0].vtx = D3DXVECTOR3(-PLAYERMISSILESMOG_TEXSIZE, PLAYERMISSILESMOG_TEXSIZE, 0.0f);
+		pVtx[1].vtx = D3DXVECTOR3(PLAYERMISSILESMOG_TEXSIZE, PLAYERMISSILESMOG_TEXSIZE, 0.0f);
+		pVtx[2].vtx = D3DXVECTOR3(-PLAYERMISSILESMOG_TEXSIZE, -PLAYERMISSILESMOG_TEXSIZE, 0.0f);
+		pVtx[3].vtx = D3DXVECTOR3(PLAYERMISSILESMOG_TEXSIZE, -PLAYERMISSILESMOG_TEXSIZE, 0.0f);
 
-	pVtx[0].nor =
-		pVtx[1].nor =
-		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+		pVtx[0].nor =
+			pVtx[1].nor =
+			pVtx[2].nor =
+			pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
-	pVtx[0].diffuse =
-		pVtx[1].diffuse =
-		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+		pVtx[0].diffuse =
+			pVtx[1].diffuse =
+			pVtx[2].diffuse =
+			pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+	}
 
 	vtxBuff->Unlock();
 }
@@ -193,8 +214,42 @@ void SetPlayerMissileSmog(D3DXVECTOR3 pos)
 		}
 
 		ptr->pos = pos;
-		ptr->cntFrame = 0;
+		ptr->cntFrame = ptr->patternAnim = 0;
 		ptr->active = true;
 		return;
 	}
+}
+
+/**************************************
+UV設定処理
+***************************************/
+void SetPlayerMissileUV(void)
+{
+	VERTEX_3D *pVtx = NULL;
+	PLAYERMISSILESMOG *ptr = &smog[0];
+
+	float sizeU = 1.0f / PLAYERMISSILESMOG_TEXDEVIDE_X;
+	float sizeV = 1.0f / PLAYERMISSILESMOG_TEXDEVIDE_Y;
+
+	int x, y;
+
+	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	for (int i = 0; i < PLAYERMISSILESMOG_MAX; i++, pVtx += 4, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		x = ptr->patternAnim % PLAYERMISSILESMOG_TEXDEVIDE_X;
+		y = ptr->patternAnim / PLAYERMISSILESMOG_TEXDEVIDE_X;
+
+		pVtx[0].tex = D3DXVECTOR2(x * sizeU, y * sizeV);
+		pVtx[1].tex = D3DXVECTOR2((x + 1) * sizeU, y * sizeV);
+		pVtx[2].tex = D3DXVECTOR2(x * sizeU, (y + 1) * sizeV);
+		pVtx[3].tex = D3DXVECTOR2((x + 1) * sizeU, (y + 1) * sizeV);
+	}
+
+	vtxBuff->Unlock();
 }
