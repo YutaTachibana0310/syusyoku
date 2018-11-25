@@ -23,5 +23,6 @@
 ***************************************/
 void UpdatePlayerModelFPS(PLAYERMODEL *player);
 void EnterPlayerModelFPS(PLAYERMODEL *player);
+void AttackPlayerModelFPS(PLAYERMODEL *player);
 
 #endif

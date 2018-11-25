@@ -38,7 +38,7 @@ typedef struct
 typedef struct
 {
 	D3DXVECTOR3 pos;		//中心位置
-	float radius;		//半径
+	float radius;			//半径
 	bool active;			//アクティブ判定
 }SPHERE;
 //*****************************************************************************

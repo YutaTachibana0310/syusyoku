@@ -20,6 +20,7 @@ typedef struct
 {
 	bool active;
 	D3DXVECTOR3 pos;
+	D3DXVECTOR3 targetPos;
 
 	D3DXVECTOR3 topL, topR, bottomL, bottomR;
 
@@ -32,7 +33,7 @@ void UninitTargetSite(int num);
 void UpdateTargetSite(void);
 void DrawTargetSite(void);
 void SetTargetSitePosition(D3DXVECTOR3 pos, int id);
-TARGETSITE *GetTargetSiteADr(int id);
+TARGETSITE *GetTargetSiteAdr(int id);
 bool CollisionTargetSite(int id, const D3DXVECTOR3* pos);
-void RockonEnemy(int id);
+void CollisionTargetSite(int id);
 #endif

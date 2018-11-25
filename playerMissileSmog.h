@@ -1,11 +1,11 @@
 //=====================================
 //
-//ロックオンサイトヘッダ[rockonSite.h]
+//プレイヤーミサイルスモッグヘッダ[PlayerMissileSmog.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _ROCKONSITE_H_
-#define _ROCKONSITE_H_
+#ifndef _PLAYERMISSILESMOG_H_
+#define _PLAYERMISSILESMOG_H_
 
 #include "main.h"
 
@@ -19,20 +19,18 @@
 typedef struct
 {
 	bool active;
-	int id;
-
 	D3DXVECTOR3 pos;
-	D3DXVECTOR3 screenPos;
-}ROCKONSITE;
+
+	int cntFrame;
+	int patternAnim;
+}PLAYERMISSILESMOG;
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitRockonSite(int num);
-void UninitRockonSite(int num);
-void UpdateRockonSite(void);
-void DrawRockonSite(void);
-ROCKONSITE *SetRockonSite(int id, D3DXVECTOR3 *target, bool *targetActive);
-void ReleaseRockonSite(ROCKONSITE *ptr);
-void SetRockonSitePos(int id, D3DXVECTOR3 pos);
+void InitPlayerMissileSmog(int num);
+void UninitPlayerMissileSmog(int num);
+void UpdatePlayerMissileSmog(void);
+void DrawPlayerMissileSmog(void);
+void SetPlayerMissileSmog(D3DXVECTOR3 pos);
 #endif

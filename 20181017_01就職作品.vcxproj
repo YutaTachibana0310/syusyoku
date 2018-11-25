@@ -166,6 +166,8 @@
     <ClCompile Include="particleManager.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="playerBullet.cpp" />
+    <ClCompile Include="playerMissile.cpp" />
+    <ClCompile Include="playerMissileSmog.cpp" />
     <ClCompile Include="playerModel.cpp" />
     <ClCompile Include="playerModelFPS.cpp" />
     <ClCompile Include="playerModelQuaterView.cpp" />
@@ -175,6 +177,7 @@
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="rockonSite.cpp" />
     <ClCompile Include="sceneManager.cpp" />
+    <ClCompile Include="scoreGUI.cpp" />
     <ClCompile Include="skyBG.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
@@ -203,6 +206,8 @@
     <ClInclude Include="fractal.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="playerBullet.h" />
+    <ClInclude Include="playerMissile.h" />
+    <ClInclude Include="playerMissileSmog.h" />
     <ClInclude Include="playerModelQuaterView.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
@@ -221,6 +226,7 @@
     <ClInclude Include="resultScene.h" />
     <ClInclude Include="rockonSite.h" />
     <ClInclude Include="sceneManager.h" />
+    <ClInclude Include="scoreGUI.h" />
     <ClInclude Include="skyBG.h" />
     <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />

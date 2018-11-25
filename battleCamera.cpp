@@ -17,10 +17,11 @@
 #define	BATTLECAMERA_VIEWASPECT			((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
 #define	BATTLECAMERA_NEAR				(50.0f)					// ビュー平面のNearZ値
 #define	BATTLECAMERA_FAR				(20000.0f)				// ビュー平面のFarZ値
-#define BATTLECAMERA_LENGTH				(200.0f)
+#define BATTLECAMERA_LENGTH				(250.0f)
 #define BATTLECAMERA_TOP_ANGLE_Y		(0.68f)
 #define BATTLECAMERA_QUATER_ANGLE_Y		(0.34f)
 #define BATTLECAMERA_QUATER_ANGLE_XZ	(1.19f)
+#define BATTLECAMERA_SIDE_ANGLE_Y		(0.17f)
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -34,14 +35,34 @@ static BATTLECAMERA camera;
 
 static const D3DXQUATERNION BattleCameraPosQ[] =
 {
-	D3DXQUATERNION(0.0f, 0.0f, -BATTLECAMERA_LENGTH * 0.8f, 1.0f),
+	//FPS
+	D3DXQUATERNION(0.0f, 0.0f, -BATTLECAMERA_LENGTH * 0.7f, 1.0f),
+	//縦
 	D3DXQUATERNION(0.0f, sinf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH , -cosf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH, 1.0f),
+	//横
 	D3DXQUATERNION(BATTLECAMERA_LENGTH, 0.0f, 0.0f, 1.0f),
+	//クォーター
 	D3DXQUATERNION(
 		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * cosf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH * 0.8f,
 		sinf(BATTLECAMERA_QUATER_ANGLE_Y) * BATTLECAMERA_LENGTH,
 		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * -sinf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH * 0.8f,
 		1.0f
+	)
+};
+
+static const D3DXVECTOR3 BattleCameraPos[] =
+{
+	//FPS
+	D3DXVECTOR3(0.0f, 0.0f, -BATTLECAMERA_LENGTH * 0.7f),
+	//縦
+	D3DXVECTOR3(0.0f, sinf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH , -cosf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH),
+	//横
+	D3DXVECTOR3(BATTLECAMERA_LENGTH, 0.0f, 0.0f),
+	//クォーター
+	D3DXVECTOR3(
+		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * cosf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH * 0.8f,
+		sinf(BATTLECAMERA_QUATER_ANGLE_Y) * BATTLECAMERA_LENGTH,
+		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * -sinf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH * 0.8f
 	)
 };
 
@@ -57,7 +78,7 @@ static const D3DXVECTOR3 BattleCameraAt[] =
 static const D3DXVECTOR3 BattleCameraUp[] =
 {
 	D3DXVECTOR3(0.0f, 1.0f, 0.0f),
-	D3DXVECTOR3(0.0f, 0.0f, 1.0f),
+	D3DXVECTOR3(0.0f, 1.0f, 0.0f),
 	D3DXVECTOR3(0.0f, 1.0f, 0.0f),
 	D3DXVECTOR3(0.0f, 1.0f, 0.0f)
 };
@@ -93,13 +114,17 @@ void UpdateBattleCamera(void)
 	{
 		camera.cntFrame++;
 		float t = EaseOutCubic((float)camera.cntFrame / BATTLECAMERA_MOVEFRAME, 0.0f, 1.0f);
-
+#if 0
 		D3DXQUATERNION q;
 		D3DXQuaternionSlerp(&q, &BattleCameraPosQ[camera.currentState], &BattleCameraPosQ[camera.nextState], t);
 		camera.pos.x = q.x;
 		camera.pos.y = q.y;
 		camera.pos.z = q.z;
-
+#else
+		camera.pos.x = EaseOutCubic(t, BattleCameraPos[camera.currentState].x, BattleCameraPos[camera.nextState].x);
+		camera.pos.y = EaseOutCubic(t, BattleCameraPos[camera.currentState].y, BattleCameraPos[camera.nextState].y);
+		camera.pos.z = EaseOutCubic(t, BattleCameraPos[camera.currentState].z, BattleCameraPos[camera.nextState].z);
+#endif
 		camera.up.x = EaseLinear(t, BattleCameraUp[camera.currentState].x, BattleCameraUp[camera.nextState].x);
 		camera.up.y = EaseLinear(t, BattleCameraUp[camera.currentState].y, BattleCameraUp[camera.nextState].y);
 		camera.up.z = EaseLinear(t, BattleCameraUp[camera.currentState].z, BattleCameraUp[camera.nextState].z);
@@ -122,6 +147,9 @@ void UpdateBattleCamera(void)
 //=============================================================================
 void SetBattleCamera(void)
 {
+	bool flg = GetKeyboardTrigger(DIK_Q);
+
+
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	// ビューマトリックスの初期化

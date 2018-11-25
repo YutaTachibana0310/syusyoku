@@ -14,7 +14,7 @@
 ***************************************/
 #define ROCKONSITE_SIZE		(10)
 #define ROCKONSITE_TEXTURE	"data/TEXTURE/rockonSite.png"
-#define ROCKONSITE_MAX		(128)
+#define ROCKONSITE_MAX		(PLAYER_ROCKON_MAX * PLAYERMODEL_MAX)
 
 /**************************************
 構造体定義
@@ -24,7 +24,7 @@
 グローバル変数
 ***************************************/
 static LPDIRECT3DTEXTURE9 texture;
-static ROCKONSITE rockon[ROCKONSITE_MAX * PLAYERMODEL_MAX];
+static ROCKONSITE rockon[ROCKONSITE_MAX];
 static VERTEX_2D vtxWk[NUM_VERTEX];
 
 /**************************************
@@ -81,15 +81,12 @@ void UpdateRockonSite(void)
 
 	int cnt = 0;
 
-	for (int i = 0; i < ROCKONSITE_MAX * PLAYERMODEL_MAX; i++, ptr++)
+	for (int i = 0; i < ROCKONSITE_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
 		{
 			continue;
 		}
-
-		//サイトの座標をターゲットと同じ位置に設定
-		ptr->pos = *ptr->target;
 
 		//ビュー変換、プロジェクション変換を行う
 		D3DXVec3TransformCoord(&ptr->pos, &ptr->pos, &GetBattleCameraView());
@@ -98,13 +95,6 @@ void UpdateRockonSite(void)
 		//ビューポート変換でスクリーン座標に変換する
 		ptr->pos.x = ptr->pos.x * (SCREEN_WIDTH / 2.0f) + SCREEN_WIDTH / 2.0f;
 		ptr->pos.y = ptr->pos.y * (-SCREEN_HEIGHT / 2.0f) + SCREEN_HEIGHT / 2.0f;
-
-		cnt++;
-		if (ptr->target->z < 0.0f)
-		{
-			ptr->target = NULL;
-			ptr->active = false;
-		}
 	}
 
 	PrintDebugProc("rockon:%d\n", cnt);
@@ -129,9 +119,12 @@ void DrawRockonSite(void)
 			continue;
 		}
 
+		//頂点を設定して描画
 		SetVertexRockonSite(ptr);
-
 		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
+
+		//描画後は非アクティブに
+		ptr->active = false;
 	}
 }
 
@@ -174,26 +167,44 @@ void SetVertexRockonSite(ROCKONSITE *ptr)
 /**************************************
 セット処理
 ***************************************/
-void SetRockonSite(int id, D3DXVECTOR3 *target)
+ROCKONSITE *SetRockonSite(int id, D3DXVECTOR3 *target, bool *targetActive)
 {
-	ROCKONSITE *ptr = &rockon[id * ROCKONSITE_MAX];
-	int end = (id + 1) * ROCKONSITE_MAX;
+	//ROCKONSITE *ptr = &rockon[id * ROCKONSITE_MAX];
+	//int end = (id + 1) * ROCKONSITE_MAX;
 
-	for (int i = 0; i < end; i++, ptr++)
-	{
-		if (ptr->target == target)
-		{
-			return;
-		}
+	//for (int i = 0; i < end; i++, ptr++)
+	//{
+	//	if (ptr->target == NULL)
+	//	{
+	//		ptr->active = true;
+	//		ptr->target = target;
+	//		ptr->targetActive = targetActive;
+	//		return ptr;
+	//	}
 
-		if (ptr->target == NULL)
-		{
-			ptr->active = true;
-			ptr->target = target;
-			return;
-		}
+	//	if (ptr->target == target)
+	//	{
+	//		return ptr;
+	//	}
+	//}
 
+	return NULL;
+}
 
+/**************************************
+リリース処理
+***************************************/
+void ReleaseRockonSite(ROCKONSITE *ptr)
+{
+	//ptr->active = false;
+	//ptr->target = NULL;
+}
 
-	}
+/**************************************
+座標セット処理
+***************************************/
+void SetRockonSitePos(int id, D3DXVECTOR3 pos)
+{
+	rockon[id].pos = pos;
+	rockon[id].active = true;
 }

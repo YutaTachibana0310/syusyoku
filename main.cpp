@@ -43,7 +43,7 @@ void Draw(void);
 //*****************************************************************************
 LPDIRECT3D9			g_pD3D = NULL;			// Direct3D オブジェクト
 LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
-static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0,		255);
+static D3DXCOLOR backColor = D3DCOLOR_RGBA(255, 255, 255, 255);
 #ifdef _DEBUG
 int					g_nCountFPS;			// FPSカウンタ
 #endif
@@ -300,8 +300,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 #if 1
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
-		FLOAT StartPos = 3000;
-		FLOAT EndPos = 10000;
+		FLOAT StartPos = 6000;
+		FLOAT EndPos = 15000;
 
 		g_pD3DDevice->SetRenderState(D3DRS_FOGENABLE, true);
 		g_pD3DDevice->SetRenderState(D3DRS_FOGCOLOR, backColor);
