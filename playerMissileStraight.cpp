@@ -10,6 +10,7 @@
 マクロ定義
 ***************************************/
 #define PLAYERMISSILE_BORDER_Z		(0.0f)
+#define PLAYERMISSILE_STRAIGHT_END	(120)
 
 /**************************************
 構造体定義
@@ -41,6 +42,13 @@ void UpdatePlayerMissileStraight(PLAYERMISSILE *missile)
 	missile->pos += missile->velocity * missile->speed;
 
 	if (missile->pos.z < PLAYERMISSILE_BORDER_Z)
+	{
+		missile->active = false;
+	}
+
+	//カウント更新
+	missile->cntFrame++;
+	if (missile->cntFrame > PLAYERMISSILE_STRAIGHT_END)
 	{
 		missile->active = false;
 	}

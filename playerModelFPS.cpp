@@ -92,9 +92,8 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 		}
 
 		//ターゲットサイト移動処理
-		D3DXVECTOR3 sitePos = D3DXVECTOR3(moveDir.x * PLAYERFPS_TARGETSITE_POS_XY, moveDir.y * PLAYERFPS_TARGETSITE_POS_XY, PLAYERFPS_TARGETSITE_POS_Z);
-		GetTargetSiteAdr(player->id)->pos = player->pos;// +sitePos;
-		//SetTargetSitePosition(player->pos + PLAYERFPS_TARGETSITE_POS, player->id);
+		TARGETSITE *site = GetTargetSiteAdr(player->id);
+		site->pos = player->pos;;
 
 		//ロックオンサイトセット処理
 		for (int i = 0; i < PLAYER_ROCKON_MAX; i++)

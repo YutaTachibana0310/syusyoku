@@ -11,13 +11,13 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERMISSILESMOG_TEXSIZE		(5)
+#define PLAYERMISSILESMOG_TEXSIZE		(2)
 #define PLAYERMISSILESMOG_TEXTURE		"data/TEXTURE/playerMissileSmog.png"
 #define PLAYERMISSILESMOG_MAX			(2048)
 #define PLAYERMISSILESMOG_TEXDEVIDE_X	(4)
 #define PLAYERMISSILESMOG_TEXDEVIDE_Y	(2)
 #define PLAYERMISSILESMOG_ANIMMAX		(8)
-#define PLAYERMISSILESMOG_ANIMTIME		(5)
+#define PLAYERMISSILESMOG_ANIMTIME		(3)
 
 /**************************************
 構造体定義

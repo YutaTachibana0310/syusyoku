@@ -11,7 +11,7 @@
 ***************************************/
 #define PLAYERMISSILE_SPEED_MAX			(60.0f)
 #define PLAYERMISSILE_ACCEL_VALUE		(1.5f)
-#define PLAYERMISSILE_ACCEL_ROTANGLE	(0.005f)
+#define PLAYERMISSILE_ACCEL_ROTANGLE	(0.002f)
 #define PLAYERMISSILE_ACCEL_END			(30)
 
 /**************************************

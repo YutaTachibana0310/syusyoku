@@ -13,7 +13,7 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERMISSILE_MAX	(64)
+#define PLAYERMISSILE_MAX	(1024)
 #define PLAYERMISSILE_DEFAULT_ANGLE	(D3DXVECTOR3(0.0f, 0.0f, -1.0f))
 /**************************************
 構造体定義
