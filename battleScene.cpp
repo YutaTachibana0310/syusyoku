@@ -18,6 +18,7 @@
 #include "scoreGUI.h"
 #include "playerMissile.h"
 #include "playerMissileSmog.h"
+#include "particleManager.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -110,9 +111,10 @@ void DrawBattleScene(void)
 	//DrawCloud();
 	DrawEnemyMissile();
 	DrawPlayerModel();
-	DrawTargetSite();
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();
 	DrawPlayerBullet();
+	DrawParticleManager();
 	DrawRockonSite();
+	DrawTargetSite();
 }

@@ -405,8 +405,6 @@ void Draw(void)
 	{
 		DrawSceneManager();
 
-		DrawParticleManager();
-
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)
 		{

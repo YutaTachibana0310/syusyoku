@@ -142,7 +142,7 @@ void DrawTargetSite(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
-
+	
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
 	{
