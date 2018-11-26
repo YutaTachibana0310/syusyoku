@@ -44,7 +44,7 @@ void UpdatePlayerMissileAccel(PLAYERMISSILE *missile)
 	D3DXVECTOR3 axis;
 	D3DXVECTOR3 diff = *missile->target - missile->pos;
 	D3DXVec3Cross(&axis, &missile->velocity, &diff);
-	RotateByQuaternion(&missile->velocity, &axis, 0.1f, &missile->velocity);
+	RotateByQuaternion(&missile->velocity, &axis, 0.3f, &missile->velocity);
 
 	//ƒ‚ƒfƒ‹‚ð‰ñ“]
 	D3DXVec3Cross(&axis, &PLAYERMISSILE_DEFAULT_ANGLE, &missile->velocity);

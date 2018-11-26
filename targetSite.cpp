@@ -14,7 +14,8 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define TARGETSITE_SIZE			(128)
+#define TARGETSITE_SIZE_X			(40.0f)
+#define TARGETSITE_SIZE_Y			(26.5f)
 #define TARGETSITE_TEXTURE		"data/TEXTURE/targetSite.png"
 #define TARGETSITE_MAX			PLAYERMODEL_MAX
 #define TARGETSITE_MOVEVALUE	(3.0f)
@@ -54,7 +55,7 @@ void InitTargetSite(int num)
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
 	{
-		ptr->pos = D3DXVECTOR3(9999.9f, 9999.9f, -9999.9f);
+		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -95,11 +96,11 @@ void UpdateTargetSite(void)
 		}
 
 		//移動
-		D3DXVECTOR3 diff = ptr->targetPos - ptr->pos;
-		float length = D3DXVec3Length(&diff);
-		D3DXVec3Normalize(&diff, &diff);
-		length = Clampf(0.0f, TARGETSITE_MOVEVALUE, length);
-		ptr->pos += diff * length;
+		//D3DXVECTOR3 diff = ptr->targetPos - ptr->pos;
+		//float length = D3DXVec3Length(&diff);
+		//D3DXVec3Normalize(&diff, &diff);
+		//length = Clampf(0.0f, TARGETSITE_MOVEVALUE, length);
+		//ptr->pos += diff * length;
 
 		//topLをプロジェクション変換
 		D3DXVec3TransformCoord(&ptr->topL, &(ptr->pos + pVtx[0].vtx), &GetBattleCameraView());
@@ -150,20 +151,18 @@ void DrawTargetSite(void)
 			continue;
 		}
 
-		for (int j = 0; j < 3; j++)
-		{
-			D3DXMatrixIdentity(&mtxWorld);
-			D3DXMatrixIdentity(&mtxTranslate);
+		D3DXMatrixIdentity(&mtxWorld);
+		D3DXMatrixIdentity(&mtxTranslate);
 
-			GetInvRotBattleCamera(&mtxWorld);
+		GetInvRotBattleCamera(&mtxWorld);
 
-			D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z + 50.0f * j);
-			D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
-			pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
-			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
-		}
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
@@ -192,10 +191,10 @@ void MakeVertexTargetSite(void)
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].vtx = D3DXVECTOR3(-TARGETSITE_SIZE, TARGETSITE_SIZE, 0.0f);
-	pVtx[1].vtx = D3DXVECTOR3(TARGETSITE_SIZE, TARGETSITE_SIZE, 0.0f);
-	pVtx[2].vtx = D3DXVECTOR3(-TARGETSITE_SIZE, -TARGETSITE_SIZE, 0.0f);
-	pVtx[3].vtx = D3DXVECTOR3(TARGETSITE_SIZE, -TARGETSITE_SIZE, 0.0f);
+	pVtx[0].vtx = D3DXVECTOR3(-TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y, 0.0f);
+	pVtx[1].vtx = D3DXVECTOR3(TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y, 0.0f);
+	pVtx[2].vtx = D3DXVECTOR3(-TARGETSITE_SIZE_X, -TARGETSITE_SIZE_Y, 0.0f);
+	pVtx[3].vtx = D3DXVECTOR3(TARGETSITE_SIZE_X, -TARGETSITE_SIZE_Y, 0.0f);
 
 	pVtx[0].nor =
 		pVtx[1].nor =
@@ -210,7 +209,7 @@ void MakeVertexTargetSite(void)
 	pVtx[0].diffuse =
 		pVtx[1].diffuse =
 		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.2f);
+		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
 	vtxBuff->Unlock();
 
@@ -222,6 +221,11 @@ void MakeVertexTargetSite(void)
 ***************************************/
 void SetTargetSitePosition(D3DXVECTOR3 pos, int id)
 {
+	D3DXVECTOR3 screenPos;
+	D3DXVec3TransformCoord(&screenPos, &pos, &GetBattleCameraView());
+	D3DXVec3TransformCoord(&screenPos, &screenPos, &GetBattleCameraProjection());
+
+
 	targetSite[id].pos = pos;
 }
 

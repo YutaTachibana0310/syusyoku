@@ -21,6 +21,7 @@
 
 #define PLAYERFPS_TARGETSITE_POS_Z	(600.0f)
 #define PLAYERFPS_TARGETSITE_POS_XY	(50.0f)
+#define PLAYERFPS_TARGETSITE_POS	(D3DXVECTOR3(0.0f, 0.0f, 0.0f))
 
 #define PLAYERFPS_ATTACKINTERBAL	(60)
 
@@ -92,7 +93,8 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 		//ターゲットサイト移動処理
 		D3DXVECTOR3 sitePos = D3DXVECTOR3(moveDir.x * PLAYERFPS_TARGETSITE_POS_XY, moveDir.y * PLAYERFPS_TARGETSITE_POS_XY, PLAYERFPS_TARGETSITE_POS_Z);
-		GetTargetSiteAdr(player->id)->targetPos = player->pos + sitePos;
+		GetTargetSiteAdr(player->id)->pos = player->pos;// +sitePos;
+		//SetTargetSitePosition(player->pos + PLAYERFPS_TARGETSITE_POS, player->id);
 
 		//ロックオンサイトセット処理
 		for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
@@ -126,8 +128,8 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 
 	TARGETSITE *site = GetTargetSiteAdr(player->id);
 	site->active = true;
-	site->pos = site->targetPos = player->pos + D3DXVECTOR3(0.0f, 0.0f, PLAYERFPS_TARGETSITE_POS_Z);
-	
+	site->pos = site->targetPos = player->pos;// + D3DXVECTOR3(0.0f, 0.0f, PLAYERFPS_TARGETSITE_POS_Z);
+
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
 	{
 		player->target[i].use = false;
@@ -151,7 +153,10 @@ void AttackPlayerModelFPS(PLAYERMODEL *player)
 			continue;
 		}
 
-		SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
+		for (int j = 0; j < 4; j++)
+		{
+			SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
+		}
 		ReleaseRockonTarget(&player->target[i]);
 		player->target[i].use = false;
 	}

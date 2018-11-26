@@ -110,9 +110,9 @@ void DrawBattleScene(void)
 	//DrawCloud();
 	DrawEnemyMissile();
 	DrawPlayerModel();
+	DrawTargetSite();
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();
 	DrawPlayerBullet();
-	DrawTargetSite();
 	DrawRockonSite();
 }

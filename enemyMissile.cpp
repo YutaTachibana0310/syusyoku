@@ -26,6 +26,7 @@
 #define ENEMYMISSILE_MODEL				"data/MODEL/missile.x"		//モデル名
 #define ENEMYMISSILE_ROTATEVALUE		(0.017f)			//1フレームあたりの回転量
 #define ENEMYMISSILE_COLLIDER_RADIUS	(20.0f)				//当たり判定の半径
+#define ENEMYMISSILE_DAMAGE				(0.25f)				//ミサイルのダメージ
 /**************************************
 構造体定義
 **************************************/

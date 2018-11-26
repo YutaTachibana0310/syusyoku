@@ -16,6 +16,7 @@
 #define PLAYERMISSILE_REACEFRAME		(30.0f)
 #define PLAYERMISSILE_VELOCITY_MAX		(15.0f)
 #define PLAYERMISSILE_VELOCITY_MIN		(5.0f)
+#define PLAYERMISSILE_DAMAGE			(0.25f)
 
 /**************************************
 \‘¢‘Ì’è‹`
@@ -256,7 +257,7 @@ void ColliisonPlayerMissileAndEnemyMissile(void)
 		distSq = D3DXVec3LengthSq(&(*ptr->target - ptr->pos));
 		if (distSq < radiusSq)
 		{
-			*ptr->targetHP -= 1.0f;
+			*ptr->targetHP -= PLAYERMISSILE_DAMAGE;
 			ptr->active = false;
 		}
 	}
