@@ -10,7 +10,7 @@
 /***********************************
 マクロ定義
 ***********************************/
-#define ENEMYMISSILE_HOMINGANGLE	(3.0f)			//ホーミングの回転角度
+#define ENEMYMISSILE_HOMINGANGLE	(0.05f)			//ホーミングの回転角度
 #define ENEMYMISSILE_FORWORD		(D3DXVECTOR3(0.0f, 0.0f, -1.0f))	//基準となる進行方向
 #define ENEMYMISSILE_HOMINGFRAME	(240)
 

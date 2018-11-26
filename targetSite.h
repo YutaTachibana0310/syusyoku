@@ -21,6 +21,7 @@ typedef struct
 	bool active;
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 targetPos;
+	D3DXVECTOR3 insideRot, outsideRot;
 
 	D3DXVECTOR3 topL, topR, bottomL, bottomR;
 
@@ -34,6 +35,6 @@ void UpdateTargetSite(void);
 void DrawTargetSite(void);
 void SetTargetSitePosition(D3DXVECTOR3 pos, int id);
 TARGETSITE *GetTargetSiteAdr(int id);
-bool CollisionTargetSite(int id, const D3DXVECTOR3* pos);
-void CollisionTargetSite(int id);
+bool CollisionTargetSite(int id, const D3DXVECTOR3* pos, D3DXVECTOR3* siteScreenPos);
+void RockonEnemy(int id);
 #endif

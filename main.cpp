@@ -405,8 +405,6 @@ void Draw(void)
 	{
 		DrawSceneManager();
 
-		DrawParticleManager();
-
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)
 		{
@@ -467,4 +465,13 @@ LPDIRECT3DTEXTURE9 CreateTextureFromFile(LPSTR szName, LPDIRECT3DDEVICE9 lpD3DDe
 		}
 	}
 	return lpTex;
+}
+
+//=============================================================================
+// ビューポート変換
+//=============================================================================
+void TranslateViewPort(D3DXVECTOR3 *out, D3DXVECTOR3 *pos)
+{
+	out->x = pos->x * (SCREEN_WIDTH / 2.0f) + SCREEN_WIDTH / 2.0f;
+	out->y = pos->y * (-SCREEN_HEIGHT / 2.0f) + SCREEN_HEIGHT / 2.0f;
 }

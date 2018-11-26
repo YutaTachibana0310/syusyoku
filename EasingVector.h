@@ -4,8 +4,8 @@
 // Author : GP11A341 21 —§‰Ô—Y‘¾
 //
 //=============================================================================
-#ifndef _EASING_H_
-#define _EASING_H_
+#ifndef _EASINGVECTOR_H_
+#define _EASINGVECTOR_H_
 
 #include "d3dx9.h"
 
@@ -14,14 +14,14 @@
 //*****************************************************************************
 enum EASINGVECTOR_TYPE
 {
-	InCubic,
-	OutCubic,
-	InOutCubic,
-	Linear,
-	InExponential,
-	OutExponential,
-	InOutExponential,
-	EasingMax
+	InCubic_Vector,
+	OutCubic_Vector,
+	InOutCubic_Vector,
+	Linear_Vector,
+	InExponential_Vector,
+	OutExponential_Vector,
+	InOutExponential_Vector,
+	EasingMax_Vector
 };
 
 //*****************************************************************************

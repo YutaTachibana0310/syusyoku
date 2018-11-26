@@ -16,7 +16,7 @@
 #define PLAYERMODEL_MAX			(4)
 #define PLAYER_DESTROT_MAX		(0.51f)
 #define PLAYER_MOVERANGE		(50.0f)
-#define PLAYER_ROCKON_MAX		(16)
+#define PLAYER_ROCKON_MAX		(32)
 #define PLAYER_HOMINGATK_INTERBAL	(60)
 
 /**************************************

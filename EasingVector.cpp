@@ -19,7 +19,7 @@ typedef D3DXVECTOR3(*Easing)(float, D3DXVECTOR3, D3DXVECTOR3);
 /*****************************************************************************
 ƒOƒ[ƒoƒ‹•Ï”
 *****************************************************************************/
-static Easing EasingProcess[EasingMax] = {
+static Easing EasingProcess[EasingMax_Vector] = {
 	EaseInCubic,
 	EaseOutCubic,
 	EaseInOutCubic,

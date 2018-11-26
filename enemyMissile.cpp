@@ -26,6 +26,7 @@
 #define ENEMYMISSILE_MODEL				"data/MODEL/missile.x"		//モデル名
 #define ENEMYMISSILE_ROTATEVALUE		(0.017f)			//1フレームあたりの回転量
 #define ENEMYMISSILE_COLLIDER_RADIUS	(20.0f)				//当たり判定の半径
+#define ENEMYMISSILE_DAMAGE				(0.25f)				//ミサイルのダメージ
 /**************************************
 構造体定義
 **************************************/
@@ -131,6 +132,17 @@ void UpdateEnemyMissile(void)
 
 	ENEMYMISSILE *ptr = &missile[0];
 
+	cntFrame++;
+	if (cntFrame % 120 == 0)
+	{
+		for (int k = 0; k < 16; k++)
+		{
+			float angle = RandomRange(45.0f, 135.0f);
+			D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
+			SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
+		}
+	}
+
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
@@ -157,17 +169,6 @@ void UpdateEnemyMissile(void)
 			}
 			ptr->active = false;
 
-		}
-	}
-
-	cntFrame++;
-	if (cntFrame % 120 == 0)
-	{
-		for (int k = 0; k < 16; k++)
-		{
-			float angle = RandomRange(45.0f, 135.0f);
-			D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
-			SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
 		}
 	}
 

@@ -110,6 +110,7 @@ void DrawRockonSite(void)
 
 	pDevice->SetFVF(FVF_VERTEX_2D);
 	pDevice->SetTexture(0, texture);
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 
 	ROCKONSITE *ptr = &rockon[0];
 	for (int i = 0; i < ROCKONSITE_MAX; i++, ptr++)
@@ -126,6 +127,8 @@ void DrawRockonSite(void)
 		//描画後は非アクティブに
 		ptr->active = false;
 	}
+
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 }
 
 /**************************************
