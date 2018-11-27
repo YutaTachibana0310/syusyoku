@@ -237,6 +237,7 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 		ptr->target[i].active = targetActive;
 		ptr->target[i].hp = targetHP;
 		ptr->target[i].use = true;
+		ActivateRockonSite(ptr->id * PLAYER_ROCKON_MAX + i);
 		return &ptr->target[i];
 	}
 
