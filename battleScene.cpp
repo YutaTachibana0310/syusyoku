@@ -19,6 +19,7 @@
 #include "playerMissile.h"
 #include "playerMissileSmog.h"
 #include "particleManager.h"
+#include "scoreGUI.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -56,6 +57,7 @@ HRESULT InitBattleScene(int num)
 	InitScoreGUI(num);
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
+	InitScoreGUI(num);
 
 	return S_OK;
 }
@@ -75,6 +77,7 @@ void UninitBattleScene(int num)
 	UninitScoreGUI(num);
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
+	UninitScoreGUI(num);
 }
 
 /******************************************************************************
@@ -93,6 +96,7 @@ void UpdateBattleScene(void)
 	UpdatePlayerMissile();
 	UpdateScoreGUI();
 	UpdatePlayerMissileSmog();
+	UpdateScoreGUI();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -117,4 +121,5 @@ void DrawBattleScene(void)
 	DrawParticleManager();
 	DrawRockonSite();
 	DrawTargetSite();
+	DrawScoreGUI();
 }

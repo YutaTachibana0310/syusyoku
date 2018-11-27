@@ -14,8 +14,9 @@
 *****************************************************************************/
 #define LOGOSCENE_TEXTURE_NAME	_T("data/TEXTURE/UI/logo.png")	// プレイヤーバレットのテクスチャ
 
-#define LOGOSCENE_TEXTURE_SIZE_X (200)			// テクスチャサイズX
-#define LOGOSCENE_TEXTURE_SIZE_Y (200)			// テクスチャサイズY
+#define LOGOSCENE_TEXTURE_SIZE_X (600)			// テクスチャサイズX
+#define LOGOSCENE_TEXTURE_SIZE_Y (300)			// テクスチャサイズY
+
 
 /*****************************************************************************
 プロトタイプ宣言
