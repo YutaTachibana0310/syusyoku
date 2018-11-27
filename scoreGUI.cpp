@@ -13,13 +13,14 @@
 #define SCOREGUI_NUMTEX_NAME	_T("data/TEXTURE/UI/scoreNum.png")		// 数字のテクスチャ
 #define SCOREGUI_TEXTURE_SIZE_X					(480)					// テクスチャサイズX
 #define SCOREGUI_TEXTURE_SIZE_Y					(200)					// テクスチャサイズY
+#define SCOREGUI_INITPOS						(D3DXVECTOR3(0.0f, -10.0f, 0.0f))
 
-#define SCOREGUI_NUMTEX_SIZE_X					(100.0f)				// 数字テクスチャサイズ
-#define SCOREGUI_NUMTEX_SIZE_Y					(100.0f)				// 数字テクスチャサイズ
+#define SCOREGUI_NUMTEX_SIZE_X					(40.0f)				// 数字テクスチャサイズ
+#define SCOREGUI_NUMTEX_SIZE_Y					(40.0f)				// 数字テクスチャサイズ
 #define SCOREGUI_NUMTEX_DIVIDE_X				(5)						// アニメパターンのテクスチャ内分割数（X)
 #define SCOREGUI_NUMTEX_DIVIDE_Y				(2)						// アニメパターンのテクスチャ内分割数（Y)
-#define SCOREGUI_NUM_OFFSETPOS					(100.0f)				// 数字のオフセット座標
-#define SCOREGUI_NUM_INITPOS					(D3DXVECTOR3(25.0f, 150.0f, 0.0f))	//数字テクスチャの初期座標
+#define SCOREGUI_NUM_OFFSETPOS					(-50.0f)				// 数字のオフセット座標
+#define SCOREGUI_NUM_INITPOS					(D3DXVECTOR3(350.0f, 110.0f, 0.0f))	//数字テクスチャの初期座標
 
 /*****************************************************************************
 プロトタイプ宣言
@@ -48,7 +49,6 @@ HRESULT InitScoreGUI(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	SCOREGUI* ptr = &scoreGUI;
-	int i;
 
 	ptr->angle = atan2f(SCOREGUI_NUMTEX_SIZE_Y, SCOREGUI_NUMTEX_SIZE_X);
 	ptr->radius = D3DXVec2Length(&D3DXVECTOR2(SCOREGUI_NUMTEX_SIZE_X, SCOREGUI_NUMTEX_SIZE_Y));
@@ -73,8 +73,8 @@ void UninitScoreGUI(int num)
 {
 	if (texture != NULL)
 	{	// テクスチャの開放
-		texture->Release();
-		texture = NULL;
+		SAFE_RELEASE(texture);
+		SAFE_RELEASE(numTex);
 	}
 }
 
@@ -107,7 +107,7 @@ void DrawScoreGUI(void)
 
 	//スコア数字を描画
 	pDevice->SetTexture(0, numTex);
-	int score = 9999995;
+	int score = 1234567;
 	int digitMax = (score == 0) ? 1 : (int)log10f((float)score) + 1;
 	int num = 0;
 	for (int i = 0; i < digitMax; i++, score /= 10)
@@ -179,10 +179,10 @@ void SetTextureScoreNum(int cntPattern)
 void SetVertexScoreGUI(void)
 {
 	// 頂点座標の設定
-	vertexWk[0].vtx = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	vertexWk[1].vtx = D3DXVECTOR3(SCOREGUI_TEXTURE_SIZE_X, 0.0f, 0.0f);
-	vertexWk[2].vtx = D3DXVECTOR3(0.0f, SCOREGUI_TEXTURE_SIZE_Y, 0.0f);
-	vertexWk[3].vtx = D3DXVECTOR3(SCOREGUI_TEXTURE_SIZE_X, SCOREGUI_TEXTURE_SIZE_Y, 0.0f);
+	vertexWk[0].vtx = SCOREGUI_INITPOS;
+	vertexWk[1].vtx = SCOREGUI_INITPOS + D3DXVECTOR3(SCOREGUI_TEXTURE_SIZE_X, 0.0f, 0.0f);
+	vertexWk[2].vtx = SCOREGUI_INITPOS + D3DXVECTOR3(0.0f, SCOREGUI_TEXTURE_SIZE_Y, 0.0f);
+	vertexWk[3].vtx = SCOREGUI_INITPOS + D3DXVECTOR3(SCOREGUI_TEXTURE_SIZE_X, SCOREGUI_TEXTURE_SIZE_Y, 0.0f);
 
 	// UV座標の設定
 	vertexWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -206,7 +206,7 @@ void SetVertexScoreNum(float offset)
 	vertexWk[1].vtx.x = pos.x + cosf(ptr->angle) * ptr->radius;
 	vertexWk[1].vtx.y = pos.y - sinf(ptr->angle) * ptr->radius;
 	vertexWk[2].vtx.x = pos.x - cosf(ptr->angle) * ptr->radius;
-	vertexWk[2].vtx.x = pos.x + cosf(ptr->angle) * ptr->radius;
-	vertexWk[3].vtx.y = pos.y + sinf(ptr->angle) * ptr->radius;
+	vertexWk[2].vtx.y = pos.y + sinf(ptr->angle) * ptr->radius;
+	vertexWk[3].vtx.x = pos.x + cosf(ptr->angle) * ptr->radius;
 	vertexWk[3].vtx.y = pos.y + sinf(ptr->angle) * ptr->radius;
 }

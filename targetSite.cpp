@@ -210,7 +210,7 @@ void DrawTargetSite(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESS);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 }
 
 /**************************************

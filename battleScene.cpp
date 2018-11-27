@@ -20,6 +20,7 @@
 #include "playerMissileSmog.h"
 #include "particleManager.h"
 #include "scoreGUI.h"
+#include "hpGUI.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -58,6 +59,7 @@ HRESULT InitBattleScene(int num)
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
 	InitScoreGUI(num);
+	InitHpGUI(num);
 
 	return S_OK;
 }
@@ -67,7 +69,7 @@ HRESULT InitBattleScene(int num)
 ******************************************************************************/
 void UninitBattleScene(int num)
 {
-	//UninitCloud(num);
+	UninitCloud(num);
 	UninitEnemyMissile(num);
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
@@ -78,6 +80,7 @@ void UninitBattleScene(int num)
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
 	UninitScoreGUI(num);
+	UninitHpGUI(num);
 }
 
 /******************************************************************************
@@ -97,6 +100,7 @@ void UpdateBattleScene(void)
 	UpdateScoreGUI();
 	UpdatePlayerMissileSmog();
 	UpdateScoreGUI();
+	UpdateHpGUI();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -109,7 +113,6 @@ void UpdateBattleScene(void)
 ******************************************************************************/
 void DrawBattleScene(void)
 {
-	//DrawScoreGUI();
 	SetBattleCamera();
 	DrawMeshCylinder();
 	//DrawCloud();
@@ -122,4 +125,5 @@ void DrawBattleScene(void)
 	DrawRockonSite();
 	DrawTargetSite();
 	DrawScoreGUI();
+	DrawHpGUI();
 }

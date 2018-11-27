@@ -155,6 +155,7 @@
     <ClCompile Include="explosionSmog.cpp" />
     <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
+    <ClCompile Include="hpGUI.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="logoScene.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="explosionSmog.h" />
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
+    <ClInclude Include="hpGUI.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerMissile.h" />
