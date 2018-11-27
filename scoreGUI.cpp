@@ -15,8 +15,8 @@
 #define SCOREGUI_TEXTURE_SIZE_Y					(200)					// テクスチャサイズY
 #define SCOREGUI_INITPOS						(D3DXVECTOR3(0.0f, -5.0f, 0.0f))
 
-#define SCOREGUI_NUMTEX_SIZE_X					(40.0f)				// 数字テクスチャサイズ
-#define SCOREGUI_NUMTEX_SIZE_Y					(40.0f)				// 数字テクスチャサイズ
+#define SCOREGUI_NUMTEX_SIZE_X					(40.0f)					// 数字テクスチャサイズ
+#define SCOREGUI_NUMTEX_SIZE_Y					(40.0f)					// 数字テクスチャサイズ
 #define SCOREGUI_NUMTEX_DIVIDE_X				(5)						// アニメパターンのテクスチャ内分割数（X)
 #define SCOREGUI_NUMTEX_DIVIDE_Y				(2)						// アニメパターンのテクスチャ内分割数（Y)
 #define SCOREGUI_NUM_OFFSETPOS					(-50.0f)				// 数字のオフセット座標
@@ -71,8 +71,9 @@ HRESULT InitScoreGUI(int num)
 ******************************************************************************/
 void UninitScoreGUI(int num)
 {
-	if (texture != NULL)
-	{	// テクスチャの開放
+	if (num == 0)
+	{
+		// テクスチャの開放
 		SAFE_RELEASE(texture);
 		SAFE_RELEASE(numTex);
 	}

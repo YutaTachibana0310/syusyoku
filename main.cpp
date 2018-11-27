@@ -43,12 +43,13 @@ void Draw(void);
 //*****************************************************************************
 LPDIRECT3D9			g_pD3D = NULL;			// Direct3D オブジェクト
 LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
-static D3DXCOLOR backColor = D3DCOLOR_RGBA(255, 255, 255, 255);
+static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0, 0);
 #ifdef _DEBUG
 int					g_nCountFPS;			// FPSカウンタ
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
+
 //=============================================================================
 // メイン関数
 //=============================================================================
@@ -474,4 +475,13 @@ void TranslateViewPort(D3DXVECTOR3 *out, D3DXVECTOR3 *pos)
 {
 	out->x = pos->x * (SCREEN_WIDTH / 2.0f) + SCREEN_WIDTH / 2.0f;
 	out->y = pos->y * (-SCREEN_HEIGHT / 2.0f) + SCREEN_HEIGHT / 2.0f;
+}
+
+//=============================================================================
+// バックカラー変更
+//=============================================================================
+void SetBackColor(D3DXCOLOR color)
+{
+	backColor = color;
+	g_pD3DDevice->SetRenderState(D3DRS_FOGCOLOR, backColor);
 }

@@ -8,26 +8,33 @@
 #include "camera.h"
 #include "titleScene.h"
 #include "input.h"
+#include "Easing.h"
 
 /*****************************************************************************
 マクロ定義
 *****************************************************************************/
 #define TITLESCENE_TEXTURE_NAME	_T("data/TEXTURE/UI/title.png")	// プレイヤーバレットのテクスチャ
 
-#define TITLESCENE_TEXTURE_SIZE_X (200)			// テクスチャサイズX
-#define TITLESCENE_TEXTURE_SIZE_Y (200)			// テクスチャサイズY
+#define TITLESCENE_TEXTURE_SIZE_X	(SCREEN_WIDTH / 2.0f)			// テクスチャサイズX
+#define TITLESCENE_TEXTURE_SIZE_Y	 (SCREEN_HEIGHT / 2.0f)			// テクスチャサイズY
+#define TITLESCENE_FADEIN_END		(60)
 
 /*****************************************************************************
 プロトタイプ宣言
 *****************************************************************************/
-HRESULT MakeVertexTitleScene(void);	//頂点作成関数
-void SetTextureTitleScene(void);		// テクスチャ座標の計算処理
-void SetVertexTitleScene(void);		// 頂点の計算処理
+HRESULT MakeVertexTitleScene(void);			//頂点作成関数
+void SetTextureTitleScene(void);			// テクスチャ座標の計算処理
+void SetVertexTitleScene(void);				// 頂点の計算処理
+void SetTitleTextureAlpha(float alpha);		//アルファ設定処理
 
 /*****************************************************************************
 構造体定義
 *****************************************************************************/
-
+enum TITLESCENE_STATE
+{
+	TITLESCENE_FADEIN,
+	TITLESCENE_STATEMAX
+};
 /*****************************************************************************
 グローバル変数
 *****************************************************************************/
@@ -35,6 +42,8 @@ static LPDIRECT3DTEXTURE9 texture = NULL;				// テクスチャへのポインタ
 static VERTEX_2D vertexWk[NUM_VERTEX];					//頂点情報格納ワーク
 static D3DXVECTOR3 pos;
 static float angle, radius;
+static int cntFrame;
+static TITLESCENE_STATE state;
 
 /******************************************************************************
 初期化処理
@@ -43,7 +52,7 @@ HRESULT InitTitleScene(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	pos = D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
+	pos = D3DXVECTOR3(SCREEN_WIDTH / 2.0f, TITLESCENE_TEXTURE_SIZE_Y, 0.0f);
 
 	angle = atan2f(TITLESCENE_TEXTURE_SIZE_Y, TITLESCENE_TEXTURE_SIZE_X);
 	radius = D3DXVec2Length(&D3DXVECTOR2(TITLESCENE_TEXTURE_SIZE_X, TITLESCENE_TEXTURE_SIZE_Y));
@@ -56,6 +65,12 @@ HRESULT InitTitleScene(int num)
 		// テクスチャの読み込み
 		texture = CreateTextureFromFile((LPSTR)TITLESCENE_TEXTURE_NAME, pDevice);
 	}
+
+	if (num != 0)
+	{
+		SetBackColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	}
+	SetTitleTextureAlpha(0.0f);
 
 	return S_OK;
 }
@@ -80,6 +95,19 @@ void UninitTitleScene(int num)
 ******************************************************************************/
 void UpdateTitleScene(void)
 {
+	
+	if (state == TITLESCENE_FADEIN)
+	{
+		cntFrame++;
+		float t = (float)cntFrame / TITLESCENE_FADEIN_END;
+
+		SetTitleTextureAlpha(EaseLinear(t, 0.0f, 1.0f));
+		if (cntFrame == TITLESCENE_FADEIN_END)
+		{
+			state = TITLESCENE_STATEMAX;
+		}
+	}
+
 	if (GetKeyboardTrigger(DIK_Z))
 	{
 		SetScene(BattleScene);
@@ -158,4 +186,15 @@ void SetVertexTitleScene(void)
 	vertexWk[2].vtx.y = pos.y + sinf(angle) * radius;
 	vertexWk[3].vtx.x = pos.x + cosf(angle) * radius;
 	vertexWk[3].vtx.y = pos.y + sinf(angle) * radius;
+}
+
+/******************************************************************************
+テクスチャアルファ設定
+******************************************************************************/
+void SetTitleTextureAlpha(float alpha)
+{
+	vertexWk[0].diffuse =
+		vertexWk[1].diffuse =
+		vertexWk[2].diffuse =
+		vertexWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 }

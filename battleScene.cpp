@@ -47,6 +47,11 @@
 ******************************************************************************/
 HRESULT InitBattleScene(int num)
 {
+	if (num != 0)
+	{
+		SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+
 	InitCloud(num);
 	InitEnemyMissile(num);
 	InitTargetSite(num);
