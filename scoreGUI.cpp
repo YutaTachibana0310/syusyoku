@@ -13,7 +13,7 @@
 #define SCOREGUI_NUMTEX_NAME	_T("data/TEXTURE/UI/scoreNum.png")		// 数字のテクスチャ
 #define SCOREGUI_TEXTURE_SIZE_X					(480)					// テクスチャサイズX
 #define SCOREGUI_TEXTURE_SIZE_Y					(200)					// テクスチャサイズY
-#define SCOREGUI_INITPOS						(D3DXVECTOR3(0.0f, -10.0f, 0.0f))
+#define SCOREGUI_INITPOS						(D3DXVECTOR3(0.0f, -5.0f, 0.0f))
 
 #define SCOREGUI_NUMTEX_SIZE_X					(40.0f)				// 数字テクスチャサイズ
 #define SCOREGUI_NUMTEX_SIZE_Y					(40.0f)				// 数字テクスチャサイズ
