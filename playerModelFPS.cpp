@@ -10,6 +10,7 @@
 #include "targetSite.h"
 #include "enemyMissile.h"
 #include "playerMissile.h"
+#include "lockonGUI.h"
 
 /**************************************
 マクロ定義
@@ -104,9 +105,11 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 			}
 		}
 
+		//ロックオンGUIセット処理
+		SetLockonGUIPos(player->id, player->pos + D3DXVECTOR3(0.0f, -10.0f, 0.0f));
+
 		//攻撃処理
 		player->atkInterbal++;
-
 		if (GetKeyboardTrigger(DIK_Z))
 		{
 			AttackPlayerModelFPS(player);
@@ -125,14 +128,19 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 	player->cntFrame = 0;
 	player->atkInterbal = PLAYERFPS_ATTACKINTERBAL;
 
+	//ターゲットサイト設定処理
 	TARGETSITE *site = GetTargetSiteAdr(player->id);
 	site->active = true;
 	site->pos = site->targetPos = player->pos;// + D3DXVECTOR3(0.0f, 0.0f, PLAYERFPS_TARGETSITE_POS_Z);
 
+	//ロックオン対象初期化
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
 	{
 		player->target[i].use = false;
 	}
+
+	//ロックオンGUI表示
+	GetLockonGUIAdr(player->id)->active = true;
 }
 
 /**************************************

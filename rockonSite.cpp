@@ -13,7 +13,7 @@
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
-#define ROCKONSITE_SIZE				(10)
+#define ROCKONSITE_SIZE				(20)
 #define ROCKONSITE_TEXTURE			"data/TEXTURE/rockonSite.png"
 #define ROCKONSITE_MAX				(PLAYER_ROCKON_MAX * PLAYERMODEL_MAX)
 #define ROCKONSITE_INITSCALE		(20.0f)

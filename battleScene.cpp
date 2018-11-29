@@ -15,12 +15,10 @@
 #include "targetSite.h"
 #include "rockonSite.h"
 #include "meshCylinder.h"
-#include "scoreGUI.h"
 #include "playerMissile.h"
 #include "playerMissileSmog.h"
 #include "particleManager.h"
-#include "scoreGUI.h"
-#include "hpGUI.h"
+#include "GUIManager.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -52,6 +50,7 @@ HRESULT InitBattleScene(int num)
 		SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
+	InitGUIManager(num);
 	InitCloud(num);
 	InitEnemyMissile(num);
 	InitTargetSite(num);
@@ -60,11 +59,8 @@ HRESULT InitBattleScene(int num)
 	InitPlayerBullet(num);
 	InitBattleCamera();
 	InitMeshCylinder(num);
-	InitScoreGUI(num);
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
-	InitScoreGUI(num);
-	InitHpGUI(num);
 
 	return S_OK;
 }
@@ -81,11 +77,10 @@ void UninitBattleScene(int num)
 	UninitTargetSite(num);
 	UninitRockonSite(num);
 	UninitMeshCylinder(num);
-	UninitScoreGUI(num);
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
-	UninitScoreGUI(num);
-	UninitHpGUI(num);
+	UninitGUIManager(num);
+
 }
 
 /******************************************************************************
@@ -102,10 +97,8 @@ void UpdateBattleScene(void)
 	UpdateRockonSite();
 	UpdateMeshCylinder();
 	UpdatePlayerMissile();
-	UpdateScoreGUI();
 	UpdatePlayerMissileSmog();
-	UpdateScoreGUI();
-	UpdateHpGUI();
+	UpdateGUIManager();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -129,6 +122,5 @@ void DrawBattleScene(void)
 	DrawParticleManager();
 	DrawRockonSite();
 	DrawTargetSite();
-	DrawScoreGUI();
-	DrawHpGUI();
+	DrawGUIManager();
 }
