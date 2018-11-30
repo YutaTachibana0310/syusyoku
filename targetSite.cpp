@@ -21,6 +21,7 @@
 #define TARGETSITE_MOVEVALUE			(3.0f)
 #define TARGETSITE_INCIRCLE_ROTVALUE	(0.01f)
 #define TARGETSITE_OUTCIRCLE_ROTVALUE	(-0.015f)
+#define TARGETSITE_COLLIDER_RADIUS		(180.0f)
 
 /**************************************
 構造体定義
@@ -45,8 +46,6 @@ static const char* texturePath[] = {
 	"data/TEXTURE/targetSite1_2.png"
 };
 
-static float vtxRadius, vtxAngle;
-
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -65,9 +64,6 @@ void InitTargetSite(int num)
 		{
 			texture[i] = CreateTextureFromFile((LPSTR)texturePath[i], pDevice);
 		}
-
-		vtxRadius = D3DXVec2Length(&D3DXVECTOR2(TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y));
-		vtxAngle = atan2f(TARGETSITE_SIZE_Y, TARGETSITE_SIZE_X);
 
 		MakeVertexTargetSite();
 	}
@@ -110,7 +106,7 @@ void UpdateTargetSite(void)
 	D3DXVECTOR3 tmpPos;
 	VERTEX_3D *pVtx = NULL;
 
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+	//vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
 	{
@@ -126,21 +122,21 @@ void UpdateTargetSite(void)
 		//length = Clampf(0.0f, TARGETSITE_MOVEVALUE, length);
 		//ptr->pos += diff * length;
 
-		//topLをプロジェクション変換
-		D3DXVec3TransformCoord(&ptr->topL, &(ptr->pos + pVtx[0].vtx), &GetBattleCameraView());
-		D3DXVec3TransformCoord(&ptr->topL, &ptr->topL, &GetBattleCameraProjection());
+		////topLをプロジェクション変換
+		//D3DXVec3TransformCoord(&ptr->topL, &(ptr->pos + pVtx[0].vtx), &GetBattleCameraView());
+		//D3DXVec3TransformCoord(&ptr->topL, &ptr->topL, &GetBattleCameraProjection());
 
-		//topRをプロジェクション変換
-		D3DXVec3TransformCoord(&ptr->topR, &(ptr->pos + pVtx[1].vtx), &GetBattleCameraView());
-		D3DXVec3TransformCoord(&ptr->topR, &ptr->topR, &GetBattleCameraProjection());
+		////topRをプロジェクション変換
+		//D3DXVec3TransformCoord(&ptr->topR, &(ptr->pos + pVtx[1].vtx), &GetBattleCameraView());
+		//D3DXVec3TransformCoord(&ptr->topR, &ptr->topR, &GetBattleCameraProjection());
 
-		//bottomLをプロジェクション変換
-		D3DXVec3TransformCoord(&ptr->bottomL, &(ptr->pos + pVtx[2].vtx), &GetBattleCameraView());
-		D3DXVec3TransformCoord(&ptr->bottomL, &ptr->bottomL, &GetBattleCameraProjection());
+		////bottomLをプロジェクション変換
+		//D3DXVec3TransformCoord(&ptr->bottomL, &(ptr->pos + pVtx[2].vtx), &GetBattleCameraView());
+		//D3DXVec3TransformCoord(&ptr->bottomL, &ptr->bottomL, &GetBattleCameraProjection());
 
-		//bottomRをプロジェクション変換
-		D3DXVec3TransformCoord(&ptr->bottomR, &(ptr->pos + pVtx[3].vtx), &GetBattleCameraView());
-		D3DXVec3TransformCoord(&ptr->bottomR, &ptr->bottomR, &GetBattleCameraProjection());
+		////bottomRをプロジェクション変換
+		//D3DXVec3TransformCoord(&ptr->bottomR, &(ptr->pos + pVtx[3].vtx), &GetBattleCameraView());
+		//D3DXVec3TransformCoord(&ptr->bottomR, &ptr->bottomR, &GetBattleCameraProjection());
 
 		//内側のサークルを回転
 		ptr->insideRot.z += TARGETSITE_INCIRCLE_ROTVALUE;
@@ -151,7 +147,7 @@ void UpdateTargetSite(void)
 		RockonEnemy(i);
 	}
 
-	vtxBuff->Unlock();
+	//vtxBuff->Unlock();
 }
 
 /**************************************
@@ -214,7 +210,7 @@ void DrawTargetSite(void)
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESS);
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 }
 
 /**************************************
@@ -305,7 +301,7 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos, D3DXVECTOR3* siteScreen
 	//	}
 	//}
 
-	if (D3DXVec3LengthSq(&(screenPos - *siteScreenPos)) < powf(TARGETSITE_SIZE_X * 2, 2))
+	if (D3DXVec3LengthSq(&(screenPos - *siteScreenPos)) < powf(TARGETSITE_COLLIDER_RADIUS, 2))
 		return true;
 	else
 		return false;

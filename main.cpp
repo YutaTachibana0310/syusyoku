@@ -43,12 +43,14 @@ void Draw(void);
 //*****************************************************************************
 LPDIRECT3D9			g_pD3D = NULL;			// Direct3D オブジェクト
 LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
-static D3DXCOLOR backColor = D3DCOLOR_RGBA(255, 255, 255, 255);
+static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0, 0);
 #ifdef _DEBUG
 int					g_nCountFPS;			// FPSカウンタ
+DefineScene startScene = BattleScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
+
 //=============================================================================
 // メイン関数
 //=============================================================================
@@ -88,8 +90,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 						CLASS_NAME,
 						WINDOW_NAME,
 						WS_OVERLAPPEDWINDOW,
-						10,//CW_USEDEFAULT,
-						10,//CW_USEDEFAULT,
+						0,//CW_USEDEFAULT,
+						0,//CW_USEDEFAULT,
 						SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2,
 						SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),
 						NULL,
@@ -330,6 +332,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//パーティクルマネージャ初期化
 	InitParticleManager(0);
 
+#ifdef _DEBUG
+	SetScene(startScene);
+#endif
+
 	return S_OK;
 }
 
@@ -474,4 +480,13 @@ void TranslateViewPort(D3DXVECTOR3 *out, D3DXVECTOR3 *pos)
 {
 	out->x = pos->x * (SCREEN_WIDTH / 2.0f) + SCREEN_WIDTH / 2.0f;
 	out->y = pos->y * (-SCREEN_HEIGHT / 2.0f) + SCREEN_HEIGHT / 2.0f;
+}
+
+//=============================================================================
+// バックカラー変更
+//=============================================================================
+void SetBackColor(D3DXCOLOR color)
+{
+	backColor = color;
+	g_pD3DDevice->SetRenderState(D3DRS_FOGCOLOR, backColor);
 }

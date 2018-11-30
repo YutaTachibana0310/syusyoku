@@ -38,8 +38,8 @@
 // ３Ｄポリゴン頂点フォーマット( 頂点座標[3D] / 法線 / 反射光 / テクスチャ座標 )
 #define	FVF_VERTEX_3D	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
-#define SCREEN_WIDTH	(1440)				// ウインドウの幅
-#define SCREEN_HEIGHT	(960)				// ウインドウの高さ
+#define SCREEN_WIDTH	(1800)				// ウインドウの幅
+#define SCREEN_HEIGHT	(1000)				// ウインドウの高さ
 #define SCREEN_CENTER_X	(SCREEN_WIDTH / 2)	// ウインドウの中心Ｘ座標
 #define SCREEN_CENTER_Y	(SCREEN_HEIGHT / 2)	// ウインドウの中心Ｙ座標
 
@@ -75,4 +75,5 @@ typedef struct
 LPDIRECT3DDEVICE9 GetDevice(void);
 LPDIRECT3DTEXTURE9 CreateTextureFromFile(LPSTR szName, LPDIRECT3DDEVICE9 lpD3DDevice);
 void TranslateViewPort(D3DXVECTOR3 *out, D3DXVECTOR3 *pos);
+void SetBackColor(D3DXCOLOR color);
 #endif

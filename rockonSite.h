@@ -23,6 +23,9 @@ typedef struct
 
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 screenPos;
+	float scale;
+	int cntFrame;
+	float alpha;
 }ROCKONSITE;
 
 /**************************************
@@ -35,4 +38,5 @@ void DrawRockonSite(void);
 ROCKONSITE *SetRockonSite(int id, D3DXVECTOR3 *target, bool *targetActive);
 void ReleaseRockonSite(ROCKONSITE *ptr);
 void SetRockonSitePos(int id, D3DXVECTOR3 pos);
+void ActivateRockonSite(int id);
 #endif

@@ -159,7 +159,8 @@ void SetBattleCamera(void)
 	D3DXMatrixLookAtLH(&camera.view, 
 						&camera.pos,		// カメラの視点
 						&camera.at,			// カメラの注視点
-						&camera.up);		// カメラの上方向
+						&camera.up);	
+	// カメラの上方向
 
 	// ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &camera.view);

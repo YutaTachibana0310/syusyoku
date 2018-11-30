@@ -155,8 +155,11 @@
     <ClCompile Include="explosionSmog.cpp" />
     <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
+    <ClCompile Include="GUIManager.cpp" />
+    <ClCompile Include="hpGUI.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
+    <ClCompile Include="lockonGUI.cpp" />
     <ClCompile Include="logoScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshCylinder.cpp" />
@@ -208,6 +211,9 @@
     <ClInclude Include="explosionSmog.h" />
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
+    <ClInclude Include="GUIManager.h" />
+    <ClInclude Include="hpGUI.h" />
+    <ClInclude Include="lockonGUI.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerMissile.h" />

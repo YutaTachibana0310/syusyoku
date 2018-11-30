@@ -214,6 +214,12 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 {
 	PLAYERMODEL *ptr = &model[id];
 
+	//インターバル判定
+	if (ptr->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
+	{
+		return NULL;
+	}
+
 	//ダブリ判定
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
 	{
@@ -237,6 +243,8 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 		ptr->target[i].active = targetActive;
 		ptr->target[i].hp = targetHP;
 		ptr->target[i].use = true;
+		ActivateRockonSite(ptr->id * PLAYER_ROCKON_MAX + i);
+		ptr->lockonNum++;
 		return &ptr->target[i];
 	}
 
@@ -249,10 +257,15 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 引数	：ROCKONTARGET *target：ロックオンを解除したいターゲットへのポインタ
 戻り値	：void
 *********************************************/
-void ReleaseRockonTarget(ROCKONTARGET *target)
+void ReleaseRockonTarget(PLAYERMODEL *player, int targetID)
 {
-	target->active = NULL;
-	target->hp = NULL;
-	target->pos = NULL;
-	//ReleaseRockonSite(target->rockonSite);
+	//target->active = NULL;
+	//target->hp = NULL;
+	//target->pos = NULL;
+
+	player->target[targetID].active = NULL;
+	player->target[targetID].hp = NULL;
+	player->target[targetID].pos = NULL;
+	player->target[targetID].use = false;
+	player->lockonNum--;
 }

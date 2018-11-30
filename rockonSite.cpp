@@ -1,6 +1,6 @@
 //=====================================
 //
-//テンプレート処理[rockonSite.cpp]
+//ロックオン処理[rockonSite.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -8,13 +8,17 @@
 #include "playerModel.h"
 #include "battleCamera.h"
 #include "debugproc.h"
+#include "Easing.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define ROCKONSITE_SIZE		(10)
-#define ROCKONSITE_TEXTURE	"data/TEXTURE/rockonSite.png"
-#define ROCKONSITE_MAX		(PLAYER_ROCKON_MAX * PLAYERMODEL_MAX)
+#define ROCKONSITE_SIZE				(20)
+#define ROCKONSITE_TEXTURE			"data/TEXTURE/rockonSite.png"
+#define ROCKONSITE_MAX				(PLAYER_ROCKON_MAX * PLAYERMODEL_MAX)
+#define ROCKONSITE_INITSCALE		(20.0f)
+#define ROCKONSITE_ENDSCALE			(1.0f)
+#define ROCKONSITE_ANIMATIONFRAME	(15)
 
 /**************************************
 構造体定義
@@ -52,6 +56,8 @@ void InitRockonSite(int num)
 	{
 		ptr->active = false;
 		ptr->pos = D3DXVECTOR3(-9999.9f, -9999.9f, -9999.9f);
+		ptr->scale = 1.0f;
+		ptr->cntFrame = 0;
 	}
 }
 
@@ -78,6 +84,7 @@ void UninitRockonSite(int num)
 void UpdateRockonSite(void)
 {
 	ROCKONSITE *ptr = &rockon[0];
+	float t;
 
 	int cnt = 0;
 
@@ -86,6 +93,15 @@ void UpdateRockonSite(void)
 		if (!ptr->active)
 		{
 			continue;
+		}
+
+		//アニメーション
+		if (ptr->cntFrame < ROCKONSITE_ANIMATIONFRAME)
+		{
+			ptr->cntFrame++;
+			t = (float)ptr->cntFrame / ROCKONSITE_ANIMATIONFRAME;
+			ptr->scale = EaseOutCubic(t, ROCKONSITE_INITSCALE, ROCKONSITE_ENDSCALE);
+			ptr->alpha = EaseInCubic(t, 0.0f, 1.0f);
 		}
 
 		//ビュー変換、プロジェクション変換を行う
@@ -157,14 +173,21 @@ void MakeVertexRockonSite(void)
 ***************************************/
 void SetVertexRockonSite(ROCKONSITE *ptr)
 {
-	vtxWk[0].vtx.x = ptr->pos.x - ROCKONSITE_SIZE;
-	vtxWk[0].vtx.y = ptr->pos.y - ROCKONSITE_SIZE;
-	vtxWk[1].vtx.x = ptr->pos.x + ROCKONSITE_SIZE;
-	vtxWk[1].vtx.y = ptr->pos.y - ROCKONSITE_SIZE;
-	vtxWk[2].vtx.x = ptr->pos.x - ROCKONSITE_SIZE;
-	vtxWk[2].vtx.y = ptr->pos.y + ROCKONSITE_SIZE;
-	vtxWk[3].vtx.x = ptr->pos.x + ROCKONSITE_SIZE;
-	vtxWk[3].vtx.y = ptr->pos.y + ROCKONSITE_SIZE;
+	vtxWk[0].vtx.x = ptr->pos.x - ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[0].vtx.y = ptr->pos.y - ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[1].vtx.x = ptr->pos.x + ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[1].vtx.y = ptr->pos.y - ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[2].vtx.x = ptr->pos.x - ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[2].vtx.y = ptr->pos.y + ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[3].vtx.x = ptr->pos.x + ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[3].vtx.y = ptr->pos.y + ROCKONSITE_SIZE * ptr->scale;
+
+	vtxWk[0].diffuse =
+		vtxWk[1].diffuse =
+		vtxWk[2].diffuse =
+		vtxWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, ptr->alpha);
+
+
 }
 
 /**************************************
@@ -210,4 +233,13 @@ void SetRockonSitePos(int id, D3DXVECTOR3 pos)
 {
 	rockon[id].pos = pos;
 	rockon[id].active = true;
+}
+
+/**************************************
+アクティブ化処理
+***************************************/
+void ActivateRockonSite(int id)
+{
+	rockon[id].cntFrame = 0;
+	rockon[id].scale = ROCKONSITE_INITSCALE;
 }

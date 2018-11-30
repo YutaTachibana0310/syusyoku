@@ -15,10 +15,10 @@
 #include "targetSite.h"
 #include "rockonSite.h"
 #include "meshCylinder.h"
-#include "scoreGUI.h"
 #include "playerMissile.h"
 #include "playerMissileSmog.h"
 #include "particleManager.h"
+#include "GUIManager.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -45,6 +45,12 @@
 ******************************************************************************/
 HRESULT InitBattleScene(int num)
 {
+	if (num != 0)
+	{
+		SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+
+	InitGUIManager(num);
 	InitCloud(num);
 	InitEnemyMissile(num);
 	InitTargetSite(num);
@@ -53,7 +59,6 @@ HRESULT InitBattleScene(int num)
 	InitPlayerBullet(num);
 	InitBattleCamera();
 	InitMeshCylinder(num);
-	InitScoreGUI(num);
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
 
@@ -65,16 +70,17 @@ HRESULT InitBattleScene(int num)
 ******************************************************************************/
 void UninitBattleScene(int num)
 {
-	//UninitCloud(num);
+	UninitCloud(num);
 	UninitEnemyMissile(num);
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
 	UninitTargetSite(num);
 	UninitRockonSite(num);
 	UninitMeshCylinder(num);
-	UninitScoreGUI(num);
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
+	UninitGUIManager(num);
+
 }
 
 /******************************************************************************
@@ -91,8 +97,8 @@ void UpdateBattleScene(void)
 	UpdateRockonSite();
 	UpdateMeshCylinder();
 	UpdatePlayerMissile();
-	UpdateScoreGUI();
 	UpdatePlayerMissileSmog();
+	UpdateGUIManager();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -105,7 +111,6 @@ void UpdateBattleScene(void)
 ******************************************************************************/
 void DrawBattleScene(void)
 {
-	//DrawScoreGUI();
 	SetBattleCamera();
 	DrawMeshCylinder();
 	//DrawCloud();
@@ -117,4 +122,5 @@ void DrawBattleScene(void)
 	DrawParticleManager();
 	DrawRockonSite();
 	DrawTargetSite();
+	DrawGUIManager();
 }

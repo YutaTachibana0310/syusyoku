@@ -8,25 +8,37 @@
 #include "camera.h"
 #include "logoScene.h"
 #include "input.h"
+#include "Easing.h"
 
 /*****************************************************************************
 マクロ定義
 *****************************************************************************/
 #define LOGOSCENE_TEXTURE_NAME	_T("data/TEXTURE/UI/logo.png")	// プレイヤーバレットのテクスチャ
 
-#define LOGOSCENE_TEXTURE_SIZE_X (200)			// テクスチャサイズX
-#define LOGOSCENE_TEXTURE_SIZE_Y (200)			// テクスチャサイズY
+#define LOGOSCENE_TEXTURE_SIZE_X	(300)			// テクスチャサイズX
+#define LOGOSCENE_TEXTURE_SIZE_Y	(150)			// テクスチャサイズY
+
+#define LOGOSCENE_FADEIN_END		(30)
+#define LOGOSCENE_FADEWAIT_END		(60)
+#define LOGOSCENE_FADEOUT_END		(30)
 
 /*****************************************************************************
 プロトタイプ宣言
 *****************************************************************************/
-HRESULT MakeVertexLogoScene(void);	//頂点作成関数
-void SetTextureLogoScene(void);		// テクスチャ座標の計算処理
-void SetVertexLogoScene(void);		// 頂点の計算処理
-
+HRESULT MakeVertexLogoScene(void);			//頂点作成関数
+void SetTextureLogoScene(void);				// テクスチャ座標の計算処理
+void SetVertexLogoScene(void);				// 頂点の計算処理
+void SetLogoTextureAlpha(float alpha);		// アルファ設定処理
 /*****************************************************************************
 構造体定義
 *****************************************************************************/
+enum LOGOSCENE_STATE
+{
+	LOGOSCENE_FADEIN,
+	LOGOSCENE_FADEWAIT,
+	LOGOSCENE_FADEOUT,
+	LOGOSCENE_STATEMAX
+};
 
 /*****************************************************************************
 グローバル変数
@@ -35,6 +47,8 @@ static LPDIRECT3DTEXTURE9 texture = NULL;				// テクスチャへのポインタ
 static VERTEX_2D vertexWk[NUM_VERTEX];					//頂点情報格納ワーク
 static D3DXVECTOR3 pos;
 static float angle, radius;
+static int cntFrame;
+static LOGOSCENE_STATE state = LOGOSCENE_FADEIN;
 
 /******************************************************************************
 初期化処理
@@ -56,6 +70,9 @@ HRESULT InitLogoScene(int num)
 		// テクスチャの読み込み
 		texture = CreateTextureFromFile((LPSTR)LOGOSCENE_TEXTURE_NAME, pDevice);
 	}
+
+	//カウントリセット
+	cntFrame = 0;
 
 	return S_OK;
 }
@@ -80,12 +97,45 @@ void UninitLogoScene(int num)
 ******************************************************************************/
 void UpdateLogoScene(void)
 {
-	if (GetKeyboardPress(DIK_Z))
-	{
-		SetScene(TitleScene);
-		return;
-	}
+	cntFrame++;
+	float t = 0.0f;
 
+	switch (state)
+	{
+		//フェードイン
+	case LOGOSCENE_FADEIN:
+		t = (float)cntFrame / LOGOSCENE_FADEIN_END;
+		SetLogoTextureAlpha(EaseLinear(t, 0.0f, 1.0f));
+
+		if (cntFrame == LOGOSCENE_FADEIN_END)
+		{
+			cntFrame = 0;
+			state = LOGOSCENE_FADEWAIT;
+		}
+		break;
+
+		//フェード待機
+	case LOGOSCENE_FADEWAIT:
+		if (cntFrame == LOGOSCENE_FADEWAIT_END)
+		{
+			cntFrame = 0;
+			state = LOGOSCENE_FADEOUT;
+		}
+		break;
+
+		//フェードアウト
+	case LOGOSCENE_FADEOUT:
+		t = (float)cntFrame / LOGOSCENE_FADEOUT_END;
+		SetLogoTextureAlpha(EaseLinear(t, 1.0f, 0.0f));
+
+		if (cntFrame == LOGOSCENE_FADEOUT_END)
+		{
+			//cntFrame = 0;
+			//state = LOGOSCENE_INPUTWAIT;
+			SetScene(TitleScene);
+		}
+		break;
+	}
 }
 
 /******************************************************************************
@@ -160,4 +210,15 @@ void SetVertexLogoScene(void)
 	vertexWk[2].vtx.y = pos.y + sinf(angle) * radius;
 	vertexWk[3].vtx.x = pos.x + cosf(angle) * radius;
 	vertexWk[3].vtx.y = pos.y + sinf(angle) * radius;
+}
+
+/******************************************************************************
+アルファ設定処理
+******************************************************************************/
+void SetLogoTextureAlpha(float alpha)
+{
+	vertexWk[0].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
+	vertexWk[1].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
+	vertexWk[2].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
+	vertexWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 }
