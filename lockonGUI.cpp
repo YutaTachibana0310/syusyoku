@@ -7,6 +7,7 @@
 #include "lockonGUI.h"
 #include "playerModel.h"
 #include "battleCamera.h"
+#include "GUIManager.h"
 
 /**************************************
 マクロ定義
@@ -15,8 +16,18 @@
 #define LOCKONGUI_TEXTTEX_DIVIDE_X		(1)
 #define LOCKONGUI_TEXTTEX_DIVIDE_Y		(2)
 #define LOCKONGUI_TEXTTEX_PATTERN		(2)
-#define LOCKONGUI_TEXTTEX_SIZE_X		(128)
-#define LOCKONGUI_TEXTTEX_SIZE_Y		(64)
+#define LOCKONGUI_TEXTTEX_SIZE_X		(90)
+#define LOCKONGUI_TEXTTEX_SIZE_Y		(45)
+
+#define LOCKONGUI_NUMTEX_SIZE_X			(30)
+#define LOCKONGUI_NUMTEX_SIZE_Y			(30)
+#define LOCKONGUI_NUMTEX_OFFSET_X		(-25.0f)
+#define LOCKONGUI_NUMTEX_OFFSET_Y		(50)
+
+#define LOCKONGUI_BARTEX_NAME			"data/TEXTURE/UI/lockonBar.png"
+#define LOCKONGUI_BARTEX_SIZE_X			(180.0f)
+#define LOCKONGUI_BARTEX_SIZE_Y			(34.4f)
+#define LOCKONGUI_BARTEX_OFFSET_Y		(50)
 
 /**************************************
 構造体定義
@@ -31,14 +42,18 @@ enum LOCKONGUI_STATE
 グローバル変数
 ***************************************/
 static VERTEX_2D vtxWk[NUM_VERTEX];
-static LPDIRECT3DTEXTURE9 texture;
+static LPDIRECT3DTEXTURE9 textTexture, barTexture;
 static LOCKONGUI lockonGUI[PLAYERMODEL_MAX];
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void CreateVertexLockonGUI(void);
+void SetLockonGUITextTexture(int id);
 void SetLockonGUITextVertex(int id);
+void SetLockonGUINumVertex(int id, float offset);
+void SetLockonGUIBarVertex(int id);
+void SetLockonGUIBarTexture(int id);
 
 /**************************************
 初期化処理
@@ -52,7 +67,8 @@ void InitLockonGUI(int num)
 	{
 		CreateVertexLockonGUI();
 
-		texture = CreateTextureFromFile((LPSTR)LOCKONGUI_TEXTTEX_NAME, pDevice);
+		textTexture = CreateTextureFromFile((LPSTR)LOCKONGUI_TEXTTEX_NAME, pDevice);
+		barTexture = CreateTextureFromFile((LPSTR)LOCKONGUI_BARTEX_NAME, pDevice);
 	}
 
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
@@ -68,7 +84,8 @@ void UninitLockonGUI(int num)
 {
 	if (num == 0)
 	{
-		SAFE_RELEASE(texture);
+		SAFE_RELEASE(textTexture);
+		SAFE_RELEASE(barTexture);
 	}
 }
 
@@ -99,11 +116,30 @@ void DrawLockonGUI(void)
 		}
 
 		//テキストを描画
-		pDevice->SetTexture(0, texture);
+		pDevice->SetTexture(0, textTexture);
+		SetLockonGUITextTexture(i);
 		SetLockonGUITextVertex(i);
 		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
-		
-		
+
+		//ロックオン数を描画
+		if (GetPlayerAdr(i)->atkInterbal >= PLAYER_HOMINGATK_INTERBAL)
+		{
+			int lockonNum = GetPlayerAdr(i)->lockonNum;
+			int digitMax = (lockonNum == 0) ? 1 : (int)log10f((float)lockonNum) + 1;
+			for (int j = 0; j < digitMax; j++, lockonNum /= 10)
+			{
+				SetLockonGUINumVertex(i, j * LOCKONGUI_NUMTEX_OFFSET_X * j);
+				DrawGUINum(GUI_NUMLOCKON, lockonNum % 10, vtxWk);
+			}
+		}
+		//リチャージバーを表示
+		else
+		{
+			pDevice->SetTexture(0, barTexture);
+			SetLockonGUIBarVertex(i);
+			SetLockonGUIBarTexture(i);
+			pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
+		}
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
@@ -149,10 +185,9 @@ void SetLockonGUIPos(int id, D3DXVECTOR3 pos)
 /**************************************
 テキストテクスチャ設定処理
 ***************************************/
-void SetLockonGUITextVertex(int id)
+void SetLockonGUITextTexture(int id)
 {
 	PLAYERMODEL *player = GetPlayerAdr(id);
-	LOCKONGUI *ptr = &lockonGUI[id];
 
 	int pattern = (player->atkInterbal >= PLAYER_HOMINGATK_INTERBAL) ? 0 : 1;
 	float sizeY = 1.0f / LOCKONGUI_TEXTTEX_DIVIDE_Y;
@@ -161,11 +196,73 @@ void SetLockonGUITextVertex(int id)
 	vtxWk[1].tex = D3DXVECTOR2(1.0f, sizeY * pattern);
 	vtxWk[2].tex = D3DXVECTOR2(0.0f, sizeY * (pattern + 1));
 	vtxWk[3].tex = D3DXVECTOR2(1.0f, sizeY * (pattern + 1));
+}
+
+/**************************************
+テキスト頂点設定処理
+***************************************/
+void SetLockonGUITextVertex(int id)
+{
+	LOCKONGUI *ptr = &lockonGUI[id];
 
 	vtxWk[0].vtx = ptr->pos + D3DXVECTOR3(-LOCKONGUI_TEXTTEX_SIZE_X, -LOCKONGUI_TEXTTEX_SIZE_Y, 0.0f);
 	vtxWk[1].vtx = ptr->pos + D3DXVECTOR3(LOCKONGUI_TEXTTEX_SIZE_X, -LOCKONGUI_TEXTTEX_SIZE_Y, 0.0f);
 	vtxWk[2].vtx = ptr->pos + D3DXVECTOR3(-LOCKONGUI_TEXTTEX_SIZE_X, LOCKONGUI_TEXTTEX_SIZE_Y, 0.0f);
 	vtxWk[3].vtx = ptr->pos + D3DXVECTOR3(LOCKONGUI_TEXTTEX_SIZE_X, LOCKONGUI_TEXTTEX_SIZE_Y, 0.0f);
+}
+
+/**************************************
+数字頂点設定処理
+***************************************/
+void SetLockonGUINumVertex(int id, float offsetX)
+{
+	LOCKONGUI *ptr = &lockonGUI[id];
+
+	vtxWk[0].vtx = ptr->pos + D3DXVECTOR3(-LOCKONGUI_NUMTEX_SIZE_X, -LOCKONGUI_NUMTEX_SIZE_Y, 0.0f);
+	vtxWk[1].vtx = ptr->pos + D3DXVECTOR3(LOCKONGUI_NUMTEX_SIZE_X, -LOCKONGUI_NUMTEX_SIZE_Y, 0.0f);
+	vtxWk[2].vtx = ptr->pos + D3DXVECTOR3(-LOCKONGUI_NUMTEX_SIZE_X, LOCKONGUI_NUMTEX_SIZE_Y, 0.0f);
+	vtxWk[3].vtx = ptr->pos + D3DXVECTOR3(LOCKONGUI_NUMTEX_SIZE_X, LOCKONGUI_NUMTEX_SIZE_Y, 0.0f);
+
+	for (int i = 0; i < NUM_VERTEX; i++)
+	{
+		vtxWk[i].vtx.x += offsetX;
+		vtxWk[i].vtx.y += LOCKONGUI_NUMTEX_OFFSET_Y;
+	}
+
+}
+/**************************************
+バー頂点設定処理
+***************************************/
+void SetLockonGUIBarVertex(int id)
+{
+	LOCKONGUI *ptr = &lockonGUI[id];
+	PLAYERMODEL *player = GetPlayerAdr(id);
+
+	float scale = (float)player->atkInterbal / PLAYER_HOMINGATK_INTERBAL;
+	vtxWk[0].vtx = ptr->pos + D3DXVECTOR3(-LOCKONGUI_BARTEX_SIZE_X / 2.0f, -LOCKONGUI_BARTEX_SIZE_Y, 0.0f);
+	vtxWk[1].vtx = vtxWk[0].vtx + D3DXVECTOR3(LOCKONGUI_BARTEX_SIZE_X * scale, 0.0f, 0.0f);
+	vtxWk[2].vtx = vtxWk[0].vtx + D3DXVECTOR3(0.0f, LOCKONGUI_BARTEX_SIZE_Y, 0.0f);
+	vtxWk[3].vtx = vtxWk[0].vtx + D3DXVECTOR3(LOCKONGUI_BARTEX_SIZE_X * scale, LOCKONGUI_BARTEX_SIZE_Y, 0.0f);
+
+	for (int i = 0; i < NUM_VERTEX; i++)
+	{
+		vtxWk[i].vtx.y += LOCKONGUI_BARTEX_OFFSET_Y;
+	}
+}
+
+/**************************************
+数字頂点設定処理
+***************************************/
+void SetLockonGUIBarTexture(int id)
+{
+	LOCKONGUI *ptr = &lockonGUI[id];
+	PLAYERMODEL *player = GetPlayerAdr(id);
+
+	float scale = (float)player->atkInterbal / PLAYER_HOMINGATK_INTERBAL;
+	vtxWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	vtxWk[1].tex = D3DXVECTOR2(scale, 0.0f);
+	vtxWk[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	vtxWk[3].tex = D3DXVECTOR2(scale, 1.0f);
 }
 
 /**************************************

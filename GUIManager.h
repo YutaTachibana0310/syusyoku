@@ -18,8 +18,8 @@
 ***************************************/
 enum GUI_NUMTEXTURE
 {
-	NUM_SCORE,
-	NUM_LOCKON,
+	GUI_NUMSCORE,
+	GUI_NUMLOCKON,
 	GUI_NUMTEX_MAX
 };
 /**************************************

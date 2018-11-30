@@ -17,7 +17,7 @@
 #define PLAYER_DESTROT_MAX		(0.51f)
 #define PLAYER_MOVERANGE		(50.0f)
 #define PLAYER_ROCKON_MAX		(32)
-#define PLAYER_HOMINGATK_INTERBAL	(60)
+#define PLAYER_HOMINGATK_INTERBAL	(180)
 
 /**************************************
 マクロ定義
@@ -64,6 +64,7 @@ typedef struct
 	//ロックオン関連パラメータ
 	ROCKONTARGET target[PLAYER_ROCKON_MAX];
 	int atkInterbal;
+	int lockonNum;
 
 }PLAYERMODEL;
 
@@ -77,5 +78,5 @@ void DrawPlayerModel(void);
 PLAYERMODEL *GetPlayerAdr(int num);
 void ChangeStatePlayerModel(int next);
 ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive, float *targetHP);
-void ReleaseRockonTarget(ROCKONTARGET *target);
+void ReleaseRockonTarget(PLAYERMODEL *player, int targetID);
 #endif

@@ -87,8 +87,9 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 			if (!*player->target[i].active)
 			{
-				player->target[i].use = false;
-				player->target[i].pos = NULL;
+				//player->target[i].use = false;
+				//player->target[i].pos = NULL;
+				ReleaseRockonTarget(player, i);
 			}
 		}
 
@@ -138,6 +139,7 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 	{
 		player->target[i].use = false;
 	}
+	player->lockonNum = 0;
 
 	//ロックオンGUI表示
 	GetLockonGUIAdr(player->id)->active = true;
@@ -164,8 +166,9 @@ void AttackPlayerModelFPS(PLAYERMODEL *player)
 		{
 			SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
 		}
-		ReleaseRockonTarget(&player->target[i]);
+		ReleaseRockonTarget(player, i);
 		player->target[i].use = false;
 	}
 	player->atkInterbal = 0;
+	player->lockonNum = 0;
 }

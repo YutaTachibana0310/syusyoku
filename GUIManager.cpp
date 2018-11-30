@@ -26,7 +26,7 @@
 static LPDIRECT3DTEXTURE9 texture[GUI_NUMTEX_MAX];
 static const char* texturePath[GUI_NUMTEX_MAX] =
 {
-	"data/TEXTURE/UI/scoreNum.png"
+	"data/TEXTURE/UI/scoreNum.png",
 	"data/TEXTURE/UI/lockonNum.png"
 };
 
@@ -45,7 +45,7 @@ void InitGUIManager(int num)
 	{
 		for (int i = 0; i < GUI_NUMTEX_MAX; i++)
 		{
-			texture[i] = CreateTextureFromFile((LPSTR)texturePath, pDevice);
+			texture[i] = CreateTextureFromFile((LPSTR)texturePath[i], pDevice);
 		}
 	}
 
