@@ -10,6 +10,7 @@
 #include "playerModelTopView.h"
 #include "playerModelSideView.h"
 #include "playerModelQuaterView.h"
+#include "playerModelTransition.h"
 #include "playerBullet.h"
 
 #ifdef _DEBUG
@@ -42,14 +43,24 @@ static funcPlayerModel Update[PlayerStateMax] = {
 	UpdatePlayerModelFPS,
 	UpdatePlayerModelTopView,
 	UpdatePlayerModelSideView,
-	UpdatePlayerModelQuaterView
+	UpdatePlayerModelQuaterView,
+	UpdatePlayerModelTransition
 };
 
 static funcPlayerModel Enter[PlayerStateMax] = {
 	EnterPlayerModelFPS,
 	EnterPlayerModelTopView,
 	EnterPlayerModelSideView,
-	EnterPlayerModelQuaterView
+	EnterPlayerModelQuaterView,
+	EnterPlayerModelTransition
+};
+
+static funcPlayerModel Exit[PlayerStateMax] = {
+	ExitPlayerModelFPS,
+	ExitPlayerModelTopView,
+	ExitPlayerModelSideView,
+	ExitPlayerModelQuaterView,
+	ExitPlayerModelTransition
 };
 
 /**************************************
@@ -193,11 +204,14 @@ void ChangeStatePlayerModel(int next)
 
 	playerState = next;
 	PLAYERMODEL *ptr = &model[0];
+
+	//ëﬁèÍèàóù
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
 			continue;
 
+		Exit[playerState](ptr);
 		Enter[playerState](ptr);
 	}
 }

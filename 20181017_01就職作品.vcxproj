@@ -180,6 +180,7 @@
     <ClCompile Include="playerModelQuaterView.cpp" />
     <ClCompile Include="playerModelSIdeView.cpp" />
     <ClCompile Include="playerModelTopView.cpp" />
+    <ClCompile Include="playerModelTransition.cpp" />
     <ClCompile Include="quadTree.cpp" />
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="rockonSite.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="playerModelFPS.h" />
     <ClInclude Include="playerModelSideView.h" />
     <ClInclude Include="playerModelTopView.h" />
+    <ClInclude Include="playerModelTransition.h" />
     <ClInclude Include="quadTree.h" />
     <ClInclude Include="resultScene.h" />
     <ClInclude Include="rockonSite.h" />

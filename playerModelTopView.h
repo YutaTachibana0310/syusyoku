@@ -23,5 +23,5 @@
 ***************************************/
 void UpdatePlayerModelTopView(PLAYERMODEL *player);
 void EnterPlayerModelTopView(PLAYERMODEL *player);
-
+void ExitPlayerModelTopView(PLAYERMODEL *player);
 #endif

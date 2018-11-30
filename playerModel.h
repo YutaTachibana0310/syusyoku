@@ -33,6 +33,7 @@ enum PlayerState
 	PlayerTopView,
 	PlayerSideView,
 	PlayerQuaterView,
+	PlayerTransition,
 	PlayerStateMax
 };
 
@@ -57,9 +58,9 @@ typedef struct
 	D3DXVECTOR3 scale;
 
 	D3DXVECTOR3 initPos;
-	bool flgMove;
 	int cntFrame;
 	D3DXVECTOR3 destRot;
+	int nextState;
 
 	//ロックオン関連パラメータ
 	ROCKONTARGET target[PLAYER_ROCKON_MAX];

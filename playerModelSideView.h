@@ -23,5 +23,5 @@
 ***************************************/
 void UpdatePlayerModelSideView(PLAYERMODEL *player);
 void EnterPlayerModelSideView(PLAYERMODEL *player);
-
+void ExitPlayerModelSideView(PLAYERMODEL *player);
 #endif

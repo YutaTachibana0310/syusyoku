@@ -23,5 +23,5 @@
 ***************************************/
 void UpdatePlayerModelQuaterView(PLAYERMODEL *player);
 void EnterPlayerModelQuaterView(PLAYERMODEL *player);
-
+void ExitPlayerModelQuaterView(PLAYERMODEL *player);
 #endif
