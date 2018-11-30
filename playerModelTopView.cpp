@@ -33,40 +33,28 @@
 ***************************************/
 void UpdatePlayerModelTopView(PLAYERMODEL *player)
 {
-	if (player->flgMove)
+	if (GetKeyboardPress(DIK_LEFT))
 	{
-		player->cntFrame++;
-		player->pos = EaseInOutCubic((float)player->cntFrame / BATTLECAMERA_MOVEFRAME, player->initPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		if (player->cntFrame == BATTLECAMERA_MOVEFRAME)
-		{
-			player->flgMove = false;
-		}
+		player->pos.x -= 1.0f;
+		player->destRot.z = -PLAYER_DESTROT_MAX;
+	}
+	else if (GetKeyboardPress(DIK_RIGHT))
+	{
+		player->pos.x += 1.0f;
+		player->destRot.z = PLAYER_DESTROT_MAX;
 	}
 	else
 	{
-		if (GetKeyboardPress(DIK_LEFT))
-		{
-			player->pos.x -= 1.0f;
-			player->destRot.z = -PLAYER_DESTROT_MAX;
-		}
-		else if (GetKeyboardPress(DIK_RIGHT))
-		{
-			player->pos.x += 1.0f;
-			player->destRot.z = PLAYER_DESTROT_MAX;
-		}
-		else
-		{
-			player->destRot.z = 0.0f;
-		}
+		player->destRot.z = 0.0f;
+	}
 
-		if (GetKeyboardPress(DIK_UP))
-		{
-			player->pos.z += 1.0f;
-		}
-		else if (GetKeyboardPress(DIK_DOWN))
-		{
-			player->pos.z -= 1.0f;
-		}
+	if (GetKeyboardPress(DIK_UP))
+	{
+		player->pos.z += 1.0f;
+	}
+	else if (GetKeyboardPress(DIK_DOWN))
+	{
+		player->pos.z -= 1.0f;
 	}
 
 	SetPlayerBullet(player->pos, PLAYERTOP_BULLETSPEED);
@@ -81,6 +69,13 @@ void UpdatePlayerModelTopView(PLAYERMODEL *player)
 void EnterPlayerModelTopView(PLAYERMODEL *player)
 {
 	player->cntFrame = 0;
-	player->flgMove = true;
 	player->initPos = player->pos;
+}
+
+/**************************************
+‘Şêˆ—
+***************************************/
+void ExitPlayerModelTopView(PLAYERMODEL *player)
+{
+
 }

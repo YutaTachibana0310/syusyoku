@@ -1,11 +1,11 @@
 //=====================================
 //
-//プレイヤーモデル一人称ヘッダ[playerModelFPS.h]
+//プレイヤー遷移ヘッダ[playerTransition.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _PLAYERMODELFPS_H_
-#define _PLAYERMODELFPS_H_
+#ifndef _PLAYERTRANSITION_H_
+#define _PLAYERTRANSITION_H_
 
 #include "main.h"
 #include "playerModel.h"
@@ -21,9 +21,7 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void UpdatePlayerModelFPS(PLAYERMODEL *player);
-void EnterPlayerModelFPS(PLAYERMODEL *player);
-void ExitPlayerModelFPS(PLAYERMODEL *player);
-void AttackPlayerModelFPS(PLAYERMODEL *player);
-
+void UpdatePlayerModelTransition(PLAYERMODEL *player);
+void EnterPlayerModelTransition(PLAYERMODEL *player);
+void ExitPlayerModelTransition(PLAYERMODEL *player);
 #endif

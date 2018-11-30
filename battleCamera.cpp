@@ -13,16 +13,20 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define	BATTLECAMERA_VIEWANGLE			(D3DXToRadian(45.0f))	// 視野角
-#define	BATTLECAMERA_VIEWASPECT			((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
-#define	BATTLECAMERA_NEAR				(50.0f)					// ビュー平面のNearZ値
-#define	BATTLECAMERA_FAR				(20000.0f)				// ビュー平面のFarZ値
-#define BATTLECAMERA_LENGTH				(250.0f)
-#define BATTLECAMERA_TOP_ANGLE_Y		(0.68f)
-#define BATTLECAMERA_QUATER_ANGLE_Y		(0.34f)
-#define BATTLECAMERA_QUATER_ANGLE_XZ	(1.19f)
-#define BATTLECAMERA_SIDE_ANGLE_Y		(0.17f)
+#define	BATTLECAMERA_VIEWANGLE				(D3DXToRadian(45.0f))	// 視野角
+#define	BATTLECAMERA_VIEWASPECT				((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT)	// ビュー平面のアスペクト比
+#define	BATTLECAMERA_NEAR					(50.0f)					// ビュー平面のNearZ値
+#define	BATTLECAMERA_FAR					(20000.0f)				// ビュー平面のFarZ値
+#define BATTLECAMERA_LENGTH_FPS				(175.0f)
+#define BATTLECAMERA_LENGTH_TOP				(250.0f)
+#define BATTLECAMERA_LENGTH_SIDE			(500.0f)
+#define BATTLECAMERA_LENGTH_QUATER			(200.0f)
+#define BATTLECAMERA_TOP_ANGLE_Y			(0.68f)
+#define BATTLECAMERA_QUATER_ANGLE_Y			(0.34f)
+#define BATTLECAMERA_QUATER_ANGLE_XZ		(1.19f)
+#define BATTLECAMERA_SIDE_ANGLE_Y			(0.17f)
 
+#define BATTLECAMERA_USE_QUATERNION			(0)
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -32,7 +36,7 @@
 //*****************************************************************************
 static BATTLECAMERA camera;
 
-
+#if BATTLECAMERA_USE_QUATERNION
 static const D3DXQUATERNION BattleCameraPosQ[] =
 {
 	//FPS
@@ -49,24 +53,24 @@ static const D3DXQUATERNION BattleCameraPosQ[] =
 		1.0f
 	)
 };
-
+#else
 static const D3DXVECTOR3 BattleCameraPos[] =
 {
 	//FPS
-	D3DXVECTOR3(0.0f, 0.0f, -BATTLECAMERA_LENGTH * 0.7f),
+	D3DXVECTOR3(0.0f, 0.0f, -BATTLECAMERA_LENGTH_FPS * 0.7f),
 	//縦
-	D3DXVECTOR3(0.0f, sinf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH , -cosf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH),
+	D3DXVECTOR3(0.0f, sinf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH_TOP , -cosf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH_TOP),
 	//横
-	D3DXVECTOR3(BATTLECAMERA_LENGTH, 0.0f, 0.0f),
+	D3DXVECTOR3(BATTLECAMERA_LENGTH_SIDE, 0.0f, 0.0f),
 	//クォーター
 	D3DXVECTOR3(
-		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * cosf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH * 0.8f,
-		sinf(BATTLECAMERA_QUATER_ANGLE_Y) * BATTLECAMERA_LENGTH,
-		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * -sinf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH * 0.8f
+		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * cosf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH_QUATER * 0.8f,
+		sinf(BATTLECAMERA_QUATER_ANGLE_Y) * BATTLECAMERA_LENGTH_QUATER,
+		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * -sinf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH_QUATER * 0.8f
 	)
 };
-
-static float cameraLength = BATTLECAMERA_LENGTH;
+#endif
+//static float cameraLength = BATTLECAMERA_LENGTH_TOP;
 
 static const D3DXVECTOR3 BattleCameraAt[] =
 {
@@ -88,9 +92,15 @@ static const D3DXVECTOR3 BattleCameraUp[] =
 //=============================================================================
 HRESULT InitBattleCamera(void)
 {
+#if BATTLECAMERA_USE_QUATERNION
 	camera.pos.x = BattleCameraPosQ[0].x;
 	camera.pos.y = BattleCameraPosQ[0].x;
 	camera.pos.z = BattleCameraPosQ[0].z;
+#else
+	camera.pos.x = BattleCameraPos[0].x;
+	camera.pos.y = BattleCameraPos[0].x;
+	camera.pos.z = BattleCameraPos[0].z;
+#endif
 	camera.at = BattleCameraAt[0];
 	camera.up = BattleCameraUp[0];
 
@@ -114,7 +124,7 @@ void UpdateBattleCamera(void)
 	{
 		camera.cntFrame++;
 		float t = EaseOutCubic((float)camera.cntFrame / BATTLECAMERA_MOVEFRAME, 0.0f, 1.0f);
-#if 0
+#if BATTLECAMERA_USE_QUATERNION
 		D3DXQUATERNION q;
 		D3DXQuaternionSlerp(&q, &BattleCameraPosQ[camera.currentState], &BattleCameraPosQ[camera.nextState], t);
 		camera.pos.x = q.x;
@@ -138,7 +148,7 @@ void UpdateBattleCamera(void)
 
 	if (GetKeyboardTrigger(DIK_M))
 	{
-		SetBattleCameraMove((camera.currentState + 1) % BattleCameraStateMax);
+		SetBattleCameraMove((camera.currentState + 1) % 4);
 	}
 }
 
@@ -249,7 +259,13 @@ void SetBattleCameraMove(int state)
 	camera.isMoving = true;
 	camera.nextState = state;
 	camera.cntFrame = 0;
-	ChangeStatePlayerModel(camera.nextState);
+
+	PLAYERMODEL *player = GetPlayerAdr(0);
+	for (int i = 0; i < PLAYERMODEL_MAX; i++, player++)
+	{
+		player->nextState = camera.nextState;
+	}
+	ChangeStatePlayerModel(PlayerTransition);
 }
 
 //=============================================================================

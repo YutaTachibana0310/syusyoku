@@ -97,6 +97,12 @@
     <Filter Include="ヘッダー ファイル\Battle\Player\playerMissile">
       <UniqueIdentifier>{1e3167ab-2c7f-4182-865d-5dd164e5fad1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Player\PlayerStates">
+      <UniqueIdentifier>{beee3bd9-eb19-4783-a61d-894fc63e7ab2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Player\playerStates">
+      <UniqueIdentifier>{548bf205-26ef-4cbf-bad2-f90deab3c714}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -204,20 +210,8 @@
     <ClCompile Include="resultScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="playerModelFPS.cpp">
-      <Filter>ソース ファイル\Battle\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="playerModelTopView.cpp">
-      <Filter>ソース ファイル\Battle\Player</Filter>
-    </ClCompile>
     <ClCompile Include="EasingVector.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="playerModelSIdeView.cpp">
-      <Filter>ソース ファイル\Battle\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="playerModelQuaterView.cpp">
-      <Filter>ソース ファイル\Battle\Player</Filter>
     </ClCompile>
     <ClCompile Include="playerBullet.cpp">
       <Filter>ソース ファイル\Battle\Player</Filter>
@@ -260,6 +254,21 @@
     </ClCompile>
     <ClCompile Include="GUIManager.cpp">
       <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelFPS.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelQuaterView.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelSIdeView.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelTopView.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelTransition.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,20 +377,8 @@
     <ClInclude Include="resultScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="playerModelFPS.h">
-      <Filter>ヘッダー ファイル\Battle\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="playerModelTopView.h">
-      <Filter>ヘッダー ファイル\Battle\Player</Filter>
-    </ClInclude>
     <ClInclude Include="EasingVector.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="playerModelSideView.h">
-      <Filter>ヘッダー ファイル\Battle\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="playerModelQuaterView.h">
-      <Filter>ヘッダー ファイル\Battle\Player</Filter>
     </ClInclude>
     <ClInclude Include="playerBullet.h">
       <Filter>ヘッダー ファイル\Battle\Player</Filter>
@@ -412,6 +409,21 @@
     </ClInclude>
     <ClInclude Include="GUIManager.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelQuaterView.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelSideView.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelTopView.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelFPS.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelTransition.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

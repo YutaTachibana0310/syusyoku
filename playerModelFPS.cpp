@@ -52,72 +52,54 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	int x = GetHorizontalInputPress();
 	int y = GetVerticalInputPress();
 
-	//遷移直後の移動処理
-	if (player->flgMove)
+	//移動処理
+	D3DXVECTOR3 moveDir = D3DXVECTOR3((float)x, (float)y, 0.0f);
+	moveDir = *D3DXVec3Normalize(&moveDir, &moveDir) * PLAYERFPS_MOVESPEED;
+	player->pos = player->pos + moveDir;
+
+	player->destRot.z = x * PLAYER_DESTROT_MAX;
+
+	player->pos.x = Clampf(-PLAYERFPS_RANGE_X, PLAYERFPS_RANGE_X, player->pos.x);
+	player->pos.y = Clampf(-PLAYERFPS_RANGE_Y, PLAYERFPS_RANGE_Y, player->pos.y);
+
+	//ロックオンターゲットの更新確認
+	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
 	{
-		player->cntFrame++;
-		player->pos = EaseOutCubic((float)player->cntFrame / BATTLECAMERA_MOVEFRAME, player->initPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		if (player->cntFrame == BATTLECAMERA_MOVEFRAME)
+		if (!player->target[i].use)
 		{
-			player->flgMove = false;
+			continue;
 		}
 
-		GetTargetSiteAdr(player->id)->targetPos = player->pos + D3DXVECTOR3(0.0f, 0.0f, PLAYERFPS_TARGETSITE_POS_Z);
-	}
-	//通常更新処理
-	else
-	{
-		//移動処理
-		D3DXVECTOR3 moveDir = D3DXVECTOR3((float)x, (float)y, 0.0f);
-		moveDir = *D3DXVec3Normalize(&moveDir, &moveDir) * PLAYERFPS_MOVESPEED;
-		player->pos = player->pos + moveDir;
-
-		player->destRot.z = x * PLAYER_DESTROT_MAX;
-
-		player->pos.x = Clampf(-PLAYERFPS_RANGE_X, PLAYERFPS_RANGE_X, player->pos.x);
-		player->pos.y = Clampf(-PLAYERFPS_RANGE_Y, PLAYERFPS_RANGE_Y, player->pos.y);
-
-		//ロックオンターゲットの更新確認
-		for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+		if (!*player->target[i].active)
 		{
-			if (!player->target[i].use)
-			{
-				continue;
-			}
-
-			if (!*player->target[i].active)
-			{
-				//player->target[i].use = false;
-				//player->target[i].pos = NULL;
-				ReleaseRockonTarget(player, i);
-			}
-		}
-
-		//ターゲットサイト移動処理
-		TARGETSITE *site = GetTargetSiteAdr(player->id);
-		site->pos = player->pos;;
-
-		//ロックオンサイトセット処理
-		for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
-		{
-			if (player->target[i].use)
-			{
-				SetRockonSitePos(player->id * PLAYER_ROCKON_MAX + i, *player->target[i].pos);
-			}
-		}
-
-		//ロックオンGUIセット処理
-		SetLockonGUIPos(player->id, player->pos + D3DXVECTOR3(0.0f, -10.0f, 0.0f));
-
-		//攻撃処理
-		player->atkInterbal++;
-		if (GetKeyboardTrigger(DIK_Z))
-		{
-			AttackPlayerModelFPS(player);
+			//player->target[i].use = false;
+			//player->target[i].pos = NULL;
+			ReleaseRockonTarget(player, i);
 		}
 	}
 
+	//ターゲットサイト移動処理
+	TARGETSITE *site = GetTargetSiteAdr(player->id);
+	site->pos = player->pos;;
 
+	//ロックオンサイトセット処理
+	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	{
+		if (player->target[i].use)
+		{
+			SetRockonSitePos(player->id * PLAYER_ROCKON_MAX + i, *player->target[i].pos);
+		}
+	}
+
+	//ロックオンGUIセット処理
+	SetLockonGUIPos(player->id, player->pos + D3DXVECTOR3(0.0f, -10.0f, 0.0f));
+
+	//攻撃処理
+	player->atkInterbal++;
+	if (GetKeyboardTrigger(DIK_Z))
+	{
+		AttackPlayerModelFPS(player);
+	}
 }
 
 /**************************************
@@ -125,9 +107,8 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 ***************************************/
 void EnterPlayerModelFPS(PLAYERMODEL *player)
 {
-	player->flgMove = true;
 	player->cntFrame = 0;
-	player->atkInterbal = PLAYERFPS_ATTACKINTERBAL;
+	player->atkInterbal = PLAYER_HOMINGATK_INTERBAL;
 
 	//ターゲットサイト設定処理
 	TARGETSITE *site = GetTargetSiteAdr(player->id);
@@ -144,6 +125,15 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 	//ロックオンGUI表示
 	GetLockonGUIAdr(player->id)->active = true;
 }
+
+/**************************************
+退場処理
+***************************************/
+void ExitPlayerModelFPS(PLAYERMODEL *player)
+{
+
+}
+
 
 /**************************************
 攻撃処理
