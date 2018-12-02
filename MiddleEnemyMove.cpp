@@ -6,7 +6,8 @@
 //=====================================
 #include "middleEnemyModel.h"
 #include "EasingVector.h"
-
+#include "playerModel.h"
+#include "enemyBullet.h"
 /**************************************
 ƒ}ƒNƒ’è‹`
 ***************************************/
@@ -29,12 +30,20 @@
 ***************************************/
 void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
 {
+	enemy->cntFrame++;
+
 	if (enemy->cntFrame > MIDDLEENEMY_MOVE_END)
 	{
+		if (enemy->cntFrame % 6 == 0)
+		{
+			D3DXVECTOR3 dir = GetPlayerAdr(0)->pos - enemy->pos;
+			D3DXVec3Normalize(&dir, &dir);
+			SetEnemyBullet(enemy->pos, dir, 7.5f);
+		}
 		return;
 	}
 
-	enemy->cntFrame++;
+
 	float t = (float)enemy->cntFrame / MIDDLEENEMY_MOVE_END;
 	enemy->pos = EaseOutCubicVector(t, enemy->startPos, enemy->goalPos);
 	enemy->rot = EaseOutCubicVector(t, enemy->startRot, enemy->goalRot);

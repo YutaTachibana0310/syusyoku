@@ -112,6 +112,12 @@
     <Filter Include="ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy">
       <UniqueIdentifier>{7514af66-8e65-4e29-9fdf-bbc95691dc71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\EnemyBullet">
+      <UniqueIdentifier>{34c67374-6da0-477c-a1d1-41371b09649b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Enemy\EnemyBullet">
+      <UniqueIdentifier>{e0f13d52-9143-4b4f-be8f-ffe920285e51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -285,6 +291,9 @@
     <ClCompile Include="MiddleEnemyMove.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="enemyBullet.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyBullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -442,6 +451,9 @@
     </ClInclude>
     <ClInclude Include="middleEnemyModel.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\EnemyModel</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyBullet.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
