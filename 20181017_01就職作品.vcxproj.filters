@@ -294,6 +294,9 @@
     <ClCompile Include="enemyBullet.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyBullet</Filter>
     </ClCompile>
+    <ClCompile Include="enemyHomingBullet.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyBullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -453,6 +456,9 @@
       <Filter>ヘッダー ファイル\Battle\Enemy\EnemyModel</Filter>
     </ClInclude>
     <ClInclude Include="enemyBullet.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyHomingBullet.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\EnemyBullet</Filter>
     </ClInclude>
   </ItemGroup>

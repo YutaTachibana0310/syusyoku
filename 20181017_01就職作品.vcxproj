@@ -146,6 +146,7 @@
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="EasingVector.cpp" />
     <ClCompile Include="enemyBullet.cpp" />
+    <ClCompile Include="enemyHomingBullet.cpp" />
     <ClCompile Include="enemyMissile.cpp" />
     <ClCompile Include="enemyMissileHoming.cpp" />
     <ClCompile Include="enemyMissileLaunch.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Easing.h" />
     <ClInclude Include="EasingVector.h" />
     <ClInclude Include="enemyBullet.h" />
+    <ClInclude Include="enemyHomingBullet.h" />
     <ClInclude Include="enemyMissile.h" />
     <ClInclude Include="enemyMissileHoming.h" />
     <ClInclude Include="enemyMissileLaunch.h" />

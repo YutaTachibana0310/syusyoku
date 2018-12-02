@@ -1,19 +1,22 @@
 //=====================================
 //
-//エネミーバレット処理[enemyBullette.cpp]
+//エネミーホーミングバレット処理[enemyHomingBullette.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "enemyBullet.h"
+#include "enemyHomingBullet.h"
 #include "battleCamera.h"
+#include "playerModel.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define ENEMYBULLET_TEXTURE_NAME		"data/TEXTURE/ENEMY/enemyBullet00.png"
-#define ENEMYBULLET_TEXTURE_SIZE_X		(5)
-#define ENEMYBULLET_TEXTURE_SIZE_Y		(5)
-#define ENEMYBULLET_DISABLE_BORDER_Z	(-200.0f)
+#define ENEMYHOMINGBULLET_TEXTURE_NAME			"data/TEXTURE/ENEMY/enemyBullet01.png"
+#define ENEMYHOMINGBULLET_TEXTURE_SIZE_X		(5)
+#define ENEMYHOMINGBULLET_TEXTURE_SIZE_Y		(5)
+#define ENEMYHOMINGBULLET_DISABLE_BORDER_Z		(-200.0f)
+#define ENEMYHOMINGBULLET_ACCELERATION_MAX		(500.0f)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -23,27 +26,27 @@
 ***************************************/
 static LPDIRECT3DTEXTURE9 texture;
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
-static ENEMYBULLET bullet[ENEMYBULLET_MAX];
+static ENEMYHOMINGBULLET bullet[ENEMYHOMINGBULLET_MAX];
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void CreateEnemyBulletVertexBuffer(void);
+void CreateEnemyHomingBulletVertexBuffer(void);
 
 /**************************************
 初期化処理
 ***************************************/
-void InitEnemyBullet(int num)
+void InitEnemyHomingBullet(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	if (num == 0)
 	{
-		texture = CreateTextureFromFile(ENEMYBULLET_TEXTURE_NAME, pDevice);
-		CreateEnemyBulletVertexBuffer();
+		texture = CreateTextureFromFile(ENEMYHOMINGBULLET_TEXTURE_NAME, pDevice);
+		CreateEnemyHomingBulletVertexBuffer();
 	}
 
-	ENEMYBULLET *ptr = &bullet[0];
-	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++)
+	ENEMYHOMINGBULLET *ptr = &bullet[0];
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++)
 	{
 		ptr->active = false;
 	}
@@ -52,7 +55,7 @@ void InitEnemyBullet(int num)
 /**************************************
 終了処理
 ***************************************/
-void UninitEnemyBullet(int num)
+void UninitEnemyHomingBullet(int num)
 {
 	if (num == 0)
 	{
@@ -64,33 +67,60 @@ void UninitEnemyBullet(int num)
 /**************************************
 更新処理
 ***************************************/
-void UpdateEnemyBullet(void)
+void UpdateEnemyHomingBullet(void)
 {
-	ENEMYBULLET *ptr = &bullet[0];
-	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++)
+	ENEMYHOMINGBULLET *ptr = &bullet[0];
+	PLAYERMODEL *player = NULL;
+	D3DXVECTOR3 diff, acceleration;
+	float time;
+
+	int cnt = 0;
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
 		{
 			continue;
 		}
+		cnt++;
+		if (ptr->cntFrame > 0)
+		{
+			time = ptr->cntFrame / 60.0f;
+			player = GetPlayerAdr(ptr->targetPlayerID);
+			diff = player->pos - ptr->pos;
+			acceleration = (diff - ptr->velocity * time) * 2.0f / (time * time);
+			if (D3DXVec3LengthSq(&acceleration) > powf(ENEMYHOMINGBULLET_ACCELERATION_MAX, 2))
+			{
+				D3DXVec3Normalize(&acceleration, &acceleration);
+				acceleration = acceleration * ENEMYHOMINGBULLET_ACCELERATION_MAX;
+			}
+			ptr->velocity += acceleration / 60.0f;
 
-		ptr->pos += ptr->moveDir * ptr->speed / 60.0f;
+			ptr->cntFrame--;
+		}
+		else
+		{
+			ptr->pos = ptr->pos;
+		}
 
-		if (ptr->pos.z < ENEMYBULLET_DISABLE_BORDER_Z)
+		ptr->pos += ptr->velocity / 60.0f;
+
+
+		if (ptr->pos.z < ENEMYHOMINGBULLET_DISABLE_BORDER_Z)
 		{
 			ptr->active = false;
 		}
 	}
+	PrintDebugProc("homingbullet : %d\n", cnt);
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawEnemyBullet(void)
+void DrawEnemyHomingBullet(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxTranslate, mtxWorld;
-	ENEMYBULLET *ptr = &bullet[0];
+	ENEMYHOMINGBULLET *ptr = &bullet[0];
 
 	//set RenderState
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
@@ -98,7 +128,7 @@ void DrawEnemyBullet(void)
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
-	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++)
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
 		{
@@ -137,7 +167,7 @@ void DrawEnemyBullet(void)
 /**************************************
 頂点作成処理
 ***************************************/
-void CreateEnemyBulletVertexBuffer(void)
+void CreateEnemyHomingBulletVertexBuffer(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -154,10 +184,10 @@ void CreateEnemyBulletVertexBuffer(void)
 	VERTEX_3D *pVtx;
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].vtx = D3DXVECTOR3(-ENEMYBULLET_TEXTURE_SIZE_X, ENEMYBULLET_TEXTURE_SIZE_Y, 0.0f);
-	pVtx[1].vtx = D3DXVECTOR3(ENEMYBULLET_TEXTURE_SIZE_X, ENEMYBULLET_TEXTURE_SIZE_Y, 0.0f);
-	pVtx[2].vtx = D3DXVECTOR3(-ENEMYBULLET_TEXTURE_SIZE_X, -ENEMYBULLET_TEXTURE_SIZE_Y, 0.0f);
-	pVtx[3].vtx = D3DXVECTOR3(ENEMYBULLET_TEXTURE_SIZE_X, -ENEMYBULLET_TEXTURE_SIZE_Y, 0.0f);
+	pVtx[0].vtx = D3DXVECTOR3(-ENEMYHOMINGBULLET_TEXTURE_SIZE_X, ENEMYHOMINGBULLET_TEXTURE_SIZE_Y, 0.0f);
+	pVtx[1].vtx = D3DXVECTOR3(ENEMYHOMINGBULLET_TEXTURE_SIZE_X, ENEMYHOMINGBULLET_TEXTURE_SIZE_Y, 0.0f);
+	pVtx[2].vtx = D3DXVECTOR3(-ENEMYHOMINGBULLET_TEXTURE_SIZE_X, -ENEMYHOMINGBULLET_TEXTURE_SIZE_Y, 0.0f);
+	pVtx[3].vtx = D3DXVECTOR3(ENEMYHOMINGBULLET_TEXTURE_SIZE_X, -ENEMYHOMINGBULLET_TEXTURE_SIZE_Y, 0.0f);
 
 	pVtx[0].nor =
 		pVtx[1].nor =
@@ -182,11 +212,11 @@ void CreateEnemyBulletVertexBuffer(void)
 /**************************************
 頂点作成処理
 ***************************************/
-void SetEnemyBullet(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, float speed)
+void SetEnemyHomingBullet(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, float speed)
 {
-	ENEMYBULLET *ptr = &bullet[0];
+	ENEMYHOMINGBULLET *ptr = &bullet[0];
 
-	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++)
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++)
 	{
 		if (ptr->active)
 		{
@@ -194,8 +224,8 @@ void SetEnemyBullet(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, float speed)
 		}
 
 		ptr->pos = pos;
-		ptr->moveDir = moveDir;
-		ptr->speed = speed;
+		ptr->targetPlayerID = 0;
+		ptr->cntFrame = 60;
 		ptr->active = true;
 		return;
 	}
