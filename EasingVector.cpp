@@ -20,20 +20,20 @@ typedef D3DXVECTOR3(*Easing)(float, D3DXVECTOR3, D3DXVECTOR3);
 グローバル変数
 *****************************************************************************/
 static Easing EasingProcess[EasingMax_Vector] = {
-	EaseInCubic,
-	EaseOutCubic,
-	EaseInOutCubic,
-	EaseLinear,
-	EaseInExponential,
-	EaseOutExponential,
-	EaseInOutExponential
+	EaseInCubicVector,
+	EaseOutCubicVector,
+	EaseInOutCubicVector,
+	EaseLinearVector,
+	EaseInExponentialVector,
+	EaseOutExponentialVector,
+	EaseInOutExponentialVector
 };
 
 /*******************************************************************
 //関数名	：D3DXVECTOR3 GetEasingValue(D3DXVECTOR3, D3DXVECTOR3, D3DXVECTOR3, D3DXVECTOR3, EASINGVECTOR_TYPE type)
 //指定したイージングタイプの値を取得する関数
 ********************************************************************/
-D3DXVECTOR3 GetEasingValue(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal, EASINGVECTOR_TYPE type)
+D3DXVECTOR3 GetEasingVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal, EASINGVECTOR_TYPE type)
 {
 	return EasingProcess[type](time, start, goal);
 }
@@ -47,7 +47,7 @@ D3DXVECTOR3 GetEasingValue(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal, EASI
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-D3DXVECTOR3 EaseInCubic(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
+D3DXVECTOR3 EaseInCubicVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
 	return (goal - start) * time * time + start;
 }
@@ -61,7 +61,7 @@ D3DXVECTOR3 EaseInCubic(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-D3DXVECTOR3 EaseOutCubic(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
+D3DXVECTOR3 EaseOutCubicVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
 	return -(goal - start) * time * (time - 2.0f) + start;
 }
@@ -75,7 +75,7 @@ D3DXVECTOR3 EaseOutCubic(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-D3DXVECTOR3 EaseInOutCubic(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
+D3DXVECTOR3 EaseInOutCubicVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
 	time *= 2.0f;
 
@@ -99,7 +99,7 @@ D3DXVECTOR3 EaseInOutCubic(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-D3DXVECTOR3 EaseLinear(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
+D3DXVECTOR3 EaseLinearVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
 	return (goal - start) * time + start;
 }
@@ -113,7 +113,7 @@ D3DXVECTOR3 EaseLinear(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-D3DXVECTOR3 EaseInExponential(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
+D3DXVECTOR3 EaseInExponentialVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
 	return (goal - start) *  powf(2, 10 * (time - 1)) + start;
 }
@@ -127,7 +127,7 @@ D3DXVECTOR3 EaseInExponential(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-D3DXVECTOR3 EaseOutExponential(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
+D3DXVECTOR3 EaseOutExponentialVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
 	return (goal - start) * (-powf(2, (-10 * time)) + 1) + start;
 }
@@ -141,7 +141,7 @@ D3DXVECTOR3 EaseOutExponential(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 //戻り値	：イージングの値
 //説明		：イージング計算処理
 ********************************************************************/
-D3DXVECTOR3 EaseInOutExponential(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
+D3DXVECTOR3 EaseInOutExponentialVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
 	//return 0.0f;
 	return D3DXVECTOR3(0.0f, 0.0f, 0.0f);

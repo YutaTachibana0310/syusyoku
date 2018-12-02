@@ -19,6 +19,7 @@
 #include "playerMissileSmog.h"
 #include "particleManager.h"
 #include "GUIManager.h"
+#include "middleEnemyModel.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -61,7 +62,7 @@ HRESULT InitBattleScene(int num)
 	InitMeshCylinder(num);
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
-
+	InitMiddleEnemyModel(num);
 	return S_OK;
 }
 
@@ -80,6 +81,7 @@ void UninitBattleScene(int num)
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
 	UninitGUIManager(num);
+	UninitMiddleEnemyModel(num);
 
 }
 
@@ -99,6 +101,7 @@ void UpdateBattleScene(void)
 	UpdatePlayerMissile();
 	UpdatePlayerMissileSmog();
 	UpdateGUIManager();
+	UpdateMiddleEnemyModel();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -120,6 +123,7 @@ void DrawBattleScene(void)
 	DrawPlayerMissileSmog();
 	DrawPlayerBullet();
 	DrawParticleManager();
+	DrawMiddleEnemyModel();
 	DrawRockonSite();
 	DrawTargetSite();
 	DrawGUIManager();

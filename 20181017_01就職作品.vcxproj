@@ -164,6 +164,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshCylinder.cpp" />
     <ClCompile Include="middleEnemyModel.cpp" />
+    <ClCompile Include="MiddleEnemyMove.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleFramework.cpp" />

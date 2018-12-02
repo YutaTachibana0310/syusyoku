@@ -1,17 +1,16 @@
 //=====================================
 //
-//プレイヤー遷移処理[playerTransition.cpp]
+//ミドルエネミー移動状態処理[middleEnemyMove.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "playerModelTransition.h"
-#include "battleCamera.h"
-#include "targetSite.h"
-#include "lockonGUI.h"
+#include "middleEnemyModel.h"
+#include "EasingVector.h"
 
 /**************************************
 マクロ定義
 ***************************************/
+#define MIDDLEENEMY_MOVE_END		(180)
 
 /**************************************
 構造体定義
@@ -26,34 +25,36 @@
 ***************************************/
 
 /**************************************
-入場処理
+更新処理
 ***************************************/
-void EnterPlayerModelTransition(PLAYERMODEL *player)
+void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
 {
-	player->cntFrame = 0;
-	GetTargetSiteAdr(player->id)->active = false;
-	GetLockonGUIAdr(player->id)->active = false;
+	if (enemy->cntFrame > MIDDLEENEMY_MOVE_END)
+	{
+		return;
+	}
+
+	enemy->cntFrame++;
+	float t = (float)enemy->cntFrame / MIDDLEENEMY_MOVE_END;
+	enemy->pos = EaseOutCubicVector(t, enemy->startPos, enemy->goalPos);
+	enemy->rot = EaseOutCubicVector(t, enemy->startRot, enemy->goalRot);
 }
 
 /**************************************
-更新処理
+入場処理
 ***************************************/
-void UpdatePlayerModelTransition(PLAYERMODEL *player)
+void EnterMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
 {
-	player->cntFrame++;
-	player->pos = EaseOutCubicVector((float)player->cntFrame / BATTLECAMERA_MOVEFRAME, player->initPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
-	if (player->cntFrame == BATTLECAMERA_MOVEFRAME)
-	{
-		ChangeStatePlayerModel(player->nextState);
-	}
-
+	enemy->cntFrame = 0;
+	enemy->startPos = enemy->pos;
+	enemy->startRot = enemy->rot;
 }
 
 /**************************************
 退場処理
 ***************************************/
-void ExitPlayerModelTransition(PLAYERMODEL *player)
+void ExitMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
 {
 
 }
+

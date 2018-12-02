@@ -109,6 +109,9 @@
     <Filter Include="ソース ファイル\Battle\Enemy\EnemyModel">
       <UniqueIdentifier>{bc74c3ab-ff7b-487f-a7f8-a2864de1300a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy">
+      <UniqueIdentifier>{7514af66-8e65-4e29-9fdf-bbc95691dc71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -277,7 +280,10 @@
       <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
     </ClCompile>
     <ClCompile Include="middleEnemyModel.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel</Filter>
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MiddleEnemyMove.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

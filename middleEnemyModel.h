@@ -16,13 +16,27 @@
 /**************************************
 構造体定義
 ***************************************/
+//ミドルエネミー状態定義
+enum MIDDLEENEMY_STATE
+{
+	MiddleEnemyMove,
+	MiddleEnemyStateMax
+};
+
+//ミドルエネミー構造体
 typedef struct
 {
 	bool active;
 
 	D3DXVECTOR3 pos;
-	
-}MIDDLEENMYMODEL;
+	D3DXVECTOR3 rot;
+	int cntFrame;
+	int state;
+
+	D3DXVECTOR3 startPos, goalPos;
+	D3DXVECTOR3 startRot, goalRot;
+
+}MIDDLEENEMYMODEL;
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -30,5 +44,13 @@ void InitMiddleEnemyModel(int num);
 void UninitMiddleEnemyModel(int num);
 void UpdateMiddleEnemyModel(void);
 void DrawMiddleEnemyModel(void);
+void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next);
+
+void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
+
+void EnterMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
+
+void ExitMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
+
 
 #endif
