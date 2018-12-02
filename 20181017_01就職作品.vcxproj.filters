@@ -103,6 +103,12 @@
     <Filter Include="ヘッダー ファイル\Battle\Player\playerStates">
       <UniqueIdentifier>{548bf205-26ef-4cbf-bad2-f90deab3c714}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Enemy\EnemyModel">
+      <UniqueIdentifier>{b5132580-3ede-448f-b31a-5dd991df36b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\EnemyModel">
+      <UniqueIdentifier>{bc74c3ab-ff7b-487f-a7f8-a2864de1300a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -270,6 +276,9 @@
     <ClCompile Include="playerModelTransition.cpp">
       <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
     </ClCompile>
+    <ClCompile Include="middleEnemyModel.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -424,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="playerModelTransition.h">
       <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="middleEnemyModel.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

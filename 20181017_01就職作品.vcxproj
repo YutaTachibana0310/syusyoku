@@ -163,6 +163,7 @@
     <ClCompile Include="logoScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshCylinder.cpp" />
+    <ClCompile Include="middleEnemyModel.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleFramework.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="hpGUI.h" />
     <ClInclude Include="lockonGUI.h" />
     <ClInclude Include="meshCylinder.h" />
+    <ClInclude Include="middleEnemyModel.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerMissile.h" />
     <ClInclude Include="playerMissileSmog.h" />
