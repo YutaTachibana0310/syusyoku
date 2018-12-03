@@ -65,22 +65,25 @@ void InitExplosionFire(int num)
 		fire[i].active = false;
 	}
 
-	//頂点バッファ作成
-	MakeParticleVertexBuffer(vtx, EXPLOSIONFIRE_SIZE, &vtxBuff);
-	MakeParticleUVBuffer(EXPLOSIONFIRE_MAX, vtxUV, &uvBuff);
-	MakeParticleWorldBuffer(EXPLOSIONFIRE_MAX, pos, &posBuff);
-	MakeParticleColorBuffer(EXPLOSIONFIRE_MAX, vtxColor, &colorBuff);
+	if (num == 0)
+	{
+		//頂点バッファ作成
+		MakeParticleVertexBuffer(vtx, EXPLOSIONFIRE_SIZE, &vtxBuff);
+		MakeParticleUVBuffer(EXPLOSIONFIRE_MAX, vtxUV, &uvBuff);
+		MakeParticleWorldBuffer(EXPLOSIONFIRE_MAX, pos, &posBuff);
+		MakeParticleColorBuffer(EXPLOSIONFIRE_MAX, vtxColor, &colorBuff);
 
-	//インデックスバッファ作成
-	WORD index[6] = { 0, 1, 2, 2, 1, 3 };
-	pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
-	void *p = NULL;
-	indexBuff->Lock(0, 0, &p, 0);
-	memcpy(p, index, sizeof(index));
-	indexBuff->Unlock();
+		//インデックスバッファ作成
+		WORD index[6] = { 0, 1, 2, 2, 1, 3 };
+		pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
+		void *p = NULL;
+		indexBuff->Lock(0, 0, &p, 0);
+		memcpy(p, index, sizeof(index));
+		indexBuff->Unlock();
 
-	//テクスチャ読み込み
-	texture = CreateTextureFromFile((LPSTR)EXPLOSIONFIRE_TEXNAME, pDevice);	
+		//テクスチャ読み込み
+		texture = CreateTextureFromFile((LPSTR)EXPLOSIONFIRE_TEXNAME, pDevice);
+	}
 }
 
 /**********************************************

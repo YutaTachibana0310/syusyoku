@@ -27,6 +27,8 @@ typedef struct
 	int cntFrame;
 	D3DXVECTOR3 velocity;
 
+	float alpha;
+
 }ENEMYHOMINGBULLET;
 /**************************************
 プロトタイプ宣言
