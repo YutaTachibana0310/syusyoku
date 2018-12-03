@@ -36,6 +36,8 @@ typedef struct
 	D3DXVECTOR3 startPos, goalPos;
 	D3DXVECTOR3 startRot, goalRot;
 
+	float hp;
+
 }MIDDLEENEMYMODEL;
 /**************************************
 プロトタイプ宣言
@@ -45,6 +47,8 @@ void UninitMiddleEnemyModel(int num);
 void UpdateMiddleEnemyModel(void);
 void DrawMiddleEnemyModel(void);
 void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next);
+MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num);
+void LockonMiddleEnemy(void);
 
 void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
 

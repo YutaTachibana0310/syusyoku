@@ -14,10 +14,10 @@
 マクロ定義
 ***************************************/
 #define ENEMYHOMINGBULLET_TEXTURE_NAME			"data/TEXTURE/ENEMY/enemyBullet01.png"
-#define ENEMYHOMINGBULLET_TEXTURE_SIZE_X		(8)
-#define ENEMYHOMINGBULLET_TEXTURE_SIZE_Y		(8)
+#define ENEMYHOMINGBULLET_TEXTURE_SIZE_X		(6)
+#define ENEMYHOMINGBULLET_TEXTURE_SIZE_Y		(6)
 #define ENEMYHOMINGBULLET_DISABLE_BORDER_Z		(-200.0f)
-#define ENEMYHOMINGBULLET_ACCELERATION_MAX		(500.0f)
+#define ENEMYHOMINGBULLET_ACCELERATION_MAX		(400.0f)
 #define ENEMYHOMINGBULLET_SHADER_NAME			"particle.fx"
 
 /**************************************
@@ -106,6 +106,7 @@ void InitEnemyHomingBullet(int num)
 	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++)
 	{
 		ptr->active = false;
+		vtxColor[i].r = vtxColor[i].g = vtxColor[i].b = 1.0f;
 		ptr->alpha = 0.0f;
 	}
 }
@@ -288,10 +289,11 @@ void CreateEnemyHomingBulletVertexBuffer(void)
 	return;
 }
 #endif
+
 /**************************************
 セット処理
 ***************************************/
-void SetEnemyHomingBullet(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, float speed)
+void SetEnemyHomingBullet(D3DXVECTOR3 pos, D3DXVECTOR3 initVelocity, int reachFrame)
 {
 	ENEMYHOMINGBULLET *ptr = &bullet[0];
 
@@ -304,9 +306,10 @@ void SetEnemyHomingBullet(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, float speed)
 
 		ptr->pos = pos;
 		ptr->targetPlayerID = 0;
-		ptr->cntFrame = 60;
+		ptr->cntFrame = ptr->reachFrame = reachFrame;
 		ptr->alpha = 1.0f;
-		vtxColor[i].r = vtxColor[i].g = vtxColor[i].b = vtxColor[i].a = 1.0f;
+		vtxColor[i].a = 1.0f;
+		ptr->velocity = initVelocity;
 		ptr->active = true;
 		return;
 	}

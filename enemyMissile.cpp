@@ -12,6 +12,8 @@
 #include "explosionSmog.h"
 #include "enemyMissileSmog.h"
 #include "playerBullet.h"
+#include "playerModel.h"
+#include "targetSite.h"
 
 #if 1
 #include "battleCamera.h"
@@ -320,5 +322,37 @@ void CollisionEnemyMissileAndBullet(void)
 				ptr->active = false;
 			}
 		}
+	}
+}
+
+/*****************************************
+エネミーミサイルロックオン判定
+******************************************/
+void LockonEnemyMissile(void)
+{
+	ENEMYMISSILE *ptr = &missile[0];
+	TARGETSITE *targetSite = GetTargetSiteAdr(0);
+
+	for (int i = 0; i < PLAYERMODEL_MAX; i++, targetSite++)
+	{
+		if (!targetSite->active)
+		{
+			continue;
+		}
+
+		ptr = &missile[0];
+		for (int j = 0; j < ENEMYMISSILE_MAX; j++, ptr++)
+		{
+			if (!ptr->active)
+			{
+				continue;
+			}
+
+			if (CollisionTargetSite(i, &ptr->pos))
+			{
+				AddRockonTarget(i, &ptr->pos, &ptr->active, &ptr->hp);
+			}
+		}
+
 	}
 }

@@ -8,7 +8,6 @@
 #include "battleScene.h"
 #include "input.h"
 #include "cloud.h"
-#include "enemyMissile.h"
 #include "playerModel.h"
 #include "battleCamera.h"
 #include "playerBullet.h"
@@ -19,10 +18,8 @@
 #include "playerMissileSmog.h"
 #include "particleManager.h"
 #include "GUIManager.h"
-#include "middleEnemyModel.h"
-#include "enemyBullet.h"
-#include "enemyHomingBullet.h"
-#include "enemyBulletTrail.h"
+
+#include "enemyManager.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -56,7 +53,6 @@ HRESULT InitBattleScene(int num)
 
 	InitGUIManager(num);
 	InitCloud(num);
-	InitEnemyMissile(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
 	InitPlayerModel(num);
@@ -65,10 +61,7 @@ HRESULT InitBattleScene(int num)
 	InitMeshCylinder(num);
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
-	InitMiddleEnemyModel(num);
-	InitEnemyBullet(num);
-	InitEnemyHomingBullet(num);
-	InitEnemyBulletTrail(num);
+	InitEnemyManager(num);
 
 	return S_OK;
 }
@@ -79,7 +72,6 @@ HRESULT InitBattleScene(int num)
 void UninitBattleScene(int num)
 {
 	UninitCloud(num);
-	UninitEnemyMissile(num);
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
 	UninitTargetSite(num);
@@ -88,10 +80,7 @@ void UninitBattleScene(int num)
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
 	UninitGUIManager(num);
-	UninitMiddleEnemyModel(num);
-	UninitEnemyBullet(num);
-	UninitEnemyHomingBullet(num);
-	UninitEnemyBulletTrail(num);
+	UninitEnemyManager(num);
 }
 
 /******************************************************************************
@@ -100,7 +89,6 @@ void UninitBattleScene(int num)
 void UpdateBattleScene(void)
 {
 	UpdateCloud();
-	UpdateEnemyMissile();
 	UpdatePlayerBullet();
 	UpdatePlayerModel();
 	UpdateBattleCamera();
@@ -110,10 +98,9 @@ void UpdateBattleScene(void)
 	UpdatePlayerMissile();
 	UpdatePlayerMissileSmog();
 	UpdateGUIManager();
-	UpdateMiddleEnemyModel();
-	UpdateEnemyBullet();
-	UpdateEnemyHomingBullet();
-	UpdateEnemyBulletTrail();
+	UpdateEnemyManager();
+
+	CheckEnemyCollision();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -129,15 +116,11 @@ void DrawBattleScene(void)
 	SetBattleCamera();
 	DrawMeshCylinder();
 	//DrawCloud();
-	DrawMiddleEnemyModel();
-	DrawEnemyMissile();
+	DrawEnemyManager();
 	DrawPlayerModel();
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();
-	DrawEnemyBulletTrail();
 	DrawPlayerBullet();
-	DrawEnemyBullet();
-	DrawEnemyHomingBullet();
 	DrawParticleManager();
 	DrawRockonSite();
 	DrawTargetSite();

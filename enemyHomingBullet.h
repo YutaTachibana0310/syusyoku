@@ -25,6 +25,7 @@ typedef struct
 
 	int targetPlayerID;
 	int cntFrame;
+	int reachFrame;
 	D3DXVECTOR3 velocity;
 
 	float alpha;
@@ -37,5 +38,5 @@ void InitEnemyHomingBullet(int num);
 void UninitEnemyHomingBullet(int num);
 void UpdateEnemyHomingBullet(void);
 void DrawEnemyHomingBullet(void);
-void SetEnemyHomingBullet(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, float speed);
+void SetEnemyHomingBullet(D3DXVECTOR3 pos, D3DXVECTOR3 initVelocity, int reachFrame);
 #endif

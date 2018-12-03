@@ -5,6 +5,8 @@
 //
 //=====================================
 #include "middleEnemyModel.h"
+#include "targetSite.h"
+#include "playerModel.h"
 
 /**************************************
 マクロ定義
@@ -184,4 +186,44 @@ void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next)
 	Exit[ptr->state](ptr);
 	ptr->state = next;
 	Enter[ptr->state](ptr);
+}
+
+/**************************************
+アドレス取得処理
+***************************************/
+MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num)
+{
+	return &middleEnemy[num];
+}
+
+/**************************************
+ミドルエネミーロックオン処理
+***************************************/
+void LockonMiddleEnemy(void)
+{
+	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	TARGETSITE *targetSite = GetTargetSiteAdr(0);
+
+	for(int i = 0; i < PLAYERMODEL_MAX; i++, targetSite++)
+	{
+		if (!targetSite->active)
+		{
+			continue;
+		}
+
+		ptr = &middleEnemy[0];
+		for (int j = 0; j < MIDDLEENEMY_MAX; j++, ptr++)
+		{
+			if (!ptr->active)
+			{
+				continue;
+			}
+
+			if (CollisionTargetSite(i, &ptr->pos))
+			{
+				AddRockonTarget(i, &ptr->pos,&ptr->active, &ptr->hp);
+			}
+		}
+
+	}
 }
