@@ -30,5 +30,5 @@ void InitEnemyBulletTrail(int num);
 void UninitEnemyBulletTrail(int num);
 void UpdateEnemyBulletTrail(void);
 void DrawEnemyBulletTrail(void);
-
+void SetEnemyHomingBulletTrail(D3DXVECTOR3 pos);
 #endif

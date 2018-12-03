@@ -8,13 +8,14 @@
 #include "battleCamera.h"
 #include "playerModel.h"
 #include "particleFramework.h"
+#include "enemyBulletTrail.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define ENEMYHOMINGBULLET_TEXTURE_NAME			"data/TEXTURE/ENEMY/enemyBullet01.png"
-#define ENEMYHOMINGBULLET_TEXTURE_SIZE_X		(5)
-#define ENEMYHOMINGBULLET_TEXTURE_SIZE_Y		(5)
+#define ENEMYHOMINGBULLET_TEXTURE_SIZE_X		(8)
+#define ENEMYHOMINGBULLET_TEXTURE_SIZE_Y		(8)
 #define ENEMYHOMINGBULLET_DISABLE_BORDER_Z		(-200.0f)
 #define ENEMYHOMINGBULLET_ACCELERATION_MAX		(500.0f)
 #define ENEMYHOMINGBULLET_SHADER_NAME			"particle.fx"
@@ -149,6 +150,9 @@ void UpdateEnemyHomingBullet(void)
 			continue;
 		}
 
+		//トレイル設定
+		SetEnemyHomingBulletTrail(ptr->pos);
+
 		//ホーミングの加速度計算処理
 		CalcEnemyHomingBulletAcceleration(ptr);
 
@@ -160,6 +164,7 @@ void UpdateEnemyHomingBullet(void)
 		{
 			ptr->active = false;
 			ptr->alpha = 0.0f;
+			vtxColor[i].a = 0.0f;
 		}
 
 		//ワールド配列の更新
@@ -181,12 +186,10 @@ void UpdateEnemyHomingBullet(void)
 void DrawEnemyHomingBullet(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	D3DXMATRIX mtxTranslate, mtxWorld;
-	ENEMYHOMINGBULLET *ptr = &bullet[0];
 
 	//set RenderState
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
@@ -219,6 +222,11 @@ void DrawEnemyHomingBullet(void)
 
 	//描画
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, NUM_VERTEX, 0, NUM_POLYGON);
+
+	//加算描画
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, NUM_VERTEX, 0, NUM_POLYGON);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	//シェーダ終了宣言
 	effect->EndPass();

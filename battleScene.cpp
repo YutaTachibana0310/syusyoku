@@ -22,6 +22,7 @@
 #include "middleEnemyModel.h"
 #include "enemyBullet.h"
 #include "enemyHomingBullet.h"
+#include "enemyBulletTrail.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -67,6 +68,7 @@ HRESULT InitBattleScene(int num)
 	InitMiddleEnemyModel(num);
 	InitEnemyBullet(num);
 	InitEnemyHomingBullet(num);
+	InitEnemyBulletTrail(num);
 
 	return S_OK;
 }
@@ -89,6 +91,7 @@ void UninitBattleScene(int num)
 	UninitMiddleEnemyModel(num);
 	UninitEnemyBullet(num);
 	UninitEnemyHomingBullet(num);
+	UninitEnemyBulletTrail(num);
 }
 
 /******************************************************************************
@@ -110,6 +113,7 @@ void UpdateBattleScene(void)
 	UpdateMiddleEnemyModel();
 	UpdateEnemyBullet();
 	UpdateEnemyHomingBullet();
+	UpdateEnemyBulletTrail();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -130,6 +134,7 @@ void DrawBattleScene(void)
 	DrawPlayerModel();
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();
+	DrawEnemyBulletTrail();
 	DrawPlayerBullet();
 	DrawEnemyBullet();
 	DrawEnemyHomingBullet();
