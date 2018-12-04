@@ -67,7 +67,7 @@ void InitEnemyHomingBullet(int num)
 	if (num == 0)
 	{
 		//テクスチャ読み込み
-		texture = CreateTextureFromFile(ENEMYHOMINGBULLET_TEXTURE_NAME, pDevice);
+		texture = CreateTextureFromFile((LPSTR)ENEMYHOMINGBULLET_TEXTURE_NAME, pDevice);
 
 		//頂点作成
 		//CreateEnemyHomingBulletVertexBuffer();
