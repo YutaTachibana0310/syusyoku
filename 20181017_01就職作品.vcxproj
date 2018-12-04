@@ -168,8 +168,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshCylinder.cpp" />
     <ClCompile Include="middleEnemyAttack.cpp" />
+    <ClCompile Include="middleEnemyEscape.cpp" />
     <ClCompile Include="middleEnemyModel.cpp" />
     <ClCompile Include="MiddleEnemyMove.cpp" />
+    <ClCompile Include="middleEnemyWait.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleFramework.cpp" />

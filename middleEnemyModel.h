@@ -21,7 +21,9 @@ enum MIDDLEENEMY_STATE
 {
 	MiddleEnemyMove,		//目的座標に移動する状態
 	MiddleEnemyAttack,		//攻撃状態
-	MiddleEnemyStateMax
+	MiddleEnemyEscape,		//逃走状態
+	MiddleEnemyWait,		//待機状態
+	MiddleEnemyStateMax		
 };
 
 //ミドルエネミー構造体
@@ -52,13 +54,22 @@ void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next);
 MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num);
 void LockonMiddleEnemy(void);
 
+//各状態更新処理
 void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
 void UpdateMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
+void UpdateMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy);
+void UpdateMiddleEnemyWait(MIDDLEENEMYMODEL *enemy);
 
+//各状態入場処理
 void EnterMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
 void EnterMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
+void EnterMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy);
+void EnterMiddleEnemyWait(MIDDLEENEMYMODEL *enemy);
 
+//各状態退場処理
 void ExitMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
 void ExitMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
+void ExitMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy);
+void ExitMiddleEnemyWait(MIDDLEENEMYMODEL *enemy);
 
 #endif

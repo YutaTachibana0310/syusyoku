@@ -46,19 +46,25 @@ static const char* textureName[MIDDLEENEMY_TEXTURE_MAX] = {
 //更新処理の関数テーブル
 static funcMiddleEnemy Update[MiddleEnemyStateMax] = {
 	UpdateMiddleEnemyMove,
-	UpdateMiddleEnemyAttack
+	UpdateMiddleEnemyAttack,
+	UpdateMiddleEnemyEscape,
+	UpdateMiddleEnemyWait
 };
 
 //入場処理の関数テーブル
 static funcMiddleEnemy Enter[MiddleEnemyStateMax] = {
 	EnterMiddleEnemyMove,
-	EnterMiddleEnemyAttack
+	EnterMiddleEnemyAttack,
+	EnterMiddleEnemyEscape,
+	EnterMiddleEnemyWait
 };
 
 //退場処理の関数テーブル
 static funcMiddleEnemy Exit[MiddleEnemyStateMax] = {
 	ExitMiddleEnemyMove,
-	ExitMiddleEnemyAttack
+	ExitMiddleEnemyAttack,
+	ExitMiddleEnemyEscape,
+	ExitMiddleEnemyWait
 };
 
 /**************************************
@@ -94,7 +100,7 @@ void InitMiddleEnemyModel(int num)
 	}
 
 	middleEnemy[0].active = true;
-	middleEnemy[0].pos = D3DXVECTOR3(50.0f, -50.0f, -200.0f);
+	middleEnemy[0].pos = D3DXVECTOR3(50.0f, -300.0f, -200.0f);
 	middleEnemy[0].goalPos = D3DXVECTOR3(50.0f, -0.0f, 150.0f);
 	middleEnemy[0].rot = D3DXVECTOR3(0.0f, 3.14f, 0.0f);
 	middleEnemy[0].goalRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
