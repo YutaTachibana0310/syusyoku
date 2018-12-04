@@ -306,6 +306,12 @@
     <ClCompile Include="middleEnemyAttack.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="middleEnemyEscape.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="middleEnemyWait.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
