@@ -38,7 +38,7 @@ void InitEnemyBullet(int num)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	if (num == 0)
 	{
-		texture = CreateTextureFromFile(ENEMYBULLET_TEXTURE_NAME, pDevice);
+		texture = CreateTextureFromFile((LPSTR)ENEMYBULLET_TEXTURE_NAME, pDevice);
 		CreateEnemyBulletVertexBuffer();
 	}
 
