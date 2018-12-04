@@ -106,8 +106,6 @@ void UpdateTargetSite(void)
 	D3DXVECTOR3 tmpPos;
 	VERTEX_3D *pVtx = NULL;
 
-	//vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
@@ -115,39 +113,17 @@ void UpdateTargetSite(void)
 			continue;
 		}
 
-		//移動
-		//D3DXVECTOR3 diff = ptr->targetPos - ptr->pos;
-		//float length = D3DXVec3Length(&diff);
-		//D3DXVec3Normalize(&diff, &diff);
-		//length = Clampf(0.0f, TARGETSITE_MOVEVALUE, length);
-		//ptr->pos += diff * length;
-
-		////topLをプロジェクション変換
-		//D3DXVec3TransformCoord(&ptr->topL, &(ptr->pos + pVtx[0].vtx), &GetBattleCameraView());
-		//D3DXVec3TransformCoord(&ptr->topL, &ptr->topL, &GetBattleCameraProjection());
-
-		////topRをプロジェクション変換
-		//D3DXVec3TransformCoord(&ptr->topR, &(ptr->pos + pVtx[1].vtx), &GetBattleCameraView());
-		//D3DXVec3TransformCoord(&ptr->topR, &ptr->topR, &GetBattleCameraProjection());
-
-		////bottomLをプロジェクション変換
-		//D3DXVec3TransformCoord(&ptr->bottomL, &(ptr->pos + pVtx[2].vtx), &GetBattleCameraView());
-		//D3DXVec3TransformCoord(&ptr->bottomL, &ptr->bottomL, &GetBattleCameraProjection());
-
-		////bottomRをプロジェクション変換
-		//D3DXVec3TransformCoord(&ptr->bottomR, &(ptr->pos + pVtx[3].vtx), &GetBattleCameraView());
-		//D3DXVec3TransformCoord(&ptr->bottomR, &ptr->bottomR, &GetBattleCameraProjection());
+		//スクリーン座標更新
+		D3DXVec3TransformCoord(&ptr->screenPos, &ptr->pos, &GetBattleCameraView());
+		D3DXVec3TransformCoord(&ptr->screenPos, &ptr->screenPos, &GetBattleCameraProjection());
+		TranslateViewPort(&ptr->screenPos, &ptr->screenPos);
 
 		//内側のサークルを回転
 		ptr->insideRot.z += TARGETSITE_INCIRCLE_ROTVALUE;
 
 		//外側のサークルを更新
 		ptr->outsideRot.z += TARGETSITE_OUTCIRCLE_ROTVALUE;
-
-		RockonEnemy(i);
 	}
-
-	//vtxBuff->Unlock();
 }
 
 /**************************************
@@ -283,30 +259,23 @@ TARGETSITE *GetTargetSiteAdr(int id)
 /**************************************
 当たり判定
 ***************************************/
-bool CollisionTargetSite(int id, const D3DXVECTOR3* pos, D3DXVECTOR3* siteScreenPos)
+bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 {
-	D3DXVECTOR3 screenPos;
+	D3DXVECTOR3 targetScreenPos;
 	TARGETSITE *ptr = &targetSite[id];
 	PLAYERMODEL *player = GetPlayerAdr(id);
 
-	D3DXVec3TransformCoord(&screenPos, pos, &GetBattleCameraView());
-	D3DXVec3TransformCoord(&screenPos, &screenPos, &GetBattleCameraProjection());
-	TranslateViewPort(&screenPos, &screenPos);
+	D3DXVec3TransformCoord(&targetScreenPos, pos, &GetBattleCameraView());
+	D3DXVec3TransformCoord(&targetScreenPos, &targetScreenPos, &GetBattleCameraProjection());
+	TranslateViewPort(&targetScreenPos, &targetScreenPos);
 
-	//if (screenPos.x > ptr->topL.x && screenPos.x < ptr->topR.x)
-	//{
-	//	if (screenPos.y > ptr->bottomL.y && screenPos.y < ptr->topL.y)
-	//	{
-	//		return true;
-	//	}
-	//}
-
-	if (D3DXVec3LengthSq(&(screenPos - *siteScreenPos)) < powf(TARGETSITE_COLLIDER_RADIUS, 2))
+	if (D3DXVec3LengthSq(&(targetScreenPos - ptr->screenPos)) < powf(TARGETSITE_COLLIDER_RADIUS, 2))
 		return true;
 	else
 		return false;
 }
 
+#if 0
 /**************************************
 エネミーロックオン判定
 ***************************************/
@@ -321,9 +290,6 @@ void RockonEnemy(int id)
 	}
 
 	//座標をスクリーン座標に変換
-	D3DXVec3TransformCoord(&siteScreenPos, &targetSite[id].pos, &GetBattleCameraView());
-	D3DXVec3TransformCoord(&siteScreenPos, &siteScreenPos, &GetBattleCameraProjection());
-	TranslateViewPort(&siteScreenPos, &siteScreenPos);
 
 	//判定
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, enemy++)
@@ -339,3 +305,4 @@ void RockonEnemy(int id)
 		}
 	}
 }
+#endif

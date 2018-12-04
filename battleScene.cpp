@@ -8,7 +8,6 @@
 #include "battleScene.h"
 #include "input.h"
 #include "cloud.h"
-#include "enemyMissile.h"
 #include "playerModel.h"
 #include "battleCamera.h"
 #include "playerBullet.h"
@@ -19,6 +18,8 @@
 #include "playerMissileSmog.h"
 #include "particleManager.h"
 #include "GUIManager.h"
+
+#include "enemyManager.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -52,7 +53,6 @@ HRESULT InitBattleScene(int num)
 
 	InitGUIManager(num);
 	InitCloud(num);
-	InitEnemyMissile(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
 	InitPlayerModel(num);
@@ -61,6 +61,7 @@ HRESULT InitBattleScene(int num)
 	InitMeshCylinder(num);
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
+	InitEnemyManager(num);
 
 	return S_OK;
 }
@@ -71,7 +72,6 @@ HRESULT InitBattleScene(int num)
 void UninitBattleScene(int num)
 {
 	UninitCloud(num);
-	UninitEnemyMissile(num);
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
 	UninitTargetSite(num);
@@ -80,7 +80,7 @@ void UninitBattleScene(int num)
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
 	UninitGUIManager(num);
-
+	UninitEnemyManager(num);
 }
 
 /******************************************************************************
@@ -89,7 +89,6 @@ void UninitBattleScene(int num)
 void UpdateBattleScene(void)
 {
 	UpdateCloud();
-	UpdateEnemyMissile();
 	UpdatePlayerBullet();
 	UpdatePlayerModel();
 	UpdateBattleCamera();
@@ -99,6 +98,9 @@ void UpdateBattleScene(void)
 	UpdatePlayerMissile();
 	UpdatePlayerMissileSmog();
 	UpdateGUIManager();
+	UpdateEnemyManager();
+
+	CheckEnemyCollision();
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -114,7 +116,7 @@ void DrawBattleScene(void)
 	SetBattleCamera();
 	DrawMeshCylinder();
 	//DrawCloud();
-	DrawEnemyMissile();
+	DrawEnemyManager();
 	DrawPlayerModel();
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();

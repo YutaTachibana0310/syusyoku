@@ -66,23 +66,25 @@ void InitExplosionFlare(int num)
 		flare[i].active = false;
 	}
 
-	//頂点バッファ作成
+	if (num == 0)
+	{	//頂点バッファ作成
 	//pDevice->CreateV
-	MakeParticleVertexBuffer(vtx, EXPLOSIONFLARE_SIZE, &vtxBuff);
-	MakeParticleUVBuffer(EXPLOSIONFLARE_MAX, vtxUV, &uvBuff);
-	MakeParticleWorldBuffer(EXPLOSIONFLARE_MAX, pos, &posBuff);
-	MakeParticleColorBuffer(EXPLOSIONFLARE_MAX, vtxColor, &colorBuff);
-	
-	//インデックスバッファ作成
-	WORD index[6] = { 0, 1, 2, 2, 1, 3 };
-	pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
-	void *p = NULL;
-	indexBuff->Lock(0, 0, &p, 0);
-	memcpy(p, index, sizeof(index));
-	indexBuff->Unlock();
+		MakeParticleVertexBuffer(vtx, EXPLOSIONFLARE_SIZE, &vtxBuff);
+		MakeParticleUVBuffer(EXPLOSIONFLARE_MAX, vtxUV, &uvBuff);
+		MakeParticleWorldBuffer(EXPLOSIONFLARE_MAX, pos, &posBuff);
+		MakeParticleColorBuffer(EXPLOSIONFLARE_MAX, vtxColor, &colorBuff);
 
-	//テクスチャ読み込み
-	texture = CreateTextureFromFile((LPSTR)EXPLOSIONFLARE_TEXNAME, pDevice);	
+		//インデックスバッファ作成
+		WORD index[6] = { 0, 1, 2, 2, 1, 3 };
+		pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
+		void *p = NULL;
+		indexBuff->Lock(0, 0, &p, 0);
+		memcpy(p, index, sizeof(index));
+		indexBuff->Unlock();
+
+		//テクスチャ読み込み
+		texture = CreateTextureFromFile((LPSTR)EXPLOSIONFLARE_TEXNAME, pDevice);
+	}
 }
 
 /**********************************************
@@ -238,15 +240,15 @@ void SetExplosionFlare(const D3DXVECTOR3 *pos)
 
 		//フレーム関連の設定
 		ptr->cntFrame = 0;
-		ptr->lifeFrame = (int)RandomRange(30, 70);
+		ptr->lifeFrame = (int)RandomRangef(30, 70);
 
 		//スピードの設定
-		ptr->initSpeed = RandomRange(5.0f, 8.0f);
+		ptr->initSpeed = RandomRangef(5.0f, 8.0f);
 		ptr->endSpeed = 0.0f;
 		ptr->speedType = OutExponential;
 
 		//スケールの設定
-		ptr->initScale = RandomRange(0.8f, 1.4f);
+		ptr->initScale = RandomRangef(0.8f, 1.4f);
 		ptr->endScale = 1.0f;
 		ptr->scaleType = Linear;
 
@@ -259,7 +261,7 @@ void SetExplosionFlare(const D3DXVECTOR3 *pos)
 
 		//座標の設定
 		ptr->pos = *pos;
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
 		return;

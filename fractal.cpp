@@ -65,7 +65,7 @@ void CreateHeightMap1(int start, int end, float range, float *map)
 
 	int c = start + (end - start) / 2;
 	map[c] = (map[end] + map[start]) / 2;
-	map[c] += RandomRange(-range / 2, range / 2);
+	map[c] += RandomRangef(-range / 2, range / 2);
 
 	CreateHeightMap1(start, c, range / 2, map);
 	CreateHeightMap1(c, end, range / 2, map);
@@ -84,19 +84,19 @@ void CreateHeightMap1(int start, int end, float range, float *map)
 **************************************************/
 void InitializeHeightMap2(float *map, int elemNum)
 {
-	Point bottomL = { elemNum, 0, RandomRange(minHeight, maxHeight) };
+	Point bottomL = { elemNum, 0, RandomRangef(minHeight, maxHeight) };
 	bottomL.height = Clampf(minHeight, maxHeight, bottomL.height);
 	map[bottomL.z * (elemNum + 1) + bottomL.x] = bottomL.height;
 
-	Point bottomR = { elemNum, elemNum, RandomRange(minHeight, maxHeight) };
+	Point bottomR = { elemNum, elemNum, RandomRangef(minHeight, maxHeight) };
 	bottomR.height = Clampf(minHeight, maxHeight, bottomR.height);
 	map[bottomR.z * (elemNum + 1) + bottomR.x] = bottomR.height;
 
-	Point topL = { 0, 0, RandomRange(minHeight, maxHeight) };
+	Point topL = { 0, 0, RandomRangef(minHeight, maxHeight) };
 	topL.height = Clampf(minHeight, maxHeight, topL.height);
 	map[topL.z * (elemNum + 1) + topL.x] = topL.height;
 
-	Point topR = { 0, elemNum, RandomRange(minHeight, maxHeight) };
+	Point topR = { 0, elemNum, RandomRangef(minHeight, maxHeight) };
 	topR.height = Clampf(minHeight, maxHeight, topR.height);
 	map[topR.z * (elemNum + 1) + topR.x] = topR.height;
 
@@ -151,7 +151,7 @@ void CreateHeightMap2(Point tr, Point tl, Point br, Point bl, float range, float
 	int z = (br.z + tr.z) / 2;
 	int x = (tr.x + tl.x) / 2;
 	map[z * (elemNum + 1) + x] = (tr.height + tl.height + br.height + bl.height) / 4.0f;
-	map[z * (elemNum + 1) + x] += RandomRange(-range / 2.0f, range / 2.0f);
+	map[z * (elemNum + 1) + x] += RandomRangef(-range / 2.0f, range / 2.0f);
 	map[z * (elemNum + 1) + x] = Clampf(minHeight, maxHeight, map[z * (elemNum + 1) + x]);
 	Point c = { z, x, map[z * (elemNum + 1) + x] };
 

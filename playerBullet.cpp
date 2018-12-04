@@ -235,9 +235,9 @@ void SetPlayerBullet(D3DXVECTOR3 pos, float speed)
 		}
 
 		ptr->pos = pos;
-		ptr->rotation = RandomRange(0.0f, 6.12f);
+		ptr->rotation = RandomRangef(0.0f, 6.12f);
 
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-randomAngle, randomAngle), RandomRange(-randomAngle, randomAngle), 1.0f);
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-randomAngle, randomAngle), RandomRangef(-randomAngle, randomAngle), 1.0f);
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
 		ptr->speed = speed;

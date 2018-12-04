@@ -145,6 +145,10 @@
     <ClCompile Include="desertField.cpp" />
     <ClCompile Include="Easing.cpp" />
     <ClCompile Include="EasingVector.cpp" />
+    <ClCompile Include="enemyBullet.cpp" />
+    <ClCompile Include="enemyHomingBullet.cpp" />
+    <ClCompile Include="enemyBulletTrail.cpp" />
+    <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="enemyMissile.cpp" />
     <ClCompile Include="enemyMissileHoming.cpp" />
     <ClCompile Include="enemyMissileLaunch.cpp" />
@@ -163,7 +167,9 @@
     <ClCompile Include="logoScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="meshCylinder.cpp" />
+    <ClCompile Include="middleEnemyAttack.cpp" />
     <ClCompile Include="middleEnemyModel.cpp" />
+    <ClCompile Include="MiddleEnemyMove.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleFramework.cpp" />
@@ -203,6 +209,10 @@
     <ClInclude Include="desertField.h" />
     <ClInclude Include="Easing.h" />
     <ClInclude Include="EasingVector.h" />
+    <ClInclude Include="enemyBullet.h" />
+    <ClInclude Include="enemyHomingBullet.h" />
+    <ClInclude Include="enemyBulletTrail.h" />
+    <ClInclude Include="enemyManager.h" />
     <ClInclude Include="enemyMissile.h" />
     <ClInclude Include="enemyMissileHoming.h" />
     <ClInclude Include="enemyMissileLaunch.h" />

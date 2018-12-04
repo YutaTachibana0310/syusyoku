@@ -99,3 +99,22 @@ void DrawParticleManager(void)
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	GetDevice()->SetRenderState(D3DRS_LIGHTING, true);
 }
+
+/**************************************
+エネミーエクスプロージョンセット処理
+***************************************/
+void SetEnemyExplosion(D3DXVECTOR3 pos)
+{
+	for (int j = 0; j < 200; j++)
+	{
+		SetExplosionFlare(&pos);
+	}
+	for (int j = 0; j < 10; j++)
+	{
+		SetExplosionFire(&pos);
+	}
+	for (int j = 0; j < 100; j++)
+	{
+		SetExplosionSmog(&pos);
+	}
+}

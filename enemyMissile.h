@@ -60,4 +60,5 @@ ENEMYMISSILE *GetEnemyMissileAdr(int n);
 void ChangeStateEnemyMissile(ENEMYMISSILE *ptr, int targetState);
 void SetEnemyMissile(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, D3DXVECTOR3 targetPos);
 void CollisionEnemyMissileAndBullet(void);
+void LockonEnemyMissile(void);
 #endif

@@ -65,28 +65,31 @@ void InitExplosionSmog(int num)
 		smog[i].active = false;
 	}
 
-	//頂点バッファ作成
-	pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
-	pDevice->CreateVertexBuffer(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &posBuff, 0);
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_UV) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &uvBuff, 0);
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_COLOR) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &colorBuff, 0);
+	if (num == 0)
+	{
+		//頂点バッファ作成
+		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
+		pDevice->CreateVertexBuffer(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &posBuff, 0);
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_UV) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &uvBuff, 0);
+		pDevice->CreateVertexBuffer(sizeof(VERTEX_COLOR) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &colorBuff, 0);
 
-	//頂点バッファにメモリコピー
-	CopyVtxBuff(sizeof(vtx), vtx, vtxBuff);
-	CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, pos, posBuff);
-	CopyVtxBuff(sizeof(VERTEX_UV) * EXPLOSIONSMOG_MAX, vtxUV, uvBuff);
-	CopyVtxBuff(sizeof(VERTEX_COLOR) * EXPLOSIONSMOG_MAX, vtxColor, colorBuff);
+		//頂点バッファにメモリコピー
+		CopyVtxBuff(sizeof(vtx), vtx, vtxBuff);
+		CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, pos, posBuff);
+		CopyVtxBuff(sizeof(VERTEX_UV) * EXPLOSIONSMOG_MAX, vtxUV, uvBuff);
+		CopyVtxBuff(sizeof(VERTEX_COLOR) * EXPLOSIONSMOG_MAX, vtxColor, colorBuff);
 
-	//インデックスバッファ作成
-	WORD index[6] = { 0, 1, 2, 2, 1, 3 };
-	pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
-	void *p = NULL;
-	indexBuff->Lock(0, 0, &p, 0);
-	memcpy(p, index, sizeof(index));
-	indexBuff->Unlock();
+		//インデックスバッファ作成
+		WORD index[6] = { 0, 1, 2, 2, 1, 3 };
+		pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
+		void *p = NULL;
+		indexBuff->Lock(0, 0, &p, 0);
+		memcpy(p, index, sizeof(index));
+		indexBuff->Unlock();
 
-	//テクスチャ読み込み
-	texture = CreateTextureFromFile((LPSTR)EXPLOSIONSMOG_TEXNAME, pDevice);	
+		//テクスチャ読み込み
+		texture = CreateTextureFromFile((LPSTR)EXPLOSIONSMOG_TEXNAME, pDevice);
+	}
 }
 
 /**********************************************
@@ -254,7 +257,7 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 		ptr->speedType = OutExponential;
 
 		//スケールの設定
-		ptr->initScale = RandomRange(0.7f, 1.5f);
+		ptr->initScale = RandomRangef(0.7f, 1.5f);
 		ptr->endScale = 1.0f;
 		ptr->scaleType = Linear;
 
@@ -266,10 +269,10 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 
 		//座標の設定
 		ptr->pos = *pos;
-		ptr->pos.x += RandomRange(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->pos.z += RandomRange(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->pos.x += RandomRange(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
+		ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		ptr->pos.z += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
 		return;

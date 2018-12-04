@@ -12,6 +12,8 @@
 #include "explosionSmog.h"
 #include "enemyMissileSmog.h"
 #include "playerBullet.h"
+#include "playerModel.h"
+#include "targetSite.h"
 
 #if 1
 #include "battleCamera.h"
@@ -133,15 +135,15 @@ void UpdateEnemyMissile(void)
 	ENEMYMISSILE *ptr = &missile[0];
 
 	cntFrame++;
-	if (cntFrame % 120 == 0)
-	{
-		for (int k = 0; k < 16; k++)
-		{
-			float angle = RandomRange(45.0f, 135.0f);
-			D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
-			SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
-		}
-	}
+	//if (cntFrame % 120 == 0)
+	//{
+	//	for (int k = 0; k < 16; k++)
+	//	{
+	//		float angle = RandomRange(45.0f, 135.0f);
+	//		D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
+	//		SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
+	//	}
+	//}
 
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
@@ -320,5 +322,37 @@ void CollisionEnemyMissileAndBullet(void)
 				ptr->active = false;
 			}
 		}
+	}
+}
+
+/*****************************************
+エネミーミサイルロックオン判定
+******************************************/
+void LockonEnemyMissile(void)
+{
+	ENEMYMISSILE *ptr = &missile[0];
+	TARGETSITE *targetSite = GetTargetSiteAdr(0);
+
+	for (int i = 0; i < PLAYERMODEL_MAX; i++, targetSite++)
+	{
+		if (!targetSite->active)
+		{
+			continue;
+		}
+
+		ptr = &missile[0];
+		for (int j = 0; j < ENEMYMISSILE_MAX; j++, ptr++)
+		{
+			if (!ptr->active)
+			{
+				continue;
+			}
+
+			if (CollisionTargetSite(i, &ptr->pos))
+			{
+				AddRockonTarget(i, &ptr->pos, &ptr->active, &ptr->hp);
+			}
+		}
+
 	}
 }

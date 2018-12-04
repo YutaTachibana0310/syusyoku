@@ -41,7 +41,7 @@ void EnterPlayerModelTransition(PLAYERMODEL *player)
 void UpdatePlayerModelTransition(PLAYERMODEL *player)
 {
 	player->cntFrame++;
-	player->pos = EaseOutCubic((float)player->cntFrame / BATTLECAMERA_MOVEFRAME, player->initPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	player->pos = EaseOutCubicVector((float)player->cntFrame / BATTLECAMERA_MOVEFRAME, player->initPos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	if (player->cntFrame == BATTLECAMERA_MOVEFRAME)
 	{

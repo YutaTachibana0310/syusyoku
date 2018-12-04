@@ -65,22 +65,25 @@ void InitExplosionFire(int num)
 		fire[i].active = false;
 	}
 
-	//頂点バッファ作成
-	MakeParticleVertexBuffer(vtx, EXPLOSIONFIRE_SIZE, &vtxBuff);
-	MakeParticleUVBuffer(EXPLOSIONFIRE_MAX, vtxUV, &uvBuff);
-	MakeParticleWorldBuffer(EXPLOSIONFIRE_MAX, pos, &posBuff);
-	MakeParticleColorBuffer(EXPLOSIONFIRE_MAX, vtxColor, &colorBuff);
+	if (num == 0)
+	{
+		//頂点バッファ作成
+		MakeParticleVertexBuffer(vtx, EXPLOSIONFIRE_SIZE, &vtxBuff);
+		MakeParticleUVBuffer(EXPLOSIONFIRE_MAX, vtxUV, &uvBuff);
+		MakeParticleWorldBuffer(EXPLOSIONFIRE_MAX, pos, &posBuff);
+		MakeParticleColorBuffer(EXPLOSIONFIRE_MAX, vtxColor, &colorBuff);
 
-	//インデックスバッファ作成
-	WORD index[6] = { 0, 1, 2, 2, 1, 3 };
-	pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
-	void *p = NULL;
-	indexBuff->Lock(0, 0, &p, 0);
-	memcpy(p, index, sizeof(index));
-	indexBuff->Unlock();
+		//インデックスバッファ作成
+		WORD index[6] = { 0, 1, 2, 2, 1, 3 };
+		pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
+		void *p = NULL;
+		indexBuff->Lock(0, 0, &p, 0);
+		memcpy(p, index, sizeof(index));
+		indexBuff->Unlock();
 
-	//テクスチャ読み込み
-	texture = CreateTextureFromFile((LPSTR)EXPLOSIONFIRE_TEXNAME, pDevice);	
+		//テクスチャ読み込み
+		texture = CreateTextureFromFile((LPSTR)EXPLOSIONFIRE_TEXNAME, pDevice);
+	}
 }
 
 /**********************************************
@@ -247,7 +250,7 @@ void SetExplosionFire(const D3DXVECTOR3 *pos)
 		ptr->lifeFrame = 60;
 
 		//スピードの設定
-		ptr->initSpeed = RandomRange(0.1f, 0.5f);
+		ptr->initSpeed = RandomRangef(0.1f, 0.5f);
 		ptr->endSpeed = 0.0f;
 		ptr->speedType = OutExponential;
 
@@ -265,7 +268,7 @@ void SetExplosionFire(const D3DXVECTOR3 *pos)
 
 		//座標の設定
 		ptr->pos = *pos;
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
 		return;
