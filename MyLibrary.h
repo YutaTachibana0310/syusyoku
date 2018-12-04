@@ -10,7 +10,8 @@
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-float RandomRange(float x, float y);													// x～y内の範囲内でランダムに実数を返す関数	
+float RandomRangef(float x, float y);													// x～y内の範囲内でランダムに実数を返す関数	
+int RandomRange(int x, int y);															// x～y内の範囲でランダムに整数を返す関数
 bool MoveToTarget(D3DXVECTOR3 *currentPos, D3DXVECTOR3 *targetPos, float speed);		//目標座標へと移動する関数
 bool StartAccel(D3DXVECTOR3 *currentPos, D3DXVECTOR3 *direction, float speed, int frame, int currentFrame);	//速度ベクトルを目標スピードへ加速させる関数
 float SnipeTarget(D3DXVECTOR3 *pos, D3DXVECTOR3 *targetPos);							//設定座標から目標座標への角度を求める関数

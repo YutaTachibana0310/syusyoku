@@ -257,7 +257,7 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 		ptr->speedType = OutExponential;
 
 		//スケールの設定
-		ptr->initScale = RandomRange(0.7f, 1.5f);
+		ptr->initScale = RandomRangef(0.7f, 1.5f);
 		ptr->endScale = 1.0f;
 		ptr->scaleType = Linear;
 
@@ -269,10 +269,10 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 
 		//座標の設定
 		ptr->pos = *pos;
-		ptr->pos.x += RandomRange(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->pos.z += RandomRange(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->pos.x += RandomRange(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
+		ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		ptr->pos.z += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
 		return;

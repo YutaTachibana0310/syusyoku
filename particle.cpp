@@ -46,7 +46,7 @@ static int cntFrame = 0;						//フレームカウント
 プロトタイプ宣言
 **********************************************/
 void CopyVtxBuff(unsigned size, void *src, LPDIRECT3DVERTEXBUFFER9 buff);
-float RandomRange(float min, float max);
+float RandomRangef(float min, float max);
 
 /**********************************************
 初期化処理
@@ -285,17 +285,17 @@ void SetParticle(D3DXVECTOR3 pos)
 			continue;
 		}
 
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
-		ptr->speed = RandomRange(10.0f, 100.0f);
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
+		ptr->speed = RandomRangef(10.0f, 100.0f);
 		ptr->cntFrame = 0;
 		ptr->pos = pos;
 		ptr->lifeFrame = rand() % 120 + 60;
-		ptr->scale = RandomRange(0.5f, 10.0f);
+		ptr->scale = RandomRangef(0.5f, 10.0f);
 		ptr->active = true;
 
-		vtxColor[i].r = RandomRange(0.0f, 1.0f);
-		vtxColor[i].g = RandomRange(0.0f, 1.0f);
-		vtxColor[i].b = RandomRange(0.0f, 1.0f);
+		vtxColor[i].r = RandomRangef(0.0f, 1.0f);
+		vtxColor[i].g = RandomRangef(0.0f, 1.0f);
+		vtxColor[i].b = RandomRangef(0.0f, 1.0f);
 		cntParticle++;
 		return;
 	}
@@ -315,21 +315,21 @@ void SetCircleParticle(D3DXVECTOR3 pos)
 			continue;
 		}
 
-		D3DXVECTOR3 dir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
+		D3DXVECTOR3 dir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&dir, &dir);
 
 		ptr->pos = pos;
 
 		ptr->moveDir = dir * -1;
-		ptr->speed = RandomRange(0.5f, 10.0f);
+		ptr->speed = RandomRangef(0.5f, 10.0f);
 		ptr->cntFrame = 0;
 		ptr->lifeFrame = rand() % 60 + 60;
-		ptr->scale = RandomRange(0.5f, 10.0f);
+		ptr->scale = RandomRangef(0.5f, 10.0f);
 		ptr->active = true;
 
-		vtxColor[i].r = RandomRange(0.0f, 1.0f);
-		vtxColor[i].g = RandomRange(0.0f, 1.0f);
-		vtxColor[i].b = RandomRange(0.0f, 1.0f);
+		vtxColor[i].r = RandomRangef(0.0f, 1.0f);
+		vtxColor[i].g = RandomRangef(0.0f, 1.0f);
+		vtxColor[i].b = RandomRangef(0.0f, 1.0f);
 		cntParticle++;
 		return;
 	}

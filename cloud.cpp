@@ -137,7 +137,7 @@ void UpdateCloud(void)
 
 	for (int i = 0; i < 20; i++)
 	{
-		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRange(-10000.0f, 10000.0f), RandomRange(-500.0f, -200.0f), 20000.0f);
+		D3DXVECTOR3 offset = D3DXVECTOR3(RandomRangef(-10000.0f, 10000.0f), RandomRangef(-500.0f, -200.0f), 20000.0f);
 		SetCloud(pos + offset);
 	}
 }

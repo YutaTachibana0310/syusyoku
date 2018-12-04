@@ -7,6 +7,7 @@
 #include "middleEnemyModel.h"
 #include "targetSite.h"
 #include "playerModel.h"
+#include "particleManager.h"
 
 /**************************************
 マクロ定義
@@ -45,16 +46,19 @@ static const char* textureName[MIDDLEENEMY_TEXTURE_MAX] = {
 //更新処理の関数テーブル
 static funcMiddleEnemy Update[MiddleEnemyStateMax] = {
 	UpdateMiddleEnemyMove,
+	UpdateMiddleEnemyAttack
 };
 
 //入場処理の関数テーブル
 static funcMiddleEnemy Enter[MiddleEnemyStateMax] = {
 	EnterMiddleEnemyMove,
+	EnterMiddleEnemyAttack
 };
 
 //退場処理の関数テーブル
 static funcMiddleEnemy Exit[MiddleEnemyStateMax] = {
 	ExitMiddleEnemyMove,
+	ExitMiddleEnemyAttack
 };
 
 /**************************************
@@ -85,12 +89,13 @@ void InitMiddleEnemyModel(int num)
 	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
+		ptr->hp = 2.0f;
 		ptr->active = false;
 	}
 
 	middleEnemy[0].active = true;
 	middleEnemy[0].pos = D3DXVECTOR3(50.0f, -50.0f, -200.0f);
-	middleEnemy[0].goalPos = D3DXVECTOR3(50.0f, -0.0f, 100.0f);
+	middleEnemy[0].goalPos = D3DXVECTOR3(50.0f, -0.0f, 150.0f);
 	middleEnemy[0].rot = D3DXVECTOR3(0.0f, 3.14f, 0.0f);
 	middleEnemy[0].goalRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	ChangeStateMiddleEnemy(&middleEnemy[0], MiddleEnemyMove);
@@ -128,7 +133,17 @@ void UpdateMiddleEnemyModel(void)
 			continue;
 		}
 
+		//撃墜判定
+		if (ptr->hp <= 0.0f)
+		{
+			SetEnemyExplosion(ptr->pos);
+			ptr->active = false;
+		}
+
+		//各状態の更新処理
 		Update[ptr->state](ptr);
+
+		
 	}
 }
 

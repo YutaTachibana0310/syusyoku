@@ -215,11 +215,11 @@ void SetPlayerMissile(D3DXVECTOR3 *pTargetPos, float *pTargetHP, bool *targetAct
 
 		//初速度設定
 		float vX = (pTargetPos->x - pos.x) > 0 ? 5.0f : -5.0f;
-		float vY = RandomRange(-50.0f, 50.0f);
-		float vZ = RandomRange(-50.0f, -30.0f);
+		float vY = RandomRangef(-50.0f, 50.0f);
+		float vZ = RandomRangef(-50.0f, -30.0f);
 		ptr->velocity = D3DXVECTOR3(vX, vY,vZ);
 		D3DXVec3Normalize(&ptr->velocity, &ptr->velocity);
-		ptr->speed = RandomRange(PLAYERMISSILE_VELOCITY_MIN, PLAYERMISSILE_VELOCITY_MAX);
+		ptr->speed = RandomRangef(PLAYERMISSILE_VELOCITY_MIN, PLAYERMISSILE_VELOCITY_MAX);
 
 		//パラメータ初期化
 		ptr->cntFrame = 0;

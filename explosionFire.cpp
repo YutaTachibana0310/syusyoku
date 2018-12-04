@@ -250,7 +250,7 @@ void SetExplosionFire(const D3DXVECTOR3 *pos)
 		ptr->lifeFrame = 60;
 
 		//スピードの設定
-		ptr->initSpeed = RandomRange(0.1f, 0.5f);
+		ptr->initSpeed = RandomRangef(0.1f, 0.5f);
 		ptr->endSpeed = 0.0f;
 		ptr->speedType = OutExponential;
 
@@ -268,7 +268,7 @@ void SetExplosionFire(const D3DXVECTOR3 *pos)
 
 		//座標の設定
 		ptr->pos = *pos;
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
 		return;

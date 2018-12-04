@@ -240,15 +240,15 @@ void SetExplosionFlare(const D3DXVECTOR3 *pos)
 
 		//フレーム関連の設定
 		ptr->cntFrame = 0;
-		ptr->lifeFrame = (int)RandomRange(30, 70);
+		ptr->lifeFrame = (int)RandomRangef(30, 70);
 
 		//スピードの設定
-		ptr->initSpeed = RandomRange(5.0f, 8.0f);
+		ptr->initSpeed = RandomRangef(5.0f, 8.0f);
 		ptr->endSpeed = 0.0f;
 		ptr->speedType = OutExponential;
 
 		//スケールの設定
-		ptr->initScale = RandomRange(0.8f, 1.4f);
+		ptr->initScale = RandomRangef(0.8f, 1.4f);
 		ptr->endScale = 1.0f;
 		ptr->scaleType = Linear;
 
@@ -261,7 +261,7 @@ void SetExplosionFlare(const D3DXVECTOR3 *pos)
 
 		//座標の設定
 		ptr->pos = *pos;
-		ptr->moveDir = D3DXVECTOR3(RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f), RandomRange(-1.0f, 1.0f));
+		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
 		return;

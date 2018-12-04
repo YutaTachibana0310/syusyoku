@@ -19,7 +19,8 @@
 //ミドルエネミー状態定義
 enum MIDDLEENEMY_STATE
 {
-	MiddleEnemyMove,
+	MiddleEnemyMove,		//目的座標に移動する状態
+	MiddleEnemyAttack,		//攻撃状態
 	MiddleEnemyStateMax
 };
 
@@ -37,6 +38,7 @@ typedef struct
 	D3DXVECTOR3 startRot, goalRot;
 
 	float hp;
+	int atkNum;
 
 }MIDDLEENEMYMODEL;
 /**************************************
@@ -51,10 +53,12 @@ MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num);
 void LockonMiddleEnemy(void);
 
 void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
+void UpdateMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
 
 void EnterMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
+void EnterMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
 
 void ExitMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
-
+void ExitMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
 
 #endif
