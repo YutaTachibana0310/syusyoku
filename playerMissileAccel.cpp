@@ -5,14 +5,16 @@
 //
 //=====================================
 #include "playerMissile.h"
+#include "Easing.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define PLAYERMISSILE_SPEED_MAX			(60.0f)
 #define PLAYERMISSILE_ACCEL_VALUE		(0.5f)
-#define PLAYERMISSILE_ACCEL_ROTANGLE	(0.02f)
+#define PLAYERMISSILE_ACCEL_ROTANGLE	(0.08f)
 #define PLAYERMISSILE_ACCEL_END			(30)
+#define PLAYERMISSILE_ACCEL_GOALSPEED	(10.0f)
 
 /**************************************
 構造体定義
@@ -32,7 +34,7 @@
 void EnterPlayerMissileAccel(PLAYERMISSILE *missile)
 {
 	missile->cntFrame = 0;
-
+	missile->startSpeed = missile->speed;
 }
 
 /**************************************
@@ -51,7 +53,8 @@ void UpdatePlayerMissileAccel(PLAYERMISSILE *missile)
 	D3DXQuaternionRotationAxis(&missile->rot, &axis, acosf(D3DXVec3Dot(&missile->velocity, &PLAYERMISSILE_DEFAULT_ANGLE)));
 
 	//加速
-	missile->speed = min(missile->speed + PLAYERMISSILE_ACCEL_VALUE, PLAYERMISSILE_SPEED_MAX);
+	float t = (float)missile->cntFrame / PLAYERMISSILE_ACCEL_END;
+	missile->speed = EaseOutCubic(t, missile->startSpeed, PLAYERMISSILE_ACCEL_GOALSPEED);
 
 	//座標更新
 	missile->pos += missile->velocity * missile->speed;

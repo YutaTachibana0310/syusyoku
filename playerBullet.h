@@ -25,6 +25,7 @@ typedef struct
 	D3DXVECTOR3 moveDir;
 	float rotation;
 	float speed;
+	int cntFrame;
 
 }PLAYERBULLET;
 /**************************************
@@ -36,4 +37,6 @@ void UpdatePlayerBullet(void);
 void DrawPlayerBullet(void);
 void SetPlayerBullet(D3DXVECTOR3 pos, float speed);
 PLAYERBULLET *GetPlayerBulletAdr(int id);
+void SetPlayerBulletState(int state);
+
 #endif

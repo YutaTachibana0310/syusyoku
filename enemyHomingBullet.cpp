@@ -18,7 +18,7 @@
 #define ENEMYHOMINGBULLET_TEXTURE_SIZE_Y		(6)
 #define ENEMYHOMINGBULLET_DISABLE_BORDER_Z		(-200.0f)
 #define ENEMYHOMINGBULLET_ACCELERATION_MAX		(400.0f)
-#define ENEMYHOMINGBULLET_SHADER_NAME			"particle.fx"
+#define ENEMYHOMINGBULLET_SHADER_NAME			"data/EFFECT/particle.fx"
 
 /**************************************
 ç\ë¢ëÃíËã`

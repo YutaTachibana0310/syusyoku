@@ -170,7 +170,7 @@
     <ClCompile Include="middleEnemyAttack.cpp" />
     <ClCompile Include="middleEnemyEscape.cpp" />
     <ClCompile Include="middleEnemyModel.cpp" />
-    <ClCompile Include="MiddleEnemyMove.cpp" />
+    <ClCompile Include="middleEnemyMove.cpp" />
     <ClCompile Include="middleEnemyWait.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particle.cpp" />
@@ -261,6 +261,10 @@
     <FxCompile Include="data\EFFECT\particle.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\playerBullet.fx">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

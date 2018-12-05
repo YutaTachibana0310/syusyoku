@@ -219,7 +219,7 @@ void SetPlayerMissile(D3DXVECTOR3 *pTargetPos, float *pTargetHP, bool *targetAct
 		float vZ = RandomRangef(-50.0f, -30.0f);
 		ptr->velocity = D3DXVECTOR3(vX, vY,vZ);
 		D3DXVec3Normalize(&ptr->velocity, &ptr->velocity);
-		ptr->speed = RandomRangef(PLAYERMISSILE_VELOCITY_MIN, PLAYERMISSILE_VELOCITY_MAX);
+		ptr->startSpeed = ptr->speed = RandomRangef(PLAYERMISSILE_VELOCITY_MIN, PLAYERMISSILE_VELOCITY_MAX);
 
 		//ƒpƒ‰ƒ[ƒ^‰Šú‰»
 		ptr->cntFrame = 0;

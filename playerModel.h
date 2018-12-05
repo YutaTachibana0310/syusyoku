@@ -12,13 +12,13 @@
 #include "battleCamera.h"
 #include "rockonSite.h"
 
-#define PLAYER_INITMOVE_FRAME	(30)
-#define PLAYERMODEL_MAX			(1)
-#define PLAYER_DESTROT_MAX		(0.51f)
-#define PLAYER_MOVERANGE		(50.0f)
-#define PLAYER_ROCKON_MAX		(32)
+#define PLAYER_INITMOVE_FRAME		(30)
+#define PLAYERMODEL_MAX				(1)
+#define PLAYER_DESTROT_MAX			(0.51f)
+#define PLAYER_MOVERANGE			(50.0f)
+#define PLAYER_ROCKON_MAX			(32)
 #define PLAYER_HOMINGATK_INTERBAL	(180)
-
+#define PLAYER_SHOT_INTERBAL		(5)
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
