@@ -318,6 +318,9 @@
     <ClCompile Include="playerBullet.cpp">
       <Filter>ソース ファイル\Battle\Player\PlayerBullet</Filter>
     </ClCompile>
+    <ClCompile Include="playerBulletTrail.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerBullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -486,6 +489,9 @@
       <Filter>ヘッダー ファイル\Battle\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="playerBullet.h">
+      <Filter>ヘッダー ファイル\Battle\Player\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="playerBulletTrail.h">
       <Filter>ヘッダー ファイル\Battle\Player\PlayerBullet</Filter>
     </ClInclude>
   </ItemGroup>

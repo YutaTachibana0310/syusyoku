@@ -13,8 +13,8 @@
 ***************************************/
 #define PLAYERULLET_SPEED			(25.0f)
 #define PLAYERBULLET_TEXNAME		"data/TEXTURE/PLAYER/playerbullet.png"
-#define PLAYERBULLET_TEXSIZE_X		(2.5f)
-#define PLAYERBULLET_TEXSIZE_Y		(10.0f)
+#define PLAYERBULLET_TEXSIZE_X		(15.0f)
+#define PLAYERBULLET_TEXSIZE_Y		(15.0f)
 #define PLAYERBULLET_ROTVALUE		(0.05f)
 #define PLAYERbULLET_MOVE_END		(120)
 #define PLAYERBULLET_SHADER_NAME	"data/EFFECT/playerBullet.fx"
@@ -165,7 +165,7 @@ void DrawPlayerBullet(void)
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 
@@ -197,7 +197,7 @@ void DrawPlayerBullet(void)
 
 		//‰ÁŽZ•`‰æ
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-		//pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	}
 
@@ -271,10 +271,10 @@ void CreatePlayerBulletVertexBuffer(void)
 	VERTEX_3D *pVtx;
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	pVtx[0].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[1].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[2].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
-	pVtx[3].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
+	pVtx[0].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, PLAYERBULLET_TEXSIZE_Y, 0.0f);
+	pVtx[1].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, PLAYERBULLET_TEXSIZE_Y, 0.0f);
+	pVtx[2].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, -PLAYERBULLET_TEXSIZE_Y, 0.0f);
+	pVtx[3].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, -PLAYERBULLET_TEXSIZE_Y, 0.0f);
 
 	pVtx[0].nor =
 		pVtx[1].nor =

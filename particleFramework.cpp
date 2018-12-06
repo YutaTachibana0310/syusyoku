@@ -50,7 +50,7 @@ void MakeParticleUVBuffer(int size, VERTEX_UV *uv, LPDIRECT3DVERTEXBUFFER9 *buff
 	VERTEX_UV *ptr = uv;
 	for (int i = 0; i < size; i++, ptr++)
 	{
-		//ptr->u = ptr->v = 0.0f;
+		ptr->u = ptr->v = 0.0f;
 	}
 
 	CopyVtxBuff(sizeof(VERTEX_UV) * size, uv, *buff);

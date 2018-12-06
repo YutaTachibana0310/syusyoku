@@ -206,7 +206,7 @@ void DrawEnemyHomingBullet(void)
 	//ストリームソース設定
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_PARTICLE));
 	pDevice->SetStreamSource(1, posBuff, 0, sizeof(D3DXMATRIX));
-	pDevice->SetStreamSource(2, uvBuff, 0, sizeof(VERTEX_2D));
+	pDevice->SetStreamSource(2, uvBuff, 0, sizeof(VERTEX_UV));
 	pDevice->SetStreamSource(3, colorBuff, 0, sizeof(VERTEX_COLOR));
 	pDevice->SetIndices(indexBuff);
 
