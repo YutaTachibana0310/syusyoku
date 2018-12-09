@@ -12,7 +12,9 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define MIDDLEENEMY_MAX			(36)
+#define MIDDLEENEMY_MAX				(36)
+#define MIDDLEENEMY_COLLIDER_RADIUS	(10.0f)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -53,6 +55,7 @@ void DrawMiddleEnemyModel(void);
 void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next);
 MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num);
 void LockonMiddleEnemy(void);
+void CollisionMiddleEnemyAndBullet(void);
 
 //各状態更新処理
 void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);

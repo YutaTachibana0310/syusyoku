@@ -8,6 +8,7 @@
 #include "targetSite.h"
 #include "playerModel.h"
 #include "particleManager.h"
+#include "playerBullet.h"
 
 /**************************************
 マクロ定義
@@ -246,5 +247,41 @@ void LockonMiddleEnemy(void)
 			}
 		}
 
+	}
+}
+
+/**************************************
+ミドルエネミーのバレット当たり判定
+***************************************/
+void CollisionMiddleEnemyAndBullet(void)
+{
+	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
+	float radiusSq = powf(PLAYERBULLET_COLLIDER_RAIDUS + MIDDLEENEMY_COLLIDER_RADIUS, 2);
+
+	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		bullet = GetPlayerBulletAdr(0);
+
+		for (int j = 0; j < PLAYERBULLET_MAX; j++, bullet++)
+		{
+			if (!bullet->active)
+			{
+				continue;
+			}
+
+			float lengthSq = D3DXVec3LengthSq(&(ptr->pos - bullet->pos));
+			if (lengthSq < radiusSq)
+			{
+				ptr->hp -= 1.0f;
+				bullet->active = false;
+			}
+
+		}
 	}
 }

@@ -86,4 +86,6 @@ void CheckEnemyCollision(void)
 {
 	LockonMiddleEnemy();
 	LockonEnemyMissile();
+
+	CollisionMiddleEnemyAndBullet();
 }
