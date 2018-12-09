@@ -11,9 +11,9 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERBULLETTRAIL_TEXTURE_NAME		"data/TEXTURE/ENEMY/playerBullet.png"
-#define PLAYERBULLETTRAIL_TEXTURE_SIZE_X	(3)
-#define PLAYERBULLETTRAIL_TEXTURE_SIZE_Y	(3)
+#define PLAYERBULLETTRAIL_TEXTURE_NAME		"data/TEXTURE/PLAYER/playerbullet.png"
+#define PLAYERBULLETTRAIL_TEXTURE_SIZE_X	(4)
+#define PLAYERBULLETTRAIL_TEXTURE_SIZE_Y	(4)
 #define PLAYERBULLETTRAIL_LIFE_END			(10)
 #define PLAYERBULLETTRAIL_SHADER_NAME		"data/EFFECT/particle.fx"
 
@@ -141,7 +141,7 @@ void UpdatePlayerBulletTrail(void)
 	D3DXMATRIX *pPos = &pos[0];
 	VERTEX_COLOR *pColor = &vtxColor[0];
 
-	for (int i = 0; i < PLAYERBULLETTRAIL_MAX; i++, ptr++)
+	for (int i = 0; i < PLAYERBULLETTRAIL_MAX; i++, ptr++, pPos++, pColor++)
 	{
 		if (!ptr->active)
 		{
@@ -151,7 +151,7 @@ void UpdatePlayerBulletTrail(void)
 		ptr->cntFrame--;
 
 		//透過処理
-		pColor->a = (float)ptr->cntFrame / PLAYERBULLETTRAIL_LIFE_END;
+		//pColor->a = (float)ptr->cntFrame / PLAYERBULLETTRAIL_LIFE_END;
 
 		//寿命判定
 		if (ptr->cntFrame == 0)
@@ -165,6 +165,8 @@ void UpdatePlayerBulletTrail(void)
 		D3DXMatrixIdentity(pPos);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
+
+		ptr->active = false;
 	}
 
 	//頂点バッファにコピー
@@ -196,6 +198,61 @@ void DrawPlayerBulletTrail(void)
 	//ストリームソース設定
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_PARTICLE));
 	pDevice->SetStreamSource(1, posBuff, 0, sizeof(D3DXMATRIX));
-	pDevice->SetStreamSource(2, uvBuff, 0, sizeof(VERTEX_2D));
+	pDevice->SetStreamSource(2, uvBuff, 0, sizeof(VERTEX_UV));
+	pDevice->SetStreamSource(3, colorBuff, 0, sizeof(VERTEX_COLOR));
+	pDevice->SetIndices(indexBuff);
 
+	//シェーダーのグローバル変数を設定
+	effect->SetTexture("tex", texture);
+	effect->SetMatrix("mtxView", &GetBattleCameraView());
+	effect->SetMatrix("mtxProj", &GetBattleCameraProjection());
+
+	//使用シェーダー設定
+	effect->SetTechnique("tech");
+	UINT passNum = 0;
+	effect->Begin(&passNum, 0);
+	effect->BeginPass(0);
+
+	//描画
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, NUM_VERTEX, 0, NUM_POLYGON);
+
+	//加算描画
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, NUM_VERTEX, 0, NUM_POLYGON);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	//シェーダー終了宣言
+	effect->EndPass();
+	effect->End();
+
+	//ストリーム周波数をもとに戻す
+	pDevice->SetStreamSourceFreq(0, 1);
+	pDevice->SetStreamSourceFreq(1, 1);
+	pDevice->SetStreamSourceFreq(2, 1);
+	pDevice->SetStreamSourceFreq(3, 1);
+
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
+	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
+}
+
+/**************************************
+セット処理
+***************************************/
+void SetPlayerBulletTrail(D3DXVECTOR3 pos, float alpha)
+{
+	PLAYERBULLET_TRAIL *ptr = &trail[0];
+	for (int i = 0; i < PLAYERBULLETTRAIL_MAX; i++, ptr++)
+	{
+		if (ptr->active)
+		{
+			continue;
+		}
+
+		ptr->pos = pos;
+		ptr->cntFrame = PLAYERBULLETTRAIL_LIFE_END;
+		vtxColor[i].a = alpha;
+		ptr->active = true;
+		return;
+	}
 }

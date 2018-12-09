@@ -30,6 +30,6 @@ void InitPlayerBulletTrail(int num);
 void UninitPlayerBulletTrail(int num);
 void UpdatePlayerBulletTrail(void);
 void DrawPlayerBulletTrail(void);
-void SetPlayerBulletTrail(void);
+void SetPlayerBulletTrail(D3DXVECTOR3 pos, float alpha);
 
 #endif

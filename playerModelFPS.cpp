@@ -21,7 +21,7 @@
 
 #define PLAYERFPS_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
 #define PLAYERFPS_SHOTPOS_R			(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
-#define PLAYERFPS_BULLETSPEED		(25.0f)
+#define PLAYERFPS_BULLETSPEED		(40.0f)
 /**************************************
 ç\ë¢ëÃíËã`
 ***************************************/
