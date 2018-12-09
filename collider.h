@@ -35,6 +35,7 @@ typedef struct
 	D3DXVECTOR3 nor;		//法線ベクトル
 }TRIANGLE;
 
+//スフィアコライダー
 typedef struct
 {
 	D3DXVECTOR3 pos;		//中心位置
@@ -44,8 +45,11 @@ typedef struct
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
+void InitCollider(int num);
+void UninitCollider(int num);
+
 bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, TRIANGLE tri, D3DXVECTOR3 *out);
 bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, PLANE plane, D3DXVECTOR3 *out);
 bool ChechHitBoundingSphere(SPHERE s1, SPHERE s2);
-void UpdateCollision(void);
+void DrawBoundingSphere(D3DXVECTOR3 pos, float radius);
 #endif

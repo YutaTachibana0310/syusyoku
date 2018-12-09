@@ -9,6 +9,7 @@
 #include "playerModel.h"
 #include "particleManager.h"
 #include "playerBullet.h"
+#include "collider.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -195,6 +196,10 @@ void DrawMiddleEnemyModel(void)
 			pDevice->SetTexture(0, textures[j]);
 			mesh->DrawSubset(j);
 		}
+
+#ifdef _DEBUG
+		DrawBoundingSphere(ptr->pos, MIDDLEENEMY_COLLIDER_RADIUS);
+#endif
 	}
 
 	pDevice->SetMaterial(&matDef);

@@ -13,7 +13,7 @@
 マクロ定義
 ***************************************/
 #define MIDDLEENEMY_MAX				(36)
-#define MIDDLEENEMY_COLLIDER_RADIUS	(10.0f)
+#define MIDDLEENEMY_COLLIDER_RADIUS	(30.0f)
 
 /**************************************
 構造体定義

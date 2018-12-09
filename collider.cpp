@@ -14,12 +14,99 @@
 *****************************************************************************/
 
 /*****************************************************************************
-プロトタイプ宣言定義
+グローバル変数
 *****************************************************************************/
-void UpdateCollision(void)
+static LPD3DXMESH meshSphere;		//球体メッシュ
+static D3DMATERIAL9 material;		//当たり判定表示用マテリアル
+static D3DMATERIAL9 matDef;			//デフォルトマテリアル
+
+/*****************************************************************************
+初期化処理
+*****************************************************************************/
+void InitCollider(int num)
 {
+	if (num == 0)
+	{
+		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+		//メッシュ作成
+		D3DXCreateSphere(pDevice,
+			1.0f,
+			8,
+			8,
+			&meshSphere,
+			NULL);
 
+		//マテリアル作成
+		ZeroMemory(&material, sizeof(material));
+		material.Diffuse.r = 1.0f;
+		material.Diffuse.g = 0.0f;
+		material.Diffuse.b = 0.0f;
+		material.Diffuse.a = 1.0f;
+
+		material.Ambient.r = 1.0f;
+		material.Ambient.g = 0.0f;
+		material.Ambient.b = 0.0f;
+		material.Ambient.a = 1.0f;
+
+		material.Specular.r = 1.0f;
+		material.Specular.g = 0.0f;
+		material.Specular.b = 0.0f;
+		material.Specular.a = 1.0f;
+
+		material.Emissive.r = 1.0f;
+		material.Emissive.g = 0.0f;
+		material.Emissive.b = 0.0f;
+		material.Emissive.a = 1.0f;
+
+		//デフォルトマテリアルをバックアップ
+		pDevice->GetMaterial(&matDef);
+	}
+}
+
+/*****************************************************************************
+終了処理
+*****************************************************************************/
+void UninitCollider(int num)
+{
+	if (num == 0)
+	{
+		SAFE_RELEASE(meshSphere);
+	}
+}
+
+/*****************************************************************************
+バウンディングスフィア描画処理
+*****************************************************************************/
+void DrawBoundingSphere(D3DXVECTOR3 pos, float radius)
+{
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	D3DXMATRIX mtxTranslate, mtxScale, mtxWorld;
+
+	//set renderstate & material
+	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	pDevice->SetMaterial(&material);
+
+	//identify
+	D3DXMatrixIdentity(&mtxWorld);
+
+	//scaling
+	D3DXMatrixScaling(&mtxScale, radius, radius, radius);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
+
+	//translate
+	D3DXMatrixTranslation(&mtxTranslate, pos.x, pos.y, pos.z);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+	
+	//set world
+	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//draw
+	meshSphere->DrawSubset(0);
+
+	//reset renderstate & material0
+	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	pDevice->SetMaterial(&matDef);
 }
 
 /*****************************************************************************
