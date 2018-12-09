@@ -194,6 +194,10 @@
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="scoreGUI.cpp" />
     <ClCompile Include="skyBG.cpp" />
+    <ClCompile Include="smallEnemyAttack.cpp" />
+    <ClCompile Include="smallEnemyEscape.cpp" />
+    <ClCompile Include="smallEnemyModel.cpp" />
+    <ClCompile Include="smallEnemyMove.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
   </ItemGroup>
@@ -252,6 +256,7 @@
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="scoreGUI.h" />
     <ClInclude Include="skyBG.h" />
+    <ClInclude Include="smallEnemyModel.h" />
     <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />
   </ItemGroup>
