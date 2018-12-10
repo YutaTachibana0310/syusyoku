@@ -124,6 +124,9 @@
     <Filter Include="ヘッダー ファイル\Battle\Player\PlayerBullet">
       <UniqueIdentifier>{9cd93c22-93ab-4cad-b032-b8a105c77a7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy">
+      <UniqueIdentifier>{72cb1226-ab9c-414d-9166-d1158e5d8508}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
