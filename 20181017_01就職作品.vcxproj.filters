@@ -121,6 +121,12 @@
     <Filter Include="ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy">
       <UniqueIdentifier>{1cc505c5-d8d6-41e8-bc3c-0215c7eb1e80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Player\PlayerBullet">
+      <UniqueIdentifier>{ec8cde1b-caa3-45c5-a61f-9c8dba7e86ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Player\PlayerBullet">
+      <UniqueIdentifier>{bd3f326c-b97a-4ba3-a1c5-c2e064775969}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
