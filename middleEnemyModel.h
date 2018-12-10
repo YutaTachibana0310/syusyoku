@@ -8,12 +8,13 @@
 #define _MIDDLEENMYMODEL_H_
 
 #include "main.h"
+#include "collider.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define MIDDLEENEMY_MAX				(36)
-#define MIDDLEENEMY_COLLIDER_RADIUS	(30.0f)
+#define MIDDLEENEMY_COLLIDER_RADIUS	(20.0f)
 
 /**************************************
 構造体定義
@@ -43,6 +44,8 @@ typedef struct
 
 	float hp;
 	int atkNum;
+
+	SPHERE collider;
 
 }MIDDLEENEMYMODEL;
 /**************************************

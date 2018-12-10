@@ -9,7 +9,6 @@
 #include "playerModel.h"
 #include "particleManager.h"
 #include "playerBullet.h"
-#include "collider.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -98,7 +97,11 @@ void InitMiddleEnemyModel(int num)
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
 		ptr->hp = 2.0f;
+		ptr->collider.pos = &ptr->pos;
+		ptr->collider.radius = MIDDLEENEMY_COLLIDER_RADIUS;
+		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->active = false;
+
 	}
 
 	middleEnemy[0].active = true;
@@ -198,7 +201,7 @@ void DrawMiddleEnemyModel(void)
 		}
 
 #ifdef _DEBUG
-		DrawBoundingSphere(ptr->pos, MIDDLEENEMY_COLLIDER_RADIUS);
+		DrawBoundingSphere(&ptr->collider);
 #endif
 	}
 
@@ -262,7 +265,6 @@ void CollisionMiddleEnemyAndBullet(void)
 {
 	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
 	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
-	float radiusSq = powf(PLAYERBULLET_COLLIDER_RAIDUS + MIDDLEENEMY_COLLIDER_RADIUS, 2);
 
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
@@ -280,8 +282,7 @@ void CollisionMiddleEnemyAndBullet(void)
 				continue;
 			}
 
-			float lengthSq = D3DXVec3LengthSq(&(ptr->pos - bullet->pos));
-			if (lengthSq < radiusSq)
+			if (CheckHitBoundingSphere(&ptr->collider, &bullet->collider))
 			{
 				ptr->hp -= 1.0f;
 				bullet->active = false;

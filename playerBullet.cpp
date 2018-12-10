@@ -111,6 +111,9 @@ void InitPlayerBullet(int num)
 		ptr->pos = D3DXVECTOR3(9999.9f, 9999.9f, 9999.9f);
 		ptr->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->scale = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+		ptr->collider.pos = &ptr->pos;
+		ptr->collider.radius = PLAYERBULLET_COLLIDER_RAIDUS;
+		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 }
 
@@ -174,7 +177,6 @@ void DrawPlayerBullet(void)
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
-	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 
@@ -213,7 +215,18 @@ void DrawPlayerBullet(void)
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+#ifdef _DEBUG
+	ptr = &bullet[0];
+	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+		DrawBoundingSphere(&ptr->collider);
+	}
+#endif
 }
 
 /**************************************

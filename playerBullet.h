@@ -8,7 +8,7 @@
 #define _PLAYERBULLET_H_
 
 #include "main.h"
-
+#include "collider.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -27,6 +27,7 @@ typedef struct
 	float speed;
 	int cntFrame;
 
+	SPHERE collider;
 }PLAYERBULLET;
 /**************************************
 プロトタイプ宣言
