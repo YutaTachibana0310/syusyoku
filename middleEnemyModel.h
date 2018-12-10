@@ -47,35 +47,35 @@ typedef struct
 
 	SPHERE collider;
 
-}MIDDLEENEMYMODEL;
+}MIDDLEENEMY;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitMiddleEnemyModel(int num);
-void UninitMiddleEnemyModel(int num);
-void UpdateMiddleEnemyModel(void);
-void DrawMiddleEnemyModel(void);
-void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next);
-MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num);
+void InitMiddleEnemy(int num);
+void UninitMiddleEnemy(int num);
+void UpdateMiddleEnemy(void);
+void DrawMiddleEnemy(void);
+void ChangeStateMiddleEnemy(MIDDLEENEMY *ptr, int next);
+MIDDLEENEMY *GetMiddleEnemyAdr(int num);
 void LockonMiddleEnemy(void);
 void CollisionMiddleEnemyAndBullet(void);
 
 //各状態更新処理
-void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
-void UpdateMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
-void UpdateMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy);
-void UpdateMiddleEnemyWait(MIDDLEENEMYMODEL *enemy);
+void UpdateMiddleEnemyMove(MIDDLEENEMY *enemy);
+void UpdateMiddleEnemyAttack(MIDDLEENEMY *enemy);
+void UpdateMiddleEnemyEscape(MIDDLEENEMY *enemy);
+void UpdateMiddleEnemyWait(MIDDLEENEMY *enemy);
 
 //各状態入場処理
-void EnterMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
-void EnterMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
-void EnterMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy);
-void EnterMiddleEnemyWait(MIDDLEENEMYMODEL *enemy);
+void EnterMiddleEnemyMove(MIDDLEENEMY *enemy);
+void EnterMiddleEnemyAttack(MIDDLEENEMY *enemy);
+void EnterMiddleEnemyEscape(MIDDLEENEMY *enemy);
+void EnterMiddleEnemyWait(MIDDLEENEMY *enemy);
 
 //各状態退場処理
-void ExitMiddleEnemyMove(MIDDLEENEMYMODEL *enemy);
-void ExitMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy);
-void ExitMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy);
-void ExitMiddleEnemyWait(MIDDLEENEMYMODEL *enemy);
+void ExitMiddleEnemyMove(MIDDLEENEMY *enemy);
+void ExitMiddleEnemyAttack(MIDDLEENEMY *enemy);
+void ExitMiddleEnemyEscape(MIDDLEENEMY *enemy);
+void ExitMiddleEnemyWait(MIDDLEENEMY *enemy);
 
 #endif

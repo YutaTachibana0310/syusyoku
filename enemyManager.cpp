@@ -7,6 +7,7 @@
 #include "enemyManager.h"
 #include "enemyMissile.h"
 #include "middleEnemyModel.h"
+#include "smallEnemyModel.h"
 #include "enemyBullet.h"
 #include "enemyHomingBullet.h"
 #include "enemyBulletTrail.h"
@@ -33,7 +34,8 @@
 void InitEnemyManager(int num)
 {
 	InitEnemyMissile(num);
-	InitMiddleEnemyModel(num);
+	InitMiddleEnemy(num);
+	InitSmallEnemy(num);
 
 	InitEnemyBullet(num);
 	InitEnemyHomingBullet(num);
@@ -46,7 +48,8 @@ void InitEnemyManager(int num)
 void UninitEnemyManager(int num)
 {
 	UninitEnemyMissile(num);
-	UninitMiddleEnemyModel(num);
+	UninitMiddleEnemy(num);
+	UninitSmallEnemy(num);
 
 	UninitEnemyBullet(num);
 	UninitEnemyHomingBullet(num);
@@ -59,7 +62,8 @@ void UninitEnemyManager(int num)
 void UpdateEnemyManager(void)
 {
 	UpdateEnemyMissile();
-	UpdateMiddleEnemyModel();
+	UpdateMiddleEnemy();
+	UpdateSmallEnemy();
 
 	UpdateEnemyBullet();
 	UpdateEnemyHomingBullet();
@@ -71,8 +75,9 @@ void UpdateEnemyManager(void)
 ***************************************/
 void DrawEnemyManager(void)
 {
-	DrawMiddleEnemyModel();
+	DrawMiddleEnemy();
 	DrawEnemyMissile();
+	DrawSmallEnemy();
 
 	DrawEnemyBullet();
 	DrawEnemyHomingBullet();
@@ -86,6 +91,8 @@ void CheckEnemyCollision(void)
 {
 	LockonMiddleEnemy();
 	LockonEnemyMissile();
+	LockonSmallEnemy();
 
 	CollisionMiddleEnemyAndBullet();
+	CollisionSmallEnemyAndBullet();
 }
