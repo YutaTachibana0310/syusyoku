@@ -18,8 +18,8 @@
 #include "playerMissileSmog.h"
 #include "particleManager.h"
 #include "GUIManager.h"
-
 #include "enemyManager.h"
+#include "playerBulletTrail.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -61,6 +61,7 @@ HRESULT InitBattleScene(int num)
 	InitMeshCylinder(num);
 	InitPlayerMissile(num);
 	InitPlayerMissileSmog(num);
+	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
 
 	return S_OK;
@@ -79,6 +80,7 @@ void UninitBattleScene(int num)
 	UninitMeshCylinder(num);
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
+	UninitPlayerBulletTrail(num);
 	UninitGUIManager(num);
 	UninitEnemyManager(num);
 }
@@ -97,6 +99,7 @@ void UpdateBattleScene(void)
 	UpdateMeshCylinder();
 	UpdatePlayerMissile();
 	UpdatePlayerMissileSmog();
+	UpdatePlayerBulletTrail();
 	UpdateGUIManager();
 	UpdateEnemyManager();
 
@@ -121,6 +124,7 @@ void DrawBattleScene(void)
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();
 	DrawPlayerBullet();
+	DrawPlayerBulletTrail();
 	DrawParticleManager();
 	DrawRockonSite();
 	DrawTargetSite();

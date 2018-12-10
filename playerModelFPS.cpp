@@ -15,17 +15,13 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERFPS_BULLETSPEED		(10.0f)
 #define PLAYERFPS_RANGE_X			(85.0f)
 #define PLAYERFPS_RANGE_Y			(55.0f)
 #define PLAYERFPS_MOVESPEED			(1.5f)
 
-#define PLAYERFPS_TARGETSITE_POS_Z	(600.0f)
-#define PLAYERFPS_TARGETSITE_POS_XY	(50.0f)
-#define PLAYERFPS_TARGETSITE_POS	(D3DXVECTOR3(0.0f, 0.0f, 0.0f))
-
-#define PLAYERFPS_ATTACKINTERBAL	(60)
-
+#define PLAYERFPS_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
+#define PLAYERFPS_SHOTPOS_R			(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
+#define PLAYERFPS_BULLETSPEED		(40.0f)
 /**************************************
 構造体定義
 ***************************************/
@@ -99,6 +95,14 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	if (GetKeyboardTrigger(DIK_Z))
 	{
 		AttackPlayerModelFPS(player);
+	}
+
+	//ショット発射処理
+	player->cntFrame++;
+	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0)
+	{
+		SetPlayerBullet(player->pos + PLAYERFPS_SHOTPOS_L, PLAYERFPS_BULLETSPEED);
+		SetPlayerBullet(player->pos + PLAYERFPS_SHOTPOS_R, PLAYERFPS_BULLETSPEED);
 	}
 }
 

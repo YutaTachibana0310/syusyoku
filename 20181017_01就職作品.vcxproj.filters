@@ -118,6 +118,12 @@
     <Filter Include="ヘッダー ファイル\Battle\Enemy\EnemyBullet">
       <UniqueIdentifier>{e0f13d52-9143-4b4f-be8f-ffe920285e51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Player\PlayerBullet">
+      <UniqueIdentifier>{85050c82-b1bb-44ee-9171-116da596a996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Player\PlayerBullet">
+      <UniqueIdentifier>{9cd93c22-93ab-4cad-b032-b8a105c77a7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -228,9 +234,6 @@
     <ClCompile Include="EasingVector.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
-    <ClCompile Include="playerBullet.cpp">
-      <Filter>ソース ファイル\Battle\Player</Filter>
-    </ClCompile>
     <ClCompile Include="targetSite.cpp">
       <Filter>ソース ファイル\Battle\Player</Filter>
     </ClCompile>
@@ -288,9 +291,6 @@
     <ClCompile Include="middleEnemyModel.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
     </ClCompile>
-    <ClCompile Include="MiddleEnemyMove.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
-    </ClCompile>
     <ClCompile Include="enemyBullet.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyBullet</Filter>
     </ClCompile>
@@ -311,6 +311,15 @@
     </ClCompile>
     <ClCompile Include="middleEnemyWait.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="middleEnemyMove.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="playerBullet.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="playerBulletTrail.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -422,9 +431,6 @@
     <ClInclude Include="EasingVector.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="playerBullet.h">
-      <Filter>ヘッダー ファイル\Battle\Player</Filter>
-    </ClInclude>
     <ClInclude Include="targetSite.h">
       <Filter>ヘッダー ファイル\Battle\Player</Filter>
     </ClInclude>
@@ -482,9 +488,18 @@
     <ClInclude Include="enemyManager.h">
       <Filter>ヘッダー ファイル\Battle\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="playerBullet.h">
+      <Filter>ヘッダー ファイル\Battle\Player\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="playerBulletTrail.h">
+      <Filter>ヘッダー ファイル\Battle\Player\PlayerBullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\EFFECT\particle.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\playerBullet.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>

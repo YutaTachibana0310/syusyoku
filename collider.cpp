@@ -5,6 +5,7 @@
 //
 //=============================================================================
 #include "collider.h"
+
 /*****************************************************************************
 マクロ定義
 *****************************************************************************/
@@ -14,12 +15,102 @@
 *****************************************************************************/
 
 /*****************************************************************************
-プロトタイプ宣言定義
+グローバル変数
 *****************************************************************************/
-void UpdateCollision(void)
+static LPD3DXMESH meshSphere;		//球体メッシュ
+static D3DMATERIAL9 material;		//当たり判定表示用マテリアル
+
+/*****************************************************************************
+初期化処理
+*****************************************************************************/
+void InitCollider(int num)
 {
+	if (num == 0)
+	{
+		LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+		//メッシュ作成
+		D3DXCreateSphere(pDevice,
+			1.0f,
+			8,
+			8,
+			&meshSphere,
+			NULL);
+
+		//マテリアル作成
+		ZeroMemory(&material, sizeof(material));
+		material.Diffuse.r = 1.0f;
+		material.Diffuse.g = 0.0f;
+		material.Diffuse.b = 0.0f;
+		material.Diffuse.a = 1.0f;
+
+		material.Ambient.r = 1.0f;
+		material.Ambient.g = 0.0f;
+		material.Ambient.b = 0.0f;
+		material.Ambient.a = 1.0f;
+
+		material.Specular.r = 1.0f;
+		material.Specular.g = 0.0f;
+		material.Specular.b = 0.0f;
+		material.Specular.a = 1.0f;
+
+		material.Emissive.r = 1.0f;
+		material.Emissive.g = 0.0f;
+		material.Emissive.b = 0.0f;
+		material.Emissive.a = 1.0f;
+
+	}
+}
+
+/*****************************************************************************
+終了処理
+*****************************************************************************/
+void UninitCollider(int num)
+{
+	if (num == 0)
+	{
+		SAFE_RELEASE(meshSphere);
+	}
+}
 
 
+/*****************************************************************************
+バウンディングスフィア描画処理
+*****************************************************************************/
+void DrawBoundingSphere(const SPHERE *s)
+{
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	D3DXMATRIX mtxTranslate, mtxScale, mtxWorld;
+	D3DMATERIAL9 matDef;
+
+	//get defaultMaterial
+	pDevice->GetMaterial(&matDef);
+
+	//set renderstate & material
+	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	pDevice->SetMaterial(&material);
+	pDevice->SetTexture(0, NULL);
+
+	//identify
+	D3DXMatrixIdentity(&mtxWorld);
+
+	//scaling
+	D3DXMatrixScaling(&mtxScale, s->radius, s->radius, s->radius);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
+
+	//translate
+	D3DXMatrixTranslation(&mtxTranslate, s->pos->x + s->offset.x, s->pos->y + s->offset.y, s->pos->z + s->offset.z);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+	
+	//set world
+	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//draw
+	meshSphere->DrawSubset(0);
+
+	//reset renderstate & material0
+	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	pDevice->SetMaterial(&matDef);
 }
 
 /*****************************************************************************
@@ -81,7 +172,7 @@ bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, TRIANGLE tri, D
 引数2	：D3DXVECTOR3 end	…　線分の終点
 引数3	：TRIANGLE tri		…　四角形ポリゴン半径
 引数4	：D3DXVECTOR3 *out	…　交点を格納するポインタ
-説明	：四角形ポリゴンと線分の当たり判定
+説明	：三角形ポリゴンと線分の当たり判定
 *****************************************************************************/
 bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 goal, PLANE plane, D3DXVECTOR3 *out)
 {
@@ -131,22 +222,20 @@ bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 goal, PLANE plane, D3DX
 }
 
 /*****************************************************************************
-関数名	：bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, PLANE plane, D3DXVECTOR3 *out)
-引数1	：D3DXVECTOR3 start	…　線分の始点
-引数2	：D3DXVECTOR3 end	…　線分の終点
-引数3	：TRIANGLE tri		…　四角形ポリゴン半径
-引数4	：D3DXVECTOR3 *out	…　交点を格納するポインタ
-説明	：四角形ポリゴンと線分の当たり判定
+関数名	：bool ChechHitBoundingSphere(SPHERE s1, SPHERE s2)
+引数1	：SPHERE s1　…　バウンディングスフィア1
+引数2	：SPHERE s2　…　バウンディングスフィア2
+説明	：バウンディングスフィアの当たり判定
 *****************************************************************************/
-bool ChechHitBoundingSphere(SPHERE s1, SPHERE s2)
+bool CheckHitBoundingSphere(const SPHERE *s1, const SPHERE *s2)
 {
-	if (!s1.active || !s2.active)
+	if (!s1->active || !s2->active)
 	{
-		return false;
+		//return false;
 	}
 
-	D3DXVECTOR3 d = (s2.pos - s1.pos);
+	D3DXVECTOR3 d = (*s2->pos + s2->offset) -(*s1->pos + s1->offset);
 	float lenghtSq = D3DXVec3LengthSq(&d);
 
-	return (lenghtSq > (s1.radius + s2.radius) * (s1.radius + s2.radius)) ? false : true;
+	return (lenghtSq > (s1->radius + s2->radius) * (s1->radius + s2->radius)) ? false : true;
 }

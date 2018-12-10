@@ -33,7 +33,7 @@ static Easing EasingProcess[EasingMax_Vector] = {
 //関数名	：D3DXVECTOR3 GetEasingValue(D3DXVECTOR3, D3DXVECTOR3, D3DXVECTOR3, D3DXVECTOR3, EASINGVECTOR_TYPE type)
 //指定したイージングタイプの値を取得する関数
 ********************************************************************/
-D3DXVECTOR3 GetEasingVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal, EASINGVECTOR_TYPE type)
+D3DXVECTOR3 GetEasingValueVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal, EASINGVECTOR_TYPE type)
 {
 	return EasingProcess[type](time, start, goal);
 }

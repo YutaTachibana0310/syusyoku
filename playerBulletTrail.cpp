@@ -1,21 +1,21 @@
 //=====================================
 //
-//エネミーホーミングバレットトレイル処理[enemyBullet.cpp]
+//プレイヤーバレットトレイル処理[playerBulletTrail.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "enemyBulletTrail.h"
+#include "playerBulletTrail.h"
 #include "battleCamera.h"
 #include "particleFramework.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define ENEMYBULLETTRAIL_TEXTURE_NAME		"data/TEXTURE/ENEMY/enemyBullet01.png"
-#define ENEMYBULLETTRAIL_TEXTURE_SIZE_X		(6)
-#define ENEMYBULLETTRAIL_TEXTURE_SIZE_Y		(6)
-#define ENEMYBULLETTRAIL_LIFE_END			(20)
-#define ENEMYBULLETTRAIL_SHADER_NAME		"particle.fx"
+#define PLAYERBULLETTRAIL_TEXTURE_NAME		"data/TEXTURE/PLAYER/playerbullet.png"
+#define PLAYERBULLETTRAIL_TEXTURE_SIZE_X	(4)
+#define PLAYERBULLETTRAIL_TEXTURE_SIZE_Y	(4)
+#define PLAYERBULLETTRAIL_LIFE_END			(10)
+#define PLAYERBULLETTRAIL_SHADER_NAME		"data/EFFECT/particle.fx"
 
 /**************************************
 構造体定義
@@ -24,21 +24,21 @@
 /**************************************
 グローバル変数
 ***************************************/
-static ENEMYBULLET_TRAIL homingTrail[ENEMYBULLETTRAIL_MAX];
+static PLAYERBULLET_TRAIL trail[PLAYERBULLETTRAIL_MAX];
 static LPDIRECT3DTEXTURE9 texture;
 
-//単位頂点の設定
+//単位頂点
 static VERTEX_PARTICLE vtx[NUM_VERTEX] = {
-	{ -ENEMYBULLETTRAIL_TEXTURE_SIZE_X,  ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.0f, 0.0f },
-	{  ENEMYBULLETTRAIL_TEXTURE_SIZE_X,  ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 1.0f, 0.0f },
-	{ -ENEMYBULLETTRAIL_TEXTURE_SIZE_X, -ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.0f, 1.0f },
-	{  ENEMYBULLETTRAIL_TEXTURE_SIZE_X, -ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 1.0f, 1.0f },
+	{ -PLAYERBULLETTRAIL_TEXTURE_SIZE_X, PLAYERBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.0f, 0.0f },
+	{ PLAYERBULLETTRAIL_TEXTURE_SIZE_X, PLAYERBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 1.0f, 0.0f },
+	{ -PLAYERBULLETTRAIL_TEXTURE_SIZE_X, -PLAYERBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.0f, 1.0f },
+	{ PLAYERBULLETTRAIL_TEXTURE_SIZE_X, -PLAYERBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 1.0f, 1.0f }
 };
 
 //各種配列
-static D3DXMATRIX pos[ENEMYBULLETTRAIL_MAX];
-static VERTEX_COLOR vtxColor[ENEMYBULLETTRAIL_MAX];
-static VERTEX_UV vtxUV[ENEMYBULLETTRAIL_MAX];
+static D3DXMATRIX pos[PLAYERBULLETTRAIL_MAX];
+static VERTEX_COLOR vtxColor[PLAYERBULLETTRAIL_MAX];
+static VERTEX_UV vtxUV[PLAYERBULLETTRAIL_MAX];
 
 //各種頂点バッファ
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff = NULL;
@@ -48,7 +48,7 @@ static LPDIRECT3DVERTEXBUFFER9 colorBuff = NULL;
 
 static LPDIRECT3DVERTEXDECLARATION9 declare = NULL;		//頂点宣言
 static LPD3DXEFFECT effect = NULL;						//シェーダー
-static LPDIRECT3DINDEXBUFFER9 indexBuff = NULL;			//インデックスバッファ	
+static LPDIRECT3DINDEXBUFFER9 indexBuff = NULL;			//インデックスバッファ
 
 /**************************************
 プロトタイプ宣言
@@ -57,17 +57,16 @@ static LPDIRECT3DINDEXBUFFER9 indexBuff = NULL;			//インデックスバッファ
 /**************************************
 初期化処理
 ***************************************/
-void InitEnemyBulletTrail(int num)
+void InitPlayerBulletTrail(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
 	if (num == 0)
 	{
 		//頂点作成
-		MakeParticleVertexBuffer(vtx, ENEMYBULLETTRAIL_MAX, &vtxBuff);
-		MakeParticleUVBuffer(ENEMYBULLETTRAIL_MAX, vtxUV, &uvBuff);
-		MakeParticleWorldBuffer(ENEMYBULLETTRAIL_MAX, pos, &posBuff);
-		MakeParticleColorBuffer(ENEMYBULLETTRAIL_MAX, vtxColor, &colorBuff);
+		MakeParticleVertexBuffer(vtx, PLAYERBULLETTRAIL_TEXTURE_SIZE_X, &vtxBuff);
+		MakeParticleUVBuffer(PLAYERBULLETTRAIL_MAX, vtxUV, &uvBuff);
+		MakeParticleWorldBuffer(PLAYERBULLETTRAIL_MAX, pos, &posBuff);
+		MakeParticleColorBuffer(PLAYERBULLETTRAIL_MAX, vtxColor, &colorBuff);
 
 		//頂点宣言作成
 		D3DVERTEXELEMENT9 declareElems[] = {
@@ -84,8 +83,8 @@ void InitEnemyBulletTrail(int num)
 		pDevice->CreateVertexDeclaration(declareElems, &declare);
 
 		//シェーダー読み込み
-		D3DXCreateEffectFromFile(pDevice, ENEMYBULLETTRAIL_SHADER_NAME, 0, 0, 0, 0, &effect, NULL);
-	
+		D3DXCreateEffectFromFile(pDevice, PLAYERBULLETTRAIL_SHADER_NAME, 0, 0, 0, 0, &effect, NULL);
+
 		//インデックスバッファ作成
 		WORD index[6] = { 0, 1, 2, 2, 1, 3 };
 		pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
@@ -95,11 +94,11 @@ void InitEnemyBulletTrail(int num)
 		indexBuff->Unlock();
 
 		//テクスチャ読み込み
-		texture = CreateTextureFromFile((LPSTR)ENEMYBULLETTRAIL_TEXTURE_NAME, pDevice);
+		texture = CreateTextureFromFile((LPSTR)PLAYERBULLETTRAIL_TEXTURE_NAME, pDevice);
 	}
 
-	ENEMYBULLET_TRAIL *ptr = &homingTrail[0];
-	for (int i = 0; i < ENEMYBULLETTRAIL_MAX; i++, ptr++)
+	PLAYERBULLET_TRAIL *ptr = &trail[0];
+	for (int i = 0; i < PLAYERBULLETTRAIL_MAX; i++, ptr++)
 	{
 		ptr->active = false;
 		vtxColor[i].r = vtxColor[i].g = vtxColor[i].b = 1.0f;
@@ -110,7 +109,7 @@ void InitEnemyBulletTrail(int num)
 /**************************************
 終了処理
 ***************************************/
-void UninitEnemyBulletTrail(int num)
+void UninitPlayerBulletTrail(int num)
 {
 	if (num == 0)
 	{
@@ -124,8 +123,8 @@ void UninitEnemyBulletTrail(int num)
 		SAFE_RELEASE(effect);
 	}
 
-	ENEMYBULLET_TRAIL *ptr = &homingTrail[0];
-	for (int i = 0; i < ENEMYBULLETTRAIL_MAX; i++, ptr++)
+	PLAYERBULLET_TRAIL *ptr = &trail[0];
+	for (int i = 0; i < PLAYERBULLETTRAIL_MAX; i++, ptr++)
 	{
 		ptr->active = false;
 		vtxColor[i].a = 0.0f;
@@ -135,14 +134,14 @@ void UninitEnemyBulletTrail(int num)
 /**************************************
 更新処理
 ***************************************/
-void UpdateEnemyBulletTrail(void)
+void UpdatePlayerBulletTrail(void)
 {
-	ENEMYBULLET_TRAIL *ptr = &homingTrail[0];
+	PLAYERBULLET_TRAIL *ptr = &trail[0];
 	D3DXMATRIX mtxTranslate;
 	D3DXMATRIX *pPos = &pos[0];
 	VERTEX_COLOR *pColor = &vtxColor[0];
-	
-	for (int i = 0; i < ENEMYBULLETTRAIL_MAX; i++, ptr++, pPos++, pColor++)
+
+	for (int i = 0; i < PLAYERBULLETTRAIL_MAX; i++, ptr++, pPos++, pColor++)
 	{
 		if (!ptr->active)
 		{
@@ -152,9 +151,9 @@ void UpdateEnemyBulletTrail(void)
 		ptr->cntFrame--;
 
 		//透過処理
-		pColor->a = (float)ptr->cntFrame / ENEMYBULLETTRAIL_LIFE_END;
+		//pColor->a = (float)ptr->cntFrame / PLAYERBULLETTRAIL_LIFE_END;
 
-		//寿命が来たら非アクティブに
+		//寿命判定
 		if (ptr->cntFrame == 0)
 		{
 			ptr->active = false;
@@ -164,26 +163,26 @@ void UpdateEnemyBulletTrail(void)
 
 		//ワールド配列の更新
 		D3DXMatrixIdentity(pPos);
-		GetInvRotBattleCamera(pPos);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
+
+		ptr->active = false;
 	}
 
-	//頂点バッファにメモリコピー
-	CopyVtxBuff(sizeof(D3DXMATRIX) * ENEMYBULLETTRAIL_MAX, pos, posBuff);
-	CopyVtxBuff(sizeof(VERTEX_COLOR) * ENEMYBULLETTRAIL_MAX, vtxColor, colorBuff);
+	//頂点バッファにコピー
+	CopyVtxBuff(sizeof(D3DXMATRIX) * PLAYERBULLETTRAIL_MAX, pos, posBuff);
+	CopyVtxBuff(sizeof(VERTEX_COLOR) * PLAYERBULLETTRAIL_MAX, vtxColor, colorBuff);
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawEnemyBulletTrail(void)
+void DrawPlayerBulletTrail(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	//set RenderState
+	//set renderstate
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
@@ -191,7 +190,7 @@ void DrawEnemyBulletTrail(void)
 	pDevice->SetVertexDeclaration(declare);
 
 	//ストリーム周波数を設定
-	pDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | ENEMYBULLETTRAIL_MAX);
+	pDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | PLAYERBULLETTRAIL_MAX);
 	pDevice->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 	pDevice->SetStreamSourceFreq(2, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 	pDevice->SetStreamSourceFreq(3, D3DSTREAMSOURCE_INSTANCEDATA | 1);
@@ -222,7 +221,7 @@ void DrawEnemyBulletTrail(void)
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, NUM_VERTEX, 0, NUM_POLYGON);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	//シェーダ終了宣言
+	//シェーダー終了宣言
 	effect->EndPass();
 	effect->End();
 
@@ -230,6 +229,7 @@ void DrawEnemyBulletTrail(void)
 	pDevice->SetStreamSourceFreq(0, 1);
 	pDevice->SetStreamSourceFreq(1, 1);
 	pDevice->SetStreamSourceFreq(2, 1);
+	pDevice->SetStreamSourceFreq(3, 1);
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
@@ -239,19 +239,19 @@ void DrawEnemyBulletTrail(void)
 /**************************************
 セット処理
 ***************************************/
-void SetEnemyHomingBulletTrail(D3DXVECTOR3 pos)
+void SetPlayerBulletTrail(D3DXVECTOR3 pos, float alpha)
 {
-	ENEMYBULLET_TRAIL  *ptr = &homingTrail[0];
-	for (int i = 0; i < ENEMYBULLETTRAIL_MAX; i++, ptr++)
+	PLAYERBULLET_TRAIL *ptr = &trail[0];
+	for (int i = 0; i < PLAYERBULLETTRAIL_MAX; i++, ptr++)
 	{
 		if (ptr->active)
 		{
 			continue;
 		}
-		
+
 		ptr->pos = pos;
-		ptr->cntFrame = ENEMYBULLETTRAIL_LIFE_END;
-		vtxColor[i].a = 1.0f;
+		ptr->cntFrame = PLAYERBULLETTRAIL_LIFE_END;
+		vtxColor[i].a = alpha;
 		ptr->active = true;
 		return;
 	}

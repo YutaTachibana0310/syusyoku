@@ -8,6 +8,7 @@
 #include "targetSite.h"
 #include "playerModel.h"
 #include "particleManager.h"
+#include "playerBullet.h"
 
 /**************************************
 マクロ定義
@@ -96,12 +97,16 @@ void InitMiddleEnemyModel(int num)
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
 		ptr->hp = 2.0f;
+		ptr->collider.pos = &ptr->pos;
+		ptr->collider.radius = MIDDLEENEMY_COLLIDER_RADIUS;
+		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->active = false;
+
 	}
 
 	middleEnemy[0].active = true;
 	middleEnemy[0].pos = D3DXVECTOR3(50.0f, -300.0f, -200.0f);
-	middleEnemy[0].goalPos = D3DXVECTOR3(50.0f, -0.0f, 150.0f);
+	middleEnemy[0].goalPos = D3DXVECTOR3(50.0f, -0.0f, 400.0f);
 	middleEnemy[0].rot = D3DXVECTOR3(0.0f, 3.14f, 0.0f);
 	middleEnemy[0].goalRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	ChangeStateMiddleEnemy(&middleEnemy[0], MiddleEnemyMove);
@@ -194,6 +199,10 @@ void DrawMiddleEnemyModel(void)
 			pDevice->SetTexture(0, textures[j]);
 			mesh->DrawSubset(j);
 		}
+
+#ifdef _DEBUG
+		DrawBoundingSphere(&ptr->collider);
+#endif
 	}
 
 	pDevice->SetMaterial(&matDef);
@@ -246,5 +255,39 @@ void LockonMiddleEnemy(void)
 			}
 		}
 
+	}
+}
+
+/**************************************
+ミドルエネミーのバレット当たり判定
+***************************************/
+void CollisionMiddleEnemyAndBullet(void)
+{
+	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
+
+	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		bullet = GetPlayerBulletAdr(0);
+
+		for (int j = 0; j < PLAYERBULLET_MAX; j++, bullet++)
+		{
+			if (!bullet->active)
+			{
+				continue;
+			}
+
+			if (CheckHitBoundingSphere(&ptr->collider, &bullet->collider))
+			{
+				ptr->hp -= 1.0f;
+				bullet->active = false;
+			}
+
+		}
 	}
 }

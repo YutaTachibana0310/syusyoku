@@ -170,7 +170,7 @@
     <ClCompile Include="middleEnemyAttack.cpp" />
     <ClCompile Include="middleEnemyEscape.cpp" />
     <ClCompile Include="middleEnemyModel.cpp" />
-    <ClCompile Include="MiddleEnemyMove.cpp" />
+    <ClCompile Include="middleEnemyMove.cpp" />
     <ClCompile Include="middleEnemyWait.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particle.cpp" />
@@ -178,6 +178,7 @@
     <ClCompile Include="particleManager.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="playerBullet.cpp" />
+    <ClCompile Include="playerBulletTrail.cpp" />
     <ClCompile Include="playerMissile.cpp" />
     <ClCompile Include="playerMissileAccel.cpp" />
     <ClCompile Include="playerMissileHoming.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="middleEnemyModel.h" />
     <ClInclude Include="playerBullet.h" />
+    <ClInclude Include="playerBulletTrail.h" />
     <ClInclude Include="playerMissile.h" />
     <ClInclude Include="playerMissileSmog.h" />
     <ClInclude Include="playerModelQuaterView.h" />
@@ -261,6 +263,10 @@
     <FxCompile Include="data\EFFECT\particle.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\playerBullet.fx">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

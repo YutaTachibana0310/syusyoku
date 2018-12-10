@@ -8,12 +8,12 @@
 #define _PLAYERBULLET_H_
 
 #include "main.h"
-
+#include "collider.h"
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERBULLET_MAX		(128)
-
+#define PLAYERBULLET_MAX				(128)
+#define PLAYERBULLET_COLLIDER_RAIDUS	(5.0f)
 /**************************************
 構造体定義
 ***************************************/
@@ -25,7 +25,9 @@ typedef struct
 	D3DXVECTOR3 moveDir;
 	float rotation;
 	float speed;
+	int cntFrame;
 
+	SPHERE collider;
 }PLAYERBULLET;
 /**************************************
 プロトタイプ宣言
@@ -36,4 +38,6 @@ void UpdatePlayerBullet(void);
 void DrawPlayerBullet(void);
 void SetPlayerBullet(D3DXVECTOR3 pos, float speed);
 PLAYERBULLET *GetPlayerBulletAdr(int id);
+void SetPlayerBulletState(int state);
+
 #endif

@@ -10,14 +10,11 @@
 #include "camera.h"
 #include "debugproc.h"
 #include <time.h>
-#include "cloud.h"
 #include "flare.h"
 #include "skyBG.h"
 #include "particleManager.h"
-#include "enemyMissile.h"
-#include "enemyMissileSmog.h"
-#include "particle.h"
 #include "sceneManager.h"
+#include "collider.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -332,6 +329,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//パーティクルマネージャ初期化
 	InitParticleManager(0);
 
+	//当たり判定初期化
+	InitCollider(0);
+
 #ifdef _DEBUG
 	SetScene(startScene);
 #endif
@@ -365,7 +365,11 @@ void Uninit(void)
 	//シーンマネージャ終了処理
 	UninitSceneManager(0);
 
+	//パーティクルマネージャ終了処理
 	UninitParticleManager(0);
+
+	//当たり判定終了処理
+	UninitCollider(0);
 }
 
 //=============================================================================

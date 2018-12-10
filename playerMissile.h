@@ -41,6 +41,7 @@ typedef struct
 	int cntFrame;			//カウントフレーム
 	D3DXVECTOR3 velocity;	//進行速度
 	float speed;
+	float startSpeed;
 
 }PLAYERMISSILE;
 
