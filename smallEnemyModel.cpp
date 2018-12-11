@@ -110,11 +110,12 @@ void InitSmallEnemy(int num)
 		ptr->hp = 1.0f;
 		ptr->collider.pos = &ptr->pos;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->collider.radius = SMALLENEMY_COLLIDER_RADIUS;
 		ptr->active = false;
 	}
 
 	smallEnemy[0].pos = D3DXVECTOR3(-50.0f, 50.0f, -200.0f);
-	smallEnemy[0].goalPos = D3DXVECTOR3(-50.0f, 50.0f, 200.0f);
+	smallEnemy[0].goalPos = D3DXVECTOR3(-50.0f, 00.0f, 200.0f);
 	smallEnemy[0].active = true;
 	ChangeStateSmallEnemy(&smallEnemy[0], SmallEnemyMove);
 }
@@ -157,6 +158,11 @@ void UpdateSmallEnemy(void)
 		}
 
 		//Œ‚’Ä”»’è
+		if (ptr->hp <= 0.0f)
+		{
+			SetEnemyExplosion(ptr->pos);
+			ptr->active = false;
+		}
 		
 		//Šeó‘Ô‚ÌXVˆ—
 		Update[ptr->state](ptr);
@@ -205,6 +211,19 @@ void DrawSmallEnemy(void)
 			mesh->DrawSubset(j);
 		}
 	}
+
+#ifdef _DEBUG
+	ptr = &smallEnemy[0];
+	for (int i = 0; i < SMALLENEMY_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		DrawBoundingSphere(&ptr->collider);
+	}
+#endif
 
 	pDevice->SetMaterial(&matDef);
 }

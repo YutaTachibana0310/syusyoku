@@ -194,7 +194,7 @@ void SetEnemyBullet(D3DXVECTOR3 pos, D3DXVECTOR3 moveDir, float speed)
 		}
 
 		ptr->pos = pos;
-		ptr->moveDir = moveDir;
+		D3DXVec3Normalize(&ptr->moveDir, &moveDir);
 		ptr->speed = speed;
 		ptr->active = true;
 		return;

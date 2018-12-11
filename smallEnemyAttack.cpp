@@ -5,6 +5,8 @@
 //
 //=====================================
 #include "smallEnemyModel.h"
+#include "enemyBullet.h"
+#include "playerModel.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -28,6 +30,7 @@
 void EnterSmallEnemyAttack(SMALLENEMY *enemy)
 {
 	//UŒ‚ˆ—
+	SetEnemyBullet(enemy->pos, GetPlayerAdr(0)->pos - enemy->pos, 50.0f);
 
 	ChangeStateSmallEnemy(enemy, SmallEnemyEscape);
 }
