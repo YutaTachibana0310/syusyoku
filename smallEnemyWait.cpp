@@ -9,6 +9,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define SMALLENEMY_WAIT_END		(180)
 
 /**************************************
 構造体定義
@@ -27,7 +28,7 @@
 ***************************************/
 void EnterSmallEnemyWait(SMALLENEMY *enemy)
 {
-
+	enemy->cntFrame = 0;
 }
 
 /**************************************
@@ -35,7 +36,12 @@ void EnterSmallEnemyWait(SMALLENEMY *enemy)
 ***************************************/
 void UpdateSmallEnemyWait(SMALLENEMY *enemy)
 {
+	enemy->cntFrame++;
 
+	if (enemy->cntFrame == SMALLENEMY_WAIT_END)
+	{
+		ChangeStateSmallEnemy(enemy, SmallEnemyAttack);
+	}
 }
 
 /**************************************

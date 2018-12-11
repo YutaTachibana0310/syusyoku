@@ -5,10 +5,13 @@
 //
 //=====================================
 #include "smallEnemyModel.h"
+#include "EasingVector.h"
 
 /**************************************
 マクロ定義
 ***************************************/
+#define SMALLENEMY_MOVE_END		(120)
+
 
 /**************************************
 構造体定義
@@ -27,7 +30,8 @@
 ***************************************/
 void EnterSmallEnemyMove(SMALLENEMY *enemy)
 {
-
+	enemy->cntFrame = 0;
+	enemy->startPos = enemy->pos;
 }
 
 /**************************************
@@ -35,7 +39,15 @@ void EnterSmallEnemyMove(SMALLENEMY *enemy)
 ***************************************/
 void UpdateSmallEnemyMove(SMALLENEMY *enemy)
 {
+	enemy->cntFrame++;
 
+	float t = (float)enemy->cntFrame / SMALLENEMY_MOVE_END;
+	enemy->pos = EaseOutCubicVector(t, enemy->startPos, enemy->goalPos);
+
+	if (enemy->cntFrame == SMALLENEMY_MOVE_END)
+	{
+		ChangeStateSmallEnemy(enemy, SmallEnemyWait);
+	}
 }
 
 /**************************************

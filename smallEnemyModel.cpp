@@ -113,8 +113,10 @@ void InitSmallEnemy(int num)
 		ptr->active = false;
 	}
 
-	smallEnemy[0].pos = D3DXVECTOR3(-50.0f, 50.0f, 200.0f);
+	smallEnemy[0].pos = D3DXVECTOR3(-50.0f, 50.0f, -200.0f);
+	smallEnemy[0].goalPos = D3DXVECTOR3(-50.0f, 50.0f, 200.0f);
 	smallEnemy[0].active = true;
+	ChangeStateSmallEnemy(&smallEnemy[0], SmallEnemyMove);
 }
 
 /**************************************

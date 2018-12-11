@@ -27,7 +27,9 @@
 ***************************************/
 void EnterSmallEnemyAttack(SMALLENEMY *enemy)
 {
+	//UŒ‚ˆ—
 
+	ChangeStateSmallEnemy(enemy, SmallEnemyEscape);
 }
 
 /**************************************
