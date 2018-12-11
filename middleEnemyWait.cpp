@@ -27,7 +27,7 @@
 /**************************************
 ì¸èÍèàóù
 ***************************************/
-void EnterMiddleEnemyWait(MIDDLEENEMYMODEL *enemy)
+void EnterMiddleEnemyWait(MIDDLEENEMY *enemy)
 {
 	enemy->cntFrame = 0;
 }
@@ -35,7 +35,7 @@ void EnterMiddleEnemyWait(MIDDLEENEMYMODEL *enemy)
 /**************************************
 çXêVèàóù
 ***************************************/
-void UpdateMiddleEnemyWait(MIDDLEENEMYMODEL *enemy)
+void UpdateMiddleEnemyWait(MIDDLEENEMY *enemy)
 {
 	enemy->cntFrame++;
 	if (enemy->cntFrame == MIDDLEENEMY_WAIT_END)
@@ -48,7 +48,7 @@ void UpdateMiddleEnemyWait(MIDDLEENEMYMODEL *enemy)
 /**************************************
 ëﬁèÍèàóù
 ***************************************/
-void ExitMiddleEnemyWait(MIDDLEENEMYMODEL *enemy)
+void ExitMiddleEnemyWait(MIDDLEENEMY *enemy)
 {
 
 }

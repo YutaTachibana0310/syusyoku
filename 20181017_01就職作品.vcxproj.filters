@@ -324,6 +324,21 @@
     <ClCompile Include="playerBulletTrail.cpp">
       <Filter>ソース ファイル\Battle\Player\PlayerBullet</Filter>
     </ClCompile>
+    <ClCompile Include="smallEnemyModel.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="smallEnemyMove.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="smallEnemyAttack.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="smallEnemyEscape.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="smallEnemyWait.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -496,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="playerBulletTrail.h">
       <Filter>ヘッダー ファイル\Battle\Player\PlayerBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="smallEnemyModel.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 //=====================================
 //
-//ミドルエネミーモデル処理[middleEnemyModel.cpp]
+//ミドルエネミーモデル処理[MIDDLEENEMY.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -19,7 +19,7 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef void(*funcMiddleEnemy)(MIDDLEENEMYMODEL *enemy);
+typedef void(*funcMiddleEnemy)(MIDDLEENEMY *enemy);
 
 /**************************************
 グローバル変数
@@ -27,7 +27,7 @@ typedef void(*funcMiddleEnemy)(MIDDLEENEMYMODEL *enemy);
 static LPD3DXMESH mesh = NULL;
 static LPD3DXBUFFER materials = NULL;
 static DWORD numMaterial = 0;
-static MIDDLEENEMYMODEL middleEnemy[MIDDLEENEMY_MAX];
+static MIDDLEENEMY middleEnemy[MIDDLEENEMY_MAX];
 static LPDIRECT3DTEXTURE9 textures[MIDDLEENEMY_TEXTURE_MAX];
 
 static const char* textureName[MIDDLEENEMY_TEXTURE_MAX] = {
@@ -75,7 +75,7 @@ static funcMiddleEnemy Exit[MiddleEnemyStateMax] = {
 /**************************************
 初期化処理
 ***************************************/
-void InitMiddleEnemyModel(int num)
+void InitMiddleEnemy(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -93,7 +93,7 @@ void InitMiddleEnemyModel(int num)
 		}
 	}
 
-	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	MIDDLEENEMY *ptr = &middleEnemy[0];
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
 		ptr->hp = 2.0f;
@@ -115,9 +115,9 @@ void InitMiddleEnemyModel(int num)
 /**************************************
 終了処理
 ***************************************/
-void UninitMiddleEnemyModel(int num)
+void UninitMiddleEnemy(int num)
 {
-	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	MIDDLEENEMY *ptr = &middleEnemy[0];
 
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
@@ -134,9 +134,9 @@ void UninitMiddleEnemyModel(int num)
 /**************************************
 更新処理
 ***************************************/
-void UpdateMiddleEnemyModel(void)
+void UpdateMiddleEnemy(void)
 {
-	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	MIDDLEENEMY *ptr = &middleEnemy[0];
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
@@ -161,7 +161,7 @@ void UpdateMiddleEnemyModel(void)
 /**************************************
 描画処理
 ***************************************/
-void DrawMiddleEnemyModel(void)
+void DrawMiddleEnemy(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxRot, mtxTranslate, mtxWorld;
@@ -170,7 +170,7 @@ void DrawMiddleEnemyModel(void)
 
 	pDevice->GetMaterial(&matDef);
 
-	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	MIDDLEENEMY *ptr = &middleEnemy[0];
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
@@ -211,7 +211,7 @@ void DrawMiddleEnemyModel(void)
 /**************************************
 状態遷移処理
 ***************************************/
-void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next)
+void ChangeStateMiddleEnemy(MIDDLEENEMY *ptr, int next)
 {
 	Exit[ptr->state](ptr);
 	ptr->state = next;
@@ -221,7 +221,7 @@ void ChangeStateMiddleEnemy(MIDDLEENEMYMODEL *ptr, int next)
 /**************************************
 アドレス取得処理
 ***************************************/
-MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num)
+MIDDLEENEMY *GetMiddleEnemyAdr(int num)
 {
 	return &middleEnemy[num];
 }
@@ -231,7 +231,7 @@ MIDDLEENEMYMODEL *GetMiddleEnemyAdr(int num)
 ***************************************/
 void LockonMiddleEnemy(void)
 {
-	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	MIDDLEENEMY *ptr = &middleEnemy[0];
 	TARGETSITE *targetSite = GetTargetSiteAdr(0);
 
 	for(int i = 0; i < PLAYERMODEL_MAX; i++, targetSite++)
@@ -263,7 +263,7 @@ void LockonMiddleEnemy(void)
 ***************************************/
 void CollisionMiddleEnemyAndBullet(void)
 {
-	MIDDLEENEMYMODEL *ptr = &middleEnemy[0];
+	MIDDLEENEMY *ptr = &middleEnemy[0];
 	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
 
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)

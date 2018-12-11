@@ -28,7 +28,7 @@
 /**************************************
 ì¸èÍèàóù
 ***************************************/
-void EnterMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy)
+void EnterMiddleEnemyEscape(MIDDLEENEMY *enemy)
 {
 	enemy->cntFrame = 0;
 
@@ -44,7 +44,7 @@ void EnterMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy)
 /**************************************
 çXêVèàóù
 ***************************************/
-void UpdateMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy)
+void UpdateMiddleEnemyEscape(MIDDLEENEMY *enemy)
 {
 	enemy->cntFrame++;
 
@@ -60,7 +60,7 @@ void UpdateMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy)
 /**************************************
 ëﬁèÍèàóù
 ***************************************/
-void ExitMiddleEnemyEscape(MIDDLEENEMYMODEL *enemy)
+void ExitMiddleEnemyEscape(MIDDLEENEMY *enemy)
 {
 
 }

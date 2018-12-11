@@ -34,7 +34,7 @@
 /**************************************
 ì¸èÍèàóù
 ***************************************/
-void EnterMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy)
+void EnterMiddleEnemyAttack(MIDDLEENEMY *enemy)
 {
 	enemy->cntFrame = 0;
 	enemy->atkNum = 0;
@@ -43,7 +43,7 @@ void EnterMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy)
 /**************************************
 çXêVèàóù
 ***************************************/
-void UpdateMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy)
+void UpdateMiddleEnemyAttack(MIDDLEENEMY *enemy)
 {
 	if (enemy->cntFrame % MIDDLEENEMY_ATTACK_INETBAL == 0)
 	{
@@ -71,7 +71,7 @@ void UpdateMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy)
 /**************************************
 ëﬁèÍèàóù
 ***************************************/
-void ExitMiddleEnemyAttack(MIDDLEENEMYMODEL *enemy)
+void ExitMiddleEnemyAttack(MIDDLEENEMY *enemy)
 {
 
 }

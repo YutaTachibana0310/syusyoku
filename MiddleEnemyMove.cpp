@@ -28,7 +28,7 @@
 /**************************************
 çXêVèàóù
 ***************************************/
-void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
+void UpdateMiddleEnemyMove(MIDDLEENEMY *enemy)
 {
 	enemy->cntFrame++;
 
@@ -45,7 +45,7 @@ void UpdateMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
 /**************************************
 ì¸èÍèàóù
 ***************************************/
-void EnterMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
+void EnterMiddleEnemyMove(MIDDLEENEMY *enemy)
 {
 	enemy->cntFrame = 0;
 	enemy->startPos = enemy->pos;
@@ -55,7 +55,7 @@ void EnterMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
 /**************************************
 ëﬁèÍèàóù
 ***************************************/
-void ExitMiddleEnemyMove(MIDDLEENEMYMODEL *enemy)
+void ExitMiddleEnemyMove(MIDDLEENEMY *enemy)
 {
 
 }
