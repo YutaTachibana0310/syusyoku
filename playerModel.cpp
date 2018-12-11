@@ -20,9 +20,10 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERMODEL_MODELNAME		"data/MODEL/airplane000.x"
+#define PLAYERMODEL_MODELNAME		"data/MODEL/player001.x"
 #define PLAYER_ROTATEMAGNI			(0.2f)
 #define PLATER_ROTATEVALUE_MAX		(0.085f)
+#define PLAYER_TEXTURE_MAX			(19)
 
 /**************************************
 構造体定義
@@ -63,6 +64,29 @@ static funcPlayerModel Exit[PlayerStateMax] = {
 	ExitPlayerModelTransition
 };
 
+static const char* textureName[PLAYER_TEXTURE_MAX] = {
+	NULL,
+	"data/TEXTURE/PLAYER/d10.jpg",
+	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/d17.jpg",
+	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/d17b.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/vj2c.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/cockpit_mtl1_diffcol.jpg",
+	NULL,
+	"data/TEXTURE/PLAYER/yx1_02_01_01.jpg",
+	"data/TEXTURE/PLAYER/bmq1.jpg",
+};
+static LPDIRECT3DTEXTURE9 texture[PLAYER_TEXTURE_MAX];
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -77,6 +101,10 @@ void InitPlayerModel(int num)
 	if (num == 0)
 	{
 		D3DXLoadMeshFromX(PLAYERMODEL_MODELNAME, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
+		for (int i = 0; i < PLAYER_TEXTURE_MAX; i++)
+		{
+			texture[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
+		}
 	}
 
 	PLAYERMODEL *ptr = &model[0];
@@ -177,6 +205,7 @@ void DrawPlayerModel(void)
 		for (int j = 0; j < (int)numMaterial; j++)
 		{
 			pDevice->SetMaterial(&pMaterial[j].MatD3D);
+			pDevice->SetTexture(0, texture[j]);
 			mesh->DrawSubset(j);
 		}
 	}
