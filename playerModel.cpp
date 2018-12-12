@@ -126,6 +126,8 @@ void InitPlayerModel(int num)
 		ptr->scale = D3DXVECTOR3(10.0f, 10.0f, 10.0f);
 
 		ptr->id = i;
+
+		ptr->boostMode = false;
 	}
 
 	ChangeStatePlayerModel(PlayerFPS);
@@ -269,7 +271,7 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 	PLAYERMODEL *ptr = &model[id];
 
 	//インターバル判定
-	if (ptr->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
+	if (ptr->atkInterbal < PLAYER_HOMINGATK_INTERBAL && !ptr->boostMode)
 	{
 		return NULL;
 	}
@@ -353,6 +355,11 @@ void AttackPlayerMissile(PLAYERMODEL *player)
 		ReleaseRockonTarget(player, i);
 		player->target[i].use = false;
 	}
-	player->atkInterbal = 0;
+
 	player->lockonNum = 0;
+
+	if (!player->boostMode)
+	{
+		player->atkInterbal = 0;
+	}
 }

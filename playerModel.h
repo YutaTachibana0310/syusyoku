@@ -67,6 +67,7 @@ typedef struct
 	ROCKONTARGET target[PLAYER_ROCKON_MAX];
 	int atkInterbal;
 	int lockonNum;
+	bool boostMode;
 
 	D3DXVECTOR3 shotpos1, shotpos2;
 
