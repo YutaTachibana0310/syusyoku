@@ -15,7 +15,7 @@
 ***************************************/
 #define MIDDLEENEMY_MODEL_NAME		"data/MODEL/middleEnemy.x"
 #define MIDDLEENEMY_TEXTURE_MAX		(11)
-
+#define MIDDLEENEMY_MODEL_NAME_DEBUG	"data/MODEL/airplane000.x"
 /**************************************
 ç\ë¢ëÃíËã`
 ***************************************/
@@ -78,7 +78,19 @@ static funcMiddleEnemy Exit[MiddleEnemyStateMax] = {
 void InitMiddleEnemy(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
+#ifdef _DEBUG
+	if (num == 0)
+	{
+		D3DXLoadMeshFromX(MIDDLEENEMY_MODEL_NAME_DEBUG,
+			D3DXMESH_SYSTEMMEM,
+			pDevice,
+			NULL,
+			&materials,
+			NULL,
+			&numMaterial,
+			&mesh);
+	}
+#else
 	if (num == 0)
 	{
 		HRESULT res = D3DXLoadMeshFromX(MIDDLEENEMY_MODEL_NAME, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
@@ -92,7 +104,7 @@ void InitMiddleEnemy(int num)
 			textures[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
 		}
 	}
-
+#endif
 	MIDDLEENEMY *ptr = &middleEnemy[0];
 	for (int i = 0; i < MIDDLEENEMY_MAX; i++, ptr++)
 	{

@@ -25,6 +25,8 @@
 #define PLAYER_ROTATEMAGNI			(0.2f)
 #define PLATER_ROTATEVALUE_MAX		(0.085f)
 #define PLAYER_TEXTURE_MAX			(19)
+#define PLAYERMODEL_MODELNAME_DEBUG	"data/MODEL/airplane000.x"
+
 
 /**************************************
 ç\ë¢ëÃíËã`
@@ -99,6 +101,12 @@ void InitPlayerModel(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	
+#ifdef _DEBUG
+	if (num == 0)
+	{
+		D3DXLoadMeshFromX(PLAYERMODEL_MODELNAME_DEBUG, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
+	}
+#else
 	if (num == 0)
 	{
 		D3DXLoadMeshFromX(PLAYERMODEL_MODELNAME, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
@@ -107,6 +115,7 @@ void InitPlayerModel(int num)
 			texture[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
 		}
 	}
+#endif
 
 	PLAYERMODEL *ptr = &model[0];
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)

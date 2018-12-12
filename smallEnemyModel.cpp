@@ -16,6 +16,7 @@
 #define SMALLENEMY_COLLIDER_RADIUS		(5.0f);
 #define SMALLENEMY_MODEL_NAME			"data/MODEL/smallEnemy.x"
 #define SMALLENEMY_TEXTURE_MAX			(14)
+#define SMALLENEMY_MODEL_NAME_DEBUG		"data/MODEL/airplane000.x"
 
 /**************************************
 ç\ë¢ëÃíËã`
@@ -84,6 +85,19 @@ void InitSmallEnemy(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+#ifdef _DEBUG
+	if (num == 0)
+	{
+		D3DXLoadMeshFromX(SMALLENEMY_MODEL_NAME_DEBUG,
+			D3DXMESH_SYSTEMMEM,
+			pDevice,
+			NULL,
+			&materials,
+			NULL,
+			&numMaterial,
+			&mesh);
+	}
+#else
 	if (num == 0)
 	{
 		if (FAILED(D3DXLoadMeshFromX(SMALLENEMY_MODEL_NAME,
@@ -103,7 +117,7 @@ void InitSmallEnemy(int num)
 			textures[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
 		}
 	}
-
+#endif
 	SMALLENEMY *ptr = &smallEnemy[0];
 	for (int i = 0; i < SMALLENEMY_MAX; i++, ptr++)
 	{
