@@ -12,6 +12,7 @@
 #include "playerModelQuaterView.h"
 #include "playerModelTransition.h"
 #include "playerBullet.h"
+#include "playerMissile.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -199,6 +200,7 @@ void DrawPlayerModel(void)
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		ptr->mtxWorld = mtxWorld;
 
 		pMaterial = (D3DXMATERIAL*)materials->GetBufferPointer();
 
@@ -311,4 +313,37 @@ void ReleaseRockonTarget(PLAYERMODEL *player, int targetID)
 	player->target[targetID].pos = NULL;
 	player->target[targetID].use = false;
 	player->lockonNum--;
+}
+
+/**************************************
+ホーミング攻撃処理
+***************************************/
+void AttackPlayerMissile(PLAYERMODEL *player)
+{
+	if (player->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
+	{
+		return;
+	}
+
+	if (player->lockonNum == 0)
+	{
+		return;
+	}
+
+	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	{
+		if (player->target[i].pos == NULL)
+		{
+			continue;
+		}
+
+		for (int j = 0; j < 4; j++)
+		{
+			SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
+		}
+		ReleaseRockonTarget(player, i);
+		player->target[i].use = false;
+	}
+	player->atkInterbal = 0;
+	player->lockonNum = 0;
 }

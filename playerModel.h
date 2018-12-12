@@ -56,6 +56,7 @@ typedef struct
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;
 	D3DXVECTOR3 scale;
+	D3DXMATRIX mtxWorld;
 
 	D3DXVECTOR3 initPos;
 	int cntFrame;
@@ -66,6 +67,8 @@ typedef struct
 	ROCKONTARGET target[PLAYER_ROCKON_MAX];
 	int atkInterbal;
 	int lockonNum;
+
+	D3DXVECTOR3 shotpos1, shotpos2;
 
 }PLAYERMODEL;
 
@@ -80,4 +83,5 @@ PLAYERMODEL *GetPlayerAdr(int num);
 void ChangeStatePlayerModel(int next);
 ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive, float *targetHP);
 void ReleaseRockonTarget(PLAYERMODEL *player, int targetID);
+void AttackPlayerMissile(PLAYERMODEL *player);
 #endif
