@@ -76,7 +76,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 	//ターゲットサイト移動処理
 	TARGETSITE *site = GetTargetSiteAdr(player->id);
-	site->pos = player->pos;;
+	site->pos = player->pos;
 
 	//ロックオンサイトセット処理
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)

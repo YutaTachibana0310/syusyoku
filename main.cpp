@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // メイン処理 [main.cpp]
-// Author : 
+// Author : GP11A341 21 立花雄太
 //
 //=============================================================================
 #include "main.h"
@@ -15,6 +15,7 @@
 #include "particleManager.h"
 #include "sceneManager.h"
 #include "collider.h"
+#include "debugWindow.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -332,6 +333,11 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//当たり判定初期化
 	InitCollider(0);
 
+	//デバッグウィンドウ初期化
+#ifdef USE_DEBUGWINDOW
+	InitDebugWindow(hWnd, g_pD3DDevice);
+#endif
+
 #ifdef _DEBUG
 	SetScene(startScene);
 #endif
@@ -370,6 +376,10 @@ void Uninit(void)
 
 	//当たり判定終了処理
 	UninitCollider(0);
+
+#ifdef USE_DEBUGWINDOW
+	UninitDebugWindow(0);
+#endif
 }
 
 //=============================================================================
@@ -377,11 +387,6 @@ void Uninit(void)
 //=============================================================================
 void Update(void)
 {
-	if(GetKeyboardTrigger(DIK_F1))
-	{// デバッグ表示ON/OFF
-		g_bDispDebug = g_bDispDebug ? false: true;
-	}
-
 	if (GetKeyboardTrigger(DIK_P))
 	{
 		flgPause = !flgPause;
@@ -389,6 +394,8 @@ void Update(void)
 
 	// 入力更新
 	UpdateInput();
+
+	UpdateDebugWindow();
 
 	if (flgPause)
 	{
@@ -420,6 +427,10 @@ void Draw(void)
 		{
 			DrawDebugProc();
 		}
+
+#ifdef USE_DEBUGWINDOW
+		DrawDebugWindow();
+#endif
 
 		// Direct3Dによる描画の終了
 		g_pD3DDevice->EndScene();
