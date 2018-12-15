@@ -46,6 +46,14 @@ static const char* texturePath[] = {
 	"data/TEXTURE/targetSite1_2.png"
 };
 
+static D3DXVECTOR3 baseVector[BattleCameraStateMax] = 
+{
+	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+	D3DXVECTOR3(1.57f, 0.0f, 0.0f),
+	D3DXVECTOR3(0.0f, -1.57f, 0.0f),
+	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -143,6 +151,8 @@ void DrawTargetSite(void)
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
+	D3DXVECTOR3 base = baseVector[GetBattleCameraAdr()->currentState];
+
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
 	{
@@ -156,7 +166,8 @@ void DrawTargetSite(void)
 		D3DXMatrixIdentity(&mtxTranslate);
 
 		//GetInvRotBattleCamera(&mtxWorld);
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->insideRot.y, ptr->insideRot.x, ptr->insideRot.z);
+		D3DXVECTOR3 rot = base + ptr->insideRot;
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -172,7 +183,8 @@ void DrawTargetSite(void)
 		D3DXMatrixIdentity(&mtxTranslate);
 
 		//GetInvRotBattleCamera(&mtxWorld);
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->outsideRot.y, ptr->outsideRot.x, ptr->outsideRot.z);
+		rot = base + ptr->outsideRot;
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
@@ -274,6 +286,8 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 	else
 		return false;
 }
+
+
 
 #if 0
 /**************************************

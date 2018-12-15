@@ -21,6 +21,7 @@ void EnemyMissileHomingEnter(ENEMYMISSILE *ptr)
 {
 	ptr->period = 300;
 	ptr->cntFrame = 0;
+	ptr->speed = 2.0f;
 }
 
 /***********************************

@@ -22,11 +22,13 @@
 #include "particle.h"
 #endif
 
+#include "debugWindow.h"
+
 /**************************************
 マクロ定義
 **************************************/
 #define ENEMYMISSILE_MODEL				"data/MODEL/missile.x"		//モデル名
-#define ENEMYMISSILE_ROTATEVALUE		(0.017f)			//1フレームあたりの回転量
+#define ENEMYMISSILE_ROTATEVALUE		(0.017f)					//1フレームあたりの回転量
 #define ENEMYMISSILE_COLLIDER_RADIUS	(20.0f)				//当たり判定の半径
 #define ENEMYMISSILE_DAMAGE				(0.25f)				//ミサイルのダメージ
 /**************************************
@@ -37,6 +39,9 @@ typedef void(*funcEnemyMissile)(ENEMYMISSILE*);
 /*************************************
 プロトタイプ宣言
 **************************************/
+#ifdef USE_DEBUGWINDOW
+void DrawDebugInfoEnemyMissile(void);
+#endif
 
 /*************************************
 グローバル変数
@@ -69,6 +74,12 @@ static funcEnemyMissile Exit[ENEMYMISSILE_STATEMAX] = {
 	EnemyMissileHomingExit,
 	EnemyMissileStraightExit
 };
+
+//デバッグ用変数
+#ifdef USE_DEBUGWINDOW
+static LARGE_INTEGER startUpdate, endUpdate;
+static LARGE_INTEGER startDraw, endDraw;
+#endif
 
 /*************************************
 初期化処理
@@ -134,14 +145,15 @@ void UpdateEnemyMissile(void)
 
 	ENEMYMISSILE *ptr = &missile[0];
 
+	GetTimerCount(&startUpdate);
 	cntFrame++;
-	if (cntFrame % 120 == 0)
+	if (cntFrame % 2 == 0)
 	{
 		for (int k = 0; k < 16; k++)
 		{
 			float angle = RandomRangef(45.0f, 135.0f);
 			D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
-			//SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
+			SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
 		}
 	}
 
@@ -175,7 +187,7 @@ void UpdateEnemyMissile(void)
 	}
 
 	CollisionEnemyMissileAndBullet();
-	
+	GetTimerCount(&endUpdate);
 }
 
 /*****************************************
@@ -188,6 +200,7 @@ void DrawEnemyMissile(void)
 	D3DXMATERIAL *pMaterial;
 	D3DMATERIAL9 matDef;
 
+	GetTimerCount(&startDraw);
 	pDevice->GetMaterial(&matDef);
 
 	ENEMYMISSILE *ptr = &missile[0];
@@ -228,6 +241,9 @@ void DrawEnemyMissile(void)
 
 	//マテリアルをデフォルトに戻す
 	pDevice->SetMaterial(&matDef);
+	GetTimerCount(&endDraw);
+
+	DrawDebugInfoEnemyMissile();
 }
 
 /******************************************
@@ -356,3 +372,18 @@ void LockonEnemyMissile(void)
 
 	}
 }
+
+#ifdef USE_DEBUGWINDOW
+/*****************************************
+デバッグ情報表示
+******************************************/
+void DrawDebugInfoEnemyMissile(void)
+{
+	ImGui::Begin("EnemyMissle");
+
+	ImGui::Text("Update : %f[msec]", CalcProgressTime(startUpdate, endUpdate));
+	ImGui::Text("Update : %f[msec]", CalcProgressTime(startDraw, endDraw));
+
+	ImGui::End();
+}
+#endif

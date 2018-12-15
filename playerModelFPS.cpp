@@ -76,7 +76,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 	//ターゲットサイト移動処理
 	TARGETSITE *site = GetTargetSiteAdr(player->id);
-	site->pos = player->pos;;
+	site->pos = player->pos;
 
 	//ロックオンサイトセット処理
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
@@ -94,15 +94,19 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	player->atkInterbal++;
 	if (GetKeyboardTrigger(DIK_Z))
 	{
-		AttackPlayerModelFPS(player);
+		AttackPlayerMissile(player);
 	}
+
+	//ショットポジション更新
+	D3DXVec3TransformCoord(&player->shotpos1, &PLAYERFPS_SHOTPOS_L, &player->mtxWorld);
+	D3DXVec3TransformCoord(&player->shotpos2, &PLAYERFPS_SHOTPOS_R, &player->mtxWorld);
 
 	//ショット発射処理
 	player->cntFrame++;
 	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0)
 	{
-		SetPlayerBullet(player->pos + PLAYERFPS_SHOTPOS_L, PLAYERFPS_BULLETSPEED);
-		SetPlayerBullet(player->pos + PLAYERFPS_SHOTPOS_R, PLAYERFPS_BULLETSPEED);
+		SetPlayerBullet(player->shotpos1, PLAYERFPS_BULLETSPEED);
+		SetPlayerBullet(player->shotpos2, PLAYERFPS_BULLETSPEED);
 	}
 }
 
@@ -128,6 +132,7 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 
 	//ロックオンGUI表示
 	GetLockonGUIAdr(player->id)->active = true;
+
 }
 
 /**************************************
@@ -138,13 +143,18 @@ void ExitPlayerModelFPS(PLAYERMODEL *player)
 
 }
 
-
+#if 0
 /**************************************
-攻撃処理
+ホーミング攻撃処理
 ***************************************/
 void AttackPlayerModelFPS(PLAYERMODEL *player)
 {
 	if (player->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
+	{
+		return;
+	}
+
+	if (player->lockonNum == 0)
 	{
 		return;
 	}
@@ -166,3 +176,4 @@ void AttackPlayerModelFPS(PLAYERMODEL *player)
 	player->atkInterbal = 0;
 	player->lockonNum = 0;
 }
+#endif

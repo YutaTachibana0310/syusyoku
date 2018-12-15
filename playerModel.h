@@ -16,7 +16,7 @@
 #define PLAYERMODEL_MAX				(1)
 #define PLAYER_DESTROT_MAX			(0.51f)
 #define PLAYER_MOVERANGE			(50.0f)
-#define PLAYER_ROCKON_MAX			(32)
+#define PLAYER_ROCKON_MAX			(64)
 #define PLAYER_HOMINGATK_INTERBAL	(180)
 #define PLAYER_SHOT_INTERBAL		(5)
 /**************************************
@@ -56,6 +56,7 @@ typedef struct
 	D3DXVECTOR3 pos;
 	D3DXVECTOR3 rot;
 	D3DXVECTOR3 scale;
+	D3DXMATRIX mtxWorld;
 
 	D3DXVECTOR3 initPos;
 	int cntFrame;
@@ -66,6 +67,9 @@ typedef struct
 	ROCKONTARGET target[PLAYER_ROCKON_MAX];
 	int atkInterbal;
 	int lockonNum;
+	bool boostMode;
+
+	D3DXVECTOR3 shotpos1, shotpos2;
 
 }PLAYERMODEL;
 
@@ -80,4 +84,5 @@ PLAYERMODEL *GetPlayerAdr(int num);
 void ChangeStatePlayerModel(int next);
 ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive, float *targetHP);
 void ReleaseRockonTarget(PLAYERMODEL *player, int targetID);
+void AttackPlayerMissile(PLAYERMODEL *player);
 #endif

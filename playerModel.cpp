@@ -12,6 +12,7 @@
 #include "playerModelQuaterView.h"
 #include "playerModelTransition.h"
 #include "playerBullet.h"
+#include "playerMissile.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -20,9 +21,12 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERMODEL_MODELNAME		"data/MODEL/airplane000.x"
+#define PLAYERMODEL_MODELNAME		"data/MODEL/player001.x"
 #define PLAYER_ROTATEMAGNI			(0.2f)
 #define PLATER_ROTATEVALUE_MAX		(0.085f)
+#define PLAYER_TEXTURE_MAX			(19)
+#define PLAYERMODEL_MODELNAME_DEBUG	"data/MODEL/airplane000.x"
+
 
 /**************************************
 構造体定義
@@ -63,6 +67,29 @@ static funcPlayerModel Exit[PlayerStateMax] = {
 	ExitPlayerModelTransition
 };
 
+static const char* textureName[PLAYER_TEXTURE_MAX] = {
+	NULL,
+	"data/TEXTURE/PLAYER/d10.jpg",
+	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/d17.jpg",
+	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/d17b.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/vj2c.jpg",
+	NULL,
+	NULL,
+	"data/TEXTURE/PLAYER/cockpit_mtl1_diffcol.jpg",
+	NULL,
+	"data/TEXTURE/PLAYER/yx1_02_01_01.jpg",
+	"data/TEXTURE/PLAYER/bmq1.jpg",
+};
+static LPDIRECT3DTEXTURE9 texture[PLAYER_TEXTURE_MAX];
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -74,10 +101,21 @@ void InitPlayerModel(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	
+#ifdef _DEBUG
+	if (num == 0)
+	{
+		D3DXLoadMeshFromX(PLAYERMODEL_MODELNAME_DEBUG, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
+	}
+#else
 	if (num == 0)
 	{
 		D3DXLoadMeshFromX(PLAYERMODEL_MODELNAME, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
+		for (int i = 0; i < PLAYER_TEXTURE_MAX; i++)
+		{
+			texture[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
+		}
 	}
+#endif
 
 	PLAYERMODEL *ptr = &model[0];
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
@@ -88,6 +126,8 @@ void InitPlayerModel(int num)
 		ptr->scale = D3DXVECTOR3(10.0f, 10.0f, 10.0f);
 
 		ptr->id = i;
+
+		ptr->boostMode = false;
 	}
 
 	ChangeStatePlayerModel(PlayerFPS);
@@ -171,12 +211,14 @@ void DrawPlayerModel(void)
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		ptr->mtxWorld = mtxWorld;
 
 		pMaterial = (D3DXMATERIAL*)materials->GetBufferPointer();
 
 		for (int j = 0; j < (int)numMaterial; j++)
 		{
 			pDevice->SetMaterial(&pMaterial[j].MatD3D);
+			pDevice->SetTexture(0, texture[j]);
 			mesh->DrawSubset(j);
 		}
 	}
@@ -229,7 +271,7 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 	PLAYERMODEL *ptr = &model[id];
 
 	//インターバル判定
-	if (ptr->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
+	if (ptr->atkInterbal < PLAYER_HOMINGATK_INTERBAL && !ptr->boostMode)
 	{
 		return NULL;
 	}
@@ -282,4 +324,42 @@ void ReleaseRockonTarget(PLAYERMODEL *player, int targetID)
 	player->target[targetID].pos = NULL;
 	player->target[targetID].use = false;
 	player->lockonNum--;
+}
+
+/**************************************
+ホーミング攻撃処理
+***************************************/
+void AttackPlayerMissile(PLAYERMODEL *player)
+{
+	if (player->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
+	{
+		return;
+	}
+
+	if (player->lockonNum == 0)
+	{
+		return;
+	}
+
+	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	{
+		if (player->target[i].pos == NULL)
+		{
+			continue;
+		}
+
+		for (int j = 0; j < 4; j++)
+		{
+			SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
+		}
+		ReleaseRockonTarget(player, i);
+		player->target[i].use = false;
+	}
+
+	player->lockonNum = 0;
+
+	if (!player->boostMode)
+	{
+		player->atkInterbal = 0;
+	}
 }
