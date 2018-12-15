@@ -77,10 +77,8 @@ static funcEnemyMissile Exit[ENEMYMISSILE_STATEMAX] = {
 
 //デバッグ用変数
 #ifdef USE_DEBUGWINDOW
-static double durationUpdate = 0.0f;
-static double durationDraw = 0.0f;
-static int countFrame = 0;
-static const int DebugInterbal = 10;
+static LARGE_INTEGER startUpdate, endUpdate;
+static LARGE_INTEGER startDraw, endDraw;
 #endif
 
 /*************************************
@@ -147,12 +145,7 @@ void UpdateEnemyMissile(void)
 
 	ENEMYMISSILE *ptr = &missile[0];
 
-#ifdef USE_DEBUGWINDOW
-	if(countFrame % DebugInterbal == 0)
-		BeginTimerCount();
-	countFrame++;
-#endif
-
+	GetTimerCount(&startUpdate);
 	cntFrame++;
 	if (cntFrame % 2 == 0)
 	{
@@ -194,11 +187,7 @@ void UpdateEnemyMissile(void)
 	}
 
 	CollisionEnemyMissileAndBullet();
-	
-#ifdef USE_DEBUGWINDOW
-	if (countFrame % DebugInterbal == 0)
-		durationUpdate = GetProgressTimerCount();
-#endif
+	GetTimerCount(&endUpdate);
 }
 
 /*****************************************
@@ -211,12 +200,8 @@ void DrawEnemyMissile(void)
 	D3DXMATERIAL *pMaterial;
 	D3DMATERIAL9 matDef;
 
+	GetTimerCount(&startDraw);
 	pDevice->GetMaterial(&matDef);
-
-#ifdef USE_DEBUGWINDOW
-	if (countFrame % DebugInterbal == 0)
-		BeginTimerCount();
-#endif
 
 	ENEMYMISSILE *ptr = &missile[0];
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
@@ -256,12 +241,9 @@ void DrawEnemyMissile(void)
 
 	//マテリアルをデフォルトに戻す
 	pDevice->SetMaterial(&matDef);
+	GetTimerCount(&endDraw);
 
-#ifdef USE_DEBUGWINDOW
-	if (countFrame % DebugInterbal == 0)
-		durationDraw = GetProgressTimerCount();
 	DrawDebugInfoEnemyMissile();
-#endif
 }
 
 /******************************************
@@ -399,8 +381,8 @@ void DrawDebugInfoEnemyMissile(void)
 {
 	ImGui::Begin("EnemyMissle");
 
-	ImGui::Text("Update : %f[msec]", durationUpdate);
-	ImGui::Text("Update : %f[msec]", durationDraw);
+	ImGui::Text("Update : %f[msec]", CalcProgressTime(startUpdate, endUpdate));
+	ImGui::Text("Update : %f[msec]", CalcProgressTime(startDraw, endDraw));
 
 	ImGui::End();
 }

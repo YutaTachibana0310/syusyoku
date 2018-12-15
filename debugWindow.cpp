@@ -9,6 +9,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define INTERBAL_GETTIMER		(20)
 
 /**************************************
 構造体定義
@@ -18,6 +19,7 @@
 グローバル変数
 ***************************************/
 LARGE_INTEGER timeCountBegin;
+static unsigned int cntFrame = 0;
 
 /**************************************
 プロトタイプ宣言
@@ -48,11 +50,13 @@ void UninitDebugWindow(int num)
 /**************************************
 更新処理
 ***************************************/
-void UpdateDebugWindow()
+void UpdateDebugWindow(void)
 {
 	ImGui_ImplWin32_NewFrame();
 	ImGui_ImplDX9_NewFrame();
 	ImGui::NewFrame();
+
+	cntFrame++;
 }
 
 /**************************************
@@ -88,6 +92,33 @@ double GetProgressTimerCount(void)
 	//計測開始からの経過時間[msec]を計算
 	LONGLONG span = timeCurrent.QuadPart - timeCountBegin.QuadPart;
 	double msec = (double)span * 1000 / (double)frequencyTimer.QuadPart;
+
+	return msec;
+}
+
+/**************************************
+タイマーカウント取得処理（20フレームおきに動作）
+***************************************/
+void GetTimerCount(LARGE_INTEGER *ptr)
+{
+	if (cntFrame % INTERBAL_GETTIMER != 0)
+		return;
+
+	QueryPerformanceCounter(ptr);
+}
+
+/**************************************
+経過時間取得処理[msec]
+***************************************/
+double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end)
+{
+	//タイマーの周波数取得
+	LARGE_INTEGER frequency;
+	QueryPerformanceFrequency(&frequency);
+
+	//経過時間を計算
+	LONGLONG span = end.QuadPart - start.QuadPart;
+	double msec = (double)span * 1000.0f / (double)frequency.QuadPart;
 
 	return msec;
 }
