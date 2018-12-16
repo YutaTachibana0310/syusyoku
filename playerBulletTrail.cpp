@@ -154,7 +154,7 @@ void UpdatePlayerBulletTrail(void)
 		//pColor->a = (float)ptr->cntFrame / PLAYERBULLETTRAIL_LIFE_END;
 
 		//Žõ–½”»’è
-		if (ptr->cntFrame == 0)
+		if (ptr->cntFrame <= 0)
 		{
 			ptr->active = false;
 			pColor->a = 0.0f;

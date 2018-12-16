@@ -8,16 +8,14 @@
 #include "enemyMissileLaunch.h"
 #include "enemyMissileHoming.h"
 #include "enemyMissileStraight.h"
-#include "explosionFire.h"
-#include "explosionSmog.h"
 #include "enemyMissileSmog.h"
 #include "playerBullet.h"
 #include "playerModel.h"
 #include "targetSite.h"
+#include "particleManager.h"
 
 #if 1
 #include "battleCamera.h"
-#include "explosionFlare.h"
 #include "input.h"
 #include "particle.h"
 #endif
@@ -370,18 +368,19 @@ void CheckDestroyEnemyMissile(void)
 
 		if (ptr->hp <= 0.0f)
 		{
-			for (int j = 0; j < 2; j++)
-			{
-				SetExplosionFlare(&ptr->pos);
-			}
-			for (int j = 0; j < 1; j++)
-			{
-				SetExplosionFire(&ptr->pos);
-			}
-			for (int j = 0; j < 1; j++)
-			{
-				SetExplosionSmog(&ptr->pos);
-			}
+			//for (int j = 0; j < 2; j++)
+			//{
+			//	SetExplosionFlare(&ptr->pos);
+			//}
+			//for (int j = 0; j < 1; j++)
+			//{
+			//	SetExplosionFire(&ptr->pos);
+			//}
+			//for (int j = 0; j < 1; j++)
+			//{
+			//	SetExplosionSmog(&ptr->pos);
+			//}
+			SetEnemyExplosion(ptr->pos);
 			ptr->active = false;
 
 		}

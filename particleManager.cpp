@@ -122,15 +122,21 @@ void DrawParticleManager(void)
 ***************************************/
 void SetEnemyExplosion(D3DXVECTOR3 pos)
 {
-	for (int j = 0; j < 200; j++)
+	bool result = false;
+	for (int j = 0; j < 20; j++)
 	{
-		SetExplosionFlare(&pos);
+		result = SetExplosionFlare(&pos);
+
+		if (!result)
+			break;
 	}
+
 	for (int j = 0; j < 10; j++)
 	{
 		SetExplosionFire(&pos);
+
 	}
-	for (int j = 0; j < 100; j++)
+	for (int j = 0; j < 10; j++)
 	{
 		SetExplosionSmog(&pos);
 	}

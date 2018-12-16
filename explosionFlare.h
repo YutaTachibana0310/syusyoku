@@ -38,6 +38,6 @@ void InitExplosionFlare(int num);
 void UninitExplosionFlare(int num);
 void UpdateExplosionFlare(void);
 void DrawExplosionFlare(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effect);
-void SetExplosionFlare(const D3DXVECTOR3 *pos);
+bool SetExplosionFlare(const D3DXVECTOR3 *pos);
 
 #endif
