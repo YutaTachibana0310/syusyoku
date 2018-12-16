@@ -166,7 +166,7 @@ void UpdatePlayerBulletTrail(void)
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
 
-		ptr->active = false;
+		//ptr->active = false;
 	}
 
 	//頂点バッファにコピー
