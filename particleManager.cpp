@@ -10,6 +10,8 @@
 #include "explosionSmog.h"
 #include "camera.h"
 
+#include "debugWindow.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -25,9 +27,14 @@
 static LPDIRECT3DVERTEXDECLARATION9 declare = NULL;
 static LPD3DXEFFECT effect = NULL;
 
+static LARGE_INTEGER startFlare, endFlare;
+static LARGE_INTEGER startSmog, endSmog;
+static LARGE_INTEGER startFire, endFire;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
+void DrawDebugWindowParticle(void);
 
 /**************************************
 初期化処理
@@ -74,9 +81,19 @@ void UninitParticleManager(int num)
 ***************************************/
 void UpdateParticleManager(void)
 {
+	GetTimerCount(&startSmog);
 	UpdateExplosionSmog();
+	GetTimerCount(&endSmog);
+
+	GetTimerCount(&startFire);
 	UpdateExplosionFire();
+	GetTimerCount(&endFire);
+
+	GetTimerCount(&startFlare);
 	UpdateExplosionFlare();
+	GetTimerCount(&endFlare);
+
+	DrawDebugWindowParticle();
 }
 
 /**************************************
@@ -117,4 +134,20 @@ void SetEnemyExplosion(D3DXVECTOR3 pos)
 	{
 		SetExplosionSmog(&pos);
 	}
+}
+
+/**************************************
+デバッグ情報表示
+***************************************/
+void DrawDebugWindowParticle(void)
+{
+	ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
+	ImGui::SetNextWindowPos(ImVec2(5.0f, 415.0f));
+	ImGui::Begin("ParticleManager");
+
+	ImGui::Text("Flare  : %fmsec", CalcProgressTime(startFlare, endFlare));
+	ImGui::Text("Fire   : %fmsec", CalcProgressTime(startFire, endFire));
+	ImGui::Text("Smog   : %fmsec", CalcProgressTime(startSmog, endSmog));
+
+	ImGui::End();
 }
