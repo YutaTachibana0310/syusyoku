@@ -9,6 +9,8 @@
 #include "debugproc.h"
 #include "particleFramework.h"
 
+#include "debugWindow.h"
+
 /**********************************************
 マクロ定義
 **********************************************/
@@ -41,9 +43,20 @@ static LPDIRECT3DTEXTURE9 texture;					//テクスチャ
 static LPDIRECT3DINDEXBUFFER9 indexBuff;			//インデックスバッファ
 static PARTICLE flare[EXPLOSIONFLARE_MAX];			//パーティクル構造体
 
+static LARGE_INTEGER startMove, endMove;
+static LARGE_INTEGER startFade, endFade;
+static LARGE_INTEGER startMtx, endMtx;
+static LARGE_INTEGER startCopy, endCopy;
+
 /**********************************************
 プロトタイプ宣言
 **********************************************/
+void MoveExplosionFlare(void);
+void FadeExplosionFlare(void);
+void CalcMtxExplosionFlare(void);
+void CheckDestroyExplosionFlare(void);
+
+void DrawDebugWindowExplosionFlare(void);
 
 /**********************************************
 初期化処理
@@ -124,42 +137,27 @@ void UninitExplosionFlare(int num)
 **********************************************/
 void UpdateExplosionFlare(void)
 {
-	PARTICLE *ptr = &flare[0];
-	D3DXMATRIX mtxTranslate, mtxScale;
+	GetTimerCount(&startMove);
+	MoveExplosionFlare();
+	GetTimerCount(&endMove);
 
-	//書くパーティクルの更新
-	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++, ptr++)
-	{
-		if (!ptr->active)
-		{
-			continue;
-		}
+	GetTimerCount(&startFade);
+	FadeExplosionFlare();
+	GetTimerCount(&endFade);
 
-		//パーティクルの移動、透過
-		ptr->pos += ptr->moveDir * GetEasingValue((float)ptr->cntFrame / ptr->lifeFrame, ptr->initSpeed, ptr->endSpeed, ptr->speedType);
-		ptr->pos.z += PARTICLE_SCROLLSPEED;
-		vtxColor[i].a = GetEasingValue((float)ptr->cntFrame / ptr->lifeFrame, ptr->initAlpha, ptr->endAlpha, ptr->colorType);
-		ptr->cntFrame++;
+	CheckDestroyExplosionFlare();
 
-		//寿命が来ていたら見えなくする
-		if (ptr->cntFrame == ptr->lifeFrame)
-		{
-			ptr->pos.z = -10000.0f;
-			ptr->active = false;
-		}
+	GetTimerCount(&startMtx);
+	CalcMtxExplosionFlare();
+	GetTimerCount(&endMtx);
 
-		//座標に応じたワールド変換行列にpos配列を更新
-		D3DXMatrixIdentity(&pos[i]);
-		GetInvRotBattleCamera(&pos[i]);
-		D3DXMatrixScaling(&mtxScale, 1.0f, 1.0f, 1.0f);
-		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxScale);
-		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
-		D3DXMatrixMultiply(&pos[i], &pos[i], &mtxTranslate);
-	}
-
+	GetTimerCount(&startCopy);
 	//頂点バッファにメモリコピー
 	CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONFLARE_MAX, pos, posBuff);
 	CopyVtxBuff(sizeof(VERTEX_COLOR) * EXPLOSIONFLARE_MAX, vtxColor, colorBuff);
+	GetTimerCount(&endCopy);
+
+	DrawDebugWindowExplosionFlare();
 }
 
 /**********************************************
@@ -225,7 +223,7 @@ void DrawExplosionFlare(LPDIRECT3DVERTEXDECLARATION9 declare, LPD3DXEFFECT effec
 /**********************************************
 パーティクルセット処理1
 **********************************************/
-void SetExplosionFlare(const D3DXVECTOR3 *pos)
+bool SetExplosionFlare(const D3DXVECTOR3 *pos)
 {
 	PARTICLE *ptr = &flare[0];
 
@@ -243,7 +241,7 @@ void SetExplosionFlare(const D3DXVECTOR3 *pos)
 		ptr->lifeFrame = (int)RandomRangef(30, 70);
 
 		//スピードの設定
-		ptr->initSpeed = RandomRangef(5.0f, 8.0f);
+		ptr->initSpeed = RandomRangef(4.0f, 8.0f);
 		ptr->endSpeed = 0.0f;
 		ptr->speedType = OutExponential;
 
@@ -264,6 +262,116 @@ void SetExplosionFlare(const D3DXVECTOR3 *pos)
 		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 
-		return;
+		return true;
 	}
+
+	return false;
+}
+
+/**********************************************
+移動処理
+**********************************************/
+void MoveExplosionFlare(void)
+{
+	PARTICLE *ptr = &flare[0];
+	float t = 0.0f;
+
+	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		ptr->cntFrame++;
+
+		t = (float)ptr->cntFrame / (float)ptr->lifeFrame;
+		ptr->pos += ptr->moveDir * GetEasingValue(t, ptr->initSpeed, ptr->endSpeed, ptr->speedType);
+		ptr->pos.z += PARTICLE_SCROLLSPEED;
+	}
+}
+
+/**********************************************
+透過処理
+**********************************************/
+void FadeExplosionFlare(void)
+{
+	PARTICLE *ptr = &flare[0];
+	float t = 0.0f;
+
+	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		t = (float)ptr->cntFrame / (float)ptr->lifeFrame;
+		vtxColor[i].a = GetEasingValue(t, ptr->initAlpha, ptr->endAlpha, ptr->colorType);
+	}
+}
+
+/**********************************************
+マトリクス計算処理
+**********************************************/
+void CalcMtxExplosionFlare(void)
+{
+	PARTICLE *ptr = &flare[0];
+	D3DXMATRIX mtxTranslate, mtxScale;
+	D3DXMATRIX *pPos = &pos[0];
+
+	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++, pPos++, ptr++)
+	{	
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		//座標に応じたワールド変換行列にpos配列を更新
+		D3DXMatrixIdentity(pPos);
+		GetInvRotBattleCamera(pPos);
+		D3DXMatrixScaling(&mtxScale, 1.0f, 1.0f, 1.0f);
+		D3DXMatrixMultiply(pPos, pPos, &mtxScale);
+		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
+	}
+}
+
+/**********************************************
+寿命判定
+**********************************************/
+void CheckDestroyExplosionFlare(void)
+{
+	PARTICLE *ptr = &flare[0];
+	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++, ptr++)
+	{	
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		//寿命が来ていたら見えなくする
+		if (ptr->cntFrame == ptr->lifeFrame)
+		{
+			ptr->pos.z = -10000.0f;
+			ptr->active = false;
+		}
+	}
+}
+
+/**********************************************
+デバッグウィンドウ表示
+**********************************************/
+void DrawDebugWindowExplosionFlare(void)
+{
+	ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
+	ImGui::SetNextWindowPos(ImVec2(5.0f, 520.0f));
+	ImGui::Begin("ExplosionFlare");
+
+	ImGui::Text("Move  : %fmsec", CalcProgressTime(startMove, endMove));
+	ImGui::Text("Fade  : %fmsec", CalcProgressTime(startFade, endFade));
+	ImGui::Text("Mtx   : %fmsec", CalcProgressTime(startMtx, endMtx));
+	ImGui::Text("Copy  : %fmsec", CalcProgressTime(startCopy, endCopy));
+
+	ImGui::End();
 }

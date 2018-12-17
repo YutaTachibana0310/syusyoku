@@ -7,13 +7,14 @@
 #include "particleManager.h"
 #include "battleCamera.h"
 #include "debugproc.h"
+#include "particleFramework.h"
 
 /**********************************************
 マクロ定義
 **********************************************/
 #define EXPLOSIONSMOG_MAX (1024)
 #define EXPLOSIONSMOG_TEXNAME "data/TEXTURE/explosionSmog.png"
-#define EXPLOSIONSMOG_SIZE (12)
+#define EXPLOSIONSMOG_SIZE (6)
 #define EXPLOSIONSMOG_POSRANGE (10.0f)
 /**********************************************
 グローバル変数
@@ -68,16 +69,10 @@ void InitExplosionSmog(int num)
 	if (num == 0)
 	{
 		//頂点バッファ作成
-		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
-		pDevice->CreateVertexBuffer(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &posBuff, 0);
-		pDevice->CreateVertexBuffer(sizeof(VERTEX_UV) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &uvBuff, 0);
-		pDevice->CreateVertexBuffer(sizeof(VERTEX_COLOR) * EXPLOSIONSMOG_MAX, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &colorBuff, 0);
-
-		//頂点バッファにメモリコピー
-		CopyVtxBuff(sizeof(vtx), vtx, vtxBuff);
-		CopyVtxBuff(sizeof(D3DXMATRIX) * EXPLOSIONSMOG_MAX, pos, posBuff);
-		CopyVtxBuff(sizeof(VERTEX_UV) * EXPLOSIONSMOG_MAX, vtxUV, uvBuff);
-		CopyVtxBuff(sizeof(VERTEX_COLOR) * EXPLOSIONSMOG_MAX, vtxColor, colorBuff);
+		MakeParticleVertexBuffer(vtx, EXPLOSIONSMOG_SIZE, &vtxBuff);
+		MakeParticleUVBuffer(EXPLOSIONSMOG_SIZE, vtxUV, &uvBuff);
+		MakeParticleWorldBuffer(EXPLOSIONSMOG_MAX, pos, &posBuff);
+		MakeParticleColorBuffer(EXPLOSIONSMOG_MAX, vtxColor, &colorBuff);
 
 		//インデックスバッファ作成
 		WORD index[6] = { 0, 1, 2, 2, 1, 3 };
@@ -252,7 +247,7 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 		ptr->lifeFrame = 70;
 
 		//スピードの設定
-		ptr->initSpeed = 3.0f;
+		ptr->initSpeed = 0.5f;
 		ptr->endSpeed = 0.0f;
 		ptr->speedType = OutExponential;
 
@@ -269,9 +264,9 @@ void SetExplosionSmog(const D3DXVECTOR3 *pos)
 
 		//座標の設定
 		ptr->pos = *pos;
-		ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->pos.z += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
-		ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		//ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		//ptr->pos.z += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
+		//ptr->pos.x += RandomRangef(-EXPLOSIONSMOG_POSRANGE, EXPLOSIONSMOG_POSRANGE);
 		ptr->moveDir = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &ptr->moveDir);
 

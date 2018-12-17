@@ -21,7 +21,7 @@ void EnemyMissileHomingEnter(ENEMYMISSILE *ptr)
 {
 	ptr->period = 300;
 	ptr->cntFrame = 0;
-	ptr->speed = 2.0f;
+	ptr->speed = 5.0f;
 }
 
 /***********************************
@@ -29,14 +29,6 @@ void EnemyMissileHomingEnter(ENEMYMISSILE *ptr)
 ************************************/
 void EnemyMissileHomingUpdate(ENEMYMISSILE *ptr)
 {
-	//移動方向のホーミング a = 2(d - vt) / t^2
-	//D3DXVECTOR3 diff = GetPlayerAdr(0)->pos - ptr->pos;
-	//D3DXVECTOR3 accel = 2.0f * (diff - ptr->velocity * ptr->period) / (ptr->period * ptr->period);
-	//ptr->period--;
-
-	//ptr->velocity += accel;
-	//ptr->pos += ptr->velocity * ptr->speed;
-
 	D3DXVECTOR3 axis;
 	D3DXVECTOR3 targetDir = GetPlayerAdr(0)->pos - ptr->pos;
 	D3DXVec3Cross(&axis, &ptr->velocity, &targetDir);

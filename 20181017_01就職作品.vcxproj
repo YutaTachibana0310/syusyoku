@@ -209,6 +209,7 @@
     <ClCompile Include="smallEnemyModel.cpp" />
     <ClCompile Include="smallEnemyMove.cpp" />
     <ClCompile Include="smallEnemyWait.cpp" />
+    <ClCompile Include="soundEffectManager.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
   </ItemGroup>
@@ -278,6 +279,7 @@
     <ClInclude Include="scoreGUI.h" />
     <ClInclude Include="skyBG.h" />
     <ClInclude Include="smallEnemyModel.h" />
+    <ClInclude Include="soundEffectManager.h" />
     <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />
   </ItemGroup>
@@ -285,10 +287,14 @@
     <FxCompile Include="data\EFFECT\particle.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="data\EFFECT\playerBullet.fx">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

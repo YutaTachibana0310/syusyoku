@@ -13,7 +13,7 @@
 **********************************************/
 #define EXPLOSIONFIRE_MAX (2048)
 #define EXPLOSIONFIRE_TEXNAME "data/TEXTURE/explosionFire.png"
-#define EXPLOSIONFIRE_SIZE (24)
+#define EXPLOSIONFIRE_SIZE (4)
 
 /**********************************************
 ÉOÉçÅ[ÉoÉãïœêî

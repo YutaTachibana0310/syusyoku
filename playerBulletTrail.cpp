@@ -154,7 +154,7 @@ void UpdatePlayerBulletTrail(void)
 		//pColor->a = (float)ptr->cntFrame / PLAYERBULLETTRAIL_LIFE_END;
 
 		//寿命判定
-		if (ptr->cntFrame == 0)
+		if (ptr->cntFrame <= 0)
 		{
 			ptr->active = false;
 			pColor->a = 0.0f;
@@ -166,7 +166,7 @@ void UpdatePlayerBulletTrail(void)
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
 
-		ptr->active = false;
+		//ptr->active = false;
 	}
 
 	//頂点バッファにコピー

@@ -8,16 +8,14 @@
 #include "enemyMissileLaunch.h"
 #include "enemyMissileHoming.h"
 #include "enemyMissileStraight.h"
-#include "explosionFire.h"
-#include "explosionSmog.h"
 #include "enemyMissileSmog.h"
 #include "playerBullet.h"
 #include "playerModel.h"
 #include "targetSite.h"
+#include "particleManager.h"
 
 #if 1
 #include "battleCamera.h"
-#include "explosionFlare.h"
 #include "input.h"
 #include "particle.h"
 #endif
@@ -39,6 +37,8 @@ typedef void(*funcEnemyMissile)(ENEMYMISSILE*);
 /*************************************
 プロトタイプ宣言
 **************************************/
+void CheckDestroyEnemyMissile(void);						//死亡判定
+
 #ifdef USE_DEBUGWINDOW
 void DrawDebugInfoEnemyMissile(void);
 #endif
@@ -75,11 +75,10 @@ static funcEnemyMissile Exit[ENEMYMISSILE_STATEMAX] = {
 	EnemyMissileStraightExit
 };
 
-//デバッグ用変数
-#ifdef USE_DEBUGWINDOW
+static LARGE_INTEGER startSet, endSet;
 static LARGE_INTEGER startUpdate, endUpdate;
-static LARGE_INTEGER startDraw, endDraw;
-#endif
+static LARGE_INTEGER startParticle, endParticle;
+static LARGE_INTEGER startCollision, endCollision;
 
 /*************************************
 初期化処理
@@ -145,7 +144,7 @@ void UpdateEnemyMissile(void)
 
 	ENEMYMISSILE *ptr = &missile[0];
 
-	GetTimerCount(&startUpdate);
+	GetTimerCount(&startSet);
 	cntFrame++;
 	if (cntFrame % 2 == 0)
 	{
@@ -156,7 +155,9 @@ void UpdateEnemyMissile(void)
 			SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
 		}
 	}
+	GetTimerCount(&endSet);
 
+	GetTimerCount(&startUpdate);
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
@@ -166,27 +167,18 @@ void UpdateEnemyMissile(void)
 
 		Update[ptr->state](ptr);
 		ptr->cntFrame++;
-
-		if (ptr->hp <= 0.0f)
-		{
-			for (int j = 0; j < 200; j++)
-			{
-				SetExplosionFlare(&ptr->pos);
-			}
-			for (int j = 0; j < 10; j++)
-			{
-				SetExplosionFire(&ptr->pos);
-			}
-			for (int j = 0; j < 100; j++)
-			{
-				SetExplosionSmog(&ptr->pos);
-			}
-			ptr->active = false;
-
-		}
 	}
+	GetTimerCount(&endUpdate);
 
+	GetTimerCount(&startParticle);
+	CheckDestroyEnemyMissile();
+	GetTimerCount(&endParticle);
+
+	GetTimerCount(&startCollision);
 	CollisionEnemyMissileAndBullet();
+	GetTimerCount(&endCollision);
+
+
 	GetTimerCount(&endUpdate);
 }
 
@@ -200,13 +192,13 @@ void DrawEnemyMissile(void)
 	D3DXMATERIAL *pMaterial;
 	D3DMATERIAL9 matDef;
 
-	GetTimerCount(&startDraw);
 	pDevice->GetMaterial(&matDef);
 
 	ENEMYMISSILE *ptr = &missile[0];
 	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
+
 		{
 			continue;
 		}
@@ -241,7 +233,6 @@ void DrawEnemyMissile(void)
 
 	//マテリアルをデフォルトに戻す
 	pDevice->SetMaterial(&matDef);
-	GetTimerCount(&endDraw);
 
 	DrawDebugInfoEnemyMissile();
 }
@@ -323,19 +314,8 @@ void CollisionEnemyMissileAndBullet(void)
 			distSq = D3DXVec3LengthSq(&(bullet->pos - ptr->pos));
 			if (distSq < 400.0f)
 			{
-				for (int j = 0; j < 200; j++)
-				{
-					SetExplosionFlare(&ptr->pos);
-				}
-				for (int j = 0; j < 10; j++)
-				{
-					SetExplosionFire(&ptr->pos);
-				}
-				for (int j = 0; j < 100; j++)
-				{
-					SetExplosionSmog(&ptr->pos);
-				}
-				ptr->active = false;
+				ptr->hp = 0.0f;
+				bullet->active = false;
 			}
 		}
 	}
@@ -373,16 +353,55 @@ void LockonEnemyMissile(void)
 	}
 }
 
+/*****************************************
+死亡判定
+******************************************/
+void CheckDestroyEnemyMissile(void)
+{
+	ENEMYMISSILE *ptr = &missile[0];
+	for (int i = 0; i < ENEMYMISSILE_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+		{
+			continue;
+		}
+
+		if (ptr->hp <= 0.0f)
+		{
+			//for (int j = 0; j < 2; j++)
+			//{
+			//	SetExplosionFlare(&ptr->pos);
+			//}
+			//for (int j = 0; j < 1; j++)
+			//{
+			//	SetExplosionFire(&ptr->pos);
+			//}
+			//for (int j = 0; j < 1; j++)
+			//{
+			//	SetExplosionSmog(&ptr->pos);
+			//}
+			SetEnemyExplosion(ptr->pos);
+			ptr->active = false;
+
+		}
+	}
+}
+
 #ifdef USE_DEBUGWINDOW
 /*****************************************
 デバッグ情報表示
 ******************************************/
 void DrawDebugInfoEnemyMissile(void)
 {
+	ImGui::StyleColorsDark();
+	ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
+	ImGui::SetNextWindowPos(ImVec2(5.0f, 310.0f));
 	ImGui::Begin("EnemyMissle");
 
-	ImGui::Text("Update : %f[msec]", CalcProgressTime(startUpdate, endUpdate));
-	ImGui::Text("Update : %f[msec]", CalcProgressTime(startDraw, endDraw));
+	ImGui::Text("Set       : %fmsec", CalcProgressTime(startSet, endSet));
+	ImGui::Text("Update    : %fmsec", CalcProgressTime(startUpdate, endUpdate));
+	ImGui::Text("Destroy   : %fmsec", CalcProgressTime(startParticle, endParticle));
+	ImGui::Text("Collision : %fmsec", CalcProgressTime(startCollision, endCollision));
 
 	ImGui::End();
 }
