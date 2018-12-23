@@ -25,9 +25,15 @@ enum DEFINE_SOUNDEFFECT
 {
 	//サウンド通しナンバー
 	SOUND_LOCKON,
-	SOUND_S_EXPLOSION,
+	//SOUND_S_EXPLOSION,
 	SOUND_MAX
 };
+
+typedef struct
+{
+	LPDIRECTSOUNDBUFFER8 clip;
+	bool playOrder;
+}SOUNDEFFECT;
 
 /**************************************
 プロトタイプ宣言

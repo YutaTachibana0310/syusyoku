@@ -10,6 +10,7 @@
 #include "enemyMissile.h"
 #include "debugproc.h"
 #include "rockonSite.h"
+#include "soundEffectManager.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -282,9 +283,11 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 	TranslateViewPort(&targetScreenPos, &targetScreenPos);
 
 	if (D3DXVec3LengthSq(&(targetScreenPos - ptr->screenPos)) < powf(TARGETSITE_COLLIDER_RADIUS, 2))
+	{
 		return true;
-	else
-		return false;
+	}
+
+	return false;
 }
 
 

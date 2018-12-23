@@ -13,6 +13,7 @@
 #include "playerModelTransition.h"
 #include "playerBullet.h"
 #include "playerMissile.h"
+#include "soundEffectManager.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -301,6 +302,7 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 		ptr->target[i].use = true;
 		ActivateRockonSite(ptr->id * PLAYER_ROCKON_MAX + i);
 		ptr->lockonNum++;
+		PlaySE(SOUND_LOCKON);
 		return &ptr->target[i];
 	}
 
