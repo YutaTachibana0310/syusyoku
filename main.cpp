@@ -15,6 +15,8 @@
 #include "particleManager.h"
 #include "sceneManager.h"
 #include "collider.h"
+#include "sound.h"
+#include "soundEffectManager.h"
 #include "debugWindow.h"
 
 //*****************************************************************************
@@ -337,6 +339,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//当たり判定初期化
 	InitCollider(0);
 
+	//サウンド関連初期化
+	InitSound(hWnd);
+	InitSoundEffectManager(0);
+
 	//デバッグウィンドウ初期化
 #ifdef USE_DEBUGWINDOW
 	InitDebugWindow(hWnd, g_pD3DDevice);
@@ -380,6 +386,10 @@ void Uninit(void)
 
 	//当たり判定終了処理
 	UninitCollider(0);
+
+	//サウンド関連終了処理
+	UninitSoundEffectManager(0);
+	UninitSound();
 
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);

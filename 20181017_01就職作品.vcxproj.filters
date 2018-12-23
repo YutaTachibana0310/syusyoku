@@ -375,6 +375,9 @@
     <ClCompile Include="soundEffectManager.cpp">
       <Filter>ソース ファイル\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>ソース ファイル\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -579,6 +582,9 @@
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
     <ClInclude Include="soundEffectManager.h">
+      <Filter>ヘッダー ファイル\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
       <Filter>ヘッダー ファイル\Sound</Filter>
     </ClInclude>
   </ItemGroup>

@@ -25,12 +25,11 @@
 ***************************************/
 const TCHAR* soundFileName[SOUND_MAX] =
 {
-	_T("data/SOUND/hoge.wav"),
-	_T("data/SOUND/hoge.wav"),
+	_T("data/SOUND/lockon.wav"),
+	//_T("data/SOUND/hoge.wav"),
 };
 
-static IDirectSound8 *directSound = NULL;
-static LPDIRECTSOUNDBUFFER8 soundBuffer[SOUND_MAX];
+static SOUNDEFFECT se[SOUND_MAX];
 
 /**************************************
 プロトタイプ宣言
@@ -43,10 +42,18 @@ void InitSoundEffectManager(int num)
 {
 	if (num == 0)
 	{
+		SOUNDEFFECT *ptr = &se[0];
 		for (int i = 0; i < SOUND_MAX; i++)
 		{
-			soundBuffer[i] = LoadSound(&soundFileName[i][0]);
+			ptr->clip = LoadSound(&soundFileName[i][0]);
 		}
+	}
+
+	SOUNDEFFECT *ptr = &se[0];
+	for (int i = 0; i < SOUND_MAX; i++)
+	{
+		ptr->playOrder = false;
+		SetSoundVolume(ptr->clip, 50.0f);
 	}
 
 	return;
@@ -59,9 +66,10 @@ void UninitSoundEffectManager(int num)
 {
 	if (num == 0)
 	{
+		SOUNDEFFECT *ptr = &se[0];
 		for (int i = 0; i < SOUND_MAX; i++)
 		{
-			soundBuffer[i]->Release();
+			ptr->clip->Release();
 		}
 	}
 }
@@ -79,7 +87,7 @@ void UpdateSoundEffectManager(void)
 ***************************************/
 void PlaySE(DEFINE_SOUNDEFFECT sound)
 {
-	PlaySoundBuffer(soundBuffer[sound], E_DS8_FLAG_NONE, true);
+	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
 }
 
 /**************************************
@@ -87,7 +95,7 @@ void PlaySE(DEFINE_SOUNDEFFECT sound)
 ***************************************/
 void StopSE(DEFINE_SOUNDEFFECT sound)
 {
-	StopSoundBuffer(soundBuffer[sound]);
+	StopSoundBuffer(se[sound].clip);
 }
 
 /**************************************
@@ -95,7 +103,7 @@ void StopSE(DEFINE_SOUNDEFFECT sound)
 ***************************************/
 void ResumeSE(DEFINE_SOUNDEFFECT sound)
 {
-	PlaySoundBuffer(soundBuffer[sound], E_DS8_FLAG_NONE, false);
+	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, false);
 }
 
 /**************************************
@@ -103,7 +111,7 @@ void ResumeSE(DEFINE_SOUNDEFFECT sound)
 ***************************************/
 bool IsPlayingSE(DEFINE_SOUNDEFFECT sound)
 {
-	return IsPlaying(soundBuffer[sound]);
+	return IsPlaying(se[sound].clip);
 }
 
 /**************************************
@@ -111,6 +119,6 @@ bool IsPlayingSE(DEFINE_SOUNDEFFECT sound)
 ***************************************/
 void SetSEVolume(DEFINE_SOUNDEFFECT sound, float volume)
 {
-	SetSoundVolume(soundBuffer[sound], volume);
+	SetSoundVolume(se[sound].clip, volume);
 }
 

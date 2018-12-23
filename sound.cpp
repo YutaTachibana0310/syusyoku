@@ -146,7 +146,7 @@ LPDIRECTSOUNDBUFFER8 LoadSound(const TCHAR *path )
 // 音を鳴らす
 // pBuffer:音を鳴らしたいサウンドデータのセカンダリバッファ
 // flag   :1(E_DS8_FLAG_LOOP)ならループ再生
-void PlaySoundBuffer(  LPDIRECTSOUNDBUFFER8 pBuffer, int flag/*=0*/ , bool fromHead = false)
+void PlaySoundBuffer(  LPDIRECTSOUNDBUFFER8 pBuffer, int flag, bool fromHead)
 {
 	if (fromHead)
 	{	// 続きから鳴らすので、最初から鳴らしたい場合はSetCurrentPosition(0)をすること
