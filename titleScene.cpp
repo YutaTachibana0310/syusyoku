@@ -5,12 +5,14 @@
 //
 //=============================================================================
 #include "main.h"
-#include "camera.h"
 #include "titleScene.h"
 #include "input.h"
 #include "Easing.h"
 #include "meshCylinder.h"
 #include "playerModel.h"
+#include "playerBullet.h"
+#include "playerBulletTrail.h"
+#include "battleCamera.h"
 
 /*****************************************************************************
 マクロ定義
@@ -106,7 +108,11 @@ HRESULT InitTitleScene(int num)
 
 		InitMeshCylinder(num);
 		InitPlayerModel(num);
+		InitPlayerBullet(num);
+		UninitPlayerBulletTrail(num);
+
 		ChangeStatePlayerModel(PlayerTitle);
+		SetBattleCameraState(FirstPersonCamera);
 	}
 
 	return S_OK;
@@ -123,9 +129,13 @@ void UninitTitleScene(int num)
 		SAFE_RELEASE(bgTex);
 		SAFE_RELEASE(animTex);
 	}
-
-	UninitMeshCylinder(num);
-	UninitPlayerModel(num);
+	else
+	{
+		UninitMeshCylinder(num);
+		UninitPlayerModel(num);
+		UninitPlayerBullet(num);
+		UninitPlayerBulletTrail(num);
+	}
 }
 
 /******************************************************************************
@@ -153,6 +163,8 @@ void UpdateTitleScene(void)
 
 	UpdateMeshCylinder();
 	UpdatePlayerModel();
+	UpdatePlayerBullet();
+	UpdatePlayerBulletTrail();
 }
 
 /******************************************************************************
@@ -162,10 +174,12 @@ void DrawTitleScene(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	SetCamera();
+	SetBattleCamera();
 
 	DrawMeshCylinder();
 	DrawPlayerModel();
+	DrawPlayerBullet();
+	DrawPlayerBulletTrail();
 
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);

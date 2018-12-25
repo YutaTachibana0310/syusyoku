@@ -195,8 +195,9 @@ void DrawPlayerBullet(void)
 
 		D3DXMatrixIdentity(&mtxWorld);
 
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, rotAngle[currentState].y, rotAngle[currentState].x, rotAngle[currentState].z);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+		//D3DXMatrixRotationYawPitchRoll(&mtxRot, rotAngle[currentState].y, rotAngle[currentState].x, rotAngle[currentState].z);
+		GetInvRotBattleCamera(&mtxWorld);
+		//D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);

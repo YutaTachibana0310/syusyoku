@@ -10,10 +10,14 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERTITLE_INITPOS		(D3DXVECTOR3(0.0f, -10.0f, 100.0f))
-#define PLAYERTITLE_MOVE_PERIOD	(180)
-#define PLAYERTITLE_MOVE_END	(120)
-#define PLAYERTITLE_MOVE_RANGE	(20.0f)
+#define PLAYERTITLE_INITPOS			(D3DXVECTOR3(0.0f, -10.0f, 0.0f))
+#define PLAYERTITLE_MOVE_PERIOD		(180)
+#define PLAYERTITLE_MOVE_END		(120)
+#define PLAYERTITLE_MOVE_RANGE_X	(50.0f)
+#define PLAYERTITLE_MOVE_RANGE_Y	(-20.0f)	
+#define PLAYERTITLE_SHOTPOS_L		(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
+#define PLAYERTITLE_SHOTPOS_R		(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
+#define PLAYERTITLE_BULLETSPEED		(40.0f)
 
 /**************************************
 構造体定義
@@ -35,7 +39,8 @@ void EnterPlayerModelTitle(PLAYERMODEL *player)
 {
 	player->cntFrame = 0;
 	player->pos = PLAYERTITLE_INITPOS;
-
+	player->initPos = player->pos;
+	targetPos[player->id] = PLAYERTITLE_INITPOS;
 }
 
 /**************************************
@@ -49,7 +54,8 @@ void UpdatePlayerModelTitle(PLAYERMODEL *player)
 	if (player->cntFrame % PLAYERTITLE_MOVE_PERIOD == 0)
 	{
 		targetPos[player->id] = PLAYERTITLE_INITPOS;
-		targetPos[player->id].x = RandomRangef(-PLAYERTITLE_MOVE_RANGE, PLAYERTITLE_MOVE_RANGE);
+		targetPos[player->id].x = RandomRangef(-PLAYERTITLE_MOVE_RANGE_X, PLAYERTITLE_MOVE_RANGE_X);
+		targetPos[player->id].y = RandomRangef(PLAYERTITLE_MOVE_RANGE_Y, 0.0f);
 		player->initPos = player->pos;
 		player->cntFrame = 0;
 	}
@@ -60,14 +66,25 @@ void UpdatePlayerModelTitle(PLAYERMODEL *player)
 
 	//回転
 	float diff = targetPos[player->id].x - player->pos.x;
-	float x = diff / fabsf(diff);
-	player->destRot.z = x * PLAYER_DESTROT_MAX;
+	if (diff != 0.0f)
+	{
+		float x = diff / fabsf(diff);
+		player->destRot.z = x * PLAYER_DESTROT_MAX;
+	}
+	else
+	{
+		player->destRot.z = 0.0f;
+	}
+
+	//ショットポジション更新
+	D3DXVec3TransformCoord(&player->shotpos1, &PLAYERTITLE_SHOTPOS_L, &player->mtxWorld);
+	D3DXVec3TransformCoord(&player->shotpos2, &PLAYERTITLE_SHOTPOS_R, &player->mtxWorld);
 
 	//攻撃
-	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0)
+	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0 && player->cntFrame > PLAYERTITLE_MOVE_END)
 	{
-
-
+		SetPlayerBullet(player->shotpos1, PLAYERTITLE_BULLETSPEED);
+		SetPlayerBullet(player->shotpos2, PLAYERTITLE_BULLETSPEED);
 	}
 
 }
