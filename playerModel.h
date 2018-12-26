@@ -35,6 +35,7 @@ enum PlayerState
 	PlayerQuaterView,
 	PlayerTransition,
 	PlayerTitle,
+	PlayerTitleLaunch,
 	PlayerStateMax,
 };
 

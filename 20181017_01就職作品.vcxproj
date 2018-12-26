@@ -197,6 +197,7 @@
     <ClCompile Include="playerModelQuaterView.cpp" />
     <ClCompile Include="playerModelSIdeView.cpp" />
     <ClCompile Include="playerModelTitle.cpp" />
+    <ClCompile Include="playerModelTitleLaunch.cpp" />
     <ClCompile Include="playerModelTopView.cpp" />
     <ClCompile Include="playerModelTransition.cpp" />
     <ClCompile Include="quadTree.cpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="playerModelFPS.h" />
     <ClInclude Include="playerModelSideView.h" />
     <ClInclude Include="playerModelTitle.h" />
+    <ClInclude Include="playerModelTitleLaunch.h" />
     <ClInclude Include="playerModelTopView.h" />
     <ClInclude Include="playerModelTransition.h" />
     <ClInclude Include="quadTree.h" />

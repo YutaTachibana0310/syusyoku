@@ -158,7 +158,8 @@ void UpdateTitleScene(void)
 
 	if (GetKeyboardTrigger(DIK_Z))
 	{
-		SetScene(BattleScene);
+		//SetScene(BattleScene);
+		ChangeStatePlayerModel(PlayerTitleLaunch);
 	}
 
 	UpdateMeshCylinder();

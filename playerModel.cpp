@@ -12,6 +12,7 @@
 #include "playerModelQuaterView.h"
 #include "playerModelTransition.h"
 #include "playerModelTitle.h"
+#include "playerModelTitleLaunch.h"
 #include "playerBullet.h"
 #include "playerMissile.h"
 #include "soundEffectManager.h"
@@ -51,7 +52,8 @@ static funcPlayerModel Update[PlayerStateMax] = {
 	UpdatePlayerModelSideView,
 	UpdatePlayerModelQuaterView,
 	UpdatePlayerModelTransition,
-	UpdatePlayerModelTitle
+	UpdatePlayerModelTitle,
+	UpdatePlayerModelTitleLaunch
 };
 
 static funcPlayerModel Enter[PlayerStateMax] = {
@@ -60,7 +62,8 @@ static funcPlayerModel Enter[PlayerStateMax] = {
 	EnterPlayerModelSideView,
 	EnterPlayerModelQuaterView,
 	EnterPlayerModelTransition,
-	EnterPlayerModelTitle
+	EnterPlayerModelTitle,
+	EnterPlayerModelTitleLaunch
 };
 
 static funcPlayerModel Exit[PlayerStateMax] = {
@@ -69,7 +72,8 @@ static funcPlayerModel Exit[PlayerStateMax] = {
 	ExitPlayerModelSideView,
 	ExitPlayerModelQuaterView,
 	ExitPlayerModelTransition,
-	ExitPlayerModelTitle
+	ExitPlayerModelTitle,
+	ExitPlayerModelTitleLaunch
 };
 
 static const char* textureName[PLAYER_TEXTURE_MAX] = {

@@ -381,6 +381,9 @@
     <ClCompile Include="playerModelTitle.cpp">
       <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
     </ClCompile>
+    <ClCompile Include="playerModelTitleLaunch.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -591,6 +594,9 @@
       <Filter>ヘッダー ファイル\Sound</Filter>
     </ClInclude>
     <ClInclude Include="playerModelTitle.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelTitleLaunch.h">
       <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
     </ClInclude>
   </ItemGroup>
