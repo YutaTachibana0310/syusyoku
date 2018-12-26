@@ -203,6 +203,7 @@
     <ClCompile Include="quadTree.cpp" />
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="rockonSite.cpp" />
+    <ClCompile Include="sceneFade.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="scoreGUI.cpp" />
     <ClCompile Include="skyBG.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="quadTree.h" />
     <ClInclude Include="resultScene.h" />
     <ClInclude Include="rockonSite.h" />
+    <ClInclude Include="sceneFade.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="scoreGUI.h" />
     <ClInclude Include="skyBG.h" />

@@ -10,6 +10,7 @@
 #include "battleScene.h"
 #include "resultScene.h"
 #include "particleManager.h"
+#include "sceneFade.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -77,6 +78,8 @@ void InitSceneManager(int num)
 	{
 		Init[i](num);
 	}
+
+	InitSceneFade(num);
 }
 
 /**************************************
@@ -96,6 +99,8 @@ void UninitSceneManager(int num)
 	{
 		Uninit[i](num);
 	}
+
+	UninitSceneFade(num);
 }
 
 /**************************************
@@ -112,6 +117,8 @@ void UninitScene(int num)
 void UpdateSceneManager(void)
 {
 	Update[currentSceneId]();
+
+	UpdateSceneFade();
 }
 
 /**************************************
@@ -120,6 +127,8 @@ void UpdateSceneManager(void)
 void DrawSceneManager(void)
 {
 	Draw[currentSceneId]();
+
+	DrawSceneFade();
 }
 
 /**************************************

@@ -1,6 +1,6 @@
 //=====================================
 //
-//テンプレート処理[playerModelTitleLaunch.cpp]
+//プレイヤータイトル発進処理[playerModelTitleLaunch.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -13,7 +13,7 @@
 #define PLAYERTITLELAUNCH_SPEED			(8.0f)
 #define PLAYERTITLELAUNCH_DIR_START		(-0.2f)
 #define PLAYERTITLELAUNCH_DIR_END		(5.0f)
-#define PLAYERTITLELAUNCH_ACCEL_END		(60.0f)
+#define PLAYERTITLELAUNCH_ACCEL_END		(40.0f)
 
 /**************************************
 構造体定義
@@ -33,6 +33,7 @@
 void EnterPlayerModelTitleLaunch(PLAYERMODEL *player)
 {
 	player->cntFrame = 0;
+	player->destRot.z = 0.0f;
 }
 
 /**************************************

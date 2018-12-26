@@ -1,6 +1,6 @@
 //=====================================
 //
-//テンプレート処理[template.cpp]
+//プレイヤータイトル処理[template.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -37,7 +37,7 @@ static D3DXVECTOR3 targetPos[PLAYERMODEL_MAX];
 ***************************************/
 void EnterPlayerModelTitle(PLAYERMODEL *player)
 {
-	player->cntFrame = 0;
+	player->cntFrame = PLAYERTITLE_MOVE_END;
 	player->pos = PLAYERTITLE_INITPOS;
 	player->initPos = player->pos;
 	targetPos[player->id] = PLAYERTITLE_INITPOS;

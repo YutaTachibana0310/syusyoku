@@ -13,6 +13,7 @@
 #include "playerBullet.h"
 #include "playerBulletTrail.h"
 #include "battleCamera.h"
+#include "sceneFade.h"
 
 /*****************************************************************************
 マクロ定義
@@ -24,29 +25,13 @@
 #define TITLESCENE_LOGOTEX_SIZE_Y	(208)
 #define TITLESCENE_LOGOTEX_POS		(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, 300.0f, 0.0f))
 
-#define TITLESCENE_BGTEX_NAME		"data/TEXTURE/UI/titlebg00.png"
-#define TITLESCENE_BGTEX_SIZE_X		(900)
-#define TITLESCENE_BGTEX_SIZE_Y		(500)
-#define TITLESCENE_BGTEX_POS		(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f))
-
-#define TITLESCENE_ANIMTEX_NAME		"data/TEXTURE/UI/titleanim00.png"
-#define TITLESCENE_ANIMTEX_SIZE_X	(900)
-#define TITLESCENE_ANIMTEX_SIZE_Y	(500)
-#define TITLESCENE_ANIMTEX_POS		(D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f))
-
 /*****************************************************************************
 プロトタイプ宣言
 *****************************************************************************/
 HRESULT MakeVertexTitleScene(void);			//頂点作成関数
 
 void SetTextureTitleLogo(void);				// テクスチャ座標の計算処理
-void SetTextureTitleBG(void);				// テクスチャ座標の計算処理
-void SetTextureTitleAnim(void);				// テクスチャ座標の計算処理
-
 void SetVertexTitleLogo(void);				// 頂点の計算処理
-void SetVertexTitleBG(void);				// 頂点の計算処理
-void SetVertexTitleAnim(void);				// 頂点の計算処理
-
 void SetTitleTextureAlpha(float alpha);		//アルファ設定処理
 
 /*****************************************************************************
@@ -55,6 +40,7 @@ void SetTitleTextureAlpha(float alpha);		//アルファ設定処理
 enum TITLESCENE_STATE
 {
 	TITLESCENE_FADEIN,
+	TITLESCENE_INPUTWAIT,
 	TITLESCENE_STATEMAX
 };
 /*****************************************************************************
@@ -62,9 +48,9 @@ enum TITLESCENE_STATE
 *****************************************************************************/
 static LPDIRECT3DTEXTURE9 logoTex, bgTex, animTex;
 static VERTEX_2D vertexWk[NUM_VERTEX];					//頂点情報格納ワーク
-static float logoRadius, bgRadius, animRadius;
-static float logoAngle, bgAngle, animAngle;
-static D3DXVECTOR3 logoPos, bgPos, animPos;
+static float logoRadius;
+static float logoAngle;
+static D3DXVECTOR3 logoPos;
 static int cntFrame;
 static TITLESCENE_STATE state;
 
@@ -80,16 +66,6 @@ HRESULT InitTitleScene(int num)
 	logoAngle = atan2f(TITLESCENE_LOGOTEX_SIZE_Y, TITLESCENE_LOGOTEX_SIZE_X);
 	logoRadius = D3DXVec2Length(&D3DXVECTOR2(TITLESCENE_LOGOTEX_SIZE_X, TITLESCENE_LOGOTEX_SIZE_Y));
 
-	//背景の初期設定
-	bgPos = TITLESCENE_BGTEX_POS;
-	bgAngle = atan2f(TITLESCENE_BGTEX_SIZE_Y, TITLESCENE_BGTEX_SIZE_X);
-	bgRadius = D3DXVec2Length(&D3DXVECTOR2(TITLESCENE_BGTEX_SIZE_X, TITLESCENE_BGTEX_SIZE_Y));
-
-	//アニメテクスチャの初期化
-	animPos = TITLESCENE_ANIMTEX_POS;
-	animAngle = atan2f(TITLESCENE_ANIMTEX_SIZE_Y, TITLESCENE_ANIMTEX_SIZE_X);
-	animRadius = D3DXVec2Length(&D3DXVECTOR2(TITLESCENE_ANIMTEX_SIZE_X, TITLESCENE_ANIMTEX_SIZE_Y));
-
 	// 頂点情報の作成
 	MakeVertexTitleScene();
 
@@ -97,8 +73,6 @@ HRESULT InitTitleScene(int num)
 	{
 		// テクスチャの読み込み
 		logoTex = CreateTextureFromFile((LPSTR)TITLESCENE_LOGOTEX_NAME, pDevice);
-		bgTex = CreateTextureFromFile((LPSTR)TITLESCENE_BGTEX_NAME, pDevice);
-		animTex = CreateTextureFromFile((LPSTR)TITLESCENE_ANIMTEX_NAME, pDevice);
 	}
 
 	if (num != 0)
@@ -110,6 +84,9 @@ HRESULT InitTitleScene(int num)
 		InitPlayerModel(num);
 		InitPlayerBullet(num);
 		UninitPlayerBulletTrail(num);
+
+		state = TITLESCENE_FADEIN;
+		cntFrame = 0;
 
 		ChangeStatePlayerModel(PlayerTitle);
 		SetBattleCameraState(FirstPersonCamera);
@@ -152,14 +129,16 @@ void UpdateTitleScene(void)
 		SetTitleTextureAlpha(EaseLinear(t, 0.0f, 1.0f));
 		if (cntFrame == TITLESCENE_FADEIN_END)
 		{
-			state = TITLESCENE_STATEMAX;
+			state = TITLESCENE_INPUTWAIT;
 		}
 	}
 
-	if (GetKeyboardTrigger(DIK_Z))
+	if (GetKeyboardTrigger(DIK_Z) && state == TITLESCENE_INPUTWAIT)
 	{
 		//SetScene(BattleScene);
+		state = TITLESCENE_STATEMAX;
 		ChangeStatePlayerModel(PlayerTitleLaunch);
+		SetSceneFade(BattleScene);
 	}
 
 	UpdateMeshCylinder();
@@ -184,18 +163,6 @@ void DrawTitleScene(void)
 
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
-
-	////アニメテクスチャ描画
-	//pDevice->SetTexture(0, animTex);
-	//SetVertexTitleAnim();
-	//SetTextureTitleAnim();
-	//pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
-	//
-	////背景描画
-	//pDevice->SetTexture(0, bgTex);
-	//SetVertexTitleBG();
-	//SetTextureTitleBG();
-	//pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
 
 	//ロゴ描画
 	pDevice->SetTexture(0, logoTex);
@@ -240,30 +207,6 @@ void SetTextureTitleLogo(void)
 }
 
 /******************************************************************************
-テクスチャ座標の設定
-******************************************************************************/
-void SetTextureTitleBG(void)
-{
-	// テクスチャ座標の設定
-	vertexWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	vertexWk[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	vertexWk[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	vertexWk[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-}
-
-/******************************************************************************
-テクスチャ座標の設定
-******************************************************************************/
-void SetTextureTitleAnim(void)
-{
-	// テクスチャ座標の設定
-	vertexWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	vertexWk[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	vertexWk[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	vertexWk[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-}
-
-/******************************************************************************
 頂点座標の設定
 ******************************************************************************/
 void SetVertexTitleLogo(void)
@@ -279,37 +222,6 @@ void SetVertexTitleLogo(void)
 	vertexWk[3].vtx.y = logoPos.y + sinf(logoAngle) * logoRadius;
 }
 
-/******************************************************************************
-頂点座標の設定
-******************************************************************************/
-void SetVertexTitleBG(void)
-{
-	// 頂点座標の設定
-	vertexWk[0].vtx.x = bgPos.x - cosf(bgAngle) * bgRadius;
-	vertexWk[0].vtx.y = bgPos.y - sinf(bgAngle) * bgRadius;
-	vertexWk[1].vtx.x = bgPos.x + cosf(bgAngle) * bgRadius;
-	vertexWk[1].vtx.y = bgPos.y - sinf(bgAngle) * bgRadius;
-	vertexWk[2].vtx.x = bgPos.x - cosf(bgAngle) * bgRadius;
-	vertexWk[2].vtx.y = bgPos.y + sinf(bgAngle) * bgRadius;
-	vertexWk[3].vtx.x = bgPos.x + cosf(bgAngle) * bgRadius;
-	vertexWk[3].vtx.y = bgPos.y + sinf(bgAngle) * bgRadius;
-}
-
-/******************************************************************************
-頂点座標の設定
-******************************************************************************/
-void SetVertexTitleAnim(void)
-{
-	// 頂点座標の設定
-	vertexWk[0].vtx.x = animPos.x - cosf(animAngle) * animRadius;
-	vertexWk[0].vtx.y = animPos.y - sinf(animAngle) * animRadius;
-	vertexWk[1].vtx.x = animPos.x + cosf(animAngle) * animRadius;
-	vertexWk[1].vtx.y = animPos.y - sinf(animAngle) * animRadius;
-	vertexWk[2].vtx.x = animPos.x - cosf(animAngle) * animRadius;
-	vertexWk[2].vtx.y = animPos.y + sinf(animAngle) * animRadius;
-	vertexWk[3].vtx.x = animPos.x + cosf(animAngle) * animRadius;
-	vertexWk[3].vtx.y = animPos.y + sinf(animAngle) * animRadius;
-}
 /******************************************************************************
 テクスチャアルファ設定
 ******************************************************************************/
