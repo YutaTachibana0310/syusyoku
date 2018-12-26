@@ -378,6 +378,15 @@
     <ClCompile Include="sound.cpp">
       <Filter>ソース ファイル\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="playerModelTitle.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="playerModelTitleLaunch.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneFade.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -586,6 +595,15 @@
     </ClInclude>
     <ClInclude Include="sound.h">
       <Filter>ヘッダー ファイル\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelTitle.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="playerModelTitleLaunch.h">
+      <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneFade.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

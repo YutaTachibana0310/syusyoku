@@ -35,6 +35,12 @@ static Easing EasingProcess[EasingMax] = {
 ********************************************************************/
 float GetEasingValue(float time, float start, float goal, EASING_TYPE type)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+		time = 0.0f;
+
 	return EasingProcess[type](time, start, goal);
 }
 
@@ -49,6 +55,12 @@ float GetEasingValue(float time, float start, float goal, EASING_TYPE type)
 ********************************************************************/
 float EaseInCubic(float time, float start, float goal)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+		time = 0.0f;
+
 	return (goal - start) * time * time + start;
 }
 
@@ -63,6 +75,12 @@ float EaseInCubic(float time, float start, float goal)
 ********************************************************************/
 float EaseOutCubic(float time, float start, float goal)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+		time = 0.0f;
+
 	return -(goal - start) * time * (time - 2.0f) + start;
 }
 
@@ -77,6 +95,12 @@ float EaseOutCubic(float time, float start, float goal)
 ********************************************************************/
 float EaseInOutCubic(float time, float start, float goal)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+		time = 0.0f;
+
 	time *= 2.0f;
 
 	if (time < 1)
@@ -101,6 +125,12 @@ float EaseInOutCubic(float time, float start, float goal)
 ********************************************************************/
 float EaseLinear(float time, float start, float goal)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+		time = 0.0f;
+
 	return (goal - start) * time + start;
 }
 
@@ -115,6 +145,12 @@ float EaseLinear(float time, float start, float goal)
 ********************************************************************/
 float EaseInExponential(float time, float start, float goal)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+		time = 0.0f;
+
 	return (goal - start) *  powf(2, 10 * (time - 1)) + start;
 }
 
@@ -129,6 +165,12 @@ float EaseInExponential(float time, float start, float goal)
 ********************************************************************/
 float EaseOutExponential(float time, float start, float goal)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+
+		time = 0.0f;
 	return (goal - start) * (-powf(2, (-10 * time)) + 1) + start;
 }
 
@@ -143,5 +185,11 @@ float EaseOutExponential(float time, float start, float goal)
 ********************************************************************/
 float EaseInOutExponential(float time, float start, float goal)
 {
+	if (time > 1.0f)
+		time = 1.0f;
+
+	if (time < 0.0f)
+		time = 0.0f;
+
 	return 0.0f;
 }

@@ -163,6 +163,7 @@ void UpdatePlayerBulletTrail(void)
 
 		//ワールド配列の更新
 		D3DXMatrixIdentity(pPos);
+		//GetInvRotBattleCamera(pPos);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
 

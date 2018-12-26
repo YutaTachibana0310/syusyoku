@@ -276,3 +276,15 @@ BATTLECAMERA *GetBattleCameraAdr(void)
 	return &camera;
 }
 
+
+//=============================================================================
+// カメラの状態セット
+//=============================================================================
+void SetBattleCameraState(int state)
+{
+	camera.isMoving = false;
+	camera.currentState = state;
+	camera.pos = BattleCameraPos[state];
+	camera.at = BattleCameraAt[state];
+	camera.up = BattleCameraUp[state];
+}

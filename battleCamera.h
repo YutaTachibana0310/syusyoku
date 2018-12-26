@@ -56,4 +56,5 @@ void GetInvRotBattleCamera(D3DXMATRIX *mtx);
 D3DXVECTOR3 GetBattleCameraPos(void);
 void SetBattleCameraMove(int state);
 BATTLECAMERA *GetBattleCameraAdr(void);
+void SetBattleCameraState(int state);
 #endif

@@ -34,7 +34,9 @@ enum PlayerState
 	PlayerSideView,
 	PlayerQuaterView,
 	PlayerTransition,
-	PlayerStateMax
+	PlayerTitle,
+	PlayerTitleLaunch,
+	PlayerStateMax,
 };
 
 //ロックオン対象構造体
