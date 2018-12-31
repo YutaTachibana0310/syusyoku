@@ -139,6 +139,12 @@
     <Filter Include="ヘッダー ファイル\Sound">
       <UniqueIdentifier>{cf2f3c28-f0f1-4689-89df-3f1f943e8da7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\cubeObject">
+      <UniqueIdentifier>{f1ea92dd-b355-4784-a98b-87a90aa4bb0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Enemy\cubeObject">
+      <UniqueIdentifier>{b1cb3507-5a2c-4875-990f-570819e6b4ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -387,6 +393,9 @@
     <ClCompile Include="sceneFade.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="cubeObject.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -604,6 +613,9 @@
     </ClInclude>
     <ClInclude Include="sceneFade.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="cubeObject.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

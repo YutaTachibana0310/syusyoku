@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="battleCamera.cpp" />
     <ClCompile Include="battleScene.cpp" />
+    <ClCompile Include="cubeObject.cpp" />
     <ClCompile Include="debugWindow.cpp" />
     <ClCompile Include="desertScene.cpp" />
     <ClCompile Include="buildingField.cpp" />
@@ -220,6 +221,7 @@
   <ItemGroup>
     <ClInclude Include="battleCamera.h" />
     <ClInclude Include="battleScene.h" />
+    <ClInclude Include="cubeObject.h" />
     <ClInclude Include="debugWindow.h" />
     <ClInclude Include="desertScene.h" />
     <ClInclude Include="buildingField.h" />

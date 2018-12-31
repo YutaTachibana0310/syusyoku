@@ -87,7 +87,7 @@ void UpdateSoundEffectManager(void)
 ***************************************/
 void PlaySE(DEFINE_SOUNDEFFECT sound)
 {
-	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
+	//PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
 }
 
 /**************************************
