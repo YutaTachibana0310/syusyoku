@@ -47,7 +47,7 @@ LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
 static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0, 0);
 int					g_nCountFPS;			// FPSカウンタ
 #ifdef _DEBUG
-DefineScene startScene = TitleScene;
+DefineScene startScene = BattleScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
@@ -304,7 +304,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 #if 1
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
-		FLOAT StartPos = 6000;
+		FLOAT StartPos = 2000;
 		FLOAT EndPos = 15000;
 
 		g_pD3DDevice->SetRenderState(D3DRS_FOGENABLE, true);

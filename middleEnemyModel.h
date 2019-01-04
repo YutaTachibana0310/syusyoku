@@ -45,7 +45,7 @@ typedef struct
 	float hp;
 	int atkNum;
 
-	SPHERE collider;
+	COLLIDER_SPHERE collider;
 
 }MIDDLEENEMY;
 /**************************************

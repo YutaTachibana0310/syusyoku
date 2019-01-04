@@ -396,6 +396,9 @@
     <ClCompile Include="cubeObject.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
     </ClCompile>
+    <ClCompile Include="cubeParticle.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -616,6 +619,9 @@
     </ClInclude>
     <ClInclude Include="cubeObject.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="cubeParticle.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

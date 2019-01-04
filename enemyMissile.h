@@ -25,7 +25,7 @@ typedef struct
 	D3DXQUATERNION rot;				//回転クォータニオン
 	D3DXVECTOR3 velocity;			//移動方向
 	D3DXVECTOR3 targetPos;			//目標座標
-	SPHERE collider;				//当たり判定
+	COLLIDER_SPHERE collider;				//当たり判定
 
 	float speed;					//移動スピード
 	int cntFrame;					//フレームカウント

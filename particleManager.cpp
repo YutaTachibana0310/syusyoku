@@ -9,6 +9,7 @@
 #include "explosionFlare.h"
 #include "explosionSmog.h"
 #include "camera.h"
+#include "cubeParticle.h"
 
 #include "debugWindow.h"
 
@@ -64,6 +65,7 @@ void InitParticleManager(int num)
 	InitExplosionSmog(num);
 	InitExplosionFire(num);
 	InitExplosionFlare(num);
+	InitCubeParticle(num);
 }
 
 /**************************************
@@ -74,6 +76,7 @@ void UninitParticleManager(int num)
 	UninitExplosionSmog(num);
 	UninitExplosionFire(num);
 	UninitExplosionFlare(num);
+	UninitCubeParticle(num);
 }
 
 /**************************************
@@ -92,6 +95,8 @@ void UpdateParticleManager(void)
 	GetTimerCount(&startFlare);
 	UpdateExplosionFlare();
 	GetTimerCount(&endFlare);
+
+	UpdateCubeParticle();
 
 	DrawDebugWindowParticle();
 }
@@ -115,6 +120,8 @@ void DrawParticleManager(void)
 
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	GetDevice()->SetRenderState(D3DRS_LIGHTING, true);
+
+	DrawCubeParticle();
 }
 
 /**************************************
@@ -139,6 +146,17 @@ void SetEnemyExplosion(D3DXVECTOR3 pos)
 	for (int j = 0; j < 10; j++)
 	{
 		SetExplosionSmog(&pos);
+	}
+}
+
+/*************************************
+キューブエクスプロージョンセット処理
+***************************************/
+void SetCubeExplosion(D3DXVECTOR3 pos)
+{
+	for (int i = 0; i < 45; i++)
+	{
+		SetCubeParticle(pos);
 	}
 }
 

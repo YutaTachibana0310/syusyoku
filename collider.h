@@ -42,7 +42,17 @@ typedef struct
 	D3DXVECTOR3 offset;		//対象オブジェクトからのオフセット
 	float radius;			//半径
 	bool active;			//アクティブ判定
-}SPHERE;
+}COLLIDER_SPHERE;
+
+//キューブコライダー
+typedef struct
+{	
+	D3DXVECTOR3 *pos;		//判定を持つオブジェクトの座標ポインタ
+	D3DXVECTOR3 offset;		//対象オブジェクトからのオフセット
+	D3DXVECTOR3 length;		//端点への距離
+	bool active;			//アクティブ判定
+}COLLIDER_CUBE;
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -51,6 +61,10 @@ void UninitCollider(int num);
 
 bool CheckHitTriangleAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, TRIANGLE tri, D3DXVECTOR3 *out);
 bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 end, PLANE plane, D3DXVECTOR3 *out);
-bool CheckHitBoundingSphere(const SPHERE *s1, const SPHERE *s2);
-void DrawBoundingSphere(const SPHERE *s);
+bool CheckHitBoundingSphere(const COLLIDER_SPHERE *s1, const COLLIDER_SPHERE *s2);
+bool ChechHitBoundingCube(const COLLIDER_CUBE *c1, const COLLIDER_CUBE *c2);
+
+void DrawBoundingSphere(const COLLIDER_SPHERE *s);
+void DrawBoundingCube(const COLLIDER_CUBE *cube);
+
 #endif

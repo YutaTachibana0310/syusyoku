@@ -18,6 +18,7 @@
 グローバル変数
 *****************************************************************************/
 static LPD3DXMESH meshSphere;		//球体メッシュ
+static LPD3DXMESH meshCube;			//キューブメッシュ
 static D3DMATERIAL9 material;		//当たり判定表示用マテリアル
 
 /*****************************************************************************
@@ -29,12 +30,20 @@ void InitCollider(int num)
 	{
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-		//メッシュ作成
+		//球体メッシュ作成
 		D3DXCreateSphere(pDevice,
 			1.0f,
 			8,
 			8,
 			&meshSphere,
+			NULL);
+
+		//キューブメッシュ作成
+		D3DXCreateBox(pDevice,
+			1.0f,
+			1.0f,
+			1.0f,
+			&meshCube,
 			NULL);
 
 		//マテリアル作成
@@ -70,6 +79,7 @@ void UninitCollider(int num)
 	if (num == 0)
 	{
 		SAFE_RELEASE(meshSphere);
+		SAFE_RELEASE(meshCube);
 	}
 }
 
@@ -77,7 +87,7 @@ void UninitCollider(int num)
 /*****************************************************************************
 バウンディングスフィア描画処理
 *****************************************************************************/
-void DrawBoundingSphere(const SPHERE *s)
+void DrawBoundingSphere(const COLLIDER_SPHERE *s)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DXMATRIX mtxTranslate, mtxScale, mtxWorld;
@@ -107,6 +117,45 @@ void DrawBoundingSphere(const SPHERE *s)
 
 	//draw
 	meshSphere->DrawSubset(0);
+
+	//reset renderstate & material0
+	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	pDevice->SetMaterial(&matDef);
+}
+
+/*****************************************************************************
+バウンディングキューブ描画処理
+*****************************************************************************/
+void DrawBoundingCube(const COLLIDER_CUBE *cube)
+{
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	D3DXMATRIX mtxTranslate, mtxScale, mtxWorld;
+	D3DMATERIAL9 matDef;
+
+	//get defaultMaterial
+	pDevice->GetMaterial(&matDef);
+
+	//set renderstate & material
+	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	pDevice->SetMaterial(&material);
+	pDevice->SetTexture(0, NULL);
+
+	//identify
+	D3DXMatrixIdentity(&mtxWorld);
+
+	//scaling
+	D3DXMatrixScaling(&mtxScale, cube->length.x * 2, cube->length.y * 2, cube->length.z * 2);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
+
+	//translate
+	D3DXMatrixTranslation(&mtxTranslate, cube->pos->x + cube->offset.x, cube->pos->y + cube->offset.y, cube->pos->z + cube->offset.z);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
+	
+	//set world
+	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//draw
+	meshCube->DrawSubset(0);
 
 	//reset renderstate & material0
 	pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
@@ -227,7 +276,7 @@ bool CheckHitPlaneAndLine(D3DXVECTOR3 start, D3DXVECTOR3 goal, PLANE plane, D3DX
 引数2	：SPHERE s2　…　バウンディングスフィア2
 説明	：バウンディングスフィアの当たり判定
 *****************************************************************************/
-bool CheckHitBoundingSphere(const SPHERE *s1, const SPHERE *s2)
+bool CheckHitBoundingSphere(const COLLIDER_SPHERE *s1, const COLLIDER_SPHERE *s2)
 {
 	if (!s1->active || !s2->active)
 	{
@@ -238,4 +287,28 @@ bool CheckHitBoundingSphere(const SPHERE *s1, const SPHERE *s2)
 	float lenghtSq = D3DXVec3LengthSq(&d);
 
 	return (lenghtSq > (s1->radius + s2->radius) * (s1->radius + s2->radius)) ? false : true;
+}
+
+/*****************************************************************************
+関数名	：bool ChechHitBoundingCube(SPHERE s1, SPHERE s2)
+引数1	：SPHERE s1　…　バウンディングスフィア1
+引数2	：SPHERE s2　…　バウンディングスフィア2
+説明	：バウンディングスフィアの当たり判定
+*****************************************************************************/
+bool ChechHitBoundingCube(const COLLIDER_CUBE *c1, const COLLIDER_CUBE *c2)
+{
+	
+	D3DXVECTOR3 pos1 = *(c1->pos) + c1->offset;
+	D3DXVECTOR3 pos2 = *(c2->pos) + c2->offset;
+
+	if (pos1.x + c1->length.x < pos2.x - c1->length.x || pos1.x - c1->length.x > pos2.x + c2->length.x)
+		return false;
+
+	if (pos1.y + c1->length.y < pos2.y - c1->length.y || pos1.y - c1->length.y > pos2.y + c2->length.y)
+		return false;
+
+	if (pos1.z + c1->length.z < pos2.z - c1->length.z || pos1.z - c1->length.z > pos2.z + c2->length.z)
+		return false;
+
+	return true;
 }

@@ -1,6 +1,6 @@
 //=====================================
 //
-//キューブオブジェクトヘッダ[cubeObject.h]
+//キューブパーティクルヘッダ[cubeParticle.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -19,23 +19,21 @@
 ***************************************/
 typedef struct
 {
-	D3DXVECTOR3 rotValue;		//1フレームあたりの回転量
-	float moveSpeed;			//1フレームあたりの移動量
-	COLLIDER_CUBE collider;		//当たり判定
 	bool active;
-	float hp;
+	
+	D3DXVECTOR3 moveDir;
+	int cntFrame;
+	
 
-}CUBE_OBJECT;
+}CUBE_PARTICLE;
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitCubeObject(int num);
-void UninitCubeObject(int num);
-void UpdateCubeObject(void);
-void DrawCubeObject(void);
+void InitCubeParticle(int num);
+void UninitCubeParticle(int num);
+void UpdateCubeParticle(void);
+void DrawCubeParticle(void);
 
-void CollisionCubeObjectAndBullet(void);
-void LockonCubeObject(void);
-
+void SetCubeParticle(D3DXVECTOR3 setPos);
 #endif
