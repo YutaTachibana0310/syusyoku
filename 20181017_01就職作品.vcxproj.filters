@@ -405,6 +405,12 @@
     <ClCompile Include="explosionLumine.cpp">
       <Filter>ソース ファイル\Effect\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="dataContainer.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="powerUpTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -634,6 +640,12 @@
     </ClInclude>
     <ClInclude Include="explosionLumine.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="dataContainer.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="powerUpTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

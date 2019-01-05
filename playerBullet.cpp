@@ -52,41 +52,16 @@ static const D3DXVECTOR3 rotAngle[PlayerBulletStateMax] = {
 	D3DXVECTOR3(0.0f, 0.0f, 0.0f),		//クォータービュー時の回転角度
 };
 
-//単位頂点の設定
-//static VERTEX_PARTICLE vtx[NUM_VERTEX * PlayerBulletStateMax] = {
-//	//FPSビューの単位頂点設定
-//	{ -PLAYERBULLET_TEXSIZE_X, 0.0f,  PLAYERBULLET_TEXSIZE_Y, 0.0f, 0.0f },
-//	{  PLAYERBULLET_TEXSIZE_X, 0.0f,  PLAYERBULLET_TEXSIZE_Y, 1.0f, 0.0f },
-//	{ -PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y, 0.0f, 1.0f },
-//	{  PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y, 1.0f, 1.0f },
-//	//トップビューの単位頂点設定
-//	{ -PLAYERBULLET_TEXSIZE_X, 0.0f,  PLAYERBULLET_TEXSIZE_Y, 0.0f, 0.0f },
-//	{  PLAYERBULLET_TEXSIZE_X, 0.0f,  PLAYERBULLET_TEXSIZE_Y, 1.0f, 0.0f },
-//	{ -PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y, 0.0f, 1.0f },
-//	{  PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y, 1.0f, 1.0f },
-//	//サイドビュー
-//	{ 0.0f,  PLAYERBULLET_TEXSIZE_X, -PLAYERBULLET_TEXSIZE_Y, 0.0f, 0.0f },
-//	{ 0.0f,  PLAYERBULLET_TEXSIZE_X,  PLAYERBULLET_TEXSIZE_Y, 1.0f, 0.0f },
-//	{ 0.0f, -PLAYERBULLET_TEXSIZE_X, -PLAYERBULLET_TEXSIZE_Y, 0.0f, 1.0f },
-//	{ 0.0f, -PLAYERBULLET_TEXSIZE_X,  PLAYERBULLET_TEXSIZE_Y, 1.0f, 1.0f },
-//	//クォータービュー
-//	{ -PLAYERBULLET_TEXSIZE_X, 0.0f,  PLAYERBULLET_TEXSIZE_Y, 0.0f, 0.0f },
-//	{ PLAYERBULLET_TEXSIZE_X, 0.0f,  PLAYERBULLET_TEXSIZE_Y, 1.0f, 0.0f },
-//	{ -PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y, 0.0f, 1.0f },
-//	{ PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y, 1.0f, 1.0f },
-//};
-
-
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void CreatePlayerBulletVertexBuffer(void);
-#if 0
-void CreatePlayerBulletVertexBufferFPS(void);
-void CreatePlayerBulletVertexBufferTop(void);
-void CreatePlayerBulletVertexBufferSide(void);
-void CreatePlayerBulletVertexBufferQuater(void);
-#endif
+
+void SetPlayerBulletLv2(D3DXVECTOR3 pos, float speed);
+void SetPlayerBulletLv3(D3DXVECTOR3 pos, float speed);
+void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed);
+void SetPlayerBulletLv5(D3DXVECTOR3 pos, float speed);
+
 /**************************************
 初期化処理
 ***************************************/
@@ -236,10 +211,12 @@ void DrawPlayerBullet(void)
 }
 
 /**************************************
-プレイヤーバレットセット関数
+プレイヤーバレットセット関数Lv1
 ***************************************/
 void SetPlayerBullet(D3DXVECTOR3 pos, float speed)
 {
+	SetPlayerBulletLv3(pos, speed); return;
+
 	PLAYERBULLET *ptr = &bullet[0];
 	const float randomAngle = 0.1f;
 
@@ -259,6 +236,166 @@ void SetPlayerBullet(D3DXVECTOR3 pos, float speed)
 
 		ptr->active = true;
 		return;
+	}
+}
+
+/**************************************
+プレイヤーバレットセット関数Lv2
+***************************************/
+void SetPlayerBulletLv2(D3DXVECTOR3 pos, float speed)
+{
+	const int shotNum = 3;
+
+	const D3DXVECTOR3 setDir[shotNum] = {
+		D3DXVECTOR3(0.1f, 0.0f, 1.0f),
+		D3DXVECTOR3(-0.1f, 0.0f, 1.0f),
+		D3DXVECTOR3(0.0f, 0.0f, 1.0f),
+	};
+
+	for (int j = 0; j < shotNum; j++)
+	{
+		PLAYERBULLET *ptr = &bullet[0];
+		for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+		{
+			if (ptr->active)
+			{
+				continue;
+			}
+
+			ptr->pos = pos;
+			ptr->rotation = RandomRangef(0.0f, 6.12f);
+
+			D3DXVec3Normalize(&ptr->moveDir, &setDir[j]);
+
+			ptr->speed = speed;
+
+			ptr->active = true;
+			break;
+		}
+	}
+}
+
+/**************************************
+プレイヤーバレットセット関数Lv3
+***************************************/
+void SetPlayerBulletLv3(D3DXVECTOR3 pos, float speed)
+{
+	const int shotNum = 5;
+
+	const D3DXVECTOR3 setDir[shotNum] = {
+		D3DXVECTOR3(0.1f, 0.0f, 1.0f),
+		D3DXVECTOR3(-0.1f, 0.0f, 1.0f),
+		D3DXVECTOR3(0.0f, 0.1f, 1.0f),
+		D3DXVECTOR3(0.0f, -0.1f, 1.0f),
+		D3DXVECTOR3(0.0f, 0.0f, 1.0f)
+	};
+
+	for (int j = 0; j < shotNum; j++)
+	{
+		PLAYERBULLET *ptr = &bullet[0];
+		for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+		{
+			if (ptr->active)
+			{
+				continue;
+			}
+
+			ptr->pos = pos;
+			ptr->rotation = RandomRangef(0.0f, 6.12f);
+
+			D3DXVec3Normalize(&ptr->moveDir, &setDir[j]);
+
+			ptr->speed = speed;
+
+			ptr->active = true;
+			break;
+		}
+	}
+}
+
+/**************************************
+プレイヤーバレットセット関数Lv4
+***************************************/
+void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed)
+{
+	const int shotNum = 8;
+
+	const D3DXVECTOR3 setDir[shotNum] = {
+		D3DXVECTOR3(0.05f, 0.0f, 1.0f),
+		D3DXVECTOR3(-0.05f, 0.0f, 1.0f),
+		D3DXVECTOR3(0.0f, 0.05f, 1.0f),
+		D3DXVECTOR3(0.0f, -0.05f, 1.0f),
+		D3DXVECTOR3(0.1f, 0.1f, 1.0f),
+		D3DXVECTOR3(-0.1f, 0.1f, 1.0f),
+		D3DXVECTOR3(0.1f, -0.1f, 1.0f),
+		D3DXVECTOR3(-0.1f, -0.1f, 1.0f),
+	};
+
+	for (int j = 0; j < shotNum; j++)
+	{
+		PLAYERBULLET *ptr = &bullet[0];
+		for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+		{
+			if (ptr->active)
+			{
+				continue;
+			}
+
+			ptr->pos = pos;
+			ptr->rotation = RandomRangef(0.0f, 6.12f);
+
+			D3DXVec3Normalize(&ptr->moveDir, &setDir[j]);
+
+			ptr->speed = speed;
+
+			ptr->active = true;
+			break;
+		}
+	}
+}
+
+/**************************************
+プレイヤーバレットセット関数Lv5
+***************************************/
+void SetPlayerBulletLv5(D3DXVECTOR3 pos, float speed)
+{
+	const int shotNum = 12;
+
+	const D3DXVECTOR3 setDir[shotNum] = {
+		D3DXVECTOR3(0.05f, 0.0f, 1.0f),
+		D3DXVECTOR3(-0.05f, 0.0f, 1.0f),
+		D3DXVECTOR3(0.0f, 0.05f, 1.0f),
+		D3DXVECTOR3(0.0f, -0.05f, 1.0f),
+		D3DXVECTOR3(0.1f, 0.1f, 1.0f),
+		D3DXVECTOR3(-0.1f, 0.1f, 1.0f),
+		D3DXVECTOR3(0.1f, -0.1f, 1.0f),
+		D3DXVECTOR3(-0.1f, -0.1f, 1.0f),
+		D3DXVECTOR3(0.2f, 0.0f, 1.0f),
+		D3DXVECTOR3(-0.2f, 0.0f, 1.0f),
+		D3DXVECTOR3(0.0f, 0.2f, 1.0f),
+		D3DXVECTOR3(0.0f, -0.2f, 1.0f),
+	};
+
+	for (int j = 0; j < shotNum; j++)
+	{
+		PLAYERBULLET *ptr = &bullet[0];
+		for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+		{
+			if (ptr->active)
+			{
+				continue;
+			}
+
+			ptr->pos = pos;
+			ptr->rotation = RandomRangef(0.0f, 6.12f);
+
+			D3DXVec3Normalize(&ptr->moveDir, &setDir[j]);
+
+			ptr->speed = speed;
+
+			ptr->active = true;
+			break;
+		}
 	}
 }
 
@@ -324,184 +461,3 @@ void CreatePlayerBulletVertexBuffer(void)
 	return;
 }
 
-#if 0
-/**************************************
-FPSビュー頂点作成処理
-***************************************/
-void CreatePlayerBulletVertexBufferFPS(void)
-{
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_3D,
-		D3DPOOL_MANAGED,
-		&vtxBuff[PlayerBulletFPS],
-		NULL)))
-	{
-		return;
-	}
-
-	VERTEX_3D *pVtx;
-	vtxBuff[PlayerBulletFPS]->Lock(0, 0, (void**)&pVtx, 0);
-
-	pVtx[0].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[1].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[2].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
-	pVtx[3].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
-
-	pVtx[0].nor =
-		pVtx[1].nor =
-		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
-
-	pVtx[0].diffuse =
-		pVtx[1].diffuse =
-		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	vtxBuff[PlayerBulletFPS]->Unlock();
-
-	return;
-}
-
-/**************************************
-トップビュー頂点作成処理
-***************************************/
-void CreatePlayerBulletVertexBufferTop(void)
-{
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_3D,
-		D3DPOOL_MANAGED,
-		&vtxBuff[PlayerBulletTop],
-		NULL)))
-	{
-		return;
-	}
-
-	VERTEX_3D *pVtx;
-	vtxBuff[PlayerBulletTop]->Lock(0, 0, (void**)&pVtx, 0);
-
-	pVtx[0].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[1].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[2].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
-	pVtx[3].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
-
-	pVtx[0].nor =
-		pVtx[1].nor =
-		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
-
-	pVtx[0].diffuse =
-		pVtx[1].diffuse =
-		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	vtxBuff[PlayerBulletTop]->Unlock();
-
-	return;
-}
-
-/**************************************
-サイドビュー頂点作成処理
-***************************************/
-void CreatePlayerBulletVertexBufferSide(void)
-{
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_3D,
-		D3DPOOL_MANAGED,
-		&vtxBuff[PlayerBulletSide],
-		NULL)))
-	{
-		return;
-	}
-
-	VERTEX_3D *pVtx;
-	vtxBuff[PlayerBulletSide]->Lock(0, 0, (void**)&pVtx, 0);
-
-	pVtx[0].vtx = D3DXVECTOR3(0.0f, PLAYERBULLET_TEXSIZE_X, -PLAYERBULLET_TEXSIZE_Y);
-	pVtx[1].vtx = D3DXVECTOR3(0.0f, PLAYERBULLET_TEXSIZE_X, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[2].vtx = D3DXVECTOR3(0.0f, -PLAYERBULLET_TEXSIZE_X, -PLAYERBULLET_TEXSIZE_Y);
-	pVtx[3].vtx = D3DXVECTOR3(0.0f, -PLAYERBULLET_TEXSIZE_X, PLAYERBULLET_TEXSIZE_Y);
-
-	pVtx[0].nor =
-		pVtx[1].nor =
-		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
-
-	pVtx[0].diffuse =
-		pVtx[1].diffuse =
-		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	vtxBuff[PlayerBulletSide]->Unlock();
-
-	return;
-}
-
-/**************************************
-クォータービュー頂点作成処理
-***************************************/
-void CreatePlayerBulletVertexBufferQuater(void)
-{
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_3D,
-		D3DPOOL_MANAGED,
-		&vtxBuff[PlayerBulletQuater],
-		NULL)))
-	{
-		return;
-	}
-
-	VERTEX_3D *pVtx;
-	vtxBuff[PlayerBulletQuater]->Lock(0, 0, (void**)&pVtx, 0);
-
-	pVtx[0].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[1].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, PLAYERBULLET_TEXSIZE_Y);
-	pVtx[2].vtx = D3DXVECTOR3(-PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
-	pVtx[3].vtx = D3DXVECTOR3(PLAYERBULLET_TEXSIZE_X, 0.0f, -PLAYERBULLET_TEXSIZE_Y);
-
-	pVtx[0].nor =
-		pVtx[1].nor =
-		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
-
-	pVtx[0].diffuse =
-		pVtx[1].diffuse =
-		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	vtxBuff[PlayerBulletQuater]->Unlock();
-
-	return;
-}
-#endif
