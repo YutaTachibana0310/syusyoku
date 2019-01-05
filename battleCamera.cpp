@@ -9,6 +9,7 @@
 #include "Easing.h"
 #include "debugproc.h"
 #include "playerModel.h"
+#include "cameraShaker.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -87,6 +88,8 @@ static const D3DXVECTOR3 BattleCameraUp[] =
 	D3DXVECTOR3(0.0f, 1.0f, 0.0f)
 };
 
+static D3DXVECTOR3 offsetPos;
+
 //=============================================================================
 // カメラの初期化
 //=============================================================================
@@ -104,6 +107,8 @@ HRESULT InitBattleCamera(void)
 	camera.at = BattleCameraAt[0];
 	camera.up = BattleCameraUp[0];
 
+	InitCameraShaker(0);
+
 	return S_OK;
 }
 
@@ -120,6 +125,8 @@ void UninitBattleCamera(void)
 //=============================================================================
 void UpdateBattleCamera(void)
 {
+	UpdateCameraShaker();
+
 	if (camera.isMoving)
 	{
 		camera.cntFrame++;
@@ -161,14 +168,15 @@ void SetBattleCamera(void)
 
 
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	D3DXVECTOR3 cameraOffset = GetCameraOffsetValue();
 
 	// ビューマトリックスの初期化
 	D3DXMatrixIdentity(&camera.view);
 
 	// ビューマトリックスの作成
 	D3DXMatrixLookAtLH(&camera.view, 
-						&camera.pos,		// カメラの視点
-						&camera.at,			// カメラの注視点
+						&(camera.pos + cameraOffset),		// カメラの視点
+						&(camera.at + cameraOffset),			// カメラの注視点
 						&camera.up);	
 	// カメラの上方向
 

@@ -10,6 +10,7 @@
 #include "explosionSmog.h"
 #include "camera.h"
 #include "cubeParticle.h"
+#include "explosionLumine.h"
 
 #include "debugWindow.h"
 
@@ -17,6 +18,12 @@
 マクロ定義
 ***************************************/
 #define PARTICLE_SHADER_PATH	"particle.fx"
+
+#define PARTICLE_EMIT_NUM_FIRE		(10)
+#define PARTICLE_EMIT_NUM_SMOG		(10)
+#define PARTICLE_EMIT_NUM_FLARE		(20)
+#define PARTICLE_EMIT_NUM_CUBE		(40)
+#define PARTICLE_EMIT_NUM_LUMINE	(100)
 
 /**************************************
 構造体定義
@@ -66,6 +73,7 @@ void InitParticleManager(int num)
 	InitExplosionFire(num);
 	InitExplosionFlare(num);
 	InitCubeParticle(num);
+	InitExplosionLumine(num);
 }
 
 /**************************************
@@ -77,6 +85,7 @@ void UninitParticleManager(int num)
 	UninitExplosionFire(num);
 	UninitExplosionFlare(num);
 	UninitCubeParticle(num);
+	UninitExplosionLumine(num);
 }
 
 /**************************************
@@ -98,6 +107,8 @@ void UpdateParticleManager(void)
 
 	UpdateCubeParticle();
 
+	UpdateExplosionLumine();
+
 	DrawDebugWindowParticle();
 }
 
@@ -117,6 +128,7 @@ void DrawParticleManager(void)
 	DrawExplosionSmog(declare, effect);
 	DrawExplosionFlare(declare, effect);
 	DrawExplosionFire(declare, effect);
+	DrawExplosionLumine(effect);
 
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	GetDevice()->SetRenderState(D3DRS_LIGHTING, true);
@@ -130,7 +142,7 @@ void DrawParticleManager(void)
 void SetEnemyExplosion(D3DXVECTOR3 pos)
 {
 	bool result = false;
-	for (int j = 0; j < 20; j++)
+	for (int j = 0; j < PARTICLE_EMIT_NUM_FLARE; j++)
 	{
 		result = SetExplosionFlare(&pos);
 
@@ -138,12 +150,12 @@ void SetEnemyExplosion(D3DXVECTOR3 pos)
 			break;
 	}
 
-	for (int j = 0; j < 10; j++)
+	for (int j = 0; j < PARTICLE_EMIT_NUM_FIRE; j++)
 	{
 		SetExplosionFire(&pos);
 
 	}
-	for (int j = 0; j < 10; j++)
+	for (int j = 0; j < PARTICLE_EMIT_NUM_SMOG; j++)
 	{
 		SetExplosionSmog(&pos);
 	}
@@ -154,9 +166,14 @@ void SetEnemyExplosion(D3DXVECTOR3 pos)
 ***************************************/
 void SetCubeExplosion(D3DXVECTOR3 pos)
 {
-	for (int i = 0; i < 45; i++)
+	for (int i = 0; i < PARTICLE_EMIT_NUM_CUBE; i++)
 	{
 		SetCubeParticle(pos);
+	}
+
+	for (int i = 0; i < PARTICLE_EMIT_NUM_LUMINE; i++)
+	{
+		SetExplosionLumine(&pos);
 	}
 }
 

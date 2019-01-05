@@ -399,6 +399,12 @@
     <ClCompile Include="cubeParticle.cpp">
       <Filter>ソース ファイル\Effect\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="cameraShaker.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="explosionLumine.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -621,6 +627,12 @@
       <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
     </ClInclude>
     <ClInclude Include="cubeParticle.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraShaker.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="explosionLumine.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>

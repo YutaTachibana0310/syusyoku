@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="battleCamera.cpp" />
     <ClCompile Include="battleScene.cpp" />
+    <ClCompile Include="cameraShaker.cpp" />
     <ClCompile Include="cubeObject.cpp" />
     <ClCompile Include="cubeParticle.cpp" />
     <ClCompile Include="debugWindow.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="enemyMissileStraight.cpp" />
     <ClCompile Include="explosionFire.cpp" />
     <ClCompile Include="explosionFlare.cpp" />
+    <ClCompile Include="explosionLumine.cpp" />
     <ClCompile Include="explosionSmog.cpp" />
     <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
@@ -222,6 +224,7 @@
   <ItemGroup>
     <ClInclude Include="battleCamera.h" />
     <ClInclude Include="battleScene.h" />
+    <ClInclude Include="cameraShaker.h" />
     <ClInclude Include="cubeObject.h" />
     <ClInclude Include="cubeParticle.h" />
     <ClInclude Include="debugWindow.h" />
@@ -245,6 +248,7 @@
     <ClInclude Include="enemyMissileStraight.h" />
     <ClInclude Include="explosionFire.h" />
     <ClInclude Include="explosionFlare.h" />
+    <ClInclude Include="explosionLumine.h" />
     <ClInclude Include="explosionSmog.h" />
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />

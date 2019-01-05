@@ -5,11 +5,11 @@
 //
 //=====================================
 #include "cubeObject.h"
-#include "battleCamera.h"
 #include "playerBullet.h"
 #include "targetSite.h"
 #include "playerModel.h"
 #include "particleManager.h"
+#include "cameraShaker.h"
 
 /**************************************
 マクロ定義
@@ -121,53 +121,56 @@ void InitCubeObject(int num)
 		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE*1.5f, CUBEOBJECT_SIZE*1.5f, CUBEOBJECT_SIZE*1.5f);
 	}
 
-	//頂点バッファ作成
-	pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
-	pDevice->CreateVertexBuffer(sizeof(mtxWorld), 0, 0, D3DPOOL_MANAGED, &worldBuff, 0);
-	CopyVtxBuff(sizeof(vtx), vtx, vtxBuff);
-	CopyVtxBuff(sizeof(mtxWorld), mtxWorld, worldBuff);
-
-	//頂点宣言作成
-	D3DVERTEXELEMENT9 declareElems[] =
+	//初回のみの初期化
+	if (num == 0)
 	{
-		{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },		//頂点座標
-		{ 0, 12, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },		//UV座標
-		{ 0, 20, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0 },		//法線
-		{ 1, 0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },		//ワールド変換行列
-		{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },		//ワールド変換行列
-		{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },		//ワールド変換行列
-		{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },		//ワールド変換行列
-		D3DDECL_END()
-	};
-	pDevice->CreateVertexDeclaration(declareElems, &declare);
+		//頂点バッファ作成
+		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
+		pDevice->CreateVertexBuffer(sizeof(mtxWorld), 0, 0, D3DPOOL_MANAGED, &worldBuff, 0);
+		CopyVtxBuff(sizeof(vtx), vtx, vtxBuff);
+		CopyVtxBuff(sizeof(mtxWorld), mtxWorld, worldBuff);
 
-	//インデックスバッファ作成
-	WORD index[6 * CUBEOBJECT_FIELD_NUM];
-	for (int i = 0; i < 6; i++)
-	{
-		index[i * 6] = i * NUM_VERTEX;
-		index[i * 6 + 1] = i * NUM_VERTEX + 1;
-		index[i * 6 + 2] = i * NUM_VERTEX + 2;
-		index[i * 6 + 3] = i * NUM_VERTEX + 2;
-		index[i * 6 + 4] = i * NUM_VERTEX + 1;
-		index[i * 6 + 5] = i * NUM_VERTEX + 3;
+		//頂点宣言作成
+		D3DVERTEXELEMENT9 declareElems[] =
+		{
+			{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },		//頂点座標
+			{ 0, 12, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },		//UV座標
+			{ 0, 20, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0 },		//法線
+			{ 1, 0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },		//ワールド変換行列
+			{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },		//ワールド変換行列
+			{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },		//ワールド変換行列
+			{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },		//ワールド変換行列
+			D3DDECL_END()
+		};
+		pDevice->CreateVertexDeclaration(declareElems, &declare);
+
+		//インデックスバッファ作成
+		WORD index[6 * CUBEOBJECT_FIELD_NUM];
+		for (int i = 0; i < 6; i++)
+		{
+			index[i * 6] = i * NUM_VERTEX;
+			index[i * 6 + 1] = i * NUM_VERTEX + 1;
+			index[i * 6 + 2] = i * NUM_VERTEX + 2;
+			index[i * 6 + 3] = i * NUM_VERTEX + 2;
+			index[i * 6 + 4] = i * NUM_VERTEX + 1;
+			index[i * 6 + 5] = i * NUM_VERTEX + 3;
+		}
+
+		pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
+		void *p = NULL;
+		indexBuff->Lock(0, 0, &p, 0);
+		memcpy(p, index, sizeof(index));
+		indexBuff->Unlock();
+
+		//シェーダー読み込み
+		D3DXCreateEffectFromFile(pDevice, CUBEOBJECT_EFFECT_NAME, 0, 0, 0, 0, &effect, NULL);
+
+		//テクスチャ読み込み
+		for (int i = 0; i < 3; i++)
+		{
+			D3DXCreateTextureFromFile(pDevice, texName[i], &texture[i]);
+		}
 	}
-
-	pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
-	void *p = NULL;
-	indexBuff->Lock(0, 0, &p, 0);
-	memcpy(p, index, sizeof(index));
-	indexBuff->Unlock();
-
-	//シェーダー読み込み
-	D3DXCreateEffectFromFile(pDevice, CUBEOBJECT_EFFECT_NAME, 0, 0, 0, 0, &effect, NULL);
-
-	//テクスチャ読み込み
-	for (int i = 0; i < 3; i++)
-	{
-		D3DXCreateTextureFromFile(pDevice, texName[i], &texture[i]);
-	}
-
 }
 
 /**************************************
@@ -335,6 +338,7 @@ void CheckDestroyCubeObject(void)
 		if (ptr->hp <= 0.0f)
 		{
 			SetCubeExplosion(*pPos);
+
 			ptr->hp = 1.0f;
 			pPos->z = 20000.0f;
 			ptr->active = true;
