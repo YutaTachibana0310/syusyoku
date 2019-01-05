@@ -139,6 +139,12 @@
     <Filter Include="ヘッダー ファイル\Sound">
       <UniqueIdentifier>{cf2f3c28-f0f1-4689-89df-3f1f943e8da7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\cubeObject">
+      <UniqueIdentifier>{f1ea92dd-b355-4784-a98b-87a90aa4bb0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Battle\Enemy\cubeObject">
+      <UniqueIdentifier>{b1cb3507-5a2c-4875-990f-570819e6b4ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -387,6 +393,18 @@
     <ClCompile Include="sceneFade.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="cubeObject.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClCompile>
+    <ClCompile Include="cubeParticle.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraShaker.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="explosionLumine.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -604,6 +622,18 @@
     </ClInclude>
     <ClInclude Include="sceneFade.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="cubeObject.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="cubeParticle.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraShaker.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="explosionLumine.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

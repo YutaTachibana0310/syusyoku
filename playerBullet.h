@@ -27,7 +27,8 @@ typedef struct
 	float speed;
 	int cntFrame;
 
-	SPHERE collider;
+	COLLIDER_SPHERE collider;
+	COLLIDER_CUBE collider2;
 }PLAYERBULLET;
 /**************************************
 プロトタイプ宣言

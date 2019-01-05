@@ -152,7 +152,7 @@ void UpdateEnemyMissile(void)
 		{
 			float angle = RandomRangef(45.0f, 135.0f);
 			D3DXVECTOR3 target = D3DXVECTOR3(cosf(0.017f * angle), sinf(0.017f * angle), 0.0f);
-			SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
+			//SetEnemyMissile(D3DXVECTOR3(RandomRange(-500.0f, 500.0f), -200.0f, 2000), target, GetBattleCameraPos() + D3DXVECTOR3(RandomRange(-20.0f, 20.0f), RandomRange(-20.0f, 20.0f), 0.0f));
 		}
 	}
 	GetTimerCount(&endSet);
@@ -175,7 +175,7 @@ void UpdateEnemyMissile(void)
 	GetTimerCount(&endParticle);
 
 	GetTimerCount(&startCollision);
-	CollisionEnemyMissileAndBullet();
+	//CollisionEnemyMissileAndBullet();
 	GetTimerCount(&endCollision);
 
 

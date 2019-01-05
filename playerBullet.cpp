@@ -111,9 +111,14 @@ void InitPlayerBullet(int num)
 		ptr->pos = D3DXVECTOR3(9999.9f, 9999.9f, 9999.9f);
 		ptr->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->scale = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+
 		ptr->collider.pos = &ptr->pos;
 		ptr->collider.radius = PLAYERBULLET_COLLIDER_RAIDUS;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		ptr->collider2.pos = &ptr->pos;
+		ptr->collider2.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->collider2.length = D3DXVECTOR3(PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS);
 	}
 }
 

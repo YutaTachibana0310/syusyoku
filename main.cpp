@@ -45,9 +45,9 @@ void DrawDebugWindowMain(void);
 LPDIRECT3D9			g_pD3D = NULL;			// Direct3D オブジェクト
 LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
 static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0, 0);
-#ifdef _DEBUG
 int					g_nCountFPS;			// FPSカウンタ
-DefineScene startScene = TitleScene;
+#ifdef _DEBUG
+DefineScene startScene = BattleScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
@@ -138,9 +138,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			dwCurrentTime = timeGetTime();
 			if((dwCurrentTime - dwFPSLastTime) >= 500)	// 0.5秒ごとに実行
 			{
-#ifdef _DEBUG
 				g_nCountFPS = dwFrameCount * 1000 / (dwCurrentTime - dwFPSLastTime);
-#endif
 				dwFPSLastTime = dwCurrentTime;
 				dwFrameCount = 0;
 			}
@@ -306,7 +304,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 #if 1
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
-		FLOAT StartPos = 6000;
+		FLOAT StartPos = 2000;
 		FLOAT EndPos = 15000;
 
 		g_pD3DDevice->SetRenderState(D3DRS_FOGENABLE, true);
