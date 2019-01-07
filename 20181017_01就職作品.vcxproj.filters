@@ -153,9 +153,6 @@
     <ClCompile Include="camera.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="collider.cpp">
-      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
@@ -229,9 +226,6 @@
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
     <ClCompile Include="perlinNoise.cpp">
-      <Filter>ソース ファイル\FrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="quadTree.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
     <ClCompile Include="sceneManager.cpp">
@@ -411,15 +405,15 @@
     <ClCompile Include="powerUpTelop.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Octree.cpp">
+    <ClCompile Include="collider.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionManager.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
-      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="collider.h">
       <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
     </ClInclude>
     <ClInclude Include="light.h">
@@ -498,9 +492,6 @@
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
     <ClInclude Include="perlinNoise.h">
-      <Filter>ヘッダー ファイル\FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="quadTree.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
     <ClInclude Include="sceneManager.h">
@@ -650,8 +641,11 @@
     <ClInclude Include="powerUpTelop.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Octree.h">
+    <ClInclude Include="collider.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionManager.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

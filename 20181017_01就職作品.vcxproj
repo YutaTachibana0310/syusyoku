@@ -137,6 +137,7 @@
     <ClCompile Include="battleCamera.cpp" />
     <ClCompile Include="battleScene.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
+    <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="cubeObject.cpp" />
     <ClCompile Include="cubeParticle.cpp" />
     <ClCompile Include="dataContainer.cpp" />
@@ -185,7 +186,6 @@
     <ClCompile Include="middleEnemyMove.cpp" />
     <ClCompile Include="middleEnemyWait.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
-    <ClCompile Include="Octree.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
@@ -207,7 +207,6 @@
     <ClCompile Include="playerModelTopView.cpp" />
     <ClCompile Include="playerModelTransition.cpp" />
     <ClCompile Include="powerUpTelop.cpp" />
-    <ClCompile Include="quadTree.cpp" />
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="rockonSite.cpp" />
     <ClCompile Include="sceneFade.cpp" />
@@ -228,6 +227,7 @@
     <ClInclude Include="battleCamera.h" />
     <ClInclude Include="battleScene.h" />
     <ClInclude Include="cameraShaker.h" />
+    <ClInclude Include="collisionManager.h" />
     <ClInclude Include="cubeObject.h" />
     <ClInclude Include="cubeParticle.h" />
     <ClInclude Include="dataContainer.h" />
@@ -269,7 +269,6 @@
     <ClInclude Include="lockonGUI.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="middleEnemyModel.h" />
-    <ClInclude Include="Octree.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerBulletTrail.h" />
     <ClInclude Include="playerMissile.h" />
@@ -292,7 +291,6 @@
     <ClInclude Include="playerModelTopView.h" />
     <ClInclude Include="playerModelTransition.h" />
     <ClInclude Include="powerUpTelop.h" />
-    <ClInclude Include="quadTree.h" />
     <ClInclude Include="resultScene.h" />
     <ClInclude Include="rockonSite.h" />
     <ClInclude Include="sceneFade.h" />
