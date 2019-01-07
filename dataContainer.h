@@ -21,10 +21,12 @@
 プロトタイプ宣言
 ***************************************/
 void InitDataContainer(int num);
+void AddScore(int addValue);
+void SetPowerUp(void);
 
-/**************************************
-
-パワーアップ関連初期化処理
-***************************************/
+int GetShotLevel(void);
+int GetLockonLevel(void);
+int GetCurrentScore(void);
+int GetHighScore(void);
 
 #endif

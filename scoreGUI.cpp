@@ -5,6 +5,7 @@
 //
 //=============================================================================
 #include "scoreGUI.h"
+#include "dataContainer.h"
 
 /*****************************************************************************
 マクロ定義
@@ -15,11 +16,11 @@
 #define SCOREGUI_TEXTURE_SIZE_Y					(200)					// テクスチャサイズY
 #define SCOREGUI_INITPOS						(D3DXVECTOR3(0.0f, -5.0f, 0.0f))
 
-#define SCOREGUI_NUMTEX_SIZE_X					(40.0f)					// 数字テクスチャサイズ
+#define SCOREGUI_NUMTEX_SIZE_X					(30.0f)					// 数字テクスチャサイズ
 #define SCOREGUI_NUMTEX_SIZE_Y					(40.0f)					// 数字テクスチャサイズ
 #define SCOREGUI_NUMTEX_DIVIDE_X				(5)						// アニメパターンのテクスチャ内分割数（X)
 #define SCOREGUI_NUMTEX_DIVIDE_Y				(2)						// アニメパターンのテクスチャ内分割数（Y)
-#define SCOREGUI_NUM_OFFSETPOS					(-50.0f)				// 数字のオフセット座標
+#define SCOREGUI_NUM_OFFSETPOS					(-30.0f)				// 数字のオフセット座標
 #define SCOREGUI_NUM_INITPOS					(D3DXVECTOR3(350.0f, 110.0f, 0.0f))	//数字テクスチャの初期座標
 
 /*****************************************************************************
@@ -108,7 +109,7 @@ void DrawScoreGUI(void)
 
 	//スコア数字を描画
 	pDevice->SetTexture(0, numTex);
-	int score = 1234567;
+	int score = GetCurrentScore();
 	int digitMax = (score == 0) ? 1 : (int)log10f((float)score) + 1;
 	int num = 0;
 	for (int i = 0; i < digitMax; i++, score /= 10)

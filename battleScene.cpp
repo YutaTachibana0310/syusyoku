@@ -52,6 +52,7 @@ static LARGE_INTEGER startEnemyDraw, endEnemyDraw;
 static LARGE_INTEGER startSiteDraw, endSiteDraw;
 static LARGE_INTEGER startParticleUpdate, endParticleUpdate;
 static LARGE_INTEGER startParticleDraw, endParticleDraw;
+static LARGE_INTEGER startCollision, endCollision;
 
 /******************************************************************************
 èâä˙âªèàóù
@@ -131,8 +132,11 @@ void UpdateBattleScene(void)
 
 	GetTimerCount(&startEnemyUpdate);
 	UpdateEnemyManager();
-	CheckEnemyCollision();
 	GetTimerCount(&endEnemyUpdate);
+
+	GetTimerCount(&startCollision);
+	CheckEnemyCollision();
+	GetTimerCount(&endCollision);
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -184,7 +188,7 @@ void DrawBattleScene(void)
 void DrawDebugWindowBattleScene(void)
 {
 	ImGui::SetNextWindowPos(ImVec2(5.0f, 5.0f));
-	ImGui::SetNextWindowSize(ImVec2(300.0f, 300.0f));
+	ImGui::SetNextWindowSize(ImVec2(300.0f, 350.0f));
 	ImGui::StyleColorsDark();
 	ImGui::Begin("BattleScene");
 
@@ -225,6 +229,13 @@ void DrawDebugWindowBattleScene(void)
 	{
 		ImGui::Text("SiteUpdate     : %fmsec", CalcProgressTime(startSiteUpdate, endSiteUpdate));
 		ImGui::Text("SiteDraw       : %fmsec", CalcProgressTime(startSiteDraw, endSiteDraw));
+		ImGui::TreePop();
+	}
+
+	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
+	if (ImGui::TreeNode("Collision"))
+	{
+		ImGui::Text("Collision		: %fmsec", CalcProgressTime(startCollision, endCollision));
 		ImGui::TreePop();
 	}
 

@@ -76,6 +76,22 @@ void InitPowerUpParameter(void)
 }
 
 /**************************************
+スコア加算処理
+***************************************/
+void AddScore(int addValue)
+{
+	//スコア加算処理
+	currentScore += addValue;
+
+	//パワーアップ判定処理
+	if (currentScore >= PowerUpBorder[cntPowerUp])
+		SetPowerUp();
+
+	//エクステンド処理
+
+}
+
+/**************************************
 パワーアップ処理
 ***************************************/
 void SetPowerUp(void)
@@ -93,5 +109,37 @@ void SetPowerUp(void)
 		shotLevel++;
 
 	//テロップ表示処理
-	StartPowerUpTelopAnimation(cntPowerUp & 2);
+	StartPowerUpTelopAnimation(cntPowerUp % 2);
+}
+
+/**************************************
+ショットレベル取得処理
+***************************************/
+int GetShotLevel(void)
+{
+	return shotLevel;
+}
+
+/**************************************
+ロックオンレベル取得処理
+***************************************/
+int GetLockonLevel(void)
+{
+	return lockLevel;
+}
+
+/**************************************
+スコア取得処理
+***************************************/
+int GetCurrentScore(void)
+{
+	return currentScore;
+}
+
+/**************************************
+ハイスコア取得処理
+***************************************/
+int GetHighScore(void)
+{
+	return highScore;
 }

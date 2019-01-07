@@ -114,12 +114,6 @@ void UninitPowerUpTelop(int num)
 ***************************************/
 void UpdatePowerUpTelop(void)
 {
-
-	if (GetKeyboardPress(DIK_0))
-	{
-		StartPowerUpTelopAnimation(0);
-	}
-
 	if (currentSequence >= POWERUPTELOP_SEQUENCE_MAX)
 		return;
 

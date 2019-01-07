@@ -411,6 +411,9 @@
     <ClCompile Include="powerUpTelop.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Octree.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -646,6 +649,9 @@
     </ClInclude>
     <ClInclude Include="powerUpTelop.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Octree.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

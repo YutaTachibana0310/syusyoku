@@ -10,6 +10,7 @@
 #include "playerModel.h"
 #include "particleManager.h"
 #include "cameraShaker.h"
+#include "dataContainer.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -338,6 +339,7 @@ void CheckDestroyCubeObject(void)
 		if (ptr->hp <= 0.0f)
 		{
 			SetCubeExplosion(*pPos);
+			AddScore(5000);
 
 			ptr->hp = 1.0f;
 			pPos->z = 20000.0f;

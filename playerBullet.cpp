@@ -8,6 +8,7 @@
 #include "battleCamera.h"
 #include "particleFramework.h"
 #include "playerBulletTrail.h"
+#include "dataContainer.h"
 
 /**************************************
 マクロ定義
@@ -57,10 +58,11 @@ static const D3DXVECTOR3 rotAngle[PlayerBulletStateMax] = {
 ***************************************/
 void CreatePlayerBulletVertexBuffer(void);
 
+void SetPlayerBulletLv0(D3DXVECTOR3 pos, float speed);
+void SetPlayerBulletLv1(D3DXVECTOR3 pos, float speed);
 void SetPlayerBulletLv2(D3DXVECTOR3 pos, float speed);
 void SetPlayerBulletLv3(D3DXVECTOR3 pos, float speed);
 void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed);
-void SetPlayerBulletLv5(D3DXVECTOR3 pos, float speed);
 
 /**************************************
 初期化処理
@@ -211,14 +213,44 @@ void DrawPlayerBullet(void)
 }
 
 /**************************************
-プレイヤーバレットセット関数Lv1
+プレイヤーバレットセット関数
 ***************************************/
 void SetPlayerBullet(D3DXVECTOR3 pos, float speed)
 {
-	SetPlayerBulletLv3(pos, speed); return;
+	switch (GetShotLevel())
+	{
+	case 0:
+		SetPlayerBulletLv0(pos, speed);
+		break;
 
+	case 1:
+		SetPlayerBulletLv1(pos, speed);
+		break;
+
+	case 2:
+		SetPlayerBulletLv2(pos, speed);
+		break;
+
+	case 3:
+		SetPlayerBulletLv3(pos, speed);
+		break;
+
+	case 4:
+		SetPlayerBulletLv4(pos, speed);
+		break;
+
+	default:
+		SetPlayerBulletLv0(pos, speed);
+		break;
+	}
+}
+
+/**************************************
+プレイヤーバレットセット関数Lv1
+***************************************/
+void SetPlayerBulletLv0(D3DXVECTOR3 pos, float speed)
+{
 	PLAYERBULLET *ptr = &bullet[0];
-	const float randomAngle = 0.1f;
 
 	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
 	{
@@ -240,9 +272,9 @@ void SetPlayerBullet(D3DXVECTOR3 pos, float speed)
 }
 
 /**************************************
-プレイヤーバレットセット関数Lv2
+プレイヤーバレットセット関数Lv1
 ***************************************/
-void SetPlayerBulletLv2(D3DXVECTOR3 pos, float speed)
+void SetPlayerBulletLv1(D3DXVECTOR3 pos, float speed)
 {
 	const int shotNum = 3;
 
@@ -276,9 +308,9 @@ void SetPlayerBulletLv2(D3DXVECTOR3 pos, float speed)
 }
 
 /**************************************
-プレイヤーバレットセット関数Lv3
+プレイヤーバレットセット関数Lv2
 ***************************************/
-void SetPlayerBulletLv3(D3DXVECTOR3 pos, float speed)
+void SetPlayerBulletLv2(D3DXVECTOR3 pos, float speed)
 {
 	const int shotNum = 5;
 
@@ -314,9 +346,9 @@ void SetPlayerBulletLv3(D3DXVECTOR3 pos, float speed)
 }
 
 /**************************************
-プレイヤーバレットセット関数Lv4
+プレイヤーバレットセット関数Lv3
 ***************************************/
-void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed)
+void SetPlayerBulletLv3(D3DXVECTOR3 pos, float speed)
 {
 	const int shotNum = 8;
 
@@ -355,9 +387,9 @@ void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed)
 }
 
 /**************************************
-プレイヤーバレットセット関数Lv5
+プレイヤーバレットセット関数Lv4
 ***************************************/
-void SetPlayerBulletLv5(D3DXVECTOR3 pos, float speed)
+void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed)
 {
 	const int shotNum = 12;
 
