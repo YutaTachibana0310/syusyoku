@@ -7,20 +7,17 @@
 #include "collisionManager.h"
 #include "collider.h"
 
+#include "playerBullet.h"
+#include "cubeObject.h"
+
 /**************************************
 ƒ}ƒNƒ’è‹`
 ***************************************/
 #define COLLISION_DIVISIONSPACE_LEVEL_MAX		(9)			//‹óŠÔƒŒƒxƒ‹‚ÌÅ‘åƒŒƒxƒ‹
 #define COLLISION_REGION_LEFT					(-500.0f)	//”»’è‹óŠÔ‚Ì¶’[
 #define COLLISION_REGION_RIGHT					(500.0f)	//”»’è‹óŠÔ‚Ì‰E’[
-#define COLLISION_REGION_TOP					(5000.0f)	//”»’è‹óŠÔ‚Ìã’[
-#define COLLISION_REGION_BOTTOM					(-5000.0f)	//”»’è‹óŠÔ‚Ì‰º’[
-
-//’PˆÊ•ªŠ„‹óŠÔ‚Ì•
-#define COLLISION_UNIT_WIDTH ((COLLISION_REGION_RIGHT - COLLISION_REGION_LEFT) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX))
-
-//’PˆÊ•ªŠ„‹óŠÔ‚Ì‚‚³
-#define COLLISION_UNIT_HEIGHT ((COLLISION_REGION_TOP - COLLISION_REGION_BOTTOM) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX))
+#define COLLISION_REGION_TOP					(3000.0f)	//”»’è‹óŠÔ‚Ìã’[
+#define COLLISION_REGION_BOTTOM					(-3000.0f)	//”»’è‹óŠÔ‚Ì‰º’[
 
 /**************************************
 \‘¢‘Ì’è‹`
@@ -33,6 +30,11 @@ static unsigned int spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX + 1];	//ŠeƒŒƒxƒ‹‚
 static DWORD cellNum;					//‹óŠÔ”‚Ì‘˜a
 static CCell **cellArray[OFT_ID_MAX];	//ŠeƒIƒuƒWƒFƒNƒg‚ª“o˜^‚³‚ê‚é‹óŠÔ‚Ì”z—ñ
 
+//’PˆÊ‹óŠÔ‚Ì•
+static const float UnitWidth = (COLLISION_REGION_TOP - COLLISION_REGION_BOTTOM) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX);
+
+//’PˆÊ‹óŠÔ‚Ì‚‚³
+static const float UnitHeight = (COLLISION_REGION_RIGHT - COLLISION_REGION_LEFT) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX);
 /**************************************
 ƒvƒƒgƒ^ƒCƒvéŒ¾
 ***************************************/
@@ -44,12 +46,27 @@ DWORD BitSeparate32(DWORD n);												//ƒrƒbƒg•ªŠ„ˆ—
 WORD Get2DMortonNumber(WORD x, WORD y);										//2Dƒ‚[ƒgƒ“”Ô†Zoˆ—
 DWORD GetPointElem(float posX, float posY);									//À•W¨üŒ`4•ª–Ø—v‘f”Ô†•ÏŠ·ˆ—
 
+void CheckCollisionPlayerBullet(void);										//ƒvƒŒƒCƒ„[ƒoƒŒƒbƒg‚ÌÕ“Ë”»’è
+void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet);	//ƒvƒŒƒCƒ„[ƒoƒŒƒbƒg‚ÆƒLƒ…[ƒu‚Ì”»’è
 /**************************************
 ‰Šú‰»ˆ—
 ***************************************/
 void InitCollisionManager(int num)
 {
+	//ŠeƒŒƒxƒ‹‚Ì‹óŠÔ”‚ğZo
+	spaceNum[0] = 1;
+	for (int i = 1; i < COLLISION_DIVISIONSPACE_LEVEL_MAX + 1; i++)
+	{
+		spaceNum[i] = spaceNum[i - 1] * 4;
+	}
 
+	//‹óŠÔ”z—ñ‚Ìƒƒ‚ƒŠ‚ğŠm•Û
+	cellNum = (spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX] - 1) / 3;
+	for (int OFTid = 0; OFTid < OFT_ID_MAX; OFTid++)
+	{
+		cellArray[OFTid] = (CCell**)malloc(sizeof(CCell*) * cellNum);
+		ZeroMemory(cellArray[OFTid], sizeof(CCell*) * cellNum);
+	}
 }
 
 /**************************************
@@ -57,7 +74,11 @@ void InitCollisionManager(int num)
 ***************************************/
 void UninitCollisionManager(int num)
 {
-
+	for (int OFTid = 0; OFTid < OFT_ID_MAX; OFTid++)
+	{
+		free(cellArray[OFTid]);
+		cellArray[OFTid] = NULL;
+	}
 }
 
 /**************************************
@@ -65,7 +86,73 @@ void UninitCollisionManager(int num)
 ***************************************/
 void UpdateCollisionManager(void)
 {
+	CheckCollisionPlayerBullet();
+}
 
+/**************************************
+ƒvƒŒƒCƒ„[ƒoƒŒƒbƒg‚ÌÕ“Ë”»’è
+***************************************/
+void CheckCollisionPlayerBullet(void)
+{
+	for (DWORD cntCell = 0; cntCell < cellNum; cntCell++)
+	{
+		//‹óŠÔ‚ªì¬‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì”»’è
+		if (!cellArray[OFT_PLAYERBULLET][cntCell])
+			continue;
+
+		//‹óŠÔ‚ÉƒIƒuƒWƒFƒNƒg‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì”»’è
+		if (cellArray[OFT_PLAYERBULLET][cntCell]->latestObj == NULL)
+			continue;
+
+		//‹óŠÔ‚É“o˜^‚³‚ê‚Ä‚¢‚éƒoƒŒƒbƒg‘S‚Ä‚É‘Î‚µ‚Ä”»’è
+		OBJECT_FOR_TREE *playerBulletOFT = cellArray[OFT_PLAYERBULLET][cntCell]->latestObj;
+		while (playerBulletOFT != NULL)
+		{
+			PLAYERBULLET *playerBullet = (PLAYERBULLET*)playerBulletOFT->object;
+			CheckCollisionPlayerBulletAndCube(cntCell, playerBullet);
+
+			playerBulletOFT = playerBulletOFT->next;
+		}
+	}
+}
+
+/**************************************
+ƒvƒŒƒCƒ„[ƒoƒŒƒbƒg‚ÆƒLƒ…[ƒuƒIƒuƒWƒFƒNƒg‚Ì“–‚½‚è”»’è
+***************************************/
+void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet)
+{
+	//w’è‚³‚ê‚½‹óŠÔ‚ªÅ‘å‹óŠÔ”‚ğ’´‚¦‚Ä‚¢‚é”»’è
+	if (elem >= cellNum)
+		return;
+
+	//‹óŠÔ‚ªì¬‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ì”»’è
+	if (!cellArray[OFT_CUBEOBJECT][elem])
+		return;
+
+	//w’è‚³‚ê‚½‹óŠÔ“à‚ÌƒLƒ…[ƒuƒIƒuƒWƒFƒNƒg‚É‘Î‚µ‚Ä”»’è
+	if (cellArray[OFT_CUBEOBJECT][elem]->latestObj != NULL)
+	{
+		OBJECT_FOR_TREE *cubeOFT = cellArray[OFT_CUBEOBJECT][elem]->latestObj;
+		while (cubeOFT != NULL)
+		{
+			//Õ“Ë”»’è
+			CUBE_OBJECT *cube = (CUBE_OBJECT*)cubeOFT->object;
+			if (ChechHitBoundingCube(&bullet->collider2, &cube->collider))
+			{
+				cube->hp -= 1.0f;
+			}
+
+			//“o˜^‚³‚ê‚Ä‚¢‚éŸ‚ÌƒLƒ…[ƒu‚Ö
+			cubeOFT = cubeOFT->next;
+		}
+	}
+
+	//q‹óŠÔ‚Å‚à”»’è
+	for (int i = 0; i < 4; i++)
+	{
+		DWORD nextElem = elem * 4 + 1 + i;
+		CheckCollisionPlayerBulletAndCube(nextElem, bullet);
+	}
 }
 
 /**************************************
@@ -159,7 +246,7 @@ WORD Get2DMortonNumber(WORD x, WORD y)
 ***************************************/
 DWORD GetPointElem(float posX, float posY)
 {
-	return Get2DMortonNumber((WORD)((posX - COLLISION_REGION_LEFT) / COLLISION_UNIT_WIDTH), (WORD)((posY + COLLISION_REGION_TOP) / COLLISION_UNIT_HEIGHT));
+	return Get2DMortonNumber((WORD)((posX - COLLISION_REGION_LEFT) / UnitWidth), (WORD)((posY + COLLISION_REGION_TOP) / UnitHeight));
 }
 
 /**************************************
@@ -235,4 +322,15 @@ bool OnObjectRemoveFromList(CCell *space, OBJECT_FOR_TREE *obj)
 			space->latestObj = space->latestObj->next;
 	}
 	return true;
+}
+
+/**************************************
+OBJECT_FOR_TREEì¬ˆ—
+***************************************/
+void CreateOFT(OBJECT_FOR_TREE *oft, void *object)
+{
+	oft->registerSpace = NULL;
+	oft->object = object;
+	oft->prev = NULL;
+	oft->prev = NULL;
 }

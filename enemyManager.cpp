@@ -101,5 +101,5 @@ void CheckEnemyCollision(void)
 
 	CollisionMiddleEnemyAndBullet();
 	CollisionSmallEnemyAndBullet();
-	CollisionCubeObjectAndBullet();
+	//CollisionCubeObjectAndBullet();
 }

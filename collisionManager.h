@@ -34,8 +34,8 @@ typedef struct _CCell {
 //空間に登録されるオブジェクトを識別するID(OFT : OBJECT_FOR_TREE)
 enum OFT_ID
 {
-	PlayerBullet,
-	CubeObject,
+	OFT_PLAYERBULLET,
+	OFT_CUBEOBJECT,
 	OFT_ID_MAX
 };
 /**************************************
@@ -49,5 +49,6 @@ void UpdateCollisionManager(void);
 bool RegisterObjectToSpace(float left, float top, float right, float bottom, OBJECT_FOR_TREE *obj, OFT_ID id);
 //空間からオブジェクトを取り除く処理
 bool RemoveObjectFromSpace(OBJECT_FOR_TREE *obj);
-
+//OBJECT_FOT_TREE作成処理
+void CreateOFT(OBJECT_FOR_TREE *oft, void *object);
 #endif
