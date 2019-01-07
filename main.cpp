@@ -18,6 +18,7 @@
 #include "sound.h"
 #include "soundEffectManager.h"
 #include "debugWindow.h"
+#include "dataContainer.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -340,6 +341,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//サウンド関連初期化
 	InitSound(hWnd);
 	InitSoundEffectManager(0);
+
+	//データコンテナ初期化
+	InitDataContainer(0);
 
 	//デバッグウィンドウ初期化
 #ifdef USE_DEBUGWINDOW

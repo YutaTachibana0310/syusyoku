@@ -8,6 +8,7 @@
 #include "scoreGUI.h"
 #include "hpGUI.h"
 #include "lockonGUI.h"
+#include "powerUpTelop.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -52,6 +53,7 @@ void InitGUIManager(int num)
 	InitScoreGUI(num);
 	InitHpGUI(num);
 	InitLockonGUI(num);
+	InitPowerUpTelop(num);
 }
 
 /**************************************
@@ -70,6 +72,7 @@ void UninitGUIManager(int num)
 	UninitScoreGUI(num);
 	UninitHpGUI(num);
 	UninitLockonGUI(num);
+	UninitPowerUpTelop(num);
 }
 
 /**************************************
@@ -80,6 +83,7 @@ void UpdateGUIManager(void)
 	UpdateScoreGUI();
 	UpdateHpGUI();
 	UpdateLockonGUI();
+	UpdatePowerUpTelop();
 }
 
 /**************************************
@@ -90,6 +94,7 @@ void DrawGUIManager(void)
 	DrawScoreGUI();
 	DrawHpGUI();
 	DrawLockonGUI();
+	DrawPowerUpTelop();
 }
 
 /**************************************
