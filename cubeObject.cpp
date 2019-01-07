@@ -11,6 +11,7 @@
 #include "particleManager.h"
 #include "cameraShaker.h"
 #include "dataContainer.h"
+#include "collisionManager.h"
 
 /**************************************
 マクロ定義
@@ -83,9 +84,9 @@ static LPDIRECT3DINDEXBUFFER9 indexBuff;				//インデックスバッファ
 static D3DXVECTOR3 pos[CUBEOBJECT_NUM_MAX], rot[CUBEOBJECT_NUM_MAX];	//キューブの各パラメータ
 static D3DXMATRIX mtxWorld[CUBEOBJECT_NUM_MAX];			//ワールド変換行列
 
-//static D3DXVECTOR3 rotValue[CUBEOBJECT_NUM_MAX];		//各キューブの回転量
-//static float cubeSpeed[CUBEOBJECT_NUM_MAX];				//各キューブの移動スピード
 static CUBE_OBJECT cube[CUBEOBJECT_NUM_MAX];			//キューブオブジェクト配列
+static OBJECT_FOR_TREE objectForTree[CUBEOBJECT_NUM_MAX]; //衝突判定用OBJECT_FOR_TREE配列
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -93,6 +94,7 @@ void MoveCubeObject(void);					//移動処理
 void RotationCubeObject(void);				//回転処理
 void CalcCubeObjectWorldMartix(void);		//ワールド変換行列計算処理
 void CheckDestroyCubeObject(void);			//死亡判定
+void RegisterCubeObjectToSpace(void);		//衝突空間への登録処理
 
 /**************************************
 初期化処理
@@ -107,7 +109,8 @@ void InitCubeObject(int num)
 
 	//パラメータ初期化
 	CUBE_OBJECT *ptr = &cube[0];
-	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, oft++)
 	{
 		pos[i] = D3DXVECTOR3(RandomRangef(-PosRange, PosRange), RandomRangef(-PosRange, PosRange), RandomRangef(0.0f, 20000.0f));
 		rot[i] = D3DXVECTOR3(RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f));
@@ -120,6 +123,8 @@ void InitCubeObject(int num)
 		ptr->collider.pos = &pos[i];
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE*1.5f, CUBEOBJECT_SIZE*1.5f, CUBEOBJECT_SIZE*1.5f);
+
+		CreateOFT(oft, (void*)ptr);
 	}
 
 	//初回のみの初期化
@@ -179,6 +184,14 @@ void InitCubeObject(int num)
 ***************************************/
 void UninitCubeObject(int num)
 {
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	CUBE_OBJECT *ptr = &cube[0];
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, oft++)
+	{
+		ptr->active = false;
+		RemoveObjectFromSpace(oft);
+	}
+
 	if (num == 0)
 	{
 		SAFE_RELEASE(vtxBuff);
@@ -206,6 +219,8 @@ void UpdateCubeObject(void)
 	RotationCubeObject();
 
 	CalcCubeObjectWorldMartix();
+
+	RegisterCubeObjectToSpace();
 }
 
 /**************************************
@@ -408,6 +423,32 @@ void LockonCubeObject(void)
 			{
 				AddRockonTarget(i, cubePos, &ptr->active, &ptr->hp);
 			}
+		}
+	}
+}
+
+/*****************************************
+衝突判定空間への登録処理
+******************************************/
+void RegisterCubeObjectToSpace(void)
+{
+	D3DXVECTOR3 *pPos = &pos[0];
+	CUBE_OBJECT *ptr = &cube[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, pPos++, oft++)
+	{
+		RemoveObjectFromSpace(oft);
+		
+		if(ptr->active)
+		{
+			D3DXVECTOR3 colliderPos = *pPos + ptr->collider.offset;
+			RegisterObjectToSpace(colliderPos.x - ptr->collider.length.x,
+				colliderPos.y + ptr->collider.length.y,
+				colliderPos.x + ptr->collider.length.x,
+				colliderPos.y - ptr->collider.length.y,
+				oft,
+				OFT_CUBEOBJECT);
 		}
 	}
 }

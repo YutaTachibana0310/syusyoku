@@ -20,6 +20,7 @@
 #include "GUIManager.h"
 #include "enemyManager.h"
 #include "playerBulletTrail.h"
+#include "collisionManager.h"
 
 #include "debugWindow.h"
 
@@ -136,6 +137,7 @@ void UpdateBattleScene(void)
 
 	GetTimerCount(&startCollision);
 	CheckEnemyCollision();
+	UpdateCollisionManager();
 	GetTimerCount(&endCollision);
 
 	if (GetKeyboardTrigger(DIK_RETURN))

@@ -10,8 +10,6 @@
 #include "camera.h"
 #include "debugproc.h"
 #include <time.h>
-#include "flare.h"
-#include "skyBG.h"
 #include "particleManager.h"
 #include "sceneManager.h"
 #include "collider.h"
@@ -19,6 +17,7 @@
 #include "soundEffectManager.h"
 #include "debugWindow.h"
 #include "dataContainer.h"
+#include "collisionManager.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -337,6 +336,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//当たり判定初期化
 	InitCollider(0);
+	
+	//コリージョンマネージャ初期化
+	InitCollisionManager(0);
 
 	//サウンド関連初期化
 	InitSound(hWnd);
@@ -388,6 +390,8 @@ void Uninit(void)
 
 	//当たり判定終了処理
 	UninitCollider(0);
+
+	UninitCollisionManager(0);
 
 	//サウンド関連終了処理
 	UninitSoundEffectManager(0);

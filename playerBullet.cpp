@@ -9,6 +9,7 @@
 #include "particleFramework.h"
 #include "playerBulletTrail.h"
 #include "dataContainer.h"
+#include "collisionManager.h"
 
 /**************************************
 マクロ定義
@@ -53,6 +54,8 @@ static const D3DXVECTOR3 rotAngle[PlayerBulletStateMax] = {
 	D3DXVECTOR3(0.0f, 0.0f, 0.0f),		//クォータービュー時の回転角度
 };
 
+static OBJECT_FOR_TREE objectForTree[PLAYERBULLET_MAX]; //衝突判定用のOBJECT_FOT_TREE配列
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -82,7 +85,8 @@ void InitPlayerBullet(int num)
 	}
 
 	PLAYERBULLET *ptr = &bullet[0];
-	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
 		ptr->pos = D3DXVECTOR3(9999.9f, 9999.9f, 9999.9f);
@@ -96,6 +100,8 @@ void InitPlayerBullet(int num)
 		ptr->collider2.pos = &ptr->pos;
 		ptr->collider2.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->collider2.length = D3DXVECTOR3(PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS);
+
+		CreateOFT(oft, (void*)ptr);
 	}
 }
 
@@ -111,10 +117,11 @@ void UninitPlayerBullet(int num)
 	}
 
 	PLAYERBULLET *ptr = &bullet[0];
-	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
-
+		RemoveObjectFromSpace(oft);
 	}
 }
 
@@ -125,25 +132,41 @@ void UpdatePlayerBullet(void)
 {
 	PLAYERBULLET *ptr = &bullet[0];
 	BATTLECAMERA *camera = GetBattleCameraAdr();
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
 
-	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
+	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++, oft++)
 	{
 		if (!ptr->active)
 		{
 			continue;
 		}
 
+		//座標更新
 		ptr->pos += ptr->moveDir * ptr->speed;
 
+		//トレイルセット
 		for (int j = 0; j < PLAYERBULLET_TRAIL_NUM; j++)
 		{
 			SetPlayerBulletTrail(ptr->pos + ptr->moveDir * PLAYERBULLET_TRAIL_OFFSET * j, 1.0f - PLAYERBULLET_TRAIL_ALPHA * j );
 		}
 
+		//境界判定
 		if (ptr->pos.z > 1000.0f)
 		{
 			ptr->active = false;
+			RemoveObjectFromSpace(oft);
+			continue;
 		}
+
+		//空間登録更新
+		D3DXVECTOR3 pos = ptr->pos + ptr->collider2.offset;
+		RemoveObjectFromSpace(oft);
+		RegisterObjectToSpace(pos.x - PLAYERBULLET_COLLIDER_RAIDUS,
+			pos.y + PLAYERBULLET_COLLIDER_RAIDUS,
+			pos.x + PLAYERBULLET_COLLIDER_RAIDUS,
+			pos.y - PLAYERBULLET_COLLIDER_RAIDUS,
+			oft,
+			OFT_PLAYERBULLET);
 	}
 }
 
