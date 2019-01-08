@@ -364,8 +364,8 @@ void CheckDestroyExplosionFlare(void)
 **********************************************/
 void DrawDebugWindowExplosionFlare(void)
 {
-	ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
-	ImGui::SetNextWindowPos(ImVec2(5.0f, 520.0f));
+	//ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
+	//ImGui::SetNextWindowPos(ImVec2(5.0f, 520.0f));
 	ImGui::Begin("ExplosionFlare");
 
 	ImGui::Text("Move  : %fmsec", CalcProgressTime(startMove, endMove));

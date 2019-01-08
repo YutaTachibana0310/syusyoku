@@ -11,6 +11,9 @@
 #include "debugproc.h"
 #include "rockonSite.h"
 #include "soundEffectManager.h"
+#include "dataContainer.h"
+
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -23,6 +26,7 @@
 #define TARGETSITE_INCIRCLE_ROTVALUE	(0.01f)
 #define TARGETSITE_OUTCIRCLE_ROTVALUE	(-0.015f)
 #define TARGETSITE_COLLIDER_RADIUS		(180.0f)
+#define TARGETSITE_LOCKONRANGE_MAX		(3000.0f)
 
 /**************************************
 構造体定義
@@ -47,12 +51,9 @@ static const char* texturePath[] = {
 	"data/TEXTURE/targetSite1_2.png"
 };
 
-static D3DXVECTOR3 baseVector[BattleCameraStateMax] = 
-{
-	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-	D3DXVECTOR3(1.57f, 0.0f, 0.0f),
-	D3DXVECTOR3(0.0f, -1.57f, 0.0f),
-	D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+//ロックオンレベルに応じたターゲットサイトのスケール
+static const float ScaleLevel[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
+	0.7f, 0.85f, 1.0f, 1.2f
 };
 
 /**************************************
@@ -133,6 +134,16 @@ void UpdateTargetSite(void)
 		//外側のサークルを更新
 		ptr->outsideRot.z += TARGETSITE_OUTCIRCLE_ROTVALUE;
 	}
+
+	ImGui::Begin("targetSite");
+	D3DXVECTOR3 posL = targetSite[0].pos + D3DXVECTOR3(TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y, 0.0f);
+	D3DXVECTOR3 screenL;
+	D3DXVec3TransformCoord(&screenL, &posL, &GetBattleCameraView());
+	D3DXVec3TransformCoord(&screenL, &screenL, &GetBattleCameraProjection());
+	TranslateViewPort(&screenL, &screenL);
+	float length = D3DXVec3Length(&(screenL - targetSite[0].screenPos));
+	ImGui::Text("CircirRadius : %f", length);
+	ImGui::End();
 }
 
 /**************************************
@@ -141,7 +152,8 @@ void UpdateTargetSite(void)
 void DrawTargetSite(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	D3DXMATRIX mtxTranslate, mtxRot;
+	D3DXMATRIX mtxTranslate, mtxRot, mtxScale;
+	float scale = ScaleLevel[GetLockonLevel()];
 
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
@@ -152,8 +164,6 @@ void DrawTargetSite(void)
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
-	D3DXVECTOR3 base = baseVector[GetBattleCameraAdr()->currentState];
-
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
 	{
@@ -162,15 +172,23 @@ void DrawTargetSite(void)
 			continue;
 		}
 
-		//内側の円を描画
+		/*内側の円を描画*/
 		D3DXMatrixIdentity(&mtxWorld);
-		D3DXMatrixIdentity(&mtxTranslate);
 
-		//GetInvRotBattleCamera(&mtxWorld);
-		D3DXVECTOR3 rot = base + ptr->insideRot;
+		//scaling
+		D3DXMatrixScaling(&mtxScale, scale, scale, scale);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
+
+		//rotaiton
+		D3DXVECTOR3 rot = ptr->insideRot;
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
+		//billboard
+		GetInvRotBattleCamera(&mtxRot);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+
+		//translation
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
@@ -179,16 +197,22 @@ void DrawTargetSite(void)
 		pDevice->SetTexture(0, texture[TARGETSITE_INCIRCLE]);
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 
-		//外側の円を描画
+		/*外側の円を描画*/
 		D3DXMatrixIdentity(&mtxWorld);
-		D3DXMatrixIdentity(&mtxTranslate);
 
-		//GetInvRotBattleCamera(&mtxWorld);
-		rot = base + ptr->outsideRot;
+		//scaling
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
+
+		//rotation
+		rot = ptr->outsideRot;
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
-		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		//billboard
+		GetInvRotBattleCamera(&mtxRot);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+
+		//translation
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
 		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
@@ -274,15 +298,22 @@ TARGETSITE *GetTargetSiteAdr(int id)
 ***************************************/
 bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 {
-	D3DXVECTOR3 targetScreenPos;
+	if (pos->z > TARGETSITE_LOCKONRANGE_MAX)
+		return false;
+
 	TARGETSITE *ptr = &targetSite[id];
+	if (pos->z < ptr->pos.z)
+		return false;
+
+	D3DXVECTOR3 targetScreenPos;
 	PLAYERMODEL *player = GetPlayerAdr(id);
+	float radius = TARGETSITE_COLLIDER_RADIUS * ScaleLevel[GetLockonLevel()];
 
 	D3DXVec3TransformCoord(&targetScreenPos, pos, &GetBattleCameraView());
 	D3DXVec3TransformCoord(&targetScreenPos, &targetScreenPos, &GetBattleCameraProjection());
 	TranslateViewPort(&targetScreenPos, &targetScreenPos);
 
-	if (D3DXVec3LengthSq(&(targetScreenPos - ptr->screenPos)) < powf(TARGETSITE_COLLIDER_RADIUS, 2))
+	if (D3DXVec3LengthSq(&(targetScreenPos - ptr->screenPos)) < powf(radius, 2))
 	{
 		return true;
 	}

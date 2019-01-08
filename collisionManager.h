@@ -8,6 +8,7 @@
 #define _COLLISIONMANAGER_H_
 
 #include "main.h"
+#include "collider.h"
 
 /**************************************
 マクロ定義
@@ -36,6 +37,7 @@ enum OFT_ID
 {
 	OFT_PLAYERBULLET,
 	OFT_CUBEOBJECT,
+	OFT_HARDCUBE,
 	OFT_ID_MAX
 };
 /**************************************
@@ -46,7 +48,8 @@ void UninitCollisionManager(int num);
 void UpdateCollisionManager(void);
 
 //空間にオブジェクトを登録する処理
-bool RegisterObjectToSpace(float left, float top, float right, float bottom, OBJECT_FOR_TREE *obj, OFT_ID id);
+//bool RegisterObjectToSpace(float left, float top, float right, float bottom, OBJECT_FOR_TREE *obj, OFT_ID id);
+bool RegisterObjectToSpace(COLLIDER_CUBE *collider, OBJECT_FOR_TREE *obj, OFT_ID id);
 //空間からオブジェクトを取り除く処理
 bool RemoveObjectFromSpace(OBJECT_FOR_TREE *obj);
 //OBJECT_FOT_TREE作成処理

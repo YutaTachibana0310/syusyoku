@@ -12,6 +12,8 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define DATACONTAINER_SHOTLEVEL_MAX		(4)		//ショットレベル最大値
+#define DATACONTAINER_LOCKLEVEL_MAX		(3)		//ロックオンレベル最大値
 
 /**************************************
 構造体定義
@@ -28,5 +30,6 @@ int GetShotLevel(void);
 int GetLockonLevel(void);
 int GetCurrentScore(void);
 int GetHighScore(void);
+int GetLockonMax(void);
 
 #endif

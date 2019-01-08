@@ -182,8 +182,8 @@ void SetCubeExplosion(D3DXVECTOR3 pos)
 ***************************************/
 void DrawDebugWindowParticle(void)
 {
-	ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
-	ImGui::SetNextWindowPos(ImVec2(5.0f, 415.0f));
+	//ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
+	//ImGui::SetNextWindowPos(ImVec2(5.0f, 415.0f));
 	ImGui::Begin("ParticleManager");
 
 	ImGui::Text("Flare  : %fmsec", CalcProgressTime(startFlare, endFlare));

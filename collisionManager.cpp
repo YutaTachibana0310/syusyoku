@@ -158,8 +158,14 @@ void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet)
 /**************************************
 オブジェクト登録処理
 ***************************************/
-bool RegisterObjectToSpace(float left, float top, float right, float bottom, OBJECT_FOR_TREE *obj, OFT_ID id)
+//bool RegisterObjectToSpace(float left, float top, float right, float bottom, OBJECT_FOR_TREE *obj, OFT_ID id)
+bool RegisterObjectToSpace(COLLIDER_CUBE *collider, OBJECT_FOR_TREE *obj, OFT_ID id)
 {
+	float left = collider->pos->x - collider->length.x;
+	float top = collider->pos->y + collider->length.y;
+	float right = collider->pos->x + collider->length.x;
+	float bottom = collider->pos->y - collider->length.y;
+
 	DWORD elem = GetMortonNumber(left, top, right, bottom);
 	if (elem < cellNum)
 	{

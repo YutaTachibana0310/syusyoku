@@ -13,7 +13,7 @@
 マクロ定義
 ***************************************/
 #define PLAYERBULLET_MAX				(128)
-#define PLAYERBULLET_COLLIDER_RAIDUS	(5.0f)
+#define PLAYERBULLET_COLLIDER_RAIDUS	(8.0f)
 /**************************************
 構造体定義
 ***************************************/

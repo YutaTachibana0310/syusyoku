@@ -11,6 +11,7 @@
 #include "enemyMissile.h"
 #include "playerMissile.h"
 #include "lockonGUI.h"
+#include "dataContainer.h"
 
 /**************************************
 マクロ定義
@@ -79,7 +80,8 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	site->pos = player->pos;
 
 	//ロックオンサイトセット処理
-	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	int lockMax = GetLockonMax();
+	for (int i = 0; i < lockMax; i++)
 	{
 		if (player->target[i].use)
 		{
