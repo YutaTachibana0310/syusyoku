@@ -25,6 +25,9 @@ typedef struct _OBJECT_FOR_TREE {
 	void *object;				//対象オブジェクトへの汎用ポインタ
 	_OBJECT_FOR_TREE *prev;		//前のリストオブジェクト
 	_OBJECT_FOR_TREE *next;		//後のリストオブジェクト
+#ifdef _DEBUG
+	DWORD elem;
+#endif
 }OBJECT_FOR_TREE;
 
 //分割空間構造体

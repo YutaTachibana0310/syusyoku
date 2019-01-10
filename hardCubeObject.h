@@ -35,6 +35,6 @@ void UninitHardCubeObject(int num);
 void UpdateHardCubeObject(void);
 void DrawHardCubeObject(void);
 
-void LockonCubeObject(void);
+void LockonHardCubeObject(void);
 
 #endif

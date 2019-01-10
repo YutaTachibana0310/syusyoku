@@ -17,8 +17,8 @@
 #define COLLISION_DIVISIONSPACE_LEVEL_MAX		(9)			//空間レベルの最大レベル
 #define COLLISION_REGION_LEFT					(-500.0f)	//判定空間の左端
 #define COLLISION_REGION_RIGHT					(500.0f)	//判定空間の右端
-#define COLLISION_REGION_TOP					(-3000.0f)	//判定空間の上端
-#define COLLISION_REGION_BOTTOM					(3000.0f)	//判定空間の下端
+#define COLLISION_REGION_TOP					(-5000.0f)	//判定空間の上端
+#define COLLISION_REGION_BOTTOM					(5000.0f)	//判定空間の下端
 
 /**************************************
 構造体定義
@@ -192,14 +192,11 @@ bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet)
 ***************************************/
 bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet)
 {
-	//指定された空間から親空間へジャンプ
-	elem = (elem - 1) >> 2;
-
-	while (elem < cellNum)
+	for(elem = (elem - 1) >> 2; elem < cellNum; elem = (elem - 1) >> 2)
 	{
 		//空間が作成されていない場合の判定
 		if (!cellArray[OFT_CUBEOBJECT][elem])
-			return false;
+			continue;;
 
 		//指定されて空間内のオブジェクトに対して判定
 		if (cellArray[OFT_CUBEOBJECT][elem]->latestObj != NULL)
@@ -220,9 +217,6 @@ bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet)
 				cubeOFT = cubeOFT->next;
 			}
 		}
-
-		//指定された空間から親空間へジャンプ
-		elem = (elem - 1) >> 2;
 	}
 
 	return false;
@@ -260,6 +254,7 @@ bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, PLAYERBULLET *bullet
 			if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
 			{
 				BurstPlayerBullet(bullet);
+				hardCube->hp -= 1.0f;
 				return true;
 			}
 
@@ -286,14 +281,12 @@ bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, PLAYERBULLET *bullet
 ***************************************/
 bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet)
 {
-	//指定された空間から親空間へジャンプ
-	elem = (elem - 1) >> 2;
-
-	while (elem < cellNum)
+	//ルート空間にジャンプするまでループ
+	for(elem = (elem - 1) >> 2; elem < cellNum; elem = (elem - 1) >> 2)
 	{	
 		//空間が作成されていない場合の判定
 		if (!cellArray[OFT_HARDCUBE][elem])
-			return false;
+			continue;
 
 		//指定されて空間内のオブジェクトに対して判定
 		if (cellArray[OFT_HARDCUBE][elem]->latestObj != NULL)
@@ -306,6 +299,7 @@ bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet
 				if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
 				{
 					BurstPlayerBullet(bullet);
+					hardCube->hp -= 1.0f;
 					return true;
 				}
 
@@ -313,9 +307,6 @@ bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet
 				hardCubeOFT = hardCubeOFT->next;
 			}
 		}
-
-		//指定された空間から親空間へジャンプ
-		elem = (elem - 1) >> 2;
 	}
 
 	return false;
@@ -338,6 +329,10 @@ bool RegisterObjectToSpace(COLLIDER_CUBE *collider, OBJECT_FOR_TREE *obj, OFT_ID
 		//空間が未割り当ての場合は新規作成
 		if (cellArray[id][elem] == NULL)
 			CreateNewCell(elem, id);
+
+#ifdef _DEBUG
+		obj->elem = elem;
+#endif
 
 		return PushObjectToList(cellArray[id][elem], obj);
 	}

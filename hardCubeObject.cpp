@@ -10,16 +10,20 @@
 #include "dataContainer.h"
 #include "collisionManager.h"
 #include "battleCamera.h"
+#include "playerModel.h"
+#include "cubeObject.h"
+#include "cameraShaker.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define HARDCUBE_EFFECT_NAME		"data/EFFECT/cubeObject.fx"
 #define HARDCUBE_SIZE				(20.0f)
-#define HARDCUBE_NUM_MAX			(80)
+#define HARDCUBE_NUM_MAX			(1)
 #define HARDCUBE_VTX_NUM			(24)
 #define HARDCUBE_FIELD_NUM			(6)
 #define HARDCUBE_TEX_NUM			(3)
+#define HARDCUBE_INIT_HP			(10.0f)
 
 static const char* TextureName[HARDCUBE_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit06.png",
@@ -100,7 +104,7 @@ void InitHardCubeObject(int num)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//キューブ生成範囲
-	const float PosRange = 150.0f;
+	const float PosRange = 50.0f;
 	const float RotRange = 5.0f;
 
 	//パラメータ初期化
@@ -108,13 +112,13 @@ void InitHardCubeObject(int num)
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
 	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++, oft++)
 	{
-		ptr->pos = D3DXVECTOR3(RandomRangef(-PosRange, PosRange), RandomRangef(-PosRange, PosRange), RandomRangef(0.0f, 20000.0f));
+		ptr->pos = D3DXVECTOR3(RandomRangef(-PosRange, PosRange), RandomRangef(-PosRange, PosRange), RandomRangef(0.0f, 10000.0f));
 		ptr->rot = D3DXVECTOR3(RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f));
 		ptr->rotValue = D3DXVECTOR3(RandomRangef(-RotRange, RotRange), RandomRangef(-RotRange, RotRange), RandomRangef(-RotRange, RotRange));
 		ptr->rotValue *= 0.01f;
 		ptr->moveSpeed = RandomRangef(-10.0f, -5.0f);
-		ptr->hp = 1.0f;
-		ptr->active = true;
+		ptr->hp = HARDCUBE_INIT_HP;
+		ptr->active = false;
 
 		ptr->collider.pos = &ptr->pos;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -122,6 +126,8 @@ void InitHardCubeObject(int num)
 
 		CreateOFT(oft, (void*)ptr);
 	}
+	cube[0].active = true;
+	cube[0].pos.x = 0.0f;
 
 	//初回のみの初期化
 	if (num == 0)
@@ -340,9 +346,11 @@ void CheckDestroyHardCube(void)
 		if (ptr->hp <= 0.0f)
 		{
 			SetCubeExplosion(ptr->pos);
+			//DamageAllCubeObject();
+			SetCameraShaker(10.0f);
 			
-			ptr->hp = 1.0f;
-			ptr->pos.z = 20000.0f;
+			ptr->hp = HARDCUBE_INIT_HP;
+			ptr->pos.z = 4500.0f;
 			ptr->active = true;
 		}
 	}
@@ -360,7 +368,7 @@ void RegisterHardCubeToSpace(void)
 	{
 		RemoveObjectFromSpace(oft);
 
-		//if (ptr->active)
+		if (ptr->active)
 		{
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
 		}
@@ -370,9 +378,28 @@ void RegisterHardCubeToSpace(void)
 /**************************************
 ロックオン処理
 ***************************************/
-void LockonHardCube(void)
+void LockonHardCubeObject(void)
 {
 	HARD_CUBE_OBJECT *ptr = &cube[0];
 	TARGETSITE *targetSite = GetTargetSiteAdr(0);
+
+	for (int i = 0; i < PLAYERMODEL_MAX; i++, targetSite++)
+	{
+		if (!targetSite->active)
+			continue;
+
+		ptr = &cube[0];
+		for (int j = 0; j < HARDCUBE_NUM_MAX; j++, ptr++)
+		{
+			if (!ptr->active)
+				continue;
+
+			if (CollisionTargetSite(i, &ptr->pos))
+			{
+				AddRockonTarget(i, &ptr->pos, &ptr->active, &ptr->hp);
+			}
+
+		}
+	}
 
 }

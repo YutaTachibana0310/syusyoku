@@ -17,7 +17,11 @@
 #define CUBEOBJECT_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
 #define CUBEOBJECT_SIZE					(10.0f)
 #define CUBEOBJECT_VTX_NUM				(24)
+#ifdef _DEBUG
+#define CUBEOBJECT_NUM_MAX				(200)
+#else
 #define CUBEOBJECT_NUM_MAX				(2048)
+#endif
 #define CUBEOBJECT_FIELD_NUM			(6)
 #define CUBEOBJECT_TEX_NUM				(3)
 
@@ -356,7 +360,7 @@ void CheckDestroyCubeObject(void)
 			AddScore(5000);
 
 			ptr->hp = 1.0f;
-			pPos->z = 20000.0f;
+			pPos->z += 5000.0f;
 			ptr->active = true;
 		}
 	}
@@ -411,5 +415,20 @@ void RegisterCubeObjectToSpace(void)
 		{
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_CUBEOBJECT);
 		}
+	}
+}
+
+/*****************************************
+全キューブへのダメージ処理
+******************************************/
+void DamageAllCubeObject(void)
+{
+	CUBE_OBJECT *ptr = &cube[0];
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++)
+	{
+		if (!ptr->active)
+			continue;
+
+		ptr->hp -= 1.0f;
 	}
 }
