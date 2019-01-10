@@ -189,8 +189,8 @@ void DrawBattleScene(void)
 ******************************************************************************/
 void DrawDebugWindowBattleScene(void)
 {
-	ImGui::SetNextWindowPos(ImVec2(5.0f, 5.0f));
-	ImGui::SetNextWindowSize(ImVec2(300.0f, 350.0f));
+	//ImGui::SetNextWindowPos(ImVec2(5.0f, 5.0f));
+	//ImGui::SetNextWindowSize(ImVec2(300.0f, 350.0f));
 	ImGui::StyleColorsDark();
 	ImGui::Begin("BattleScene");
 

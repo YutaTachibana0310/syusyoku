@@ -26,7 +26,7 @@ static int currentScore, highScore;
 static int cntPowerUp, shotLevel, lockLevel;
 
 //パワーアップのしきい値
-const int PowerUpBorder[DATACONTAINER_POWEUP_MAX] = {
+static const int PowerUpBorder[DATACONTAINER_POWEUP_MAX] = {
 	500000,
 	1000000,
 	1500000,
@@ -34,6 +34,11 @@ const int PowerUpBorder[DATACONTAINER_POWEUP_MAX] = {
 	2500000,
 	3000000,
 	(int)INFINITY
+};
+
+//各ロックオンレベルでの最大ロックオン数
+static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
+	12, 24, 36, 48
 };
 
 /**************************************
@@ -126,6 +131,14 @@ int GetShotLevel(void)
 int GetLockonLevel(void)
 {
 	return lockLevel;
+}
+
+/**************************************
+最大ロックオン取得処理
+***************************************/
+int GetLockonMax(void)
+{
+	return LockonMax[lockLevel];
 }
 
 /**************************************

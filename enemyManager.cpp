@@ -12,6 +12,7 @@
 #include "enemyHomingBullet.h"
 #include "enemyBulletTrail.h"
 #include "cubeObject.h"
+#include "hardCubeObject.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -38,6 +39,7 @@ void InitEnemyManager(int num)
 	InitMiddleEnemy(num);
 	InitSmallEnemy(num);
 	InitCubeObject(num);
+	InitHardCubeObject(num);
 
 	InitEnemyBullet(num);
 	InitEnemyHomingBullet(num);
@@ -53,6 +55,7 @@ void UninitEnemyManager(int num)
 	UninitMiddleEnemy(num);
 	UninitSmallEnemy(num);
 	UninitCubeObject(num);
+	UninitHardCubeObject(num);
 
 	UninitEnemyBullet(num);
 	UninitEnemyHomingBullet(num);
@@ -68,6 +71,7 @@ void UpdateEnemyManager(void)
 	UpdateMiddleEnemy();
 	UpdateSmallEnemy();
 	UpdateCubeObject();
+	UpdateHardCubeObject();
 
 	UpdateEnemyBullet();
 	UpdateEnemyHomingBullet();
@@ -82,7 +86,9 @@ void DrawEnemyManager(void)
 	DrawMiddleEnemy();
 	DrawEnemyMissile();
 	DrawSmallEnemy();
+	
 	DrawCubeObject();
+	DrawHardCubeObject();
 
 	DrawEnemyBullet();
 	DrawEnemyHomingBullet();

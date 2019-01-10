@@ -35,5 +35,5 @@ void UninitCubeParticle(int num);
 void UpdateCubeParticle(void);
 void DrawCubeParticle(void);
 
-void SetCubeParticle(D3DXVECTOR3 setPos);
+void SetCubeParticle(D3DXVECTOR3 setPos, D3DXCOLOR col);
 #endif

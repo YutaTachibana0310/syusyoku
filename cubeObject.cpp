@@ -5,11 +5,9 @@
 //
 //=====================================
 #include "cubeObject.h"
-#include "playerBullet.h"
 #include "targetSite.h"
 #include "playerModel.h"
 #include "particleManager.h"
-#include "cameraShaker.h"
 #include "dataContainer.h"
 #include "collisionManager.h"
 
@@ -21,8 +19,9 @@
 #define CUBEOBJECT_VTX_NUM				(24)
 #define CUBEOBJECT_NUM_MAX				(2048)
 #define CUBEOBJECT_FIELD_NUM			(6)
+#define CUBEOBJECT_TEX_NUM				(3)
 
-static const char* texName[] = {
+static const char* texName[CUBEOBJECT_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit00.jpg",
 	"data/TEXTURE/OBJECT/circuit04.png",
 	"data/TEXTURE/OBJECT/circuit05.png",
@@ -257,7 +256,7 @@ void DrawCubeObject(void)
 	effect->SetFloatArray("light3Diffuse", (float*)&light3.Diffuse, 4);
 	effect->SetFloatArray("light3Ambient", (float*)&light3.Ambient, 4);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < CUBEOBJECT_TEX_NUM; i++)
 	{
 		if (i == 0)
 			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -278,7 +277,7 @@ void DrawCubeObject(void)
 	pDevice->SetStreamSourceFreq(0, 1);
 	pDevice->SetStreamSourceFreq(1, 1);
 
-#ifdef _DEBUG
+#if 0
 	CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++)
 	{
@@ -363,38 +362,6 @@ void CheckDestroyCubeObject(void)
 	}
 }
 
-/**************************************
-当たり判定
-***************************************/
-void CollisionCubeObjectAndBullet(void)
-{
-	CUBE_OBJECT *ptr = &cube[0];
-	PLAYERBULLET *bullet = GetPlayerBulletAdr(0);
-	D3DXVECTOR3 *cubePos = &pos[0];
-
-	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, cubePos++)
-	{
-		if (!ptr->active)
-		{
-			continue;
-		}
-
-		bullet = GetPlayerBulletAdr(0);
-		for (int j = 0; j < PLAYERBULLET_MAX; j++, bullet++)
-		{
-			if (!bullet->active)
-			{
-				continue;
-			}
-			if(ChechHitBoundingCube(&ptr->collider, &bullet->collider2))
-			{
-				ptr->hp = 0.0f;
-				//bullet->active = false;
-			}
-		}
-	}
-}
-
 /*****************************************
 キューブロックオン判定
 ******************************************/
@@ -442,13 +409,7 @@ void RegisterCubeObjectToSpace(void)
 		
 		if(ptr->active)
 		{
-			D3DXVECTOR3 colliderPos = *pPos + ptr->collider.offset;
-			RegisterObjectToSpace(colliderPos.x - ptr->collider.length.x,
-				colliderPos.y + ptr->collider.length.y,
-				colliderPos.x + ptr->collider.length.x,
-				colliderPos.y - ptr->collider.length.y,
-				oft,
-				OFT_CUBEOBJECT);
+			RegisterObjectToSpace(&ptr->collider, oft, OFT_CUBEOBJECT);
 		}
 	}
 }

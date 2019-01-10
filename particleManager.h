@@ -64,6 +64,8 @@ void InitParticleManager(int num);
 void UninitParticleManager(int num);
 void UpdateParticleManager(void);
 void DrawParticleManager(void);
+
 void SetEnemyExplosion(D3DXVECTOR3 pos);
 void SetCubeExplosion(D3DXVECTOR3 pos);
+void SetPlayerBulletExplosion(D3DXVECTOR3 pos);
 #endif

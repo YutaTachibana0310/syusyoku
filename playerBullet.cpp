@@ -10,6 +10,9 @@
 #include "playerBulletTrail.h"
 #include "dataContainer.h"
 #include "collisionManager.h"
+#include "particleFramework.h"
+
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -23,7 +26,7 @@
 #define PLAYERBULLET_SHADER_NAME	"data/EFFECT/playerBullet.fx"
 #define PLAYERBULLET_TRAIL_OFFSET	(-5.0f)
 #define PLAYERBULLET_TRAIL_ALPHA	(0.2f)
-#define PLAYERBULLET_TRAIL_NUM		(5)
+#define PLAYERBULLET_TRAIL_NUM		(3)
 
 /**************************************
 構造体定義
@@ -89,6 +92,8 @@ void InitPlayerBullet(int num)
 	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
+		ptr->id = i;
+
 		ptr->pos = D3DXVECTOR3(9999.9f, 9999.9f, 9999.9f);
 		ptr->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->scale = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
@@ -100,6 +105,8 @@ void InitPlayerBullet(int num)
 		ptr->collider2.pos = &ptr->pos;
 		ptr->collider2.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->collider2.length = D3DXVECTOR3(PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS);
+
+		ptr->destroyRequest = false;
 
 		CreateOFT(oft, (void*)ptr);
 	}
@@ -133,7 +140,7 @@ void UpdatePlayerBullet(void)
 	PLAYERBULLET *ptr = &bullet[0];
 	BATTLECAMERA *camera = GetBattleCameraAdr();
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
-
+	int cntActive = 0;
 	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++, oft++)
 	{
 		if (!ptr->active)
@@ -141,6 +148,16 @@ void UpdatePlayerBullet(void)
 			continue;
 		}
 
+		//消滅判定
+		if (ptr->destroyRequest)
+		{
+			ptr->active = false;
+			ptr->destroyRequest = false;
+			RemoveObjectFromSpace(oft);
+			continue;
+		}
+
+		cntActive++;
 		//座標更新
 		ptr->pos += ptr->moveDir * ptr->speed;
 
@@ -161,13 +178,13 @@ void UpdatePlayerBullet(void)
 		//空間登録更新
 		D3DXVECTOR3 pos = ptr->pos + ptr->collider2.offset;
 		RemoveObjectFromSpace(oft);
-		RegisterObjectToSpace(pos.x - PLAYERBULLET_COLLIDER_RAIDUS,
-			pos.y + PLAYERBULLET_COLLIDER_RAIDUS,
-			pos.x + PLAYERBULLET_COLLIDER_RAIDUS,
-			pos.y - PLAYERBULLET_COLLIDER_RAIDUS,
-			oft,
-			OFT_PLAYERBULLET);
+		RegisterObjectToSpace(&ptr->collider2, oft, OFT_PLAYERBULLET);
 	}
+
+	ImGui::Begin("PlayerBullet");
+	ImGui::Text("PlayerBulletMax : %d", PLAYERBULLET_MAX);
+	ImGui::Text("Acitve          : %d", cntActive);
+	ImGui::End();
 }
 
 /**************************************
@@ -230,7 +247,7 @@ void DrawPlayerBullet(void)
 		{
 			continue;
 		}
-		DrawBoundingSphere(&ptr->collider);
+		DrawBoundingCube(&ptr->collider2);
 	}
 #endif
 }
@@ -415,6 +432,7 @@ void SetPlayerBulletLv3(D3DXVECTOR3 pos, float speed)
 void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed)
 {
 	const int shotNum = 12;
+	const float AngleRange = 0.025f;
 
 	const D3DXVECTOR3 setDir[shotNum] = {
 		D3DXVECTOR3(0.05f, 0.0f, 1.0f),
@@ -444,7 +462,8 @@ void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed)
 			ptr->pos = pos;
 			ptr->rotation = RandomRangef(0.0f, 6.12f);
 
-			D3DXVec3Normalize(&ptr->moveDir, &setDir[j]);
+			D3DXVECTOR3 vec = setDir[j] + D3DXVECTOR3(RandomRangef(-AngleRange, AngleRange), RandomRangef(-AngleRange, AngleRange), 0.0f);
+			D3DXVec3Normalize(&ptr->moveDir, &vec);
 
 			ptr->speed = speed;
 
@@ -516,3 +535,13 @@ void CreatePlayerBulletVertexBuffer(void)
 	return;
 }
 
+/**************************************
+プレイヤー爆発処理
+***************************************/
+void BurstPlayerBullet(PLAYERBULLET *ptr)
+{
+	/*RemoveObjectFromSpace(&objectForTree[ptr->id]);
+	ptr->active = false;*/
+	ptr->destroyRequest = true;
+	SetPlayerBulletExplosion(ptr->pos);
+}

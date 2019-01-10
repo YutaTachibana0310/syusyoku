@@ -16,6 +16,7 @@
 #include "playerBullet.h"
 #include "playerMissile.h"
 #include "soundEffectManager.h"
+#include "dataContainer.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -46,6 +47,7 @@ static DWORD numMaterial = 0;
 
 static int playerState;
 
+//更新処理関数テーブル
 static funcPlayerModel Update[PlayerStateMax] = {
 	UpdatePlayerModelFPS,
 	UpdatePlayerModelTopView,
@@ -56,6 +58,7 @@ static funcPlayerModel Update[PlayerStateMax] = {
 	UpdatePlayerModelTitleLaunch
 };
 
+//入場処理関数テーブル
 static funcPlayerModel Enter[PlayerStateMax] = {
 	EnterPlayerModelFPS,
 	EnterPlayerModelTopView,
@@ -66,6 +69,7 @@ static funcPlayerModel Enter[PlayerStateMax] = {
 	EnterPlayerModelTitleLaunch
 };
 
+//退場処理関数テーブル
 static funcPlayerModel Exit[PlayerStateMax] = {
 	ExitPlayerModelFPS,
 	ExitPlayerModelTopView,
@@ -76,6 +80,7 @@ static funcPlayerModel Exit[PlayerStateMax] = {
 	ExitPlayerModelTitleLaunch
 };
 
+//テクスチャ名
 static const char* textureName[PLAYER_TEXTURE_MAX] = {
 	NULL,
 	"data/TEXTURE/PLAYER/d10.jpg",
@@ -97,7 +102,8 @@ static const char* textureName[PLAYER_TEXTURE_MAX] = {
 	"data/TEXTURE/PLAYER/yx1_02_01_01.jpg",
 	"data/TEXTURE/PLAYER/bmq1.jpg",
 };
-static LPDIRECT3DTEXTURE9 texture[PLAYER_TEXTURE_MAX];
+
+static LPDIRECT3DTEXTURE9 texture[PLAYER_TEXTURE_MAX];		//テクスチャ
 
 /**************************************
 プロトタイプ宣言
@@ -295,7 +301,8 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 	}
 
 	//未使用のターゲットに設定
-	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	int lockMax = GetLockonMax();
+	for (int i = 0; i < lockMax; i++)
 	{
 		//ロックオンの空きがあるまでループ
 		if (ptr->target[i].use)

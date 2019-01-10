@@ -11,7 +11,7 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define CUBEPARTICLE_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
+#define CUBEPARTICLE_EFFECT_NAME			"data/EFFECT/cubeParticle.fx"
 #define CUBEPARTICLE_SIZE					(10.0f)
 #define CUBEPARTICLE_VTX_NUM				(24)
 #define CUBEPARTICLE_NUM_MAX				(2048)
@@ -20,9 +20,9 @@
 #define CUBEPARTICLE_LIFEFRAME				(30)
 
 static const char* texName[] = {
-	"data/TEXTURE/OBJECT/circuit00.jpg",
-	"data/TEXTURE/OBJECT/circuit04.png",
-	"data/TEXTURE/OBJECT/circuit05.png",
+	"data/TEXTURE/OBJECT/circuit01.jpg",
+	"data/TEXTURE/OBJECT/circuit02.png",
+	"data/TEXTURE/OBJECT/circuit03.png",
 };
 
 /**************************************
@@ -72,17 +72,19 @@ static CUBE_VTX vtx[CUBEPARTICLE_VTX_NUM] = {
 	{ CUBEPARTICLE_SIZE,-CUBEPARTICLE_SIZE, CUBEPARTICLE_SIZE, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
 };
 
-static LPDIRECT3DVERTEXBUFFER9 vtxBuff, worldBuff;		//頂点バッファ
-static LPDIRECT3DVERTEXDECLARATION9 declare;			//頂点宣言
-static LPDIRECT3DTEXTURE9 texture[3];					//テクスチャ
-static LPD3DXEFFECT effect;								//シェーダ
-static LPDIRECT3DINDEXBUFFER9 indexBuff;				//インデックスバッファ
+static LPDIRECT3DVERTEXBUFFER9 vtxBuff, worldBuff, colorBuff;		//頂点バッファ
+static LPDIRECT3DVERTEXDECLARATION9 declare;						//頂点宣言
+static LPDIRECT3DTEXTURE9 texture[3];								//テクスチャ
+static LPD3DXEFFECT effect;											//シェーダ
+static LPDIRECT3DINDEXBUFFER9 indexBuff;							//インデックスバッファ
 
 static D3DXVECTOR3 pos[CUBEPARTICLE_NUM_MAX], rot[CUBEPARTICLE_NUM_MAX];	//キューブの各パラメータ
 static float scale[CUBEPARTICLE_NUM_MAX];
 static D3DXMATRIX mtxWorld[CUBEPARTICLE_NUM_MAX];			//ワールド変換行列
+static D3DXCOLOR color[CUBEPARTICLE_NUM_MAX];				//パーティクル色
 
 static CUBE_PARTICLE cube[CUBEPARTICLE_NUM_MAX];			//キューブパーティクル配列
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -107,6 +109,7 @@ void InitCubeParticle(int num)
 		pos[i] = D3DXVECTOR3(InitPos, InitPos, InitPos);
 		rot[i] = D3DXVECTOR3(InitRot, InitRot, InitRot);
 		scale[i] = InitScale;
+		color[i] = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 		ptr->active = false;
 	}
 
@@ -116,8 +119,10 @@ void InitCubeParticle(int num)
 		//頂点バッファ作成
 		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
 		pDevice->CreateVertexBuffer(sizeof(mtxWorld), 0, 0, D3DPOOL_MANAGED, &worldBuff, 0);
+		pDevice->CreateVertexBuffer(sizeof(color), 0, 0, D3DPOOL_MANAGED, &colorBuff, 0);
 		CopyVtxBuff(sizeof(vtx), vtx, vtxBuff);
 		CopyVtxBuff(sizeof(mtxWorld), mtxWorld, worldBuff);
+		CopyVtxBuff(sizeof(color), color, colorBuff);
 
 		//頂点宣言作成
 		D3DVERTEXELEMENT9 declareElems[] =
@@ -129,6 +134,7 @@ void InitCubeParticle(int num)
 			{ 1, 16, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 },		//ワールド変換行列
 			{ 1, 32, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 3 },		//ワールド変換行列
 			{ 1, 48, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 4 },		//ワールド変換行列
+			{ 2, 0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_COLOR, 0 },			//色
 			D3DDECL_END()
 		};
 		pDevice->CreateVertexDeclaration(declareElems, &declare);
@@ -210,10 +216,12 @@ void DrawCubeParticle(void)
 
 	pDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | (CUBEPARTICLE_NUM_MAX));
 	pDevice->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
+	pDevice->SetStreamSourceFreq(2, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 
 	pDevice->SetVertexDeclaration(declare);
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(CUBE_VTX));
 	pDevice->SetStreamSource(1, worldBuff, 0, sizeof(D3DXMATRIX));
+	pDevice->SetStreamSource(2, colorBuff, 0, sizeof(D3DXCOLOR));
 	pDevice->SetIndices(indexBuff);
 
 	effect->SetMatrix("mtxView", &GetBattleCameraView());
@@ -251,6 +259,7 @@ void DrawCubeParticle(void)
 
 	pDevice->SetStreamSourceFreq(0, 1);
 	pDevice->SetStreamSourceFreq(1, 1);
+	pDevice->SetStreamSourceFreq(2, 1);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
@@ -347,12 +356,13 @@ void CheckDestroyCubeParticle(void)
 /**************************************
 セット処理
 ***************************************/
-void SetCubeParticle(D3DXVECTOR3 setPos)
+void SetCubeParticle(D3DXVECTOR3 setPos, D3DXCOLOR col)
 {
 	CUBE_PARTICLE *ptr = &cube[0];
 	D3DXVECTOR3 *pPos = &pos[0], *pRot = &rot[0];
+	D3DXCOLOR *pCol = &color[0];
 	float * pScale = &scale[0];
-	for (int i = 0; i < CUBEPARTICLE_NUM_MAX; i++, ptr++, pPos++, pScale++, pRot++)
+	for (int i = 0; i < CUBEPARTICLE_NUM_MAX; i++, ptr++, pPos++, pScale++, pRot++, pCol++)
 	{
 		if (ptr->active)
 			continue;
@@ -360,7 +370,7 @@ void SetCubeParticle(D3DXVECTOR3 setPos)
 		*pPos = setPos;
 		*pScale = 1.0f;
 		*pRot = D3DXVECTOR3(RandomRangef(0.0f, D3DX_PI), RandomRangef(0.0f, D3DX_PI), RandomRangef(0.0f, D3DX_PI));
-
+		*pCol = col;
 		ptr->cntFrame = 0;
 		D3DXVECTOR3 tmpVec = D3DXVECTOR3(RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f), RandomRangef(-1.0f, 1.0f));
 		D3DXVec3Normalize(&ptr->moveDir, &tmpVec);

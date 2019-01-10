@@ -10,6 +10,7 @@
 #include "targetSite.h"
 #include "playerMissile.h"
 #include "lockonGUI.h"
+#include "dataContainer.h"
 
 /**************************************
 マクロ定義
@@ -59,7 +60,8 @@ void UpdatePlayerModelTopView(PLAYERMODEL *player)
 	site->pos = player->pos + PLAYERTOP_SITEPOS;
 
 	//ロックオンサイトセット処理
-	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+	int lockMax = GetLockonMax();
+	for (int i = 0; i < lockMax; i++)
 	{
 		if (player->target[i].use)
 		{

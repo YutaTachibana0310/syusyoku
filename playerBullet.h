@@ -12,14 +12,15 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERBULLET_MAX				(128)
-#define PLAYERBULLET_COLLIDER_RAIDUS	(5.0f)
+#define PLAYERBULLET_MAX				(150)
+#define PLAYERBULLET_COLLIDER_RAIDUS	(8.0f)
 /**************************************
 構造体定義
 ***************************************/
 typedef struct
 {
 	bool active;
+	int id;
 
 	D3DXVECTOR3 pos, rot, scale;
 	D3DXVECTOR3 moveDir;
@@ -29,6 +30,8 @@ typedef struct
 
 	COLLIDER_SPHERE collider;
 	COLLIDER_CUBE collider2;
+
+	bool destroyRequest;
 }PLAYERBULLET;
 /**************************************
 プロトタイプ宣言
@@ -40,5 +43,6 @@ void DrawPlayerBullet(void);
 void SetPlayerBullet(D3DXVECTOR3 pos, float speed);
 PLAYERBULLET *GetPlayerBulletAdr(int id);
 void SetPlayerBulletState(int state);
+void BurstPlayerBullet(PLAYERBULLET *ptr);
 
 #endif

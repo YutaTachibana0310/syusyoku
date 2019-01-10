@@ -301,13 +301,13 @@ bool ChechHitBoundingCube(const COLLIDER_CUBE *c1, const COLLIDER_CUBE *c2)
 	D3DXVECTOR3 pos1 = *(c1->pos) + c1->offset;
 	D3DXVECTOR3 pos2 = *(c2->pos) + c2->offset;
 
-	if (pos1.x + c1->length.x < pos2.x - c1->length.x || pos1.x - c1->length.x > pos2.x + c2->length.x)
+	if (pos1.x + c1->length.x < pos2.x - c2->length.x || pos1.x - c1->length.x > pos2.x + c2->length.x)
 		return false;
 
-	if (pos1.y + c1->length.y < pos2.y - c1->length.y || pos1.y - c1->length.y > pos2.y + c2->length.y)
+	if (pos1.y + c1->length.y < pos2.y - c2->length.y || pos1.y - c1->length.y > pos2.y + c2->length.y)
 		return false;
 
-	if (pos1.z + c1->length.z < pos2.z - c1->length.z || pos1.z - c1->length.z > pos2.z + c2->length.z)
+	if (pos1.z + c1->length.z < pos2.z - c2->length.z || pos1.z - c1->length.z > pos2.z + c2->length.z)
 		return false;
 
 	return true;

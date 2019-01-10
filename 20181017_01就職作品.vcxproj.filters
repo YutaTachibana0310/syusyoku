@@ -411,6 +411,9 @@
     <ClCompile Include="collisionManager.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="hardCubeObject.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -647,12 +650,21 @@
     <ClInclude Include="collisionManager.h">
       <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="hardCubeObject.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\EFFECT\particle.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="data\EFFECT\playerBullet.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\cubeObject.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\cubeParticle.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>

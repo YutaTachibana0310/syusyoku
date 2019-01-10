@@ -1,11 +1,11 @@
 //=====================================
 //
-//キューブオブジェクトヘッダ[cubeObject.h]
+//ハードキューブオブジェクトヘッダ[hardCubeObject.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _CUBEOBJECT_H_
-#define _CUBEOBJECT_H_
+#ifndef _HARDCUBEOBJECT_H_
+#define _HARDCUBEOBJECT_H_
 
 #include "main.h"
 #include "collider.h"
@@ -17,23 +17,23 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef struct
-{
-	D3DXVECTOR3 rotValue;		//1フレームあたりの回転量
-	float moveSpeed;			//1フレームあたりの移動量
+typedef struct {
+	bool active;				//アクティブ判定
+	float moveSpeed;			//移動スピード
+	D3DXVECTOR3 rotValue;		//回転量
 	COLLIDER_CUBE collider;		//当たり判定
-	bool active;
-	float hp;
+	float hp;					//HP
+	D3DXVECTOR3 pos;			//座標
+	D3DXVECTOR3 rot;			//回転量
 
-}CUBE_OBJECT;
-
+}HARD_CUBE_OBJECT;
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitCubeObject(int num);
-void UninitCubeObject(int num);
-void UpdateCubeObject(void);
-void DrawCubeObject(void);
+void InitHardCubeObject(int num);
+void UninitHardCubeObject(int num);
+void UpdateHardCubeObject(void);
+void DrawHardCubeObject(void);
 
 void LockonCubeObject(void);
 

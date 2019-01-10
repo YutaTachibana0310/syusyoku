@@ -394,8 +394,8 @@ void CheckDestroyEnemyMissile(void)
 void DrawDebugInfoEnemyMissile(void)
 {
 	ImGui::StyleColorsDark();
-	ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
-	ImGui::SetNextWindowPos(ImVec2(5.0f, 310.0f));
+	//ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
+	//ImGui::SetNextWindowPos(ImVec2(5.0f, 310.0f));
 	ImGui::Begin("EnemyMissle");
 
 	ImGui::Text("Set       : %fmsec", CalcProgressTime(startSet, endSet));
