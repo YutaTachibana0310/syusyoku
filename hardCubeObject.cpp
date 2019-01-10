@@ -269,6 +269,14 @@ void DrawHardCubeObject(void)
 	}
 	pDevice->SetStreamSourceFreq(0, 1);
 	pDevice->SetStreamSourceFreq(1, 1);
+
+#if 0
+	HARD_CUBE_OBJECT *ptr = &cube[0];
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
+	{
+		DrawBoundingCube(&ptr->collider);
+	}
+#endif
 }
 
 /**************************************
@@ -352,9 +360,8 @@ void RegisterHardCubeToSpace(void)
 	{
 		RemoveObjectFromSpace(oft);
 
-		if (ptr->active)
+		//if (ptr->active)
 		{
-			D3DXVECTOR3 colliderPos = ptr->pos + ptr->collider.offset;
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
 		}
 	}

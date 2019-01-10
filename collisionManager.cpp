@@ -9,6 +9,7 @@
 
 #include "playerBullet.h"
 #include "cubeObject.h"
+#include "hardCubeObject.h"
 
 /**************************************
 マクロ定義
@@ -16,8 +17,8 @@
 #define COLLISION_DIVISIONSPACE_LEVEL_MAX		(9)			//空間レベルの最大レベル
 #define COLLISION_REGION_LEFT					(-500.0f)	//判定空間の左端
 #define COLLISION_REGION_RIGHT					(500.0f)	//判定空間の右端
-#define COLLISION_REGION_TOP					(3000.0f)	//判定空間の上端
-#define COLLISION_REGION_BOTTOM					(-3000.0f)	//判定空間の下端
+#define COLLISION_REGION_TOP					(-3000.0f)	//判定空間の上端
+#define COLLISION_REGION_BOTTOM					(3000.0f)	//判定空間の下端
 
 /**************************************
 構造体定義
@@ -31,10 +32,11 @@ static DWORD cellNum;					//空間数の総和
 static CCell **cellArray[OFT_ID_MAX];	//各オブジェクトが登録される空間の配列
 
 //単位空間の幅
-static const float UnitWidth = (COLLISION_REGION_TOP - COLLISION_REGION_BOTTOM) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX);
+static const float UnitWidth = (COLLISION_REGION_RIGHT - COLLISION_REGION_LEFT) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX);
 
 //単位空間の高さ
-static const float UnitHeight = (COLLISION_REGION_RIGHT - COLLISION_REGION_LEFT) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX);
+static const float UnitHeight = (COLLISION_REGION_BOTTOM - COLLISION_REGION_TOP) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX);
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -46,8 +48,12 @@ DWORD BitSeparate32(DWORD n);												//ビット分割処理
 WORD Get2DMortonNumber(WORD x, WORD y);										//2Dモートン番号算出処理
 DWORD GetPointElem(float posX, float posY);									//座標→線形4分木要素番号変換処理
 
-void CheckCollisionPlayerBullet(void);										//プレイヤーバレットの衝突判定
-void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet);	//プレイヤーバレットとキューブの判定
+void CheckCollisionPlayerBullet(void);												//プレイヤーバレットの衝突判定
+bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet);		//プレイヤーバレットとキューブの判定(親空間Ver)
+bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet);		//プレイヤーバレットとキューブの判定(子空間Ver)
+bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, PLAYERBULLET *bullet);	//プレイヤーバレットとハードキューブの判定(親空間Ver)
+bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet);	//プレイヤーバレットとハードキューブの判定(子空間Ver)
+
 /**************************************
 初期化処理
 ***************************************/
@@ -61,7 +67,7 @@ void InitCollisionManager(int num)
 	}
 
 	//空間配列のメモリを確保
-	cellNum = (spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX] - 1) / 3;
+	cellNum = (spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX] * 4 - 1) / 3;
 	for (int OFTid = 0; OFTid < OFT_ID_MAX; OFTid++)
 	{
 		cellArray[OFTid] = (CCell**)malloc(sizeof(CCell*) * cellNum);
@@ -106,12 +112,24 @@ void CheckCollisionPlayerBullet(void)
 
 		//空間に登録されているバレット全てに対して判定
 		OBJECT_FOR_TREE *playerBulletOFT = cellArray[OFT_PLAYERBULLET][cntCell]->latestObj;
-		while (playerBulletOFT != NULL)
+		for( ; playerBulletOFT != NULL; playerBulletOFT = playerBulletOFT->next)
 		{
 			PLAYERBULLET *playerBullet = (PLAYERBULLET*)playerBulletOFT->object;
-			CheckCollisionPlayerBulletAndCube(cntCell, playerBullet);
-
-			playerBulletOFT = playerBulletOFT->next;
+			//キューブオブジェクトとの判定
+			{
+				bool result;
+				result = CheckCollisionPlayerBulletAndCubeLower(cntCell, playerBullet);
+				if (result)
+					continue;
+			}
+			
+			//ハードキューブとの判定
+			{
+				bool result;
+				result = CheckCollisionPlayerBulletAndHardCubeLower(cntCell, playerBullet);
+				if (result)
+					continue;
+			}
 		}
 	}
 }
@@ -119,15 +137,23 @@ void CheckCollisionPlayerBullet(void)
 /**************************************
 プレイヤーバレットとキューブオブジェクトの当たり判定
 ***************************************/
-void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet)
+bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet)
 {
 	//指定された空間が最大空間数を超えている判定
 	if (elem >= cellNum)
-		return;
+		return false;
+
+	//親空間で判定
+	{
+		bool result;
+		result = CheckCollisionPlayerBulletAndCubeUpper(elem, bullet);
+		if (result)
+			return true;
+	}
 
 	//空間が作成されていない場合の判定
 	if (!cellArray[OFT_CUBEOBJECT][elem])
-		return;
+		return false;
 
 	//指定された空間内のキューブオブジェクトに対して判定
 	if (cellArray[OFT_CUBEOBJECT][elem]->latestObj != NULL)
@@ -140,6 +166,8 @@ void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet)
 			if (ChechHitBoundingCube(&bullet->collider2, &cube->collider))
 			{
 				cube->hp -= 1.0f;
+				bullet->destroyRequest = true;
+				return true;
 			}
 
 			//登録されている次のキューブへ
@@ -151,8 +179,146 @@ void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet)
 	for (int i = 0; i < 4; i++)
 	{
 		DWORD nextElem = elem * 4 + 1 + i;
-		CheckCollisionPlayerBulletAndCube(nextElem, bullet);
+		bool result = CheckCollisionPlayerBulletAndCubeLower(nextElem, bullet);
+		if (!result)
+			return true;
 	}
+
+	return false;
+}
+
+/**************************************
+プレイヤーバレットとキューブオブジェクトの当たり判定
+***************************************/
+bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet)
+{
+	//指定された空間から親空間へジャンプ
+	elem = (elem - 1) >> 2;
+
+	while (elem < cellNum)
+	{
+		//空間が作成されていない場合の判定
+		if (!cellArray[OFT_CUBEOBJECT][elem])
+			return false;
+
+		//指定されて空間内のオブジェクトに対して判定
+		if (cellArray[OFT_CUBEOBJECT][elem]->latestObj != NULL)
+		{
+			OBJECT_FOR_TREE *cubeOFT = cellArray[OFT_CUBEOBJECT][elem]->latestObj;
+			while (cubeOFT != NULL)
+			{
+				//衝突判定
+				CUBE_OBJECT *cube = (CUBE_OBJECT*)cubeOFT->object;
+				if (ChechHitBoundingCube(&bullet->collider2, &cube->collider))
+				{
+					cube->hp -= 1.0f;
+					bullet->destroyRequest = true;
+					return false;
+				}
+
+				//次のキューブへ
+				cubeOFT = cubeOFT->next;
+			}
+		}
+
+		//指定された空間から親空間へジャンプ
+		elem = (elem - 1) >> 2;
+	}
+
+	return false;
+}
+
+/**************************************
+プレイヤーバレットとハードキューブの当たり判定(子空間Ver)
+***************************************/
+bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, PLAYERBULLET *bullet)
+{
+	//指定された空間が最大空間数を超えている判定
+	if (elem >= cellNum)
+		return false;
+
+	//親空間での判定
+	{
+		bool result;
+		result = CheckCollisionPlayerBulletAndHardCubeUpper(elem, bullet);
+		if (result)
+			return true;
+	}
+	
+	//空間が作成されていない場合の判定
+	if (!cellArray[OFT_HARDCUBE][elem])
+		return false;
+
+	//指定されて空間内のオブジェクトに対して判定
+	if (cellArray[OFT_HARDCUBE][elem]->latestObj != NULL)
+	{
+		OBJECT_FOR_TREE *hardCubeOFT = cellArray[OFT_HARDCUBE][elem]->latestObj;
+		while (hardCubeOFT != NULL)
+		{
+			//衝突判定
+			HARD_CUBE_OBJECT *hardCube = (HARD_CUBE_OBJECT*)hardCubeOFT->object;
+			if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
+			{
+				BurstPlayerBullet(bullet);
+				return true;
+			}
+
+			//次のキューブへ
+			hardCubeOFT = hardCubeOFT->next;
+		}
+	}
+
+	//子空間でも判定
+	for (int i = 0; i < 4; i++)
+	{
+		DWORD nextElem = elem * 4 + 1 + i;
+		bool result;
+		result = CheckCollisionPlayerBulletAndHardCubeLower(nextElem, bullet);
+		if (result)
+			return true;
+	}
+
+	return false;
+}
+
+/**************************************
+プレイヤーバレットとハードキューブの当たり判定(親空間Ver)
+***************************************/
+bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet)
+{
+	//指定された空間から親空間へジャンプ
+	elem = (elem - 1) >> 2;
+
+	while (elem < cellNum)
+	{	
+		//空間が作成されていない場合の判定
+		if (!cellArray[OFT_HARDCUBE][elem])
+			return false;
+
+		//指定されて空間内のオブジェクトに対して判定
+		if (cellArray[OFT_HARDCUBE][elem]->latestObj != NULL)
+		{
+			OBJECT_FOR_TREE *hardCubeOFT = cellArray[OFT_HARDCUBE][elem]->latestObj;
+			while (hardCubeOFT != NULL)
+			{
+				//衝突判定
+				HARD_CUBE_OBJECT *hardCube = (HARD_CUBE_OBJECT*)hardCubeOFT->object;
+				if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
+				{
+					BurstPlayerBullet(bullet);
+					return true;
+				}
+
+				//次のキューブへ
+				hardCubeOFT = hardCubeOFT->next;
+			}
+		}
+
+		//指定された空間から親空間へジャンプ
+		elem = (elem - 1) >> 2;
+	}
+
+	return false;
 }
 
 /**************************************
@@ -162,9 +328,9 @@ void CheckCollisionPlayerBulletAndCube(DWORD elem, PLAYERBULLET *bullet)
 bool RegisterObjectToSpace(COLLIDER_CUBE *collider, OBJECT_FOR_TREE *obj, OFT_ID id)
 {
 	float left = collider->pos->x - collider->length.x;
-	float top = collider->pos->y + collider->length.y;
+	float top = collider->pos->y - collider->length.z;
 	float right = collider->pos->x + collider->length.x;
-	float bottom = collider->pos->y - collider->length.y;
+	float bottom = collider->pos->y + collider->length.z;
 
 	DWORD elem = GetMortonNumber(left, top, right, bottom);
 	if (elem < cellNum)
@@ -214,13 +380,13 @@ DWORD GetMortonNumber(float left, float top, float right, float bottom)
 	unsigned int hiLevel = 0;
 	for (unsigned int i = 0; i < COLLISION_DIVISIONSPACE_LEVEL_MAX; i++)
 	{
-		DWORD check = (def >> (i * 2)) & 0x03;
+		DWORD check = (def >> (i * 2)) & 0x3;
 		if (check != 0)
 			hiLevel = i + 1;
 	}
-	DWORD spaceIndex = rb >> (hiLevel * 2);
+	DWORD baseNum = rb >> (hiLevel * 2);
 	DWORD addNum = (spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX - hiLevel] - 1) / 3;
-	spaceIndex += addNum;
+	DWORD spaceIndex = baseNum + addNum;
 
 	if (spaceIndex > cellNum)
 		return 0xffffffff;
@@ -244,7 +410,7 @@ DWORD BitSeparate32(DWORD n)
 ***************************************/
 WORD Get2DMortonNumber(WORD x, WORD y)
 {
-	return (WORD)(BitSeparate32(x) | (BitSeparate32(y) << 1));
+	return (WORD)(BitSeparate32(x) | (WORD)(BitSeparate32(y) << 1));
 }
 
 /**************************************
@@ -252,7 +418,7 @@ WORD Get2DMortonNumber(WORD x, WORD y)
 ***************************************/
 DWORD GetPointElem(float posX, float posY)
 {
-	return Get2DMortonNumber((WORD)((posX - COLLISION_REGION_LEFT) / UnitWidth), (WORD)((posY + COLLISION_REGION_TOP) / UnitHeight));
+	return Get2DMortonNumber((WORD)((posX - COLLISION_REGION_LEFT) / UnitWidth), (WORD)((posY - COLLISION_REGION_TOP) / UnitHeight));
 }
 
 /**************************************

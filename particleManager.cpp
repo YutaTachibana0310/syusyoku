@@ -19,11 +19,14 @@
 ***************************************/
 #define PARTICLE_SHADER_PATH	"particle.fx"
 
-#define PARTICLE_EMIT_NUM_FIRE		(10)
-#define PARTICLE_EMIT_NUM_SMOG		(10)
-#define PARTICLE_EMIT_NUM_FLARE		(20)
-#define PARTICLE_EMIT_NUM_CUBE		(40)
-#define PARTICLE_EMIT_NUM_LUMINE	(100)
+#define PARTICLE_EMMITT_NUM_FIRE		(10)
+#define PARTICLE_EMMITT_NUM_SMOG		(10)
+#define PARTICLE_EMMITT_NUM_FLARE		(20)
+#define PARTICLE_EMMITT_NUM_CUBE		(40)
+#define PARTICLE_EMMITT_NUM_LUMINE		(20)
+#define PARTICLE_EMMITT_NUM_PLAYERBULLET (10)
+
+#define PARTICLE_CUBE_COLOR			(D3DXCOLOR(0.2f, 0.9f, 0.7f, 1.0f))
 
 /**************************************
 構造体定義
@@ -142,7 +145,7 @@ void DrawParticleManager(void)
 void SetEnemyExplosion(D3DXVECTOR3 pos)
 {
 	bool result = false;
-	for (int j = 0; j < PARTICLE_EMIT_NUM_FLARE; j++)
+	for (int j = 0; j < PARTICLE_EMMITT_NUM_FLARE; j++)
 	{
 		result = SetExplosionFlare(&pos);
 
@@ -150,12 +153,12 @@ void SetEnemyExplosion(D3DXVECTOR3 pos)
 			break;
 	}
 
-	for (int j = 0; j < PARTICLE_EMIT_NUM_FIRE; j++)
+	for (int j = 0; j < PARTICLE_EMMITT_NUM_FIRE; j++)
 	{
 		SetExplosionFire(&pos);
 
 	}
-	for (int j = 0; j < PARTICLE_EMIT_NUM_SMOG; j++)
+	for (int j = 0; j < PARTICLE_EMMITT_NUM_SMOG; j++)
 	{
 		SetExplosionSmog(&pos);
 	}
@@ -166,12 +169,23 @@ void SetEnemyExplosion(D3DXVECTOR3 pos)
 ***************************************/
 void SetCubeExplosion(D3DXVECTOR3 pos)
 {
-	for (int i = 0; i < PARTICLE_EMIT_NUM_CUBE; i++)
+	for (int i = 0; i < PARTICLE_EMMITT_NUM_CUBE; i++)
 	{
-		SetCubeParticle(pos);
+		SetCubeParticle(pos, PARTICLE_CUBE_COLOR);
 	}
 
-	for (int i = 0; i < PARTICLE_EMIT_NUM_LUMINE; i++)
+	for (int i = 0; i < PARTICLE_EMMITT_NUM_LUMINE; i++)
+	{
+		SetExplosionLumine(&pos);
+	}
+}
+
+/**************************************
+プレイヤーバレットエクスプロージョンセット処理
+***************************************/
+void SetPlayerBulletExplosion(D3DXVECTOR3 pos)
+{
+	for (int i = 0; i < PARTICLE_EMMITT_NUM_PLAYERBULLET; i++)
 	{
 		SetExplosionLumine(&pos);
 	}

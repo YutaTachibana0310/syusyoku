@@ -10,6 +10,7 @@
 #include "playerBulletTrail.h"
 #include "dataContainer.h"
 #include "collisionManager.h"
+#include "particleFramework.h"
 
 #include "debugWindow.h"
 
@@ -91,6 +92,8 @@ void InitPlayerBullet(int num)
 	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
+		ptr->id = i;
+
 		ptr->pos = D3DXVECTOR3(9999.9f, 9999.9f, 9999.9f);
 		ptr->rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->scale = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
@@ -102,6 +105,8 @@ void InitPlayerBullet(int num)
 		ptr->collider2.pos = &ptr->pos;
 		ptr->collider2.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->collider2.length = D3DXVECTOR3(PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS, PLAYERBULLET_COLLIDER_RAIDUS);
+
+		ptr->destroyRequest = false;
 
 		CreateOFT(oft, (void*)ptr);
 	}
@@ -140,6 +145,15 @@ void UpdatePlayerBullet(void)
 	{
 		if (!ptr->active)
 		{
+			continue;
+		}
+
+		//Á–Å”»’è
+		if (ptr->destroyRequest)
+		{
+			ptr->active = false;
+			ptr->destroyRequest = false;
+			RemoveObjectFromSpace(oft);
 			continue;
 		}
 
@@ -233,7 +247,7 @@ void DrawPlayerBullet(void)
 		{
 			continue;
 		}
-		DrawBoundingSphere(&ptr->collider);
+		DrawBoundingCube(&ptr->collider2);
 	}
 #endif
 }
@@ -521,3 +535,13 @@ void CreatePlayerBulletVertexBuffer(void)
 	return;
 }
 
+/**************************************
+ƒvƒŒƒCƒ„[”š”­ˆ—
+***************************************/
+void BurstPlayerBullet(PLAYERBULLET *ptr)
+{
+	/*RemoveObjectFromSpace(&objectForTree[ptr->id]);
+	ptr->active = false;*/
+	ptr->destroyRequest = true;
+	SetPlayerBulletExplosion(ptr->pos);
+}

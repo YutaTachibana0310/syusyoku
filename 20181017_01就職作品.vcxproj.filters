@@ -664,5 +664,8 @@
     <FxCompile Include="data\EFFECT\cubeObject.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
+    <FxCompile Include="data\EFFECT\cubeParticle.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

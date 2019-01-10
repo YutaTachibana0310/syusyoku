@@ -409,7 +409,6 @@ void RegisterCubeObjectToSpace(void)
 		
 		if(ptr->active)
 		{
-			D3DXVECTOR3 colliderPos = *pPos + ptr->collider.offset;
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_CUBEOBJECT);
 		}
 	}
