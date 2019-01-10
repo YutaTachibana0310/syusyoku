@@ -38,7 +38,7 @@ static const int PowerUpBorder[DATACONTAINER_POWEUP_MAX] = {
 
 //各ロックオンレベルでの最大ロックオン数
 static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
-	32, 48, 64, 80
+	12, 24, 36, 48
 };
 
 /**************************************
