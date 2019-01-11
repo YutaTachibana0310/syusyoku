@@ -36,5 +36,6 @@ void UpdateCubeObject(void);
 void DrawCubeObject(void);
 
 void LockonCubeObject(void);
+void DamageAllCubeObject(void);
 
 #endif
