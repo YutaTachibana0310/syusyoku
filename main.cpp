@@ -423,7 +423,7 @@ void Update(void)
 	}
 
 	UpdateCamera();
-
+	UpdateLight();
 	UpdateSceneManager();
 }
 

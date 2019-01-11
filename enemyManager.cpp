@@ -89,7 +89,8 @@ void DrawEnemyManager(void)
 {
 	DrawMiddleEnemy();
 	DrawEnemyMissile();
-	DrawSmallEnDrawCubeObject();
+	DrawSmallEnemy();
+	DrawCubeObject();
 	DrawHardCubeObject();
 	DrawBonusCube();
 
