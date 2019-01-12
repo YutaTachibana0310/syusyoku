@@ -414,6 +414,9 @@
     <ClCompile Include="hardCubeObject.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
     </ClCompile>
+    <ClCompile Include="bonusCube.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -651,6 +654,9 @@
       <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
     </ClInclude>
     <ClInclude Include="hardCubeObject.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="bonusCube.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
     </ClInclude>
   </ItemGroup>

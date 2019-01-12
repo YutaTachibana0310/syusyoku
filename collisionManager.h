@@ -41,6 +41,7 @@ enum OFT_ID
 	OFT_PLAYERBULLET,
 	OFT_CUBEOBJECT,
 	OFT_HARDCUBE,
+	OFT_BONUSCUBE,
 	OFT_ID_MAX
 };
 /**************************************

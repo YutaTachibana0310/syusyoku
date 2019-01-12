@@ -77,7 +77,7 @@ float4 psMain( VS_OUT In ) : COLOR0 {
 	float4 color = RC * (light1Diffuse * power1 + light1Ambient);
 	color *= light2Diffuse * power2 + light2Ambient;
 	color *= light3Diffuse * power3 + light3Ambient;
-	color.a = 1.0f;
+	//color.a = 1.0f;
 	return color;
 }
 

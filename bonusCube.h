@@ -1,11 +1,11 @@
 //=====================================
 //
-//ハードキューブオブジェクトヘッダ[hardCubeObject.h]
+//ボーナスキューブヘッダ[bonusCube.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _HARDCUBEOBJECT_H_
-#define _HARDCUBEOBJECT_H_
+#ifndef _BONUSCUBE_H_
+#define _BONUSCUBE_H_
 
 #include "main.h"
 #include "collider.h"
@@ -25,15 +25,16 @@ typedef struct {
 	float hp;					//HP
 	D3DXVECTOR3 pos;			//座標
 	D3DXVECTOR3 rot;			//回転量
-}HARD_CUBE_OBJECT;
+}BONUS_CUBE_OBJECT;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitHardCubeObject(int num);
-void UninitHardCubeObject(int num);
-void UpdateHardCubeObject(void);
-void DrawHardCubeObject(void);
+void InitBonusCube(int num);
+void UninitBonusCube(int num);
+void UpdateBonusCube(void);
+void DrawBonusCube(void);
 
-void LockonHardCubeObject(void);
+void LockOnBonusCube(void);
 
 #endif
