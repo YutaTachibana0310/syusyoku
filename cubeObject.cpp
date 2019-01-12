@@ -18,7 +18,7 @@
 #define CUBEOBJECT_SIZE					(10.0f)
 #define CUBEOBJECT_VTX_NUM				(24)
 #ifdef _DEBUG
-#define CUBEOBJECT_NUM_MAX				(200)
+#define CUBEOBJECT_NUM_MAX				(2048)
 #else
 #define CUBEOBJECT_NUM_MAX				(2048)
 #endif

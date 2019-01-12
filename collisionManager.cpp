@@ -10,11 +10,14 @@
 #include "playerBullet.h"
 #include "cubeObject.h"
 #include "hardCubeObject.h"
+#include "bonusCube.h"
+
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define COLLISION_DIVISIONSPACE_LEVEL_MAX		(9)			//空間レベルの最大レベル
+#define COLLISION_DIVISIONSPACE_LEVEL_MAX		(6)			//空間レベルの最大レベル
 #define COLLISION_REGION_LEFT					(-500.0f)	//判定空間の左端
 #define COLLISION_REGION_RIGHT					(500.0f)	//判定空間の右端
 #define COLLISION_REGION_TOP					(-5000.0f)	//判定空間の上端
@@ -37,6 +40,8 @@ static const float UnitWidth = (COLLISION_REGION_RIGHT - COLLISION_REGION_LEFT) 
 //単位空間の高さ
 static const float UnitHeight = (COLLISION_REGION_BOTTOM - COLLISION_REGION_TOP) / (1 << COLLISION_DIVISIONSPACE_LEVEL_MAX);
 
+static DWORD cntCheck = 0;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -49,10 +54,16 @@ WORD Get2DMortonNumber(WORD x, WORD y);										//2Dモートン番号算出処理
 DWORD GetPointElem(float posX, float posY);									//座標→線形4分木要素番号変換処理
 
 void CheckCollisionPlayerBullet(void);												//プレイヤーバレットの衝突判定
-bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet);		//プレイヤーバレットとキューブの判定(親空間Ver)
+bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet, bool isCheckedUpper);		//プレイヤーバレットとキューブの判定(親空間Ver)
 bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet);		//プレイヤーバレットとキューブの判定(子空間Ver)
-bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, PLAYERBULLET *bullet);	//プレイヤーバレットとハードキューブの判定(親空間Ver)
-bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet);	//プレイヤーバレットとハードキューブの判定(子空間Ver)
+
+void CheckCollisionHardCube(void);															//ハードキューブの衝突判定
+bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, HARD_CUBE_OBJECT *hardCube, bool isCheckedUpper);	//プレイヤーバレットとハードキューブの判定(親空間Ver)
+bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, HARD_CUBE_OBJECT *hardCube);	//プレイヤーバレットとハードキューブの判定(子空間Ver)
+
+bool CheckCollisionBonusCube(void);
+bool CheckCollisionBonusCubeAndPlayerBulletLower(DWORD elem, BONUS_CUBE_OBJECT *bonusCube, bool isCheckedUpper);
+bool CheckCollisionBonusCubeAndPlayerBulletUpper(DWORD elem, BONUS_CUBE_OBJECT *bonusCube);
 
 /**************************************
 初期化処理
@@ -92,7 +103,20 @@ void UninitCollisionManager(int num)
 ***************************************/
 void UpdateCollisionManager(void)
 {
+	static DWORD cnt = 0, cntFrame = 0;
+
 	CheckCollisionPlayerBullet();
+	CheckCollisionHardCube();
+	CheckCollisionBonusCube();
+	
+	ImGui::Begin("CollisionManager");
+	ImGui::Text("CheckCount : %d", cnt);
+
+	ImGui::End();
+
+	if (++cntFrame % 20 == 0)
+		cnt = cntCheck;
+	cntCheck = 0;
 }
 
 /**************************************
@@ -118,15 +142,7 @@ void CheckCollisionPlayerBullet(void)
 			//キューブオブジェクトとの判定
 			{
 				bool result;
-				result = CheckCollisionPlayerBulletAndCubeLower(cntCell, playerBullet);
-				if (result)
-					continue;
-			}
-			
-			//ハードキューブとの判定
-			{
-				bool result;
-				result = CheckCollisionPlayerBulletAndHardCubeLower(cntCell, playerBullet);
+				result = CheckCollisionPlayerBulletAndCubeLower(cntCell, playerBullet,false);
 				if (result)
 					continue;
 			}
@@ -135,15 +151,16 @@ void CheckCollisionPlayerBullet(void)
 }
 
 /**************************************
-プレイヤーバレットとキューブオブジェクトの当たり判定
+プレイヤーバレットとキューブオブジェクトの衝突判定
 ***************************************/
-bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet)
+bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet, bool isCheckedUpper)
 {
 	//指定された空間が最大空間数を超えている判定
 	if (elem >= cellNum)
 		return false;
 
 	//親空間で判定
+	if(!isCheckedUpper)
 	{
 		bool result;
 		result = CheckCollisionPlayerBulletAndCubeUpper(elem, bullet);
@@ -163,6 +180,7 @@ bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet)
 		{
 			//衝突判定
 			CUBE_OBJECT *cube = (CUBE_OBJECT*)cubeOFT->object;
+			cntCheck++;
 			if (ChechHitBoundingCube(&bullet->collider2, &cube->collider))
 			{
 				cube->hp -= 1.0f;
@@ -179,7 +197,7 @@ bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet)
 	for (int i = 0; i < 4; i++)
 	{
 		DWORD nextElem = elem * 4 + 1 + i;
-		bool result = CheckCollisionPlayerBulletAndCubeLower(nextElem, bullet);
+		bool result = CheckCollisionPlayerBulletAndCubeLower(nextElem, bullet, true);
 		if (!result)
 			return true;
 	}
@@ -188,7 +206,7 @@ bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet)
 }
 
 /**************************************
-プレイヤーバレットとキューブオブジェクトの当たり判定
+プレイヤーバレットとキューブオブジェクトの衝突判定
 ***************************************/
 bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet)
 {
@@ -206,6 +224,7 @@ bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet)
 			{
 				//衝突判定
 				CUBE_OBJECT *cube = (CUBE_OBJECT*)cubeOFT->object;
+				cntCheck++;
 				if (ChechHitBoundingCube(&bullet->collider2, &cube->collider))
 				{
 					cube->hp -= 1.0f;
@@ -223,43 +242,68 @@ bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet)
 }
 
 /**************************************
-プレイヤーバレットとハードキューブの当たり判定(子空間Ver)
+ハードキューブの衝突判定
 ***************************************/
-bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, PLAYERBULLET *bullet)
+void CheckCollisionHardCube(void)
+{
+	for (DWORD cntCell = 0; cntCell < cellNum; cntCell++)
+	{
+		//空間が作成されていない場合の判定
+		if (!cellArray[OFT_HARDCUBE][cntCell])
+			continue;
+
+		//空間にオブジェクトが登録されていない場合の判定
+		if (cellArray[OFT_HARDCUBE][cntCell]->latestObj == NULL)
+			continue;
+
+		//空間に登録されているバレット全てに対して判定
+		OBJECT_FOR_TREE *hardCubeOFT = cellArray[OFT_HARDCUBE][cntCell]->latestObj;
+		for (; hardCubeOFT != NULL; hardCubeOFT = hardCubeOFT->next)
+		{
+			HARD_CUBE_OBJECT *hardCube = (HARD_CUBE_OBJECT*)hardCubeOFT->object;
+			CheckCollisionPlayerBulletAndHardCubeLower(cntCell, hardCube, false);
+		}
+	}
+}
+
+/**************************************
+プレイヤーバレットとハードキューブの衝突判定(子空間Ver)
+***************************************/
+bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem,	HARD_CUBE_OBJECT *hardCube, bool isCheckedUpper)
 {
 	//指定された空間が最大空間数を超えている判定
 	if (elem >= cellNum)
 		return false;
 
 	//親空間での判定
+	if(isCheckedUpper)
 	{
 		bool result;
-		result = CheckCollisionPlayerBulletAndHardCubeUpper(elem, bullet);
+		result = CheckCollisionPlayerBulletAndHardCubeUpper(elem, hardCube);
 		if (result)
 			return true;
 	}
 	
 	//空間が作成されていない場合の判定
-	if (!cellArray[OFT_HARDCUBE][elem])
+	if (!cellArray[OFT_PLAYERBULLET][elem])
 		return false;
 
 	//指定されて空間内のオブジェクトに対して判定
-	if (cellArray[OFT_HARDCUBE][elem]->latestObj != NULL)
+	if (cellArray[OFT_PLAYERBULLET][elem]->latestObj != NULL)
 	{
-		OBJECT_FOR_TREE *hardCubeOFT = cellArray[OFT_HARDCUBE][elem]->latestObj;
-		while (hardCubeOFT != NULL)
+		OBJECT_FOR_TREE *bulletOFT = cellArray[OFT_PLAYERBULLET][elem]->latestObj;
+		while (bulletOFT != NULL)
 		{
 			//衝突判定
-			HARD_CUBE_OBJECT *hardCube = (HARD_CUBE_OBJECT*)hardCubeOFT->object;
+			PLAYERBULLET *bullet = (PLAYERBULLET*)bulletOFT->object;
 			if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
 			{
 				BurstPlayerBullet(bullet);
 				hardCube->hp -= 1.0f;
-				return true;
 			}
 
 			//次のキューブへ
-			hardCubeOFT = hardCubeOFT->next;
+			bulletOFT = bulletOFT->next;
 		}
 	}
 
@@ -268,34 +312,32 @@ bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem, PLAYERBULLET *bullet
 	{
 		DWORD nextElem = elem * 4 + 1 + i;
 		bool result;
-		result = CheckCollisionPlayerBulletAndHardCubeLower(nextElem, bullet);
-		if (result)
-			return true;
+		result = CheckCollisionPlayerBulletAndHardCubeLower(nextElem, hardCube, true);
 	}
 
 	return false;
 }
 
 /**************************************
-プレイヤーバレットとハードキューブの当たり判定(親空間Ver)
+プレイヤーバレットとハードキューブの衝突判定(親空間Ver)
 ***************************************/
-bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet)
+bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, HARD_CUBE_OBJECT *hardCube)
 {
 	//ルート空間にジャンプするまでループ
 	for(elem = (elem - 1) >> 2; elem < cellNum; elem = (elem - 1) >> 2)
 	{	
 		//空間が作成されていない場合の判定
-		if (!cellArray[OFT_HARDCUBE][elem])
+		if (!cellArray[OFT_PLAYERBULLET][elem])
 			continue;
 
 		//指定されて空間内のオブジェクトに対して判定
-		if (cellArray[OFT_HARDCUBE][elem]->latestObj != NULL)
+		if (cellArray[OFT_PLAYERBULLET][elem]->latestObj != NULL)
 		{
-			OBJECT_FOR_TREE *hardCubeOFT = cellArray[OFT_HARDCUBE][elem]->latestObj;
-			while (hardCubeOFT != NULL)
+			OBJECT_FOR_TREE *bulletOFT = cellArray[OFT_PLAYERBULLET][elem]->latestObj;
+			while (bulletOFT != NULL)
 			{
 				//衝突判定
-				HARD_CUBE_OBJECT *hardCube = (HARD_CUBE_OBJECT*)hardCubeOFT->object;
+				PLAYERBULLET *bullet = (PLAYERBULLET*)bulletOFT->object;
 				if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
 				{
 					BurstPlayerBullet(bullet);
@@ -304,7 +346,7 @@ bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet
 				}
 
 				//次のキューブへ
-				hardCubeOFT = hardCubeOFT->next;
+				bulletOFT = bulletOFT->next;
 			}
 		}
 	}
@@ -312,6 +354,108 @@ bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, PLAYERBULLET *bullet
 	return false;
 }
 
+/**************************************
+ボーナスキューブの衝突判定
+***************************************/
+bool CheckCollisionBonusCube(void)
+{
+	for (DWORD cntCell = 0; cntCell < cellNum; cntCell++)
+	{
+		//空間が作成されていない場合の判定
+		if (!cellArray[OFT_BONUSCUBE][cntCell])
+			continue;
+
+		//空間にオブジェクトが登録されていない場合の判定
+		if (cellArray[OFT_BONUSCUBE][cntCell]->latestObj == NULL)
+			continue;
+
+		//空間に登録されているキューブ全てに対して判定
+		OBJECT_FOR_TREE *bonusCubeOFT = cellArray[OFT_BONUSCUBE][cntCell]->latestObj;
+		for (; bonusCubeOFT != NULL; bonusCubeOFT = bonusCubeOFT->next)
+		{
+			BONUS_CUBE_OBJECT *bonusCube = (BONUS_CUBE_OBJECT*)bonusCubeOFT->object;
+			CheckCollisionBonusCubeAndPlayerBulletLower(cntCell, bonusCube, false);
+		}
+	}
+
+	return false;
+}
+
+/**************************************
+ボーナスキューブとプレイヤーバレットの衝突判定（子空間Ver)
+***************************************/
+bool CheckCollisionBonusCubeAndPlayerBulletLower(DWORD elem, BONUS_CUBE_OBJECT *bonusCube, bool isCheckedUpper)
+{
+	//空間数の判定
+	if (elem >= cellNum)
+		return false;
+
+	//親空間での判定
+	if (!isCheckedUpper)
+	{
+		CheckCollisionBonusCubeAndPlayerBulletUpper(elem, bonusCube);
+	}
+
+	//空間が作成されていない場合の判定
+	if (!cellArray[OFT_PLAYERBULLET][elem])
+		return false;
+
+	//空間に登録されているバレットと判定
+	if (cellArray[OFT_PLAYERBULLET][elem]->latestObj != NULL)
+	{
+		OBJECT_FOR_TREE *bulletOFT = cellArray[OFT_PLAYERBULLET][elem]->latestObj;
+		for (; bulletOFT != NULL; bulletOFT = bulletOFT->next)
+		{
+			PLAYERBULLET *bullet = (PLAYERBULLET*)bulletOFT->object;
+			if (ChechHitBoundingCube(&bullet->collider2, &bonusCube->collider))
+			{
+				BurstPlayerBullet(bullet);
+				bonusCube->hp -= 1.0f;
+			}
+		}
+	}
+
+	//子空間でも判定
+	for (int i = 0; i < 4; i++)
+	{
+		DWORD nextElem = elem * 4 + 1 + i;
+		CheckCollisionBonusCubeAndPlayerBulletLower(nextElem, bonusCube, true);
+	}
+
+	return false;
+}
+
+/**************************************
+ボーナスキューブとプレイヤーバレットの衝突判定（親空間Ver）
+***************************************/
+bool CheckCollisionBonusCubeAndPlayerBulletUpper(DWORD elem, BONUS_CUBE_OBJECT *bonusCube)
+{
+	//ルート空間へたどるまでループ
+	for (elem = (elem - 1) >> 2; elem < cellNum; elem = (elem - 1) >> 2)
+	{
+		//空間が作成されているか判定
+		if (!cellArray[OFT_PLAYERBULLET][elem])
+			continue;
+
+		if (cellArray[OFT_PLAYERBULLET][elem]->latestObj != NULL)
+		{
+			OBJECT_FOR_TREE *bulletOFT = cellArray[OFT_PLAYERBULLET][elem]->latestObj;
+			while (bulletOFT != NULL)
+			{
+				PLAYERBULLET *bullet = (PLAYERBULLET*)bulletOFT->object;
+				if (ChechHitBoundingCube(&bullet->collider2, &bonusCube->collider))
+				{
+					BurstPlayerBullet(bullet);
+					bonusCube->hp -= 1.0f;
+				}
+
+				bulletOFT = bulletOFT->next;
+			}
+		}
+	}
+
+	return false;
+}
 /**************************************
 オブジェクト登録処理
 ***************************************/

@@ -117,7 +117,7 @@ void InitBonusCube(int num)
 		ptr->rotValue *= 0.01f;
 		ptr->moveSpeed = RandomRangef(-10.0f, -5.0f);
 		ptr->hp = BONUSCUBE_INIT_HP;
-		ptr->active = false;
+		ptr->active = true;
 
 		ptr->collider.pos = &ptr->pos;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
