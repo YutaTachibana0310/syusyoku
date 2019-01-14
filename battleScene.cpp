@@ -21,6 +21,7 @@
 #include "enemyManager.h"
 #include "playerBulletTrail.h"
 #include "collisionManager.h"
+#include "battleController.h"
 
 #include "debugWindow.h"
 
@@ -65,6 +66,8 @@ HRESULT InitBattleScene(int num)
 		SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
+	InitBattleController(num);
+
 	InitGUIManager(num);
 	InitCloud(num);
 	InitTargetSite(num);
@@ -86,6 +89,8 @@ HRESULT InitBattleScene(int num)
 ******************************************************************************/
 void UninitBattleScene(int num)
 {
+	UninitBattleController(num);
+
 	UninitCloud(num);
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
@@ -104,7 +109,7 @@ void UninitBattleScene(int num)
 ******************************************************************************/
 void UpdateBattleScene(void)
 {
-	UpdateCloud();
+	UpdateBattleController();
 
 	GetTimerCount(&startPlayerUpdate);
 	UpdatePlayerBullet();

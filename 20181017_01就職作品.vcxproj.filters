@@ -417,6 +417,12 @@
     <ClCompile Include="bonusCube.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
     </ClCompile>
+    <ClCompile Include="battleController.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="fuzzyLogic.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -658,6 +664,12 @@
     </ClInclude>
     <ClInclude Include="bonusCube.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="battleController.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="fuzzyLogic.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
