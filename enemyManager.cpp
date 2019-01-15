@@ -119,7 +119,7 @@ void CheckEnemyCollision(void)
 /**************************************
 キューブオブジェクト発生処理
 ***************************************/
-void EmmittCubeObject(int num, D3DXVECTOR3 *setPos)
+void EmmittCubeObject(int num, D3DXVECTOR3 *setPos, float setSpeed)
 {
 	for (int i = 0; i < num; i++)
 	{
@@ -128,8 +128,18 @@ void EmmittCubeObject(int num, D3DXVECTOR3 *setPos)
 		offsetPos.y = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
 		offsetPos.z = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
 
-		bool resultEmmitt = SetCubeObject(&(*setPos + offsetPos));
+		bool resultEmmitt = SetCubeObject(&(*setPos + offsetPos), setSpeed);
 		if (!resultEmmitt)
 			break;
 	}
+}
+
+/**************************************
+ボーナスキューブ発生処理
+***************************************/
+void EmmittBonusCube(D3DXVECTOR3 *setPos)
+{
+	//テロップ表示とか
+
+	SetBonusCube(setPos);
 }

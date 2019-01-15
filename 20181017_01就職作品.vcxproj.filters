@@ -423,6 +423,9 @@
     <ClCompile Include="fuzzyLogic.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
+    <ClCompile Include="bonusTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -670,6 +673,9 @@
     </ClInclude>
     <ClInclude Include="fuzzyLogic.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="bonusTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

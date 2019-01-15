@@ -9,6 +9,7 @@
 #include "hpGUI.h"
 #include "lockonGUI.h"
 #include "powerUpTelop.h"
+#include "bonusTelop.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -54,6 +55,7 @@ void InitGUIManager(int num)
 	InitHpGUI(num);
 	InitLockonGUI(num);
 	InitPowerUpTelop(num);
+	InitBonusTelop(num);
 }
 
 /**************************************
@@ -73,6 +75,7 @@ void UninitGUIManager(int num)
 	UninitHpGUI(num);
 	UninitLockonGUI(num);
 	UninitPowerUpTelop(num);
+	UninitBonusTelop(num);
 }
 
 /**************************************
@@ -84,6 +87,7 @@ void UpdateGUIManager(void)
 	UpdateHpGUI();
 	UpdateLockonGUI();
 	UpdatePowerUpTelop();
+	UpdateBonusTelop();
 }
 
 /**************************************
@@ -95,6 +99,7 @@ void DrawGUIManager(void)
 	DrawHpGUI();
 	DrawLockonGUI();
 	DrawPowerUpTelop();
+	DrawBonusTelop();
 }
 
 /**************************************

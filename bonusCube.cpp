@@ -11,6 +11,7 @@
 #include "collisionManager.h"
 #include "battleCamera.h"
 #include "playerModel.h"
+#include "battleController.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -356,7 +357,8 @@ void CheckDestroyBonusCube(void)
 		if (ptr->hp <= 0.0f)
 		{
 			SetCubeExplosion(ptr->pos);
-			DisableBonusCube(ptr);			
+			DisableBonusCube(ptr);
+			StartBonusTime();
 		}
 	}
 }

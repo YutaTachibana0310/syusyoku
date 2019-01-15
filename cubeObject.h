@@ -40,5 +40,5 @@ void DrawCubeObject(void);
 
 void LockonCubeObject(void);
 void DamageAllCubeObject(void);
-bool SetCubeObject(D3DXVECTOR3 *setPos);
+bool SetCubeObject(D3DXVECTOR3 *setPos, float speed);
 #endif

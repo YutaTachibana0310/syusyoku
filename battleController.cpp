@@ -10,7 +10,9 @@
 #include "debugWindow.h"
 #include "battleCamera.h"
 #include "enemyManager.h"
+#include "bonusTelop.h"
 
+#include "cubeObject.h"
 /**************************************
 マクロ定義
 ***************************************/
@@ -29,6 +31,9 @@
 
 #define BATTLE_SPACE_MAX (BATTLE_SPACE_DIVIDE_NUM*BATTLE_SPACE_DIVIDE_NUM)	//分割された空間の総数
 
+#define BATTLE_BONUS_DURATION			(600)
+#define BATTLE_BONUS_START				(90)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -41,9 +46,14 @@ static DWORD lastEmittFrame[BATTLE_SPACE_MAX];		//各空間にエネミーが生成された最
 static DWORD cntFrame;								//フレームカウント
 static D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];		//判定座標
 static D3DXVECTOR3 emmittPos[BATTLE_SPACE_MAX];		//エネミー生成位置
+static DWORD bonusStartFrame;
+static bool isBonusTime;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
+void EmmittOnBonusTime(void);
+void EmmittOnNormalTime(void);
 
 /**************************************
 初期化処理
@@ -76,6 +86,8 @@ void InitBattleController(int num)
 	{
 		lastEmittFrame[i] = 0xffffffff;
 	}
+
+	isBonusTime = false;
 }
 
 /**************************************
@@ -91,6 +103,58 @@ void UninitBattleController(int num)
 ***************************************/
 void UpdateBattleController(void)
 {
+	cntFrame++;
+
+	if(cntFrame == 1)
+		EmmittBonusCube(&D3DXVECTOR3(0.0f, 0.0f, 2000.0f));
+
+	if(isBonusTime)
+		EmmittOnBonusTime();
+	else
+		EmmittOnNormalTime();
+}
+
+/**************************************
+ボーナスタイム開始処理
+***************************************/
+void StartBonusTime(void)
+{
+	if (isBonusTime)
+		return;
+
+	bonusStartFrame = cntFrame + BATTLE_BONUS_START;
+	isBonusTime = true;
+	StartBonusTelopAnim();
+}
+
+/**************************************
+ボーナスタイム時のキューブ生成処理
+***************************************/
+void EmmittOnBonusTime(void)
+{
+	static float posZ = 3000.0f;
+
+	for (int i = 0; i < 10; i++)
+	{
+		D3DXVECTOR3 emmittPos;
+		emmittPos.x = RandomRangef(-200.0f, 200.0f);
+		emmittPos.y = RandomRangef(-200.0f, 200.0f);
+		emmittPos.z = posZ;
+
+		EmmittCubeObject(1, &emmittPos, 20.0f);
+	}
+
+	if ((int)(cntFrame - bonusStartFrame) > BATTLE_BONUS_DURATION)
+	{
+		isBonusTime = false;
+	}
+}
+
+/**************************************
+通常時のキューブ生成処理
+***************************************/
+void EmmittOnNormalTime(void)
+{
 	static float valueLength[BATTLE_SPACE_MAX];
 	static float valueTime[BATTLE_SPACE_MAX];
 	static float fuzzyValue[BATTLE_SPACE_MAX];
@@ -98,8 +162,6 @@ void UpdateBattleController(void)
 
 	D3DXVECTOR3 playerPos;
 	float maxValue = -9999.9f;
-
-	cntFrame++;
 
 	D3DXVec3TransformCoord(&playerPos, &GetPlayerAdr(0)->pos, &GetBattleCameraView());
 	D3DXVec3TransformCoord(&playerPos, &playerPos, &GetBattleCameraProjection());
@@ -125,7 +187,7 @@ void UpdateBattleController(void)
 	if (cntFrame % 10 == 0)
 	{
 		lastEmittFrame[decidedPos] = cntFrame;
-		EmmittCubeObject(10, &emmittPos[decidedPos]);
+		EmmittCubeObject(10, &emmittPos[decidedPos], 5.0f);
 	}
 
 	//デバッグ情報表示
@@ -162,15 +224,12 @@ void UpdateBattleController(void)
 				&fuzzyValue[i * BATTLE_SPACE_DIVIDE_NUM],
 				BATTLE_SPACE_DIVIDE_NUM);
 
+		ImGui::NewLine();
+		if (ImGui::Button("Init Cube"))
+		{
+			UninitCubeObject(1);
+		}
 		ImGui::End();
 
 	}
-}
-
-/**************************************
-描画処理
-***************************************/
-void DrawBattleController(void)
-{
-
 }

@@ -1,11 +1,11 @@
 //=====================================
 //
-//テンプレートヘッダ[EnemyManager.h]
+//ボーナステロップヘッダ[bonusTelop.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _ENEMYMANAGER_H_
-#define _ENEMYMANAGER_H_
+#ifndef _BONUSTELOP_H_
+#define _BONUSTELOP_H_
 
 #include "main.h"
 
@@ -20,12 +20,10 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitEnemyManager(int num);
-void UninitEnemyManager(int num);
-void UpdateEnemyManager(void);
-void DrawEnemyManager(void);
-void CheckEnemyCollision(void);
-void EmmittCubeObject(int num, D3DXVECTOR3 *setPos, float setSpeed);
-void EmmittBonusCube(D3DXVECTOR3 *setPos);
+void InitBonusTelop(int num);
+void UninitBonusTelop(int num);
+void UpdateBonusTelop(void);
+void DrawBonusTelop(void);
+void StartBonusTelopAnim(void);
 
 #endif

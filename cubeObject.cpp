@@ -27,6 +27,8 @@
 #define CUBEOBJECT_SPEED_MAX			(10.0f)		//キューブオブジェクト最大スピード
 #define CUBEOBJECT_SPEED_MIN			(5.0f)		//キューブオブジェクト最小スピード
 
+#define CUBEOBJECT_SPEED_RANGE			(3.0f)
+
 //テクスチャ名
 static const char* texName[CUBEOBJECT_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit00.jpg",
@@ -130,7 +132,7 @@ void InitCubeObject(int num)
 
 		ptr->collider.pos = &ptr->pos;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE);
+		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE*1.2f, CUBEOBJECT_SIZE*1.2f, CUBEOBJECT_SIZE*1.2f);
 
 		CreateOFT(oft, (void*)ptr);
 	}
@@ -456,7 +458,7 @@ void DisableCubeObject(CUBE_OBJECT *ptr)
 /*****************************************
 セット処理
 ******************************************/
-bool SetCubeObject(D3DXVECTOR3 *setPos)
+bool SetCubeObject(D3DXVECTOR3 *setPos, float speed = 8.0f)
 {
 	CUBE_OBJECT *ptr = &cube[0];
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
@@ -470,6 +472,7 @@ bool SetCubeObject(D3DXVECTOR3 *setPos)
 		ptr->moveSpeed = -RandomRangef(CUBEOBJECT_SPEED_MIN, CUBEOBJECT_SPEED_MAX);
 		ptr->hp = CUBEOBJECT_INIT_HP;
 		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE * ptr->scale, CUBEOBJECT_SIZE * ptr->scale, CUBEOBJECT_SIZE * ptr->scale);
+		ptr->moveSpeed = -RandomRangef(speed - CUBEOBJECT_SPEED_RANGE, speed + CUBEOBJECT_SPEED_RANGE);
 		ptr->active = true;
 		RegisterObjectToSpace(&ptr->collider, oft, OFT_CUBEOBJECT);
 		return true;

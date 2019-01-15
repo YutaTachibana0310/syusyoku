@@ -23,6 +23,6 @@
 void InitBattleController(int num);
 void UninitBattleController(int num);
 void UpdateBattleController(void);
-void DrawBattleController(void);
+void StartBonusTime(void);
 
 #endif
