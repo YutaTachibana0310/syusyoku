@@ -15,16 +15,19 @@
 マクロ定義
 ***************************************/
 #define CUBEOBJECT_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
-#define CUBEOBJECT_SIZE					(10.0f)
-#define CUBEOBJECT_VTX_NUM				(24)
-#ifdef _DEBUG
-#define CUBEOBJECT_NUM_MAX				(2048)
-#else
-#define CUBEOBJECT_NUM_MAX				(2048)
-#endif
-#define CUBEOBJECT_FIELD_NUM			(6)
-#define CUBEOBJECT_TEX_NUM				(3)
+#define CUBEOBJECT_SIZE					(10.0f)		//キューブオブジェクトのサイズ
+#define CUBEOBJECT_VTX_NUM				(24)		//キューブオブジェクトの頂点数
+#define CUBEOBJECT_NUM_MAX				(2048)		//キューブオブジェクトの最大数
+#define CUBEOBJECT_FIELD_NUM			(6)			//キューブオブジェクトの面数
+#define CUBEOBJECT_TEX_NUM				(3)			//テクスチャ枚数
+#define CUBEOBJECT_INIT_HP				(1.0f)		//初期HP
+#define CUBEOBJECT_ADD_SCORE			(5000)		//破壊時の加算スコア
+#define CUBEOBJECT_SCALE_MAX			(1.5f)		//キューブオブジェクト最大スケール
+#define CUBEOBJECT_SCALE_MIN			(0.7f)		//キューブオブジェクト最小スケール
+#define CUBEOBJECT_SPEED_MAX			(10.0f)		//キューブオブジェクト最大スピード
+#define CUBEOBJECT_SPEED_MIN			(5.0f)		//キューブオブジェクト最小スピード
 
+//テクスチャ名
 static const char* texName[CUBEOBJECT_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit00.jpg",
 	"data/TEXTURE/OBJECT/circuit04.png",
@@ -39,7 +42,7 @@ typedef struct
 	float posX, posY, posZ;
 	float texU, texV;
 	float norX, norY, norZ;
-}CUBE_VTX;
+}CUBE_VTX;	//単位頂点構造体
 
 /**************************************
 グローバル変数
@@ -84,7 +87,6 @@ static LPDIRECT3DTEXTURE9 texture[3];					//テクスチャ
 static LPD3DXEFFECT effect;								//シェーダ
 static LPDIRECT3DINDEXBUFFER9 indexBuff;				//インデックスバッファ
 
-static D3DXVECTOR3 pos[CUBEOBJECT_NUM_MAX], rot[CUBEOBJECT_NUM_MAX];	//キューブの各パラメータ
 static D3DXMATRIX mtxWorld[CUBEOBJECT_NUM_MAX];			//ワールド変換行列
 
 static CUBE_OBJECT cube[CUBEOBJECT_NUM_MAX];			//キューブオブジェクト配列
@@ -98,6 +100,7 @@ void RotationCubeObject(void);				//回転処理
 void CalcCubeObjectWorldMartix(void);		//ワールド変換行列計算処理
 void CheckDestroyCubeObject(void);			//死亡判定
 void RegisterCubeObjectToSpace(void);		//衝突空間への登録処理
+void DisableCubeObject(CUBE_OBJECT *ptr);	//非アクティブ処理
 
 /**************************************
 初期化処理
@@ -115,17 +118,19 @@ void InitCubeObject(int num)
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
 	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, oft++)
 	{
-		pos[i] = D3DXVECTOR3(RandomRangef(-PosRange, PosRange), RandomRangef(-PosRange, PosRange), RandomRangef(0.0f, 20000.0f));
-		rot[i] = D3DXVECTOR3(RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f));
+		ptr->pos = D3DXVECTOR3(RandomRangef(-PosRange, PosRange), RandomRangef(-PosRange, PosRange), RandomRangef(0.0f, 20000.0f));
+		ptr->rot = D3DXVECTOR3(RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f));
+		ptr->scale = 0.0f;
+
 		ptr->rotValue = D3DXVECTOR3(RandomRangef(-RotRange, RotRange), RandomRangef(-RotRange, RotRange), RandomRangef(-RotRange, RotRange));
 		ptr->rotValue *= 0.01f;
-		ptr->moveSpeed = RandomRangef(-10.0f, -5.0f);
-		ptr->hp = 1.0f;
-		ptr->active = true;
+		ptr->hp = CUBEOBJECT_INIT_HP;
+		ptr->id = i;
+		ptr->active = false;
 
-		ptr->collider.pos = &pos[i];
+		ptr->collider.pos = &ptr->pos;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE*1.5f, CUBEOBJECT_SIZE*1.5f, CUBEOBJECT_SIZE*1.5f);
+		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE);
 
 		CreateOFT(oft, (void*)ptr);
 	}
@@ -191,8 +196,7 @@ void UninitCubeObject(int num)
 	CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, oft++)
 	{
-		ptr->active = false;
-		RemoveObjectFromSpace(oft);
+		DisableCubeObject(ptr);
 	}
 
 	if (num == 0)
@@ -234,32 +238,37 @@ void DrawCubeObject(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DLIGHT9 light1, light2, light3;
 
+	//ライト情報を取得してシェーダにセット
 	pDevice->GetLight(0, &light1);
-	pDevice->GetLight(0, &light2);
-	pDevice->GetLight(0, &light3);
+	effect->SetFloatArray("light1Dir", (float*)&light1.Direction, 3);
+	effect->SetFloatArray("light1Diffuse", (float*)&light1.Diffuse, 4);
+	effect->SetFloatArray("light1Ambient", (float*)&light1.Ambient, 4);
 
+	pDevice->GetLight(0, &light2);
+	effect->SetFloatArray("light2Dir", (float*)&light2.Direction, 3);
+	effect->SetFloatArray("light2Diffuse", (float*)&light2.Diffuse, 4);
+	effect->SetFloatArray("light2Ambient", (float*)&light2.Ambient, 4);
+
+	pDevice->GetLight(0, &light3);
+	effect->SetFloatArray("light3Dir", (float*)&light3.Direction, 3);
+	effect->SetFloatArray("light3Diffuse", (float*)&light3.Diffuse, 4);
+	effect->SetFloatArray("light3Ambient", (float*)&light3.Ambient, 4);
+
+	//ストリーム周波数設定
 	pDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | (CUBEOBJECT_NUM_MAX));
 	pDevice->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 
+	//頂点宣言とストリームソース、インデックスバッファを設定
 	pDevice->SetVertexDeclaration(declare);
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(CUBE_VTX));
 	pDevice->SetStreamSource(1, worldBuff, 0, sizeof(D3DXMATRIX));
 	pDevice->SetIndices(indexBuff);
 
+	//ビュー行列、プロジェクション行列を設定
 	effect->SetMatrix("mtxView", &GetBattleCameraView());
 	effect->SetMatrix("mtxProj", &GetBattleCameraProjection());
-	effect->SetFloatArray("light1Dir", (float*)&light1.Direction, 3);
-	effect->SetFloatArray("light1Diffuse", (float*)&light1.Diffuse, 4);
-	effect->SetFloatArray("light1Ambient", (float*)&light1.Ambient, 4);
 
-	effect->SetFloatArray("light2Dir", (float*)&light2.Direction, 3);
-	effect->SetFloatArray("light2Diffuse", (float*)&light2.Diffuse, 4);
-	effect->SetFloatArray("light2Ambient", (float*)&light2.Ambient, 4);
-
-	effect->SetFloatArray("light3Dir", (float*)&light3.Direction, 3);
-	effect->SetFloatArray("light3Diffuse", (float*)&light3.Diffuse, 4);
-	effect->SetFloatArray("light3Ambient", (float*)&light3.Ambient, 4);
-
+	//テクスチャの枚数だけ描画
 	for (int i = 0; i < CUBEOBJECT_TEX_NUM; i++)
 	{
 		if (i == 0)
@@ -296,14 +305,16 @@ void DrawCubeObject(void)
 ***************************************/
 void MoveCubeObject(void)
 {
-	D3DXVECTOR3 *pPos = &pos[0];
 	CUBE_OBJECT *ptr = &cube[0];
-	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, pPos++)
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++)
 	{
-		pPos->z += ptr->moveSpeed;
-		if (pPos->z < 0.0f)
+		if (!ptr->active)
+			continue;
+
+		ptr->pos.z += ptr->moveSpeed;
+		if (ptr->pos.z < -1000.0f)
 		{
-			pPos->z = 2500.0f;
+			DisableCubeObject(ptr);
 		}
 	}
 }
@@ -313,11 +324,10 @@ void MoveCubeObject(void)
 ***************************************/
 void RotationCubeObject(void)
 {
-	D3DXVECTOR3 *pRot = &rot[0];
 	CUBE_OBJECT *ptr = &cube[0];
-	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, pRot++)
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++)
 	{
-		*pRot += ptr->rotValue;
+		ptr->rot += ptr->rotValue;
 	}
 }
 
@@ -327,18 +337,20 @@ void RotationCubeObject(void)
 void CalcCubeObjectWorldMartix(void)
 {
 	D3DXMATRIX *pWorld = &mtxWorld[0];
-	D3DXMATRIX mtxRot, mtxTranslate;
-	D3DXVECTOR3 *pPos = &pos[0];
-	D3DXVECTOR3 *pRot = &rot[0];
+	D3DXMATRIX mtxRot, mtxTranslate, mtxScale;
+	CUBE_OBJECT *ptr = &cube[0];
 
-	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, pPos++, pRot++, pWorld++)
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, pWorld++, ptr++)
 	{
 		D3DXMatrixIdentity(pWorld);
 
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, pRot->y, pRot->x, pRot->z);
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->rot.y, ptr->rot.x, ptr->rot.z);
 		D3DXMatrixMultiply(pWorld, pWorld, &mtxRot);
 
-		D3DXMatrixTranslation(&mtxTranslate, pPos->x, pPos->y, pPos->z);
+		D3DXMatrixScaling(&mtxScale, ptr->scale, ptr->scale, ptr->scale);
+		D3DXMatrixMultiply(pWorld, pWorld, &mtxScale);
+
+		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pWorld, pWorld, &mtxTranslate);
 	}
 
@@ -351,17 +363,17 @@ void CalcCubeObjectWorldMartix(void)
 void CheckDestroyCubeObject(void)
 {
 	CUBE_OBJECT *ptr = &cube[0];
-	D3DXVECTOR3 *pPos = &pos[0];
-	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, pPos++)
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++)
 	{
+		if (!ptr->active)
+			continue;
+
 		if (ptr->hp <= 0.0f)
 		{
-			SetCubeExplosion(*pPos);
-			AddScore(5000);
+			SetCubeExplosion(ptr->pos);
+			AddScore(CUBEOBJECT_ADD_SCORE);
 
-			ptr->hp = 1.0f;
-			pPos->z += 5000.0f;
-			ptr->active = true;
+			DisableCubeObject(ptr);
 		}
 	}
 }
@@ -373,7 +385,6 @@ void LockonCubeObject(void)
 {
 	CUBE_OBJECT *ptr = &cube[0];
 	TARGETSITE *targetSite = GetTargetSiteAdr(0);
-	D3DXVECTOR3 *cubePos = &pos[0];
 
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, targetSite++)
 	{
@@ -383,16 +394,16 @@ void LockonCubeObject(void)
 		}
 
 		ptr = &cube[0];
-		for (int j = 0; j < CUBEOBJECT_NUM_MAX; j++, ptr++, cubePos++)
+		for (int j = 0; j < CUBEOBJECT_NUM_MAX; j++, ptr++)
 		{
 			if (!ptr->active)
 			{
 				continue;
 			}
 
-			if (CollisionTargetSite(i, cubePos))
+			if (CollisionTargetSite(i, &ptr->pos))
 			{
-				AddRockonTarget(i, cubePos, &ptr->active, &ptr->hp);
+				AddRockonTarget(i, &ptr->pos, &ptr->active, &ptr->hp);
 			}
 		}
 	}
@@ -403,15 +414,14 @@ void LockonCubeObject(void)
 ******************************************/
 void RegisterCubeObjectToSpace(void)
 {
-	D3DXVECTOR3 *pPos = &pos[0];
 	CUBE_OBJECT *ptr = &cube[0];
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
 
-	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, pPos++, oft++)
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, oft++)
 	{
 		RemoveObjectFromSpace(oft);
-		
-		if(ptr->active)
+
+		if (ptr->active)
 		{
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_CUBEOBJECT);
 		}
@@ -431,4 +441,39 @@ void DamageAllCubeObject(void)
 
 		ptr->hp -= 1.0f;
 	}
+}
+
+/*****************************************
+非アクティブ処理
+******************************************/
+void DisableCubeObject(CUBE_OBJECT *ptr)
+{
+	ptr->active = false;
+	ptr->scale = 0.0f;
+	RemoveObjectFromSpace(&objectForTree[ptr->id]);
+}
+
+/*****************************************
+セット処理
+******************************************/
+bool SetCubeObject(D3DXVECTOR3 *setPos)
+{
+	CUBE_OBJECT *ptr = &cube[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, ptr++, oft++)
+	{
+		if (ptr->active)
+			continue;
+
+		ptr->pos = *setPos;
+		ptr->scale = RandomRangef(CUBEOBJECT_SCALE_MIN, CUBEOBJECT_SCALE_MAX);
+		ptr->moveSpeed = -RandomRangef(CUBEOBJECT_SPEED_MIN, CUBEOBJECT_SPEED_MAX);
+		ptr->hp = CUBEOBJECT_INIT_HP;
+		ptr->collider.length = D3DXVECTOR3(CUBEOBJECT_SIZE * ptr->scale, CUBEOBJECT_SIZE * ptr->scale, CUBEOBJECT_SIZE * ptr->scale);
+		ptr->active = true;
+		RegisterObjectToSpace(&ptr->collider, oft, OFT_CUBEOBJECT);
+		return true;
+	}
+
+	return false;
 }

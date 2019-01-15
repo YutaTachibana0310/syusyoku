@@ -9,15 +9,16 @@
 #include "playerModel.h"
 #include "debugWindow.h"
 #include "battleCamera.h"
+#include "enemyManager.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define BATTLE_SPACE_DIVIDE_NUM			(4)					//エネミー生成範囲分割数
-#define BATTLE_SPACE_LEFT_BORDER		(-150.0f)			//エネミーの生成座標範囲（左端）
-#define BATTLE_SPACE_TOP_BORDER			(150.0f)			//エネミーの生成座標範囲（上端）
-#define BATTLE_SPACE_RIGHT_BORDER		(150.0f)			//エネミーの生成座標範囲（右端）
-#define BATTLE_SPACE_BOTTOM_BORDER		(-150.0f)			//エネミーの生成座標範囲（下端）
+#define BATTLE_SPACE_LEFT_BORDER		(-300.0f)			//エネミーの生成座標範囲（左端）
+#define BATTLE_SPACE_TOP_BORDER			(300.0f)			//エネミーの生成座標範囲（上端）
+#define BATTLE_SPACE_RIGHT_BORDER		(300.0f)			//エネミーの生成座標範囲（右端）
+#define BATTLE_SPACE_BOTTOM_BORDER		(-300.0f)			//エネミーの生成座標範囲（下端）
 #define BATTLE_EMITTPOS_Z				(2500.0f)			//エネミー生成座標Z値
 
 #define BATTLE_FUZZY_NEAR_BORDER		(0.0f)				//距離に関するファジィ理論のしきい値1
@@ -38,7 +39,8 @@
 static D3DXVECTOR2 enemyEmittPos[BATTLE_SPACE_MAX];	//エネミー生成座標
 static DWORD lastEmittFrame[BATTLE_SPACE_MAX];		//各空間にエネミーが生成された最後のフレーム
 static DWORD cntFrame;								//フレームカウント
-static D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];
+static D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];		//判定座標
+static D3DXVECTOR3 emmittPos[BATTLE_SPACE_MAX];		//エネミー生成位置
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -61,6 +63,9 @@ void InitBattleController(int num)
 				checkPos[y * BATTLE_SPACE_DIVIDE_NUM + x].x = spaceUnitWidth * (x + 0.5f);
 				checkPos[y * BATTLE_SPACE_DIVIDE_NUM + x].y = spaceUnitHeight * (y + 0.5f);
 
+				emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].x = (BATTLE_SPACE_RIGHT_BORDER - BATTLE_SPACE_LEFT_BORDER) / BATTLE_SPACE_DIVIDE_NUM * (x + 0.5f) + BATTLE_SPACE_LEFT_BORDER;
+				emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].y = (BATTLE_SPACE_TOP_BORDER - BATTLE_SPACE_BOTTOM_BORDER) / BATTLE_SPACE_DIVIDE_NUM * (y + 0.5f) + BATTLE_SPACE_BOTTOM_BORDER;
+				emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].z = 5000.0f;
 			}
 		}
 	}
@@ -117,10 +122,10 @@ void UpdateBattleController(void)
 	}
 
 	//重みが一番大きかった座標へエネミーを生成
-	if (cntFrame % 120 == 0)
+	if (cntFrame % 10 == 0)
 	{
 		lastEmittFrame[decidedPos] = cntFrame;
-
+		EmmittCubeObject(10, &emmittPos[decidedPos]);
 	}
 
 	//デバッグ情報表示

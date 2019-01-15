@@ -19,12 +19,14 @@
 ***************************************/
 typedef struct {
 	bool active;				//アクティブ判定
+	WORD id;					//固有ID
 	float moveSpeed;			//移動スピード
 	D3DXVECTOR3 rotValue;		//回転量
 	COLLIDER_CUBE collider;		//当たり判定
 	float hp;					//HP
 	D3DXVECTOR3 pos;			//座標
 	D3DXVECTOR3 rot;			//回転量
+	float scale;				//スケール
 }BONUS_CUBE_OBJECT;
 
 /**************************************
@@ -35,6 +37,7 @@ void UninitBonusCube(int num);
 void UpdateBonusCube(void);
 void DrawBonusCube(void);
 
-void LockOnBonusCube(void);
+void LockonBonusCube(void);
+bool SetBonusCube(D3DXVECTOR3 *setPos);
 
 #endif

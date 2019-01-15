@@ -18,6 +18,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define CUBEOBJECT_EMMITT_RANGE		(100.0f)
 
 /**************************************
 構造体定義
@@ -113,4 +114,22 @@ void CheckEnemyCollision(void)
 	CollisionMiddleEnemyAndBullet();
 	CollisionSmallEnemyAndBullet();
 	//CollisionCubeObjectAndBullet();
+}
+
+/**************************************
+キューブオブジェクト発生処理
+***************************************/
+void EmmittCubeObject(int num, D3DXVECTOR3 *setPos)
+{
+	for (int i = 0; i < num; i++)
+	{
+		D3DXVECTOR3 offsetPos;
+		offsetPos.x = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
+		offsetPos.y = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
+		offsetPos.z = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
+
+		bool resultEmmitt = SetCubeObject(&(*setPos + offsetPos));
+		if (!resultEmmitt)
+			break;
+	}
 }

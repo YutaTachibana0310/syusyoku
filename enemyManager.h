@@ -25,4 +25,5 @@ void UninitEnemyManager(int num);
 void UpdateEnemyManager(void);
 void DrawEnemyManager(void);
 void CheckEnemyCollision(void);
+void EmmittCubeObject(int num, D3DXVECTOR3 *setPos);
 #endif
