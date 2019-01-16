@@ -426,6 +426,9 @@
     <ClCompile Include="bonusTelop.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="bonusTimeGUI.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -675,6 +678,9 @@
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
     <ClInclude Include="bonusTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="bonusTimeGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>

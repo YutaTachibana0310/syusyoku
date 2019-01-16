@@ -24,5 +24,5 @@ void InitBattleController(int num);
 void UninitBattleController(int num);
 void UpdateBattleController(void);
 void StartBonusTime(void);
-
+bool IsBonusTime(void);
 #endif

@@ -6,11 +6,13 @@
 //=====================================
 #include "dataContainer.h"
 #include "powerUpTelop.h"
+#include "battleController.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define DATACONTAINER_POWEUP_MAX		(7)		//パワーアップ最大回数
+#define DATACONTAINER_SHOTLEVEL_MAX		(4)		//ショットレベルマックス
 
 /**************************************
 構造体定義
@@ -122,7 +124,7 @@ void SetPowerUp(void)
 ***************************************/
 int GetShotLevel(void)
 {
-	return shotLevel;
+	return IsBonusTime() ? DATACONTAINER_SHOTLEVEL_MAX : shotLevel;
 }
 
 /**************************************

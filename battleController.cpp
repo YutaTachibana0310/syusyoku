@@ -233,3 +233,11 @@ void EmmittOnNormalTime(void)
 
 	}
 }
+
+/**************************************
+ボーナスタイムかどうか
+***************************************/
+bool IsBonusTime(void)
+{
+	return isBonusTime;
+}

@@ -10,6 +10,7 @@
 #include "lockonGUI.h"
 #include "powerUpTelop.h"
 #include "bonusTelop.h"
+#include "bonusTimeGUI.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -29,7 +30,8 @@ static LPDIRECT3DTEXTURE9 texture[GUI_NUMTEX_MAX];
 static const char* texturePath[GUI_NUMTEX_MAX] =
 {
 	"data/TEXTURE/UI/scoreNum.png",
-	"data/TEXTURE/UI/lockonNum.png"
+	"data/TEXTURE/UI/lockonNum.png",
+	"data/TEXTURE/UI/timeNum.png"
 };
 
 /**************************************
@@ -56,6 +58,7 @@ void InitGUIManager(int num)
 	InitLockonGUI(num);
 	InitPowerUpTelop(num);
 	InitBonusTelop(num);
+	InitBonusTimeGUI(num);
 }
 
 /**************************************
@@ -76,6 +79,7 @@ void UninitGUIManager(int num)
 	UninitLockonGUI(num);
 	UninitPowerUpTelop(num);
 	UninitBonusTelop(num);
+	UninitBonusTimeGUI(num);
 }
 
 /**************************************
@@ -88,6 +92,7 @@ void UpdateGUIManager(void)
 	UpdateLockonGUI();
 	UpdatePowerUpTelop();
 	UpdateBonusTelop();
+	UpdateBonusTimeGUI();
 }
 
 /**************************************
@@ -100,6 +105,7 @@ void DrawGUIManager(void)
 	DrawLockonGUI();
 	DrawPowerUpTelop();
 	DrawBonusTelop();
+	DrawBonusTimeGUI();
 }
 
 /**************************************
