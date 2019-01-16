@@ -108,6 +108,7 @@ void CheckEnemyCollision(void)
 	LockonMiddleEnemy();
 	LockonEnemyMissile();
 	LockonSmallEnemy();
+	LockonBonusCube();
 	LockonHardCubeObject();
 	LockonCubeObject();
 

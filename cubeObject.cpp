@@ -10,6 +10,7 @@
 #include "particleManager.h"
 #include "dataContainer.h"
 #include "collisionManager.h"
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -28,6 +29,7 @@
 #define CUBEOBJECT_SPEED_MIN			(5.0f)		//キューブオブジェクト最小スピード
 
 #define CUBEOBJECT_SPEED_RANGE			(3.0f)
+#define PARTICLE_CUBE_COLOR				(D3DCOLOR_RGBA(103, 147, 255, 255))
 
 //テクスチャ名
 static const char* texName[CUBEOBJECT_TEX_NUM] = {
@@ -94,6 +96,7 @@ static D3DXMATRIX mtxWorld[CUBEOBJECT_NUM_MAX];			//ワールド変換行列
 static CUBE_OBJECT cube[CUBEOBJECT_NUM_MAX];			//キューブオブジェクト配列
 static OBJECT_FOR_TREE objectForTree[CUBEOBJECT_NUM_MAX]; //衝突判定用OBJECT_FOR_TREE配列
 
+static int cntCube;
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -372,7 +375,7 @@ void CheckDestroyCubeObject(void)
 
 		if (ptr->hp <= 0.0f)
 		{
-			SetCubeExplosion(ptr->pos);
+			SetCubeExplosion(ptr->pos, PARTICLE_CUBE_COLOR);
 			AddScore(CUBEOBJECT_ADD_SCORE);
 
 			DisableCubeObject(ptr);
@@ -452,6 +455,7 @@ void DisableCubeObject(CUBE_OBJECT *ptr)
 {
 	ptr->active = false;
 	ptr->scale = 0.0f;
+	cntCube--;
 	RemoveObjectFromSpace(&objectForTree[ptr->id]);
 }
 
@@ -475,8 +479,21 @@ bool SetCubeObject(D3DXVECTOR3 *setPos, float speed = 8.0f)
 		ptr->moveSpeed = -RandomRangef(speed - CUBEOBJECT_SPEED_RANGE, speed + CUBEOBJECT_SPEED_RANGE);
 		ptr->active = true;
 		RegisterObjectToSpace(&ptr->collider, oft, OFT_CUBEOBJECT);
+		cntCube++;
 		return true;
 	}
 
 	return false;
+}
+
+/*****************************************
+デバッグ情報表示
+******************************************/
+void DrawDebugWindowCube(void)
+{
+	ImGui::Begin("CubeObject");
+
+	ImGui::Text("Active : %d", cntCube);
+
+	ImGui::End();
 }

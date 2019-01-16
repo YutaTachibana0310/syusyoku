@@ -16,7 +16,7 @@
 #define PLAYERMISSILE_REACEFRAME		(30.0f)
 #define PLAYERMISSILE_VELOCITY_MAX		(15.0f)
 #define PLAYERMISSILE_VELOCITY_MIN		(5.0f)
-#define PLAYERMISSILE_DAMAGE			(0.25f)
+#define PLAYERMISSILE_DAMAGE			(5.0f)
 
 /**************************************
 ç\ë¢ëÃíËã`

@@ -27,6 +27,7 @@
 #define BONUSCUBE_CAMERA_SHAKE_LENGTH (10.0f)					//撃破時のカメラの揺れ幅
 #define HARDCUBE_SPEED_MAX		(10.0f)							//最大スピード
 #define HARDCUBE_SPEED_MIN		(5.0f)							//最小スピード
+#define PARTICLE_HARDCUBE_COLOR			(D3DCOLOR_RGBA(255, 121, 121, 255))
 
 //テクスチャ名
 static const char* TextureName[HARDCUBE_TEX_NUM] = {
@@ -360,7 +361,7 @@ void CheckDestroyHardCube(void)
 
 		if (ptr->hp <= 0.0f)
 		{
-			SetCubeExplosion(ptr->pos);
+			SetCubeExplosion(ptr->pos, PARTICLE_HARDCUBE_COLOR);
 			DamageAllCubeObject();
 			SetCameraShaker(BONUSCUBE_CAMERA_SHAKE_LENGTH);
 			

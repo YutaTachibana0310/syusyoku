@@ -108,7 +108,7 @@ void UpdateBattleController(void)
 	cntFrame++;
 
 	if(cntFrame == 1)
-		EmmittBonusCube(&D3DXVECTOR3(0.0f, 0.0f, 2000.0f));
+		EmmittBonusCube(&D3DXVECTOR3(0.0f, 0.0f, -100.0f));
 
 	if(isBonusTime)
 		EmmittOnBonusTime();
@@ -230,6 +230,10 @@ void EmmittOnNormalTime(void)
 		if (ImGui::Button("Init Cube"))
 		{
 			UninitCubeObject(1);
+		}
+		if (ImGui::Button("Start Bonus"))
+		{
+			StartBonusTime();
 		}
 		ImGui::End();
 

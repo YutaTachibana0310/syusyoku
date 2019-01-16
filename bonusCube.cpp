@@ -12,6 +12,9 @@
 #include "battleCamera.h"
 #include "playerModel.h"
 #include "battleController.h"
+#include "EasingVector.h"
+
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -22,7 +25,16 @@
 #define BONUSCUBE_VTX_NUM				(24)
 #define BONUSCUBE_FIELD_NUM				(6)
 #define BONUSCUBE_TEX_NUM				(3)
-#define BONUSCUBE_INIT_HP				(20.0f)
+#define BONUSCUBE_INIT_HP				(50.0f)
+#define BONUSCUBE_MOVE_MAX				(10)
+#define BONUSCUBE_MOVE_Z_NEAR			(300.0f)
+#define BONUSCUBE_MOVE_Z_FAR			(600.0f)
+#define BONUSCUBE_MOVE_END_Z			(10000.0f)
+#define BONUSCUBE_MOVE_X_RANGE			(300.0f)
+#define BONUSCUBE_MOVE_Y_RANGE			(200.0f)
+#define BONUSCUBE_MOVE_DURATION			(90)
+#define BONUSCUBE_MOVE_WAIT				(30)
+#define PARTICLE_BONUSCUBE_COLOR		(D3DCOLOR_RGBA(255, 228, 121, 255))
 
 static const char* TextureName[BONUSCUBE_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit09.png",
@@ -86,7 +98,6 @@ static D3DXMATRIX mtxWorld[BONUSCUBE_NUM_MAX];				//ワールド変換行列
 static BONUS_CUBE_OBJECT cube[BONUSCUBE_NUM_MAX];			//ボーナスキューブ配列
 static OBJECT_FOR_TREE objectForTree[BONUSCUBE_NUM_MAX];	//衝突判定用OBJECT_FOR_TREE配列
 
-
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -96,6 +107,8 @@ void CalcBonusCubeWorldMatrix(void);			//ワールド変換行列計算処理
 void CheckDestroyBonusCube(void);				//死亡判定	
 void RegisterBonusCubeToSpace(void);			//衝突空間への登録処理
 void DisableBonusCube(BONUS_CUBE_OBJECT *ptr);	//非アクティブ処理
+void StartBonusCubeMove(BONUS_CUBE_OBJECT *ptr);//移動開始処理
+
 /**************************************
 初期化処理
 ***************************************/
@@ -143,7 +156,7 @@ void InitBonusCube(int num)
 		//頂点宣言作成
 		D3DVERTEXELEMENT9 declareElems[] =
 		{
-			{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },		//頂点座標
+			{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },	//頂点座標
 		{ 0, 12, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },		//UV座標
 		{ 0, 20, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0 },		//法線
 		{ 1, 0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 },		//ワールド変換行列
@@ -298,10 +311,24 @@ void MoveBonusCube(void)
 	BONUS_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < BONUSCUBE_NUM_MAX; i++, ptr++)
 	{
-		ptr->pos.z += ptr->moveSpeed;
-		if (ptr->pos.z < -1000.0f)
+		if (!ptr->active)
+			continue;
+
+		ptr->cntFrame++;
+		float t = (float)ptr->cntFrame / BONUSCUBE_MOVE_DURATION;
+		ptr->pos = EaseInOutExponentialVector(t, ptr->startPos, ptr->goalPos);
+
+		if (ptr->cntFrame == BONUSCUBE_MOVE_DURATION + BONUSCUBE_MOVE_WAIT)
 		{
-			DisableBonusCube(ptr);
+			ptr->cntMove++;
+			if (ptr->cntMove > BONUSCUBE_MOVE_MAX)
+			{
+				DisableBonusCube(ptr);
+			}
+			else
+			{
+				StartBonusCubeMove(ptr);
+			}
 		}
 	}
 }
@@ -356,7 +383,7 @@ void CheckDestroyBonusCube(void)
 
 		if (ptr->hp <= 0.0f)
 		{
-			SetCubeExplosion(ptr->pos);
+			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			DisableBonusCube(ptr);
 			StartBonusTime();
 		}
@@ -428,6 +455,8 @@ bool SetBonusCube(D3DXVECTOR3 *setPos)
 		ptr->scale = 1.0f;
 		ptr->active = true;
 		RegisterObjectToSpace(&ptr->collider, oft, OFT_BONUSCUBE);
+		ptr->cntMove = 0;
+		StartBonusCubeMove(ptr);
 		return true;
 	}
 
@@ -442,4 +471,29 @@ void DisableBonusCube(BONUS_CUBE_OBJECT *ptr)
 	ptr->active = false;
 	ptr->scale = 0.0f;
 	RemoveObjectFromSpace(&objectForTree[ptr->id]);
+}
+
+/**************************************
+移動開始処理
+***************************************/
+void StartBonusCubeMove(BONUS_CUBE_OBJECT *ptr)
+{
+	ptr->cntFrame = 0;
+	ptr->startPos = ptr->pos;
+
+	if (ptr->cntMove == BONUSCUBE_MOVE_MAX)
+	{
+		ptr->goalPos = ptr->startPos + D3DXVECTOR3(0.0f, 0.0f, BONUSCUBE_MOVE_END_Z);
+	}
+	else if (ptr->cntMove == 0)
+	{
+		ptr->goalPos = ptr->startPos;
+		ptr->goalPos.z = RandomRangef(BONUSCUBE_MOVE_Z_NEAR, BONUSCUBE_MOVE_Z_FAR);
+	}
+	else
+	{
+		ptr->goalPos.x = RandomRangef(-BONUSCUBE_MOVE_X_RANGE, BONUSCUBE_MOVE_X_RANGE);
+		ptr->goalPos.y = RandomRangef(-BONUSCUBE_MOVE_Y_RANGE, BONUSCUBE_MOVE_Y_RANGE);
+		ptr->goalPos.z = RandomRangef(BONUSCUBE_MOVE_Z_NEAR, BONUSCUBE_MOVE_Z_FAR);
+	}
 }

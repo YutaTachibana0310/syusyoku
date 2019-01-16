@@ -26,8 +26,6 @@
 #define PARTICLE_EMMITT_NUM_LUMINE		(20)
 #define PARTICLE_EMMITT_NUM_PLAYERBULLET (10)
 
-#define PARTICLE_CUBE_COLOR			(D3DXCOLOR(0.2f, 0.9f, 0.7f, 1.0f))
-
 /**************************************
 構造体定義
 ***************************************/
@@ -42,6 +40,7 @@ static LARGE_INTEGER startFlare, endFlare;
 static LARGE_INTEGER startSmog, endSmog;
 static LARGE_INTEGER startFire, endFire;
 
+static D3DXCOLOR cubeColor;
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -167,11 +166,11 @@ void SetEnemyExplosion(D3DXVECTOR3 pos)
 /*************************************
 キューブエクスプロージョンセット処理
 ***************************************/
-void SetCubeExplosion(D3DXVECTOR3 pos)
+void SetCubeExplosion(D3DXVECTOR3 pos, D3DXCOLOR color)
 {
 	for (int i = 0; i < PARTICLE_EMMITT_NUM_CUBE; i++)
 	{
-		SetCubeParticle(pos, PARTICLE_CUBE_COLOR);
+		SetCubeParticle(pos, color);
 	}
 
 	for (int i = 0; i < PARTICLE_EMMITT_NUM_LUMINE; i++)
@@ -203,6 +202,9 @@ void DrawDebugWindowParticle(void)
 	ImGui::Text("Flare  : %fmsec", CalcProgressTime(startFlare, endFlare));
 	ImGui::Text("Fire   : %fmsec", CalcProgressTime(startFire, endFire));
 	ImGui::Text("Smog   : %fmsec", CalcProgressTime(startSmog, endSmog));
+
+	ImGui::NewLine();
+	ImGui::ColorEdit3("Cube Particle", cubeColor);
 
 	ImGui::End();
 }
