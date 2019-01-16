@@ -6,16 +6,18 @@
 //=====================================
 #include "bonusTelop.h"
 #include "EasingVector.h"
+#include "bonusTimeGUI.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define BONUSTELOP_TEX_NAME				"data/TEXTURE/UI/bonusTelop.png"
+#define BONUSTELOP_TEX_MAX				(2)
 #define BONUSTELOP_TEX_DIVIDE_Y			(2)
 #define BONUSTELOP_TEX_SIZE_X			(400)
 #define BONUSTELOP_TEX_SIZE_Y			(100)
 #define BONUSTELOP_DISP_POS				(D3DXVECTOR3(SCREEN_CENTER_X, 300.0f, 0.0f))
 #define BONUSTELOP_SEQUENCE_MAX			(3)
+#define BONUSTELOP_SET_COUNT			(600)
 
 //アニメーション開始位置
 static const D3DXVECTOR3 StartOffset[BONUSTELOP_SEQUENCE_MAX] = {
@@ -43,6 +45,11 @@ static const int AnimDuration[BONUSTELOP_SEQUENCE_MAX] = {
 	30, 60, 30
 };
 
+//テクスチャパス
+static const char* TexturePath[BONUSTELOP_TEX_MAX] = {
+	"data/TEXTURE/UI/bonusTelop.png",
+	"data/TEXTURE/UI/bonusTelopEnd.png"
+};
 /**************************************
 構造体定義
 ***************************************/
@@ -57,10 +64,11 @@ enum BONUSTELOP_DEFINE
 グローバル変数
 ***************************************/
 static VERTEX_2D vtxWk[NUM_VERTEX];
-static LPDIRECT3DTEXTURE9 texture;
+static LPDIRECT3DTEXTURE9 texture[BONUSTELOP_TEX_MAX];
 static D3DXVECTOR3 offsetPos;
 static float vtxAngle, vtxRadius;
 static int animIndex, cntFrame;
+static bool isStartTelop;
 
 /**************************************
 プロトタイプ宣言
@@ -77,12 +85,16 @@ void InitBonusTelop(int num)
 	if (num == 0)
 	{
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
-		texture = CreateTextureFromFile((LPSTR)BONUSTELOP_TEX_NAME, pDevice);
+
+		for(int i = 0; i < BONUSTELOP_TEX_MAX; i++)
+			texture[i] = CreateTextureFromFile((LPSTR)TexturePath[i], pDevice);
+
 		MakeVertexBonusTelop();
 	}
 
 	animIndex = BONUSTELOP_SEQUENCE_MAX;
 	cntFrame = 0;
+	isStartTelop = true;
 }
 
 /**************************************
@@ -111,6 +123,9 @@ void UpdateBonusTelop(void)
 	{
 		cntFrame = 0;
 		animIndex++;
+
+		if (animIndex == BONUSTELOP_SEQUENCE_MAX && isStartTelop)
+			StartBonusTimeCount(BONUSTELOP_SET_COUNT);
 	}
 }
 
@@ -123,7 +138,8 @@ void DrawBonusTelop(void)
 		return;
 
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	pDevice->SetTexture(0, texture);
+	LPDIRECT3DTEXTURE9 tex = (isStartTelop) ? texture[0] : texture[1];
+	pDevice->SetTexture(0, tex);
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	//テロップ上部の描画
@@ -193,8 +209,9 @@ void SetTextureBonusTelop(BONUSTELOP_DEFINE define)
 /**************************************
 アニメーション開始処理
 ***************************************/
-void StartBonusTelopAnim(void)
+void StartBonusTelopAnim(bool isStart)
 {
 	animIndex = 0;
 	cntFrame = 0;
+	isStartTelop = isStart;
 }

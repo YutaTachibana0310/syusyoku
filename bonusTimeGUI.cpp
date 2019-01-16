@@ -6,6 +6,7 @@
 //=====================================
 #include "bonusTimeGUI.h"
 #include "GUIManager.h"
+#include "bonusTelop.h"
 
 /**************************************
 マクロ定義
@@ -31,7 +32,7 @@
 ***************************************/
 static LPDIRECT3DTEXTURE9 texture;
 static VERTEX_2D vtxWk[NUM_VERTEX];
-static int currentCount, measureCount;
+static int currentCount;
 static float angleGUI, radiusGUI;
 static float angleNum, radiusNum;
 
@@ -55,7 +56,7 @@ void InitBonusTimeGUI(int num)
 		MakeVertexBonusTimeGUI();
 	}
 
-	measureCount = currentCount = 1800;
+	currentCount = -1;
 }
 
 /**************************************
@@ -75,6 +76,10 @@ void UpdateBonusTimeGUI(void)
 		return;
 
 	currentCount--;
+	if (currentCount == 0)
+	{
+		StartBonusTelopAnim(false);
+	}
 }
 
 /**************************************
@@ -187,3 +192,10 @@ void SetVertexBonusTimeNum(float offset, D3DXVECTOR3 basePos)
 	vtxWk[3].vtx.y = basePos.y + sinf(angleNum) * radiusNum;
 }
 
+/**************************************
+タイマー開始処理
+***************************************/
+void StartBonusTimeCount(int count)
+{
+	currentCount = count;
+}

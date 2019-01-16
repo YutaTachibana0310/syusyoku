@@ -145,6 +145,9 @@
     <Filter Include="ヘッダー ファイル\Battle\Enemy\cubeObject">
       <UniqueIdentifier>{b1cb3507-5a2c-4875-990f-570819e6b4ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\cubeObject\states">
+      <UniqueIdentifier>{98be64e7-d62a-4c96-9a97-5c99ea928fae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">

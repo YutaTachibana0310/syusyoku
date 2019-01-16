@@ -24,6 +24,6 @@ void InitBonusTelop(int num);
 void UninitBonusTelop(int num);
 void UpdateBonusTelop(void);
 void DrawBonusTelop(void);
-void StartBonusTelopAnim(void);
+void StartBonusTelopAnim(bool isStart);
 
 #endif

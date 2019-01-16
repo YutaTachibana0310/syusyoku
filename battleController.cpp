@@ -31,8 +31,10 @@
 
 #define BATTLE_SPACE_MAX (BATTLE_SPACE_DIVIDE_NUM*BATTLE_SPACE_DIVIDE_NUM)	//分割された空間の総数
 
-#define BATTLE_BONUS_DURATION			(600)
-#define BATTLE_BONUS_START				(90)
+#define BATTLE_BONUS_DURATION			(570)				//ボーナスタイム時間		
+#define BATTLE_BONUS_START				(30)				//ボーナスタイムのスタートオフセット
+
+#define BATTLE_CUBEEMMITT_INTERBAL		(120)
 
 /**************************************
 構造体定義
@@ -122,9 +124,9 @@ void StartBonusTime(void)
 	if (isBonusTime)
 		return;
 
-	bonusStartFrame = cntFrame + BATTLE_BONUS_START;
+	bonusStartFrame = cntFrame;// +BATTLE_BONUS_START;
 	isBonusTime = true;
-	StartBonusTelopAnim();
+	StartBonusTelopAnim(true);
 }
 
 /**************************************
@@ -184,7 +186,7 @@ void EmmittOnNormalTime(void)
 	}
 
 	//重みが一番大きかった座標へエネミーを生成
-	if (cntFrame % 10 == 0)
+	if (cntFrame % BATTLE_CUBEEMMITT_INTERBAL == 0)
 	{
 		lastEmittFrame[decidedPos] = cntFrame;
 		EmmittCubeObject(10, &emmittPos[decidedPos], 5.0f);

@@ -24,5 +24,6 @@ void InitBonusTimeGUI(int num);
 void UninitBonusTimeGUI(int num);
 void UpdateBonusTimeGUI(void);
 void DrawBonusTimeGUI(void);
+void StartBonusTimeCount(int count);
 
 #endif
