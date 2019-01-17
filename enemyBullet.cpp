@@ -6,6 +6,7 @@
 //=====================================
 #include "enemyBullet.h"
 #include "battleCamera.h"
+#include "enemyBulletTrail.h"
 
 /**************************************
 マクロ定義
@@ -74,7 +75,10 @@ void UpdateEnemyBullet(void)
 			continue;
 		}
 
-		ptr->pos += ptr->moveDir * ptr->speed / 60.0f;
+		//トレイル設定
+		SetEnemyHomingBulletTrail(ptr->pos, NormalEnemyBulletTrail);
+
+		ptr->pos += ptr->moveDir * ptr->speed;
 
 		if (ptr->pos.z < ENEMYBULLET_DISABLE_BORDER_Z)
 		{

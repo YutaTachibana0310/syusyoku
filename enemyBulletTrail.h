@@ -23,6 +23,13 @@ typedef struct
 	D3DXVECTOR3 pos;
 	int cntFrame;
 }ENEMYBULLET_TRAIL;
+
+enum EnemyBulletTrailDefine
+{
+	NormalEnemyBulletTrail,
+	HomingEnemyBulletTrail,
+	EnemyBulletTrailMax
+};
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -30,5 +37,5 @@ void InitEnemyBulletTrail(int num);
 void UninitEnemyBulletTrail(int num);
 void UpdateEnemyBulletTrail(void);
 void DrawEnemyBulletTrail(void);
-void SetEnemyHomingBulletTrail(D3DXVECTOR3 pos);
+void SetEnemyHomingBulletTrail(D3DXVECTOR3 pos, EnemyBulletTrailDefine define);
 #endif

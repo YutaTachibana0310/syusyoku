@@ -136,8 +136,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="battleCamera.cpp" />
+    <ClCompile Include="battleController.cpp" />
     <ClCompile Include="battleScene.cpp" />
+    <ClCompile Include="bgmManager.cpp" />
     <ClCompile Include="bonusCube.cpp" />
+    <ClCompile Include="bonusTelop.cpp" />
+    <ClCompile Include="bonusTimeGUI.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="cubeObject.cpp" />
@@ -168,7 +172,14 @@
     <ClCompile Include="explosionSmog.cpp" />
     <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
+    <ClCompile Include="fuzzyLogic.cpp" />
     <ClCompile Include="GUIManager.cpp" />
+    <ClCompile Include="hardCubeCharge.cpp" />
+    <ClCompile Include="hardCubeEscape.cpp" />
+    <ClCompile Include="hardCubeHomingAttack.cpp" />
+    <ClCompile Include="hardCubeInit.cpp" />
+    <ClCompile Include="hardCubeMove.cpp" />
+    <ClCompile Include="hardCubeNormalAttack.cpp" />
     <ClCompile Include="hardCubeObject.cpp" />
     <ClCompile Include="hpGUI.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -228,8 +239,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battleCamera.h" />
+    <ClInclude Include="battleController.h" />
     <ClInclude Include="battleScene.h" />
+    <ClInclude Include="bgmManager.h" />
     <ClInclude Include="bonusCube.h" />
+    <ClInclude Include="bonusTelop.h" />
+    <ClInclude Include="bonusTimeGUI.h" />
     <ClInclude Include="cameraShaker.h" />
     <ClInclude Include="collisionManager.h" />
     <ClInclude Include="cubeObject.h" />
@@ -260,6 +275,7 @@
     <ClInclude Include="explosionSmog.h" />
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
+    <ClInclude Include="fuzzyLogic.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="hardCubeObject.h" />
     <ClInclude Include="hpGUI.h" />

@@ -145,6 +145,9 @@
     <Filter Include="ヘッダー ファイル\Battle\Enemy\cubeObject">
       <UniqueIdentifier>{b1cb3507-5a2c-4875-990f-570819e6b4ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\Enemy\cubeObject\states">
+      <UniqueIdentifier>{98be64e7-d62a-4c96-9a97-5c99ea928fae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -417,6 +420,39 @@
     <ClCompile Include="bonusCube.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
     </ClCompile>
+    <ClCompile Include="battleController.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="fuzzyLogic.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
+    <ClCompile Include="bonusTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="bonusTimeGUI.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeInit.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeNormalAttack.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeHomingAttack.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeEscape.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeMove.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeCharge.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="bgmManager.cpp">
+      <Filter>ソース ファイル\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -658,6 +694,21 @@
     </ClInclude>
     <ClInclude Include="bonusCube.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="battleController.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="fuzzyLogic.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="bonusTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="bonusTimeGUI.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="bgmManager.h">
+      <Filter>ヘッダー ファイル\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

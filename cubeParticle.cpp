@@ -200,6 +200,8 @@ void UpdateCubeParticle(void)
 	ScaleCubeParticle();
 
 	CalcCubeParticleWorldMartix();
+
+	CopyVtxBuff(sizeof(color), color, colorBuff);
 }
 
 /**************************************

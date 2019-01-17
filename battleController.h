@@ -1,11 +1,11 @@
 //=====================================
 //
-//GUIマネージャヘッダ[GUIManager.h]
+//バトルコントローラヘッダ[battleController.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+#ifndef _BATTLECONTROLLER_H_
+#define _BATTLECONTROLLER_H_
 
 #include "main.h"
 
@@ -16,19 +16,13 @@
 /**************************************
 構造体定義
 ***************************************/
-enum GUI_NUMTEXTURE
-{
-	GUI_NUMSCORE,
-	GUI_NUMLOCKON,
-	GUI_NUMBONUSTIME,
-	GUI_NUMTEX_MAX
-};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitGUIManager(int num);
-void UninitGUIManager(int num);
-void UpdateGUIManager(void);
-void DrawGUIManager(void);
-void DrawGUINum(GUI_NUMTEXTURE textureID, int num, VERTEX_2D *vtxWk);
+void InitBattleController(int num);
+void UninitBattleController(int num);
+void UpdateBattleController(void);
+void StartBonusTime(void);
+bool IsBonusTime(void);
 #endif

@@ -179,12 +179,21 @@ D3DXVECTOR3 EaseOutExponentialVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 
 ********************************************************************/
 D3DXVECTOR3 EaseInOutExponentialVector(float time, D3DXVECTOR3 start, D3DXVECTOR3 goal)
 {
-	//return 0.0f;
 	if (time > 1.0f)
 		time = 1.0f;
 
 	if (time < 0.0f)
 		time = 0.0f;
 
-	return D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	time *= 2.0f;
+
+	if (time < 1)
+	{
+		return (goal - start) / 2.0f *  powf(2, 10 * (time - 1)) + start;
+	}
+	else
+	{
+		time -= 1.0f;
+		return (goal - start) / 2.0f * (-powf(2, (-10 * time)) + 2) + start;
+	}
 }

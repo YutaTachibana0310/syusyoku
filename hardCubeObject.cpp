@@ -17,14 +17,19 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define HARDCUBE_EFFECT_NAME		"data/EFFECT/cubeObject.fx"
-#define HARDCUBE_SIZE				(20.0f)
-#define HARDCUBE_NUM_MAX			(1)
-#define HARDCUBE_VTX_NUM			(24)
-#define HARDCUBE_FIELD_NUM			(6)
-#define HARDCUBE_TEX_NUM			(3)
-#define HARDCUBE_INIT_HP			(10.0f)
+#define HARDCUBE_EFFECT_NAME		"data/EFFECT/cubeObject.fx"	//シェーダ名
+#define HARDCUBE_SIZE				(20.0f)						//オブジェクトサイズ
+#define HARDCUBE_NUM_MAX			(24)						//最大数
+#define HARDCUBE_VTX_NUM			(24)						//頂点数
+#define HARDCUBE_FIELD_NUM			(6)							//面数
+#define HARDCUBE_TEX_NUM			(3)							//テクスチャ数
+#define HARDCUBE_INIT_HP			(10.0f)						//初期HP
+#define BONUSCUBE_CAMERA_SHAKE_LENGTH (10.0f)					//撃破時のカメラの揺れ幅
+#define HARDCUBE_SPEED_MAX		(10.0f)							//最大スピード
+#define HARDCUBE_SPEED_MIN		(5.0f)							//最小スピード
+#define PARTICLE_HARDCUBE_COLOR			(D3DCOLOR_RGBA(255, 121, 121, 255))
 
+//テクスチャ名
 static const char* TextureName[HARDCUBE_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit06.png",
 	"data/TEXTURE/OBJECT/circuit07.png",
@@ -39,6 +44,8 @@ typedef struct {
 	float texU, texV;
 	float norX, norY, norZ;
 }HARDCUBE_VTX;
+
+typedef void(*funcHardCube)(HARD_CUBE_OBJECT *ptr);
 
 /**************************************
 グローバル変数
@@ -87,14 +94,35 @@ static D3DXMATRIX mtxWorld[HARDCUBE_NUM_MAX];			//ワールド変換行列
 static HARD_CUBE_OBJECT cube[HARDCUBE_NUM_MAX];			//ハードキューブ配列
 static OBJECT_FOR_TREE objectForTree[HARDCUBE_NUM_MAX];	//衝突判定用OBJECT_FOR_TREE配列
 
+//入場処理関数テーブル
+static funcHardCube Enter[HardCubeStateMax] = {
+	OnEnterHardCubeInit,
+	OnEnterHardCubeMove,
+	OnEnterHardCubeNormalAttack,
+	OnEnterHardCubeHomingAttack,
+	OnEnterHardCubeCharge,
+	OnEnterHardCubeEscape,
+};
+
+//更新処理関数テーブル
+static funcHardCube Update[HardCubeStateMax] = {
+	OnUpdateHardCubeInit,
+	OnUpdateHardCubeMove,
+	OnUpdateHardCubeNormalAttack,
+	OnUpdateHardCubeHomingAttack,
+	OnUpdateHardCubeCharge,
+	OnUpdateHardCubeEscape,
+};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void MoveHardCube(void);				//移動処理
-void RotateHardCube(void);				//回転処理
-void CalcHardCubeWorldMatrix(void);		//ワールド変換行列計算処理
-void CheckDestroyHardCube(void);		//死亡判定	
-void RegisterHardCubeToSpace(void);		//衝突空間への登録処理
+void MoveHardCube(void);						//移動処理
+void RotateHardCube(void);						//回転処理
+void CalcHardCubeWorldMatrix(void);				//ワールド変換行列計算処理
+void CheckDestroyHardCube(void);				//死亡判定	
+void RegisterHardCubeToSpace(void);				//衝突空間への登録処理
+void OnUpdateHardCube(void);					//各状態更新処理
 
 /**************************************
 初期化処理
@@ -114,10 +142,12 @@ void InitHardCubeObject(int num)
 	{
 		ptr->pos = D3DXVECTOR3(RandomRangef(-PosRange, PosRange), RandomRangef(-PosRange, PosRange), RandomRangef(0.0f, 10000.0f));
 		ptr->rot = D3DXVECTOR3(RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f), RandomRangef(0.0f, 3.1415f));
+		ptr->scale = 0.0f;
 		ptr->rotValue = D3DXVECTOR3(RandomRangef(-RotRange, RotRange), RandomRangef(-RotRange, RotRange), RandomRangef(-RotRange, RotRange));
 		ptr->rotValue *= 0.01f;
 		ptr->moveSpeed = RandomRangef(-10.0f, -5.0f);
 		ptr->hp = HARDCUBE_INIT_HP;
+		ptr->id = i;
 		ptr->active = false;
 
 		ptr->collider.pos = &ptr->pos;
@@ -126,8 +156,6 @@ void InitHardCubeObject(int num)
 
 		CreateOFT(oft, (void*)ptr);
 	}
-	cube[0].active = true;
-	cube[0].pos.x = 0.0f;
 
 	//初回のみの初期化
 	if (num == 0)
@@ -186,12 +214,10 @@ void InitHardCubeObject(int num)
 ***************************************/
 void UninitHardCubeObject(int num)
 {
-	OBJECT_FOR_TREE *oft = &objectForTree[0];
 	HARD_CUBE_OBJECT *ptr = &cube[0];
-	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++, oft++)
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
 	{
-		ptr->active = false;
-		RemoveObjectFromSpace(oft);
+		DisableHardCube(ptr);
 	}
 
 	if (num == 0)
@@ -215,7 +241,7 @@ void UninitHardCubeObject(int num)
 void UpdateHardCubeObject(void)
 {
 	CheckDestroyHardCube();
-	MoveHardCube();
+	OnUpdateHardCube();
 	RotateHardCube();
 	CalcHardCubeWorldMatrix();
 	RegisterHardCubeToSpace();
@@ -229,32 +255,37 @@ void DrawHardCubeObject(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	D3DLIGHT9 light1, light2, light3;
 
+	//ライト情報を取得してシェーダにセット
 	pDevice->GetLight(0, &light1);
-	pDevice->GetLight(0, &light2);
-	pDevice->GetLight(0, &light3);
+	effect->SetFloatArray("light1Dir", (float*)&light1.Direction, 3);
+	effect->SetFloatArray("light1Diffuse", (float*)&light1.Diffuse, 4);
+	effect->SetFloatArray("light1Ambient", (float*)&light1.Ambient, 4);
 
+	pDevice->GetLight(0, &light2);
+	effect->SetFloatArray("light2Dir", (float*)&light2.Direction, 3);
+	effect->SetFloatArray("light2Diffuse", (float*)&light2.Diffuse, 4);
+	effect->SetFloatArray("light2Ambient", (float*)&light2.Ambient, 4);
+
+	pDevice->GetLight(0, &light3);
+	effect->SetFloatArray("light3Dir", (float*)&light3.Direction, 3);
+	effect->SetFloatArray("light3Diffuse", (float*)&light3.Diffuse, 4);
+	effect->SetFloatArray("light3Ambient", (float*)&light3.Ambient, 4);
+
+	//ストリーム周波数をセット
 	pDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | (HARDCUBE_NUM_MAX));
 	pDevice->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 
+	//頂点宣言、ストリームソース、インデックスバッファをセット
 	pDevice->SetVertexDeclaration(declare);
 	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(HARDCUBE_VTX));
 	pDevice->SetStreamSource(1, worldBuff, 0, sizeof(D3DXMATRIX));
 	pDevice->SetIndices(indexBuff);
 
+	//ビュー行列、プロジェクション行列を設置
 	effect->SetMatrix("mtxView", &GetBattleCameraView());
 	effect->SetMatrix("mtxProj", &GetBattleCameraProjection());
-	effect->SetFloatArray("light1Dir", (float*)&light1.Direction, 3);
-	effect->SetFloatArray("light1Diffuse", (float*)&light1.Diffuse, 4);
-	effect->SetFloatArray("light1Ambient", (float*)&light1.Ambient, 4);
 
-	effect->SetFloatArray("light2Dir", (float*)&light2.Direction, 3);
-	effect->SetFloatArray("light2Diffuse", (float*)&light2.Diffuse, 4);
-	effect->SetFloatArray("light2Ambient", (float*)&light2.Ambient, 4);
-
-	effect->SetFloatArray("light3Dir", (float*)&light3.Direction, 3);
-	effect->SetFloatArray("light3Diffuse", (float*)&light3.Diffuse, 4);
-	effect->SetFloatArray("light3Ambient", (float*)&light3.Ambient, 4);
-
+	//テクスチャの数だけ描画
 	for (int i = 0; i < HARDCUBE_TEX_NUM; i++)
 	{
 		if (i == 0)
@@ -286,22 +317,6 @@ void DrawHardCubeObject(void)
 }
 
 /**************************************
-移動処理
-***************************************/
-void MoveHardCube(void)
-{
-	HARD_CUBE_OBJECT *ptr = &cube[0];
-	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
-	{
-		ptr->pos.z += ptr->moveSpeed;
-		if (ptr->pos.z < 0.0f)
-		{
-			ptr->pos.z = 2500.0f;
-		}
-	}
-}
-
-/**************************************
 回転処理
 ***************************************/
 void RotateHardCube(void)
@@ -319,11 +334,14 @@ void RotateHardCube(void)
 void CalcHardCubeWorldMatrix(void)
 {
 	D3DXMATRIX *pWorld = &mtxWorld[0];
-	D3DXMATRIX mtxRot, mtxTranslate;
+	D3DXMATRIX mtxRot, mtxTranslate, mtxScale;
 	HARD_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++, pWorld++)
 	{
 		D3DXMatrixIdentity(pWorld);
+
+		D3DXMatrixScaling(&mtxScale, ptr->scale, ptr->scale, ptr->scale);
+		D3DXMatrixMultiply(pWorld, pWorld, &mtxScale);
 
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->rot.y, ptr->rot.x, ptr->rot.z);
 		D3DXMatrixMultiply(pWorld, pWorld, &mtxRot);
@@ -335,6 +353,7 @@ void CalcHardCubeWorldMatrix(void)
 	CopyVtxBuff(sizeof(mtxWorld), mtxWorld, worldBuff);
 }
 
+
 /**************************************
 死亡判定
 ***************************************/
@@ -343,15 +362,16 @@ void CheckDestroyHardCube(void)
 	HARD_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
 	{
+		if (!ptr->active)
+			continue;
+
 		if (ptr->hp <= 0.0f)
 		{
-			SetCubeExplosion(ptr->pos);
-			//DamageAllCubeObject();
-			SetCameraShaker(10.0f);
+			SetCubeExplosion(ptr->pos, PARTICLE_HARDCUBE_COLOR);
+			DamageAllCubeObject();
+			SetCameraShaker(BONUSCUBE_CAMERA_SHAKE_LENGTH);
 			
-			ptr->hp = HARDCUBE_INIT_HP;
-			ptr->pos.z = 4500.0f;
-			ptr->active = true;
+			DisableHardCube(ptr);
 		}
 	}
 }
@@ -401,5 +421,57 @@ void LockonHardCubeObject(void)
 
 		}
 	}
+}
 
+/**************************************
+非アクティブ処理
+***************************************/
+void DisableHardCube(HARD_CUBE_OBJECT *ptr)
+{
+	ptr->active = false;
+	ptr->scale = 0.0f;
+	RemoveObjectFromSpace(&objectForTree[ptr->id]);
+}
+
+/**************************************
+ハードキューブセット処理
+***************************************/
+bool SetHardCubeObject(D3DXVECTOR3 *setPos)
+{
+	HARD_CUBE_OBJECT *ptr = &cube[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++, oft++)
+	{
+		if (ptr->active)
+			continue;
+
+		ptr->pos = *setPos;
+		ptr->active = true;
+		RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
+		ChangeStateHardCube(ptr, HardCubeInit);
+		return true;
+	}
+
+	return false;
+}
+
+/**************************************
+状態遷移処理
+***************************************/
+void ChangeStateHardCube(HARD_CUBE_OBJECT *ptr, int nextState)
+{
+	ptr->currentState = nextState;
+	Enter[ptr->currentState](ptr);
+}
+
+/**************************************
+各状態更新処理
+***************************************/
+void OnUpdateHardCube(void)
+{
+	HARD_CUBE_OBJECT *ptr = &cube[0];
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
+	{
+		Update[ptr->currentState](ptr);
+	}
 }

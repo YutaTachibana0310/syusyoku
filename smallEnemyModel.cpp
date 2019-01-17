@@ -127,11 +127,6 @@ void InitSmallEnemy(int num)
 		ptr->collider.radius = SMALLENEMY_COLLIDER_RADIUS;
 		ptr->active = false;
 	}
-
-	smallEnemy[0].pos = D3DXVECTOR3(-50.0f, 50.0f, -200.0f);
-	smallEnemy[0].goalPos = D3DXVECTOR3(-50.0f, 00.0f, 200.0f);
-	smallEnemy[0].active = true;
-	ChangeStateSmallEnemy(&smallEnemy[0], SmallEnemyMove);
 }
 
 /**************************************

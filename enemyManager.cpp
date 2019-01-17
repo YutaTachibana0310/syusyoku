@@ -18,6 +18,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define CUBEOBJECT_EMMITT_RANGE		(100.0f)
 
 /**************************************
 構造体定義
@@ -107,10 +108,50 @@ void CheckEnemyCollision(void)
 	LockonMiddleEnemy();
 	LockonEnemyMissile();
 	LockonSmallEnemy();
+	LockonBonusCube();
 	LockonHardCubeObject();
 	LockonCubeObject();
 
 	CollisionMiddleEnemyAndBullet();
 	CollisionSmallEnemyAndBullet();
 	//CollisionCubeObjectAndBullet();
+}
+
+/**************************************
+キューブオブジェクト発生処理
+***************************************/
+void EmmittCubeObject(int num, D3DXVECTOR3 *setPos, float setSpeed)
+{
+	for (int i = 0; i < num; i++)
+	{
+		D3DXVECTOR3 offsetPos;
+		offsetPos.x = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
+		offsetPos.y = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
+		offsetPos.z = RandomRangef(-CUBEOBJECT_EMMITT_RANGE, CUBEOBJECT_EMMITT_RANGE);
+
+		bool resultEmmitt = SetCubeObject(&(*setPos + offsetPos), setSpeed);
+		if (!resultEmmitt)
+			break;
+	}
+}
+
+/**************************************
+ボーナスキューブ発生処理
+***************************************/
+void EmmittBonusCube(D3DXVECTOR3 *setPos)
+{
+	//テロップ表示とか
+
+	SetBonusCube(setPos);
+}
+
+/**************************************
+ハードキューブ発生処理
+***************************************/
+void EmittHardCubeObject(int num, D3DXVECTOR3 *setPos)
+{
+	for (int i = 0; i < num; i++)
+	{
+		SetHardCubeObject(setPos);
+	}
 }

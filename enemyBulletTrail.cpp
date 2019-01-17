@@ -11,7 +11,7 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define ENEMYBULLETTRAIL_TEXTURE_NAME		"data/TEXTURE/ENEMY/enemyBullet01.png"
+#define ENEMYBULLETTRAIL_TEXTURE_NAME		"data/TEXTURE/ENEMY/enemyBulletTrail.png"
 #define ENEMYBULLETTRAIL_TEXTURE_SIZE_X		(6)
 #define ENEMYBULLETTRAIL_TEXTURE_SIZE_Y		(6)
 #define ENEMYBULLETTRAIL_LIFE_END			(20)
@@ -30,9 +30,9 @@ static LPDIRECT3DTEXTURE9 texture;
 //単位頂点の設定
 static VERTEX_PARTICLE vtx[NUM_VERTEX] = {
 	{ -ENEMYBULLETTRAIL_TEXTURE_SIZE_X,  ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.0f, 0.0f },
-	{  ENEMYBULLETTRAIL_TEXTURE_SIZE_X,  ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 1.0f, 0.0f },
+	{  ENEMYBULLETTRAIL_TEXTURE_SIZE_X,  ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.5f, 0.0f },
 	{ -ENEMYBULLETTRAIL_TEXTURE_SIZE_X, -ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.0f, 1.0f },
-	{  ENEMYBULLETTRAIL_TEXTURE_SIZE_X, -ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 1.0f, 1.0f },
+	{  ENEMYBULLETTRAIL_TEXTURE_SIZE_X, -ENEMYBULLETTRAIL_TEXTURE_SIZE_Y, 0.0f, 0.5f, 1.0f },
 };
 
 //各種配列
@@ -170,8 +170,9 @@ void UpdateEnemyBulletTrail(void)
 	}
 
 	//頂点バッファにメモリコピー
-	CopyVtxBuff(sizeof(D3DXMATRIX) * ENEMYBULLETTRAIL_MAX, pos, posBuff);
-	CopyVtxBuff(sizeof(VERTEX_COLOR) * ENEMYBULLETTRAIL_MAX, vtxColor, colorBuff);
+	CopyVtxBuff(sizeof(pos), pos, posBuff);
+	CopyVtxBuff(sizeof(vtxColor), vtxColor, colorBuff);
+	CopyVtxBuff(sizeof(vtxUV), vtxUV, uvBuff);
 }
 
 /**************************************
@@ -239,7 +240,7 @@ void DrawEnemyBulletTrail(void)
 /**************************************
 セット処理
 ***************************************/
-void SetEnemyHomingBulletTrail(D3DXVECTOR3 pos)
+void SetEnemyHomingBulletTrail(D3DXVECTOR3 pos, EnemyBulletTrailDefine define)
 {
 	ENEMYBULLET_TRAIL  *ptr = &homingTrail[0];
 	for (int i = 0; i < ENEMYBULLETTRAIL_MAX; i++, ptr++)
@@ -252,6 +253,7 @@ void SetEnemyHomingBulletTrail(D3DXVECTOR3 pos)
 		ptr->pos = pos;
 		ptr->cntFrame = ENEMYBULLETTRAIL_LIFE_END;
 		vtxColor[i].a = 1.0f;
+		vtxUV[i].u = 0.5f * define;
 		ptr->active = true;
 		return;
 	}
