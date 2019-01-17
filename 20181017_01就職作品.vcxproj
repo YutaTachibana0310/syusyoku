@@ -138,6 +138,7 @@
     <ClCompile Include="battleCamera.cpp" />
     <ClCompile Include="battleController.cpp" />
     <ClCompile Include="battleScene.cpp" />
+    <ClCompile Include="bgmManager.cpp" />
     <ClCompile Include="bonusCube.cpp" />
     <ClCompile Include="bonusTelop.cpp" />
     <ClCompile Include="bonusTimeGUI.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="battleCamera.h" />
     <ClInclude Include="battleController.h" />
     <ClInclude Include="battleScene.h" />
+    <ClInclude Include="bgmManager.h" />
     <ClInclude Include="bonusCube.h" />
     <ClInclude Include="bonusTelop.h" />
     <ClInclude Include="bonusTimeGUI.h" />

@@ -21,6 +21,7 @@ typedef struct {
 	bool active;				//アクティブ判定
 	WORD id;					//固有ID
 	float moveSpeed;			//移動スピード
+	D3DXVECTOR3 moveDir;		//移動方向
 	D3DXVECTOR3 rotValue;		//回転量
 
 	COLLIDER_CUBE collider;		//当たり判定

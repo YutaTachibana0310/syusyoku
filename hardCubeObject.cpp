@@ -100,8 +100,8 @@ static funcHardCube Enter[HardCubeStateMax] = {
 	OnEnterHardCubeMove,
 	OnEnterHardCubeNormalAttack,
 	OnEnterHardCubeHomingAttack,
+	OnEnterHardCubeCharge,
 	OnEnterHardCubeEscape,
-	OnEnterHardCubeCharge
 };
 
 //更新処理関数テーブル
@@ -110,8 +110,8 @@ static funcHardCube Update[HardCubeStateMax] = {
 	OnUpdateHardCubeMove,
 	OnUpdateHardCubeNormalAttack,
 	OnUpdateHardCubeHomingAttack,
+	OnUpdateHardCubeCharge,
 	OnUpdateHardCubeEscape,
-	OnUpdateHardCubeCharge
 };
 
 /**************************************

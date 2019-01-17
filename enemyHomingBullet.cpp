@@ -17,7 +17,7 @@
 #define ENEMYHOMINGBULLET_TEXTURE_SIZE_X		(6)
 #define ENEMYHOMINGBULLET_TEXTURE_SIZE_Y		(6)
 #define ENEMYHOMINGBULLET_DISABLE_BORDER_Z		(-200.0f)
-#define ENEMYHOMINGBULLET_ACCELERATION_MAX		(400.0f)
+#define ENEMYHOMINGBULLET_ACCELERATION_MAX		(1500.0f)
 #define ENEMYHOMINGBULLET_SHADER_NAME			"data/EFFECT/particle.fx"
 
 /**************************************
@@ -152,7 +152,7 @@ void UpdateEnemyHomingBullet(void)
 		}
 
 		//トレイル設定
-		SetEnemyHomingBulletTrail(ptr->pos);
+		SetEnemyHomingBulletTrail(ptr->pos, HomingEnemyBulletTrail);
 
 		//ホーミングの加速度計算処理
 		CalcEnemyHomingBulletAcceleration(ptr);

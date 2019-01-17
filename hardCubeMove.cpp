@@ -10,9 +10,10 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define HARDCUBE_MOVE_Z_NEAR			(300.0f)
-#define HARDCUBE_MOVE_Z_FAR				(600.0f)
-
+#define HARDCUBE_MOVE_Z_NEAR			(500.0f)
+#define HARDCUBE_MOVE_Z_FAR				(800.0f)
+#define HARDCUBE_HOMING_BORDER			(1.5f)
+#define HARDCUBE_CHARGE_BORDER			(1.0f)
 /**************************************
 構造体定義
 ***************************************/
@@ -34,6 +35,7 @@ void OnEnterHardCubeMove(HARD_CUBE_OBJECT *ptr)
 	ptr->goalPos = ptr->startPos + D3DXVECTOR3(0.0f, 0.0f, RandomRangef(HARDCUBE_MOVE_Z_NEAR, HARDCUBE_MOVE_Z_FAR));
 	ptr->cntFrame = 0;
 	ptr->moveDurtaion = 120;
+	ptr->scale = 0.9f;
 }
 
 /**************************************
@@ -47,7 +49,7 @@ void OnUpdateHardCubeMove(HARD_CUBE_OBJECT *ptr)
 
 	if (ptr->cntFrame == ptr->moveDurtaion)
 	{
-		int next = (ptr->scale > 1.0f) ? HardCubeHomingAttack : (ptr->scale > 1.0f) ? HardCubeNormalAttack : HardCubeCharge;
+		int next = (ptr->scale > HARDCUBE_HOMING_BORDER) ? HardCubeHomingAttack : (ptr->scale > HARDCUBE_CHARGE_BORDER) ? HardCubeNormalAttack : HardCubeCharge;
 		ChangeStateHardCube(ptr, next);
 	}
 }

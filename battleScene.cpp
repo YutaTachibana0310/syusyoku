@@ -22,6 +22,7 @@
 #include "playerBulletTrail.h"
 #include "collisionManager.h"
 #include "battleController.h"
+#include "bgmManager.h"
 
 #include "debugWindow.h"
 
@@ -64,6 +65,7 @@ HRESULT InitBattleScene(int num)
 	if (num != 0)
 	{
 		SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		PlayBGM(BGM_BATTLESCENE);
 	}
 
 	InitBattleController(num);
@@ -80,6 +82,7 @@ HRESULT InitBattleScene(int num)
 	InitPlayerMissileSmog(num);
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
+
 
 	return S_OK;
 }
@@ -208,7 +211,7 @@ void DrawDebugWindowBattleScene(void)
 	}
 
 	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
-	if(ImGui::TreeNode("PlayerMissile"))
+	if (ImGui::TreeNode("PlayerMissile"))
 	{
 		ImGui::Text("PMissileUpdate : %fmsec", CalcProgressTime(startPMissileUpdate, endPMissileUpdate));
 		ImGui::Text("PMissileDraw   : %fmsec", CalcProgressTime(startPMissileDraw, endPMissileDraw));

@@ -10,7 +10,7 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define HARDCUBE_SCALE_MAX			(2.0f)
-#define HARDCUBE_SCALE_MIN			(0.5f)
+#define HARDCUBE_SCALE_MIN			(0.3f)
 #define HARDCUBE_INIT_HP			(10.0f)						//èâä˙HP
 
 /**************************************

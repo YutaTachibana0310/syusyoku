@@ -6,6 +6,7 @@
 //=====================================
 #include "enemyBullet.h"
 #include "battleCamera.h"
+#include "enemyBulletTrail.h"
 
 /**************************************
 マクロ定義
@@ -73,6 +74,9 @@ void UpdateEnemyBullet(void)
 		{
 			continue;
 		}
+
+		//トレイル設定
+		SetEnemyHomingBulletTrail(ptr->pos, NormalEnemyBulletTrail);
 
 		ptr->pos += ptr->moveDir * ptr->speed;
 

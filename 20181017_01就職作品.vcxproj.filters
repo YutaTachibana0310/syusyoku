@@ -450,6 +450,9 @@
     <ClCompile Include="hardCubeCharge.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
     </ClCompile>
+    <ClCompile Include="bgmManager.cpp">
+      <Filter>ソース ファイル\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -703,6 +706,9 @@
     </ClInclude>
     <ClInclude Include="bonusTimeGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="bgmManager.h">
+      <Filter>ヘッダー ファイル\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

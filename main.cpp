@@ -18,6 +18,7 @@
 #include "debugWindow.h"
 #include "dataContainer.h"
 #include "collisionManager.h"
+#include "bgmManager.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -343,6 +344,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//サウンド関連初期化
 	InitSound(hWnd);
 	InitSoundEffectManager(0);
+	InitBgmManager(0);
 
 	//データコンテナ初期化
 	InitDataContainer(0);
@@ -395,6 +397,7 @@ void Uninit(void)
 
 	//サウンド関連終了処理
 	UninitSoundEffectManager(0);
+	UninitBgmManager(0);
 	UninitSound();
 
 #ifdef USE_DEBUGWINDOW
