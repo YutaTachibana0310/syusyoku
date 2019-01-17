@@ -107,8 +107,9 @@ void UpdateBattleController(void)
 {
 	cntFrame++;
 
-	if(cntFrame == 1)
-		EmmittBonusCube(&D3DXVECTOR3(0.0f, 0.0f, -100.0f));
+	if (cntFrame == 1)
+		EmittHardCubeObject(1, &D3DXVECTOR3(50.0f, 50.0f, -100.0f));
+		//EmmittBonusCube(&D3DXVECTOR3(0.0f, 0.0f, -100.0f));
 
 	if(isBonusTime)
 		EmmittOnBonusTime();

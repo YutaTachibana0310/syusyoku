@@ -27,5 +27,6 @@ void DrawEnemyManager(void);
 void CheckEnemyCollision(void);
 void EmmittCubeObject(int num, D3DXVECTOR3 *setPos, float setSpeed);
 void EmmittBonusCube(D3DXVECTOR3 *setPos);
+void EmittHardCubeObject(int num, D3DXVECTOR3 *setPos);
 
 #endif

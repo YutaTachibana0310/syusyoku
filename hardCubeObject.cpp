@@ -19,7 +19,7 @@
 ***************************************/
 #define HARDCUBE_EFFECT_NAME		"data/EFFECT/cubeObject.fx"	//シェーダ名
 #define HARDCUBE_SIZE				(20.0f)						//オブジェクトサイズ
-#define HARDCUBE_NUM_MAX			(3)							//最大数
+#define HARDCUBE_NUM_MAX			(24)						//最大数
 #define HARDCUBE_VTX_NUM			(24)						//頂点数
 #define HARDCUBE_FIELD_NUM			(6)							//面数
 #define HARDCUBE_TEX_NUM			(3)							//テクスチャ数
@@ -44,6 +44,8 @@ typedef struct {
 	float texU, texV;
 	float norX, norY, norZ;
 }HARDCUBE_VTX;
+
+typedef void(*funcHardCube)(HARD_CUBE_OBJECT *ptr);
 
 /**************************************
 グローバル変数
@@ -92,6 +94,26 @@ static D3DXMATRIX mtxWorld[HARDCUBE_NUM_MAX];			//ワールド変換行列
 static HARD_CUBE_OBJECT cube[HARDCUBE_NUM_MAX];			//ハードキューブ配列
 static OBJECT_FOR_TREE objectForTree[HARDCUBE_NUM_MAX];	//衝突判定用OBJECT_FOR_TREE配列
 
+//入場処理関数テーブル
+static funcHardCube Enter[HardCubeStateMax] = {
+	OnEnterHardCubeInit,
+	OnEnterHardCubeMove,
+	OnEnterHardCubeNormalAttack,
+	OnEnterHardCubeHomingAttack,
+	OnEnterHardCubeEscape,
+	OnEnterHardCubeCharge
+};
+
+//更新処理関数テーブル
+static funcHardCube Update[HardCubeStateMax] = {
+	OnUpdateHardCubeInit,
+	OnUpdateHardCubeMove,
+	OnUpdateHardCubeNormalAttack,
+	OnUpdateHardCubeHomingAttack,
+	OnUpdateHardCubeEscape,
+	OnUpdateHardCubeCharge
+};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -100,7 +122,7 @@ void RotateHardCube(void);						//回転処理
 void CalcHardCubeWorldMatrix(void);				//ワールド変換行列計算処理
 void CheckDestroyHardCube(void);				//死亡判定	
 void RegisterHardCubeToSpace(void);				//衝突空間への登録処理
-void DisableHardCube(HARD_CUBE_OBJECT *ptr);	//非アクティブ処理
+void OnUpdateHardCube(void);					//各状態更新処理
 
 /**************************************
 初期化処理
@@ -219,7 +241,7 @@ void UninitHardCubeObject(int num)
 void UpdateHardCubeObject(void)
 {
 	CheckDestroyHardCube();
-	MoveHardCube();
+	OnUpdateHardCube();
 	RotateHardCube();
 	CalcHardCubeWorldMatrix();
 	RegisterHardCubeToSpace();
@@ -292,22 +314,6 @@ void DrawHardCubeObject(void)
 		DrawBoundingCube(&ptr->collider);
 	}
 #endif
-}
-
-/**************************************
-移動処理
-***************************************/
-void MoveHardCube(void)
-{
-	HARD_CUBE_OBJECT *ptr = &cube[0];
-	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
-	{
-		ptr->pos.z += ptr->moveSpeed;
-		if (ptr->pos.z < 0.0f)
-		{
-			ptr->pos.z = 2500.0f;
-		}
-	}
 }
 
 /**************************************
@@ -440,13 +446,32 @@ bool SetHardCubeObject(D3DXVECTOR3 *setPos)
 			continue;
 
 		ptr->pos = *setPos;
-		ptr->scale = 1.0f;
-		ptr->moveSpeed = -RandomRangef(HARDCUBE_SPEED_MIN, HARDCUBE_SPEED_MAX);
-		ptr->hp = HARDCUBE_INIT_HP;
 		ptr->active = true;
 		RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
+		ChangeStateHardCube(ptr, HardCubeInit);
 		return true;
 	}
 
 	return false;
+}
+
+/**************************************
+状態遷移処理
+***************************************/
+void ChangeStateHardCube(HARD_CUBE_OBJECT *ptr, int nextState)
+{
+	ptr->currentState = nextState;
+	Enter[ptr->currentState](ptr);
+}
+
+/**************************************
+各状態更新処理
+***************************************/
+void OnUpdateHardCube(void)
+{
+	HARD_CUBE_OBJECT *ptr = &cube[0];
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
+	{
+		Update[ptr->currentState](ptr);
+	}
 }

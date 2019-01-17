@@ -74,7 +74,7 @@ void UpdateEnemyBullet(void)
 			continue;
 		}
 
-		ptr->pos += ptr->moveDir * ptr->speed / 60.0f;
+		ptr->pos += ptr->moveDir * ptr->speed;
 
 		if (ptr->pos.z < ENEMYBULLET_DISABLE_BORDER_Z)
 		{

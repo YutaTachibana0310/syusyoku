@@ -432,6 +432,24 @@
     <ClCompile Include="bonusTimeGUI.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="hardCubeInit.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeNormalAttack.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeHomingAttack.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeEscape.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeMove.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeCharge.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">

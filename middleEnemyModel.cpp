@@ -115,13 +115,6 @@ void InitMiddleEnemy(int num)
 		ptr->active = false;
 
 	}
-
-	middleEnemy[0].active = true;
-	middleEnemy[0].pos = D3DXVECTOR3(50.0f, -300.0f, -200.0f);
-	middleEnemy[0].goalPos = D3DXVECTOR3(50.0f, -0.0f, 400.0f);
-	middleEnemy[0].rot = D3DXVECTOR3(0.0f, 3.14f, 0.0f);
-	middleEnemy[0].goalRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	ChangeStateMiddleEnemy(&middleEnemy[0], MiddleEnemyMove);
 }
 
 /**************************************

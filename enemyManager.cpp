@@ -144,3 +144,14 @@ void EmmittBonusCube(D3DXVECTOR3 *setPos)
 
 	SetBonusCube(setPos);
 }
+
+/**************************************
+ハードキューブ発生処理
+***************************************/
+void EmittHardCubeObject(int num, D3DXVECTOR3 *setPos)
+{
+	for (int i = 0; i < num; i++)
+	{
+		SetHardCubeObject(setPos);
+	}
+}
