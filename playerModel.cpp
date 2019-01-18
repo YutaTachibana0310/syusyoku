@@ -17,6 +17,7 @@
 #include "playerMissile.h"
 #include "soundEffectManager.h"
 #include "dataContainer.h"
+#include "soundEffectManager.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -373,6 +374,7 @@ void AttackPlayerMissile(PLAYERMODEL *player)
 		player->target[i].use = false;
 	}
 
+	PlaySE(SOUND_MISSILELAUNCH);
 	player->lockonNum = 0;
 
 	if (!player->boostMode)

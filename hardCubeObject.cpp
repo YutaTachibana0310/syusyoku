@@ -14,6 +14,8 @@
 #include "cubeObject.h"
 #include "cameraShaker.h"
 
+#include "stageData.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -474,4 +476,28 @@ void OnUpdateHardCube(void)
 	{
 		Update[ptr->currentState](ptr);
 	}
+}
+
+/**************************************
+ハードキューブセット処理(fromステージデータ)
+***************************************/
+bool SetHardCubeObjectFromData(STAGE_DATA *data)
+{
+	HARD_CUBE_OBJECT *ptr = &cube[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++, oft++)
+	{
+		if (ptr->active)
+			continue;
+
+		ptr->pos = data->initPos;
+		ptr->goalPos = data->targetPos;
+		ptr->type = data->type;
+		ptr->active = true;
+		RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
+		ChangeStateHardCube(ptr, HardCubeInit);
+		return true;
+	}
+
+	return false;
 }

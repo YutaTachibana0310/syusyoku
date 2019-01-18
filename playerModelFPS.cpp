@@ -12,6 +12,7 @@
 #include "playerMissile.h"
 #include "lockonGUI.h"
 #include "dataContainer.h"
+#include "soundEffectManager.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -94,6 +95,9 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 	//UŒ‚ˆ—
 	player->atkInterbal++;
+	if (player->atkInterbal == PLAYER_HOMINGATK_INTERBAL)
+		PlaySE(SOUND_READY);
+
 	if (GetKeyboardTrigger(DIK_Z))
 	{
 		AttackPlayerMissile(player);

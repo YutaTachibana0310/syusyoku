@@ -26,6 +26,9 @@
 const TCHAR* soundFileName[SOUND_MAX] =
 {
 	_T("data/SOUND/lockon.wav"),
+	_T("data/SOUND/burst00.wav"),
+	_T("data/SOUND/don18_B.wav"),
+	_T("data/SOUND/ready.wav"),
 	//_T("data/SOUND/hoge.wav"),
 };
 
@@ -43,7 +46,7 @@ void InitSoundEffectManager(int num)
 	if (num == 0)
 	{
 		SOUNDEFFECT *ptr = &se[0];
-		for (int i = 0; i < SOUND_MAX; i++)
+		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
 		}
@@ -67,9 +70,9 @@ void UninitSoundEffectManager(int num)
 	if (num == 0)
 	{
 		SOUNDEFFECT *ptr = &se[0];
-		for (int i = 0; i < SOUND_MAX; i++)
+		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
-			ptr->clip->Release();
+			SAFE_RELEASE(ptr->clip);
 		}
 	}
 }
@@ -87,7 +90,7 @@ void UpdateSoundEffectManager(void)
 ***************************************/
 void PlaySE(DEFINE_SOUNDEFFECT sound)
 {
-	//PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
+	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
 }
 
 /**************************************

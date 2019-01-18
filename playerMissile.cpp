@@ -7,6 +7,7 @@
 #include "playerMissile.h"
 #include "enemyMissile.h"
 #include "playerMissileSmog.h"
+#include "particleManager.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -258,6 +259,7 @@ void ColliisonPlayerMissileAndEnemyMissile(void)
 		if (distSq < radiusSq)
 		{
 			*ptr->targetHP -= PLAYERMISSILE_DAMAGE;
+			SetEnemyExplosion(ptr->pos);
 			ptr->active = false;
 		}
 	}

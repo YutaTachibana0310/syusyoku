@@ -11,8 +11,12 @@
 #include "battleCamera.h"
 #include "enemyManager.h"
 #include "bonusTelop.h"
+#include "stageData.h"
 
 #include "cubeObject.h"
+#include "hardCubeObject.h"
+#include "bonusCube.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -62,6 +66,8 @@ void EmmittOnNormalTime(void);
 ***************************************/
 void InitBattleController(int num)
 {
+	InitStageData(num);
+
 	if (num == 0)
 	{
 		//生成範囲を分割してエネミーの生成座標を計算
@@ -97,7 +103,7 @@ void InitBattleController(int num)
 ***************************************/
 void UninitBattleController(int num)
 {
-
+	UninitStageData(num);
 }
 
 /**************************************
@@ -106,10 +112,6 @@ void UninitBattleController(int num)
 void UpdateBattleController(void)
 {
 	cntFrame++;
-
-	if (cntFrame == 1)
-		EmittHardCubeObject(1, &D3DXVECTOR3(50.0f, 50.0f, -100.0f));
-		//EmmittBonusCube(&D3DXVECTOR3(0.0f, 0.0f, -100.0f));
 
 	if(isBonusTime)
 		EmmittOnBonusTime();
@@ -149,6 +151,7 @@ void EmmittOnBonusTime(void)
 
 	if ((int)(cntFrame - bonusStartFrame) > BATTLE_BONUS_DURATION)
 	{
+		cntFrame = bonusStartFrame;
 		isBonusTime = false;
 	}
 }
@@ -190,7 +193,22 @@ void EmmittOnNormalTime(void)
 	if (cntFrame % BATTLE_CUBEEMMITT_INTERBAL == 0)
 	{
 		lastEmittFrame[decidedPos] = cntFrame;
-		EmmittCubeObject(10, &emmittPos[decidedPos], 5.0f);
+		EmmittCubeObject(10, &emmittPos[decidedPos], 15.0f);
+	}
+
+	/*
+	自動生成のプログラムが間に合わなさそうなので
+	ステージデータを手打ちで作成して使用
+	*/
+	int cntData = 0;
+	STAGE_DATA *data = NULL;
+	UpdateStageData(data, cntFrame);
+	for (int i = 0; i < cntData; i++, data++)
+	{
+		if (data->type < HardCubeChargeType)
+			SetHardCubeObjectFromData(data);
+		else
+			SetBonusCube(&data->initPos);
 	}
 
 	//デバッグ情報表示

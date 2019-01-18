@@ -32,10 +32,9 @@
 void OnEnterHardCubeMove(HARD_CUBE_OBJECT *ptr)
 {
 	ptr->startPos = ptr->pos;
-	ptr->goalPos = ptr->startPos + D3DXVECTOR3(0.0f, 0.0f, RandomRangef(HARDCUBE_MOVE_Z_NEAR, HARDCUBE_MOVE_Z_FAR));
+	//ptr->goalPos = ptr->startPos + D3DXVECTOR3(0.0f, 0.0f, RandomRangef(HARDCUBE_MOVE_Z_NEAR, HARDCUBE_MOVE_Z_FAR));
 	ptr->cntFrame = 0;
 	ptr->moveDurtaion = 120;
-	ptr->scale = 0.9f;
 }
 
 /**************************************
@@ -49,7 +48,8 @@ void OnUpdateHardCubeMove(HARD_CUBE_OBJECT *ptr)
 
 	if (ptr->cntFrame == ptr->moveDurtaion)
 	{
-		int next = (ptr->scale > HARDCUBE_HOMING_BORDER) ? HardCubeHomingAttack : (ptr->scale > HARDCUBE_CHARGE_BORDER) ? HardCubeNormalAttack : HardCubeCharge;
+		//int next = (ptr->scale > HARDCUBE_HOMING_BORDER) ? HardCubeHomingAttack : (ptr->scale > HARDCUBE_CHARGE_BORDER) ? HardCubeNormalAttack : HardCubeCharge;
+		int next = (ptr->type == HardCubeHomingType) ? HardCubeHomingAttack : (ptr->type == HardCubeNormalType) ? HardCubeNormalAttack : HardCubeCharge;
 		ChangeStateHardCube(ptr, next);
 	}
 }

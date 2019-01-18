@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "collider.h"
+#include "stageData.h"
 
 /**************************************
 マクロ定義
@@ -38,6 +39,8 @@ typedef struct {
 	D3DXVECTOR3 goalPos;
 	int moveDurtaion;
 
+	int type;
+
 }HARD_CUBE_OBJECT;
 
 enum HARDCUBE_STATE
@@ -50,6 +53,15 @@ enum HARDCUBE_STATE
 	HardCubeEscape,
 	HardCubeStateMax
 };
+
+enum HARDCUBE_TYPE
+{
+	HardCubeNormalType,
+	HardCubeHomingType,
+	HardCubeChargeType,
+	HardCubeTypeMax
+};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -62,6 +74,7 @@ void LockonHardCubeObject(void);
 bool SetHardCubeObject(D3DXVECTOR3 *setPos);
 void DisableHardCube(HARD_CUBE_OBJECT *ptr);	//非アクティブ処理
 void ChangeStateHardCube(HARD_CUBE_OBJECT *ptr, int nextState);
+bool SetHardCubeObjectFromData(STAGE_DATA *data);
 
 //各状態入場処理関数
 void OnEnterHardCubeInit(HARD_CUBE_OBJECT *ptr);

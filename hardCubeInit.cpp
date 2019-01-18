@@ -10,8 +10,11 @@
 マクロ定義
 ***************************************/
 #define HARDCUBE_SCALE_MAX			(2.0f)
-#define HARDCUBE_SCALE_MIN			(0.3f)
+#define HARDCUBE_SCALE_MIN			(0.2f)
 #define HARDCUBE_INIT_HP			(10.0f)						//初期HP
+
+#define HARDCUBE_SCALE_HOMING		(1.5f)
+#define HARDCUBE_SCALE_CHARGE		(0.7f)
 
 /**************************************
 構造体定義
@@ -30,7 +33,22 @@
 ***************************************/
 void OnEnterHardCubeInit(HARD_CUBE_OBJECT *ptr)
 {
-	ptr->scale = RandomRangef(HARDCUBE_SCALE_MIN, HARDCUBE_SCALE_MAX);
+	/* スケールの自動生成は一旦マスクし、ステージデータに合わせてスケール設定 */
+	//ptr->scale = RandomRangef(HARDCUBE_SCALE_MIN, HARDCUBE_SCALE_MAX);
+	switch (ptr->type)
+	{
+	case HardCubeNormalType:
+		ptr->scale = RandomRangef(HARDCUBE_SCALE_CHARGE, HARDCUBE_SCALE_HOMING);
+		break;
+
+	case HardCubeHomingType:
+		ptr->scale = RandomRangef(HARDCUBE_SCALE_HOMING, HARDCUBE_SCALE_MAX);
+		break;
+
+	default:
+		ptr->scale = RandomRangef(HARDCUBE_SCALE_MIN, HARDCUBE_SCALE_CHARGE);
+	}
+
 	ptr->hp = HARDCUBE_INIT_HP * ptr->scale;
 	ChangeStateHardCube(ptr, HardCubeMove);
 }

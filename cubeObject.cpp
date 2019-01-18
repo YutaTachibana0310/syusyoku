@@ -11,6 +11,7 @@
 #include "dataContainer.h"
 #include "collisionManager.h"
 #include "debugWindow.h"
+#include "soundEffectManager.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -377,7 +378,7 @@ void CheckDestroyCubeObject(void)
 		{
 			SetCubeExplosion(ptr->pos, PARTICLE_CUBE_COLOR);
 			AddScore(CUBEOBJECT_ADD_SCORE);
-
+			PlaySE(SOUND_SMALLEXPL);
 			DisableCubeObject(ptr);
 		}
 	}

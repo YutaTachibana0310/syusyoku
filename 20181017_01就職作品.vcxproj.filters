@@ -453,6 +453,9 @@
     <ClCompile Include="bgmManager.cpp">
       <Filter>ソース ファイル\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="stageData.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -709,6 +712,9 @@
     </ClInclude>
     <ClInclude Include="bgmManager.h">
       <Filter>ヘッダー ファイル\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="stageData.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
