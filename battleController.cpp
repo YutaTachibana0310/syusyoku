@@ -25,7 +25,7 @@
 #define BATTLE_SPACE_TOP_BORDER			(300.0f)			//エネミーの生成座標範囲（上端）
 #define BATTLE_SPACE_RIGHT_BORDER		(300.0f)			//エネミーの生成座標範囲（右端）
 #define BATTLE_SPACE_BOTTOM_BORDER		(-300.0f)			//エネミーの生成座標範囲（下端）
-#define BATTLE_EMITTPOS_Z				(2500.0f)			//エネミー生成座標Z値
+#define BATTLE_EMITTPOS_Z				(6000.0f)			//エネミー生成座標Z値
 
 #define BATTLE_FUZZY_NEAR_BORDER		(0.0f)				//距離に関するファジィ理論のしきい値1
 #define BATTLE_FUZZY_MIDDLE_BORDER		(SCREEN_HEIGHT)		//距離に関するファジィ理論のしきい値2
@@ -38,7 +38,7 @@
 #define BATTLE_BONUS_DURATION			(570)				//ボーナスタイム時間		
 #define BATTLE_BONUS_START				(30)				//ボーナスタイムのスタートオフセット
 
-#define BATTLE_CUBEEMMITT_INTERBAL		(120)
+#define BATTLE_CUBEEMMITT_INTERBAL		(300)
 
 /**************************************
 構造体定義
@@ -193,7 +193,7 @@ void EmmittOnNormalTime(void)
 	if (cntFrame % BATTLE_CUBEEMMITT_INTERBAL == 0)
 	{
 		lastEmittFrame[decidedPos] = cntFrame;
-		EmmittCubeObject(10, &emmittPos[decidedPos], 15.0f);
+		EmmittCubeObject(10, &emmittPos[decidedPos], 10.0f);
 	}
 
 	/*
@@ -202,10 +202,10 @@ void EmmittOnNormalTime(void)
 	*/
 	int cntData = 0;
 	STAGE_DATA *data = NULL;
-	UpdateStageData(data, cntFrame);
+	cntData = UpdateStageData(&data, cntFrame);
 	for (int i = 0; i < cntData; i++, data++)
 	{
-		if (data->type < HardCubeChargeType)
+		if (data->type < HardCubeTypeMax)
 			SetHardCubeObjectFromData(data);
 		else
 			SetBonusCube(&data->initPos);

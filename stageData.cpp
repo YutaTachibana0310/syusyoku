@@ -55,16 +55,17 @@ void UninitStageData(int num)
 /**************************************
 更新処理
 ***************************************/
-int UpdateStageData(STAGE_DATA *out, DWORD currentFrame)
+int UpdateStageData(STAGE_DATA **out, DWORD currentFrame)
 {
 	int cntData = 0;
-	while (currentIndex < dataMax && dataHead[currentFrame].emmittFrame == currentFrame)
+	while (currentIndex < dataMax && dataHead[currentIndex].emmittFrame == currentFrame)
 	{
 		if (cntData == 0)
-			out = &dataHead[currentIndex];
+			*out = &dataHead[currentIndex];
 		currentIndex++;
 		cntData++;
 	}
+
 
 	return cntData;
 }
@@ -89,13 +90,14 @@ bool LoadStageData(void)
 		return false;
 
 	dataHead = (STAGE_DATA*)malloc(sizeof(STAGE_DATA) * dataMax);
+	ZeroMemory(dataHead, sizeof(STAGE_DATA) * dataMax);
 
 	//データ読み込み
 	STAGE_DATA *ptr = dataHead;
 	int sumEmmittFrame = 0;
 	for (int i = 0; i < dataMax; i++, ptr++)
 	{
-		fscanf(fp, "%d,%d,%f,%f,%f,%f,%f,%f",
+		fscanf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
 			&ptr->emmittFrame,
 			&ptr->type,
 			&ptr->initPos.x,
@@ -103,7 +105,14 @@ bool LoadStageData(void)
 			&ptr->initPos.z,
 			&ptr->targetPos.x,
 			&ptr->targetPos.y,
-			&ptr->targetPos.z);
+			&ptr->targetPos.z,
+			&ptr->controller1.x,
+			&ptr->controller1.y,
+			&ptr->controller1.z,
+			&ptr->controller2.x,
+			&ptr->controller2.y,
+			&ptr->controller2.z);
+
 		ptr->emmittFrame += sumEmmittFrame;
 		sumEmmittFrame = ptr->emmittFrame;
 	}

@@ -456,6 +456,9 @@
     <ClCompile Include="stageData.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="hardCubeBezier.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">

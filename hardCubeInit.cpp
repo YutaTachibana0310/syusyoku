@@ -50,7 +50,11 @@ void OnEnterHardCubeInit(HARD_CUBE_OBJECT *ptr)
 	}
 
 	ptr->hp = HARDCUBE_INIT_HP * ptr->scale;
-	ChangeStateHardCube(ptr, HardCubeMove);
+
+	if (ptr->type != HardCubeBezierType)
+		ChangeStateHardCube(ptr, HardCubeMove);
+	else
+		ChangeStateHardCube(ptr, HardCubeBezier);
 }
 
 /**************************************

@@ -41,6 +41,9 @@ typedef struct {
 
 	int type;
 
+	D3DXVECTOR3 controller1;
+	D3DXVECTOR3 controller2;
+
 }HARD_CUBE_OBJECT;
 
 enum HARDCUBE_STATE
@@ -51,6 +54,7 @@ enum HARDCUBE_STATE
 	HardCubeHomingAttack,
 	HardCubeCharge,
 	HardCubeEscape,
+	HardCubeBezier,
 	HardCubeStateMax
 };
 
@@ -59,6 +63,7 @@ enum HARDCUBE_TYPE
 	HardCubeNormalType,
 	HardCubeHomingType,
 	HardCubeChargeType,
+	HardCubeBezierType,
 	HardCubeTypeMax
 };
 
@@ -83,6 +88,7 @@ void OnEnterHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeEscape(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeCharge(HARD_CUBE_OBJECT *ptr);
+void OnEnterHardCubeBezier(HARD_CUBE_OBJECT *ptr);
 
 //äeèÛë‘çXêVèàóùä÷êî
 void OnUpdateHardCubeInit(HARD_CUBE_OBJECT *ptr);
@@ -91,5 +97,6 @@ void OnUpdateHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeEscape(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeCharge(HARD_CUBE_OBJECT *ptr);
+void OnUpdateHardCubeBezier(HARD_CUBE_OBJECT *ptr);
 
 #endif

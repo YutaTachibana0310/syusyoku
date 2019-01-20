@@ -22,12 +22,14 @@ typedef struct
 	int type;
 	D3DXVECTOR3 initPos;
 	D3DXVECTOR3 targetPos;
+	D3DXVECTOR3 controller1;
+	D3DXVECTOR3 controller2;
 }STAGE_DATA;
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void InitStageData(int num);
 void UninitStageData(int num);
-int UpdateStageData(STAGE_DATA *out, DWORD currentFrame);
+int UpdateStageData(STAGE_DATA **out, DWORD currentFrame);
 
 #endif
