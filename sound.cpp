@@ -148,14 +148,14 @@ LPDIRECTSOUNDBUFFER8 LoadSound(const TCHAR *path )
 // flag   :1(E_DS8_FLAG_LOOP)ならループ再生
 void PlaySoundBuffer(  LPDIRECTSOUNDBUFFER8 pBuffer, int flag, bool fromHead)
 {
-	if (fromHead)
-	{	// 続きから鳴らすので、最初から鳴らしたい場合はSetCurrentPosition(0)をすること
-		pBuffer->SetCurrentPosition(0);
-	}
-
 	if (pBuffer == NULL)
 	{
 		return;
+	}
+
+	if (fromHead)
+	{	// 続きから鳴らすので、最初から鳴らしたい場合はSetCurrentPosition(0)をすること
+		pBuffer->SetCurrentPosition(0);
 	}
 
 	pBuffer->Play(0, 0, flag);

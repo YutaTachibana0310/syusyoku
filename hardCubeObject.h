@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "collider.h"
+#include "stageData.h"
 
 /**************************************
 マクロ定義
@@ -38,6 +39,11 @@ typedef struct {
 	D3DXVECTOR3 goalPos;
 	int moveDurtaion;
 
+	int type;
+
+	D3DXVECTOR3 controller1;
+	D3DXVECTOR3 controller2;
+
 }HARD_CUBE_OBJECT;
 
 enum HARDCUBE_STATE
@@ -48,8 +54,19 @@ enum HARDCUBE_STATE
 	HardCubeHomingAttack,
 	HardCubeCharge,
 	HardCubeEscape,
+	HardCubeBezier,
 	HardCubeStateMax
 };
+
+enum HARDCUBE_TYPE
+{
+	HardCubeNormalType,
+	HardCubeHomingType,
+	HardCubeChargeType,
+	HardCubeBezierType,
+	HardCubeTypeMax
+};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -62,6 +79,7 @@ void LockonHardCubeObject(void);
 bool SetHardCubeObject(D3DXVECTOR3 *setPos);
 void DisableHardCube(HARD_CUBE_OBJECT *ptr);	//非アクティブ処理
 void ChangeStateHardCube(HARD_CUBE_OBJECT *ptr, int nextState);
+bool SetHardCubeObjectFromData(STAGE_DATA *data);
 
 //各状態入場処理関数
 void OnEnterHardCubeInit(HARD_CUBE_OBJECT *ptr);
@@ -70,6 +88,7 @@ void OnEnterHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeEscape(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeCharge(HARD_CUBE_OBJECT *ptr);
+void OnEnterHardCubeBezier(HARD_CUBE_OBJECT *ptr);
 
 //各状態更新処理関数
 void OnUpdateHardCubeInit(HARD_CUBE_OBJECT *ptr);
@@ -78,5 +97,6 @@ void OnUpdateHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeEscape(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeCharge(HARD_CUBE_OBJECT *ptr);
+void OnUpdateHardCubeBezier(HARD_CUBE_OBJECT *ptr);
 
 #endif

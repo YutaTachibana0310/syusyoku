@@ -7,6 +7,7 @@
 #include "playerMissile.h"
 #include "enemyMissile.h"
 #include "playerMissileSmog.h"
+#include "particleManager.h"
 
 /**************************************
 マクロ定義
@@ -16,7 +17,7 @@
 #define PLAYERMISSILE_REACEFRAME		(30.0f)
 #define PLAYERMISSILE_VELOCITY_MAX		(15.0f)
 #define PLAYERMISSILE_VELOCITY_MIN		(5.0f)
-#define PLAYERMISSILE_DAMAGE			(5.0f)
+#define PLAYERMISSILE_DAMAGE			(500.0f)
 
 /**************************************
 構造体定義
@@ -258,6 +259,7 @@ void ColliisonPlayerMissileAndEnemyMissile(void)
 		if (distSq < radiusSq)
 		{
 			*ptr->targetHP -= PLAYERMISSILE_DAMAGE;
+			SetEnemyExplosion(ptr->pos);
 			ptr->active = false;
 		}
 	}

@@ -13,13 +13,16 @@
 #include "playerModel.h"
 #include "cubeObject.h"
 #include "cameraShaker.h"
+#include "soundEffectManager.h"
+
+#include "stageData.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define HARDCUBE_EFFECT_NAME		"data/EFFECT/cubeObject.fx"	//シェーダ名
-#define HARDCUBE_SIZE				(20.0f)						//オブジェクトサイズ
-#define HARDCUBE_NUM_MAX			(24)						//最大数
+#define HARDCUBE_SIZE				(10.0f)						//オブジェクトサイズ
+#define HARDCUBE_NUM_MAX			(128)						//最大数
 #define HARDCUBE_VTX_NUM			(24)						//頂点数
 #define HARDCUBE_FIELD_NUM			(6)							//面数
 #define HARDCUBE_TEX_NUM			(3)							//テクスチャ数
@@ -102,6 +105,7 @@ static funcHardCube Enter[HardCubeStateMax] = {
 	OnEnterHardCubeHomingAttack,
 	OnEnterHardCubeCharge,
 	OnEnterHardCubeEscape,
+	OnEnterHardCubeBezier
 };
 
 //更新処理関数テーブル
@@ -112,6 +116,7 @@ static funcHardCube Update[HardCubeStateMax] = {
 	OnUpdateHardCubeHomingAttack,
 	OnUpdateHardCubeCharge,
 	OnUpdateHardCubeEscape,
+	OnUpdateHardCubeBezier,
 };
 
 /**************************************
@@ -368,8 +373,11 @@ void CheckDestroyHardCube(void)
 		if (ptr->hp <= 0.0f)
 		{
 			SetCubeExplosion(ptr->pos, PARTICLE_HARDCUBE_COLOR);
-			DamageAllCubeObject();
-			SetCameraShaker(BONUSCUBE_CAMERA_SHAKE_LENGTH);
+			PlaySE(SOUND_SMALLEXPL);
+			//DamageAllCubeObject();
+
+			if(ptr->scale > 1.8f)
+				SetCameraShaker(BONUSCUBE_CAMERA_SHAKE_LENGTH);
 			
 			DisableHardCube(ptr);
 		}
@@ -472,6 +480,33 @@ void OnUpdateHardCube(void)
 	HARD_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
 	{
-		Update[ptr->currentState](ptr);
+		if(ptr->active)
+			Update[ptr->currentState](ptr);
 	}
+}
+
+/**************************************
+ハードキューブセット処理(fromステージデータ)
+***************************************/
+bool SetHardCubeObjectFromData(STAGE_DATA *data)
+{
+	HARD_CUBE_OBJECT *ptr = &cube[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++, oft++)
+	{
+		if (ptr->active)
+			continue;
+
+		ptr->pos = data->initPos;
+		ptr->goalPos = data->targetPos;
+		ptr->type = data->type;
+		ptr->controller1 = data->controller1;
+		ptr->controller2 = data->controller2;
+		ptr->active = true;
+		RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
+		ChangeStateHardCube(ptr, HardCubeInit);
+		return true;
+	}
+
+	return false;
 }

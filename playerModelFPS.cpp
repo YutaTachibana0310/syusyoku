@@ -12,6 +12,7 @@
 #include "playerMissile.h"
 #include "lockonGUI.h"
 #include "dataContainer.h"
+#include "soundEffectManager.h"
 
 /**************************************
 マクロ定義
@@ -94,7 +95,10 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 	//攻撃処理
 	player->atkInterbal++;
-	if (GetKeyboardTrigger(DIK_Z))
+	if (player->atkInterbal == PLAYER_HOMINGATK_INTERBAL)
+		PlaySE(SOUND_READY);
+
+	if (GetAttackButtonRelease())
 	{
 		AttackPlayerMissile(player);
 	}
@@ -105,7 +109,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 	//ショット発射処理
 	player->cntFrame++;
-	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0)
+	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0 && !GetAttackButtonPress())
 	{
 		SetPlayerBullet(player->shotpos1, PLAYERFPS_BULLETSPEED);
 		SetPlayerBullet(player->shotpos2, PLAYERFPS_BULLETSPEED);

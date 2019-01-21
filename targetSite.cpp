@@ -12,6 +12,7 @@
 #include "rockonSite.h"
 #include "soundEffectManager.h"
 #include "dataContainer.h"
+#include "input.h"
 
 #include "debugWindow.h"
 
@@ -27,6 +28,7 @@
 #define TARGETSITE_OUTCIRCLE_ROTVALUE	(-0.015f)
 #define TARGETSITE_COLLIDER_RADIUS		(180.0f)
 #define TARGETSITE_LOCKONRANGE_MAX		(3000.0f)
+#define TARGETSITE_OPEN_VALUE			(0.1f)
 
 /**************************************
 構造体定義
@@ -37,6 +39,7 @@ enum TARGETSITE_TEXTUREINDEX
 	TARGETSITE_OUTCIRCLE,
 	TARGETSITE_TEXTUREMAX
 };
+
 /**************************************
 グローバル変数
 ***************************************/
@@ -55,6 +58,7 @@ static const char* texturePath[] = {
 static const float ScaleLevel[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
 	0.7f, 0.85f, 1.0f, 1.2f
 };
+
 
 /**************************************
 プロトタイプ宣言
@@ -83,6 +87,7 @@ void InitTargetSite(int num)
 	{
 		ptr->pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->insideRot = ptr->outsideRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->baseScale = 0.0f;
 	}
 }
 
@@ -122,6 +127,10 @@ void UpdateTargetSite(void)
 		{
 			continue;
 		}
+
+		//スケール計算
+		float addValue = GetAttackButtonPress() ? TARGETSITE_OPEN_VALUE : -TARGETSITE_OPEN_VALUE;
+		ptr->baseScale = Clampf(0.0f, 1.0f, ptr->baseScale + addValue);
 
 		//スクリーン座標更新
 		D3DXVec3TransformCoord(&ptr->screenPos, &ptr->pos, &GetBattleCameraView());
@@ -176,7 +185,7 @@ void DrawTargetSite(void)
 		D3DXMatrixIdentity(&mtxWorld);
 
 		//scaling
-		D3DXMatrixScaling(&mtxScale, scale, scale, scale);
+		D3DXMatrixScaling(&mtxScale, scale * ptr->baseScale, scale * ptr->baseScale, scale * ptr->baseScale);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
 
 		//rotaiton
@@ -307,7 +316,7 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 
 	D3DXVECTOR3 targetScreenPos;
 	PLAYERMODEL *player = GetPlayerAdr(id);
-	float radius = TARGETSITE_COLLIDER_RADIUS * ScaleLevel[GetLockonLevel()];
+	float radius = TARGETSITE_COLLIDER_RADIUS * ScaleLevel[GetLockonLevel()] * ptr->baseScale;
 
 	D3DXVec3TransformCoord(&targetScreenPos, pos, &GetBattleCameraView());
 	D3DXVec3TransformCoord(&targetScreenPos, &targetScreenPos, &GetBattleCameraProjection());

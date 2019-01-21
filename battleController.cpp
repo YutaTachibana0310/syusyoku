@@ -11,8 +11,12 @@
 #include "battleCamera.h"
 #include "enemyManager.h"
 #include "bonusTelop.h"
+#include "stageData.h"
 
 #include "cubeObject.h"
+#include "hardCubeObject.h"
+#include "bonusCube.h"
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -21,7 +25,7 @@
 #define BATTLE_SPACE_TOP_BORDER			(300.0f)			//エネミーの生成座標範囲（上端）
 #define BATTLE_SPACE_RIGHT_BORDER		(300.0f)			//エネミーの生成座標範囲（右端）
 #define BATTLE_SPACE_BOTTOM_BORDER		(-300.0f)			//エネミーの生成座標範囲（下端）
-#define BATTLE_EMITTPOS_Z				(2500.0f)			//エネミー生成座標Z値
+#define BATTLE_EMITTPOS_Z				(6000.0f)			//エネミー生成座標Z値
 
 #define BATTLE_FUZZY_NEAR_BORDER		(0.0f)				//距離に関するファジィ理論のしきい値1
 #define BATTLE_FUZZY_MIDDLE_BORDER		(SCREEN_HEIGHT)		//距離に関するファジィ理論のしきい値2
@@ -34,7 +38,7 @@
 #define BATTLE_BONUS_DURATION			(570)				//ボーナスタイム時間		
 #define BATTLE_BONUS_START				(30)				//ボーナスタイムのスタートオフセット
 
-#define BATTLE_CUBEEMMITT_INTERBAL		(120)
+#define BATTLE_CUBEEMMITT_INTERBAL		(300)
 
 /**************************************
 構造体定義
@@ -50,18 +54,21 @@ static D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];		//判定座標
 static D3DXVECTOR3 emmittPos[BATTLE_SPACE_MAX];		//エネミー生成位置
 static DWORD bonusStartFrame;
 static bool isBonusTime;
-
+static bool countState;
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void EmmittOnBonusTime(void);
 void EmmittOnNormalTime(void);
+void EmittFromStageData(void);
 
 /**************************************
 初期化処理
 ***************************************/
 void InitBattleController(int num)
 {
+	InitStageData(num);
+
 	if (num == 0)
 	{
 		//生成範囲を分割してエネミーの生成座標を計算
@@ -90,6 +97,7 @@ void InitBattleController(int num)
 	}
 
 	isBonusTime = false;
+	countState = true;
 }
 
 /**************************************
@@ -97,7 +105,7 @@ void InitBattleController(int num)
 ***************************************/
 void UninitBattleController(int num)
 {
-
+	UninitStageData(num);
 }
 
 /**************************************
@@ -105,16 +113,19 @@ void UninitBattleController(int num)
 ***************************************/
 void UpdateBattleController(void)
 {
-	cntFrame++;
+	if (countState)
+		cntFrame++;
 
-	if (cntFrame == 1)
-		EmittHardCubeObject(1, &D3DXVECTOR3(50.0f, 50.0f, -100.0f));
-		//EmmittBonusCube(&D3DXVECTOR3(0.0f, 0.0f, -100.0f));
-
-	if(isBonusTime)
+	if (isBonusTime)
+	{
 		EmmittOnBonusTime();
+
+	}
 	else
-		EmmittOnNormalTime();
+	{
+		//EmmittOnNormalTime();
+		EmittFromStageData();
+	}
 }
 
 /**************************************
@@ -149,6 +160,7 @@ void EmmittOnBonusTime(void)
 
 	if ((int)(cntFrame - bonusStartFrame) > BATTLE_BONUS_DURATION)
 	{
+		cntFrame = bonusStartFrame;
 		isBonusTime = false;
 	}
 }
@@ -190,7 +202,7 @@ void EmmittOnNormalTime(void)
 	if (cntFrame % BATTLE_CUBEEMMITT_INTERBAL == 0)
 	{
 		lastEmittFrame[decidedPos] = cntFrame;
-		EmmittCubeObject(10, &emmittPos[decidedPos], 5.0f);
+		EmmittCubeObject(10, &emmittPos[decidedPos], 10.0f);
 	}
 
 	//デバッグ情報表示
@@ -247,4 +259,33 @@ void EmmittOnNormalTime(void)
 bool IsBonusTime(void)
 {
 	return isBonusTime;
+}
+
+/**************************************
+カウント状態セット処理
+***************************************/
+void SetBattleControllerCountState(bool state)
+{
+	countState = state;
+}
+
+/**************************************
+ステージデータからのキューブ放出処理
+***************************************/
+void EmittFromStageData(void)
+{
+	/*
+	自動生成のプログラムが間に合わなさそうなので
+	ステージデータを手打ちで作成して使用
+	*/
+	int cntData = 0;
+	STAGE_DATA *data = NULL;
+	cntData = UpdateStageData(&data, cntFrame);
+	for (int i = 0; i < cntData; i++, data++)
+	{
+		if (data->type < HardCubeTypeMax)
+			SetHardCubeObjectFromData(data);
+		else
+			SetBonusCube(&data->initPos);
+	}
 }

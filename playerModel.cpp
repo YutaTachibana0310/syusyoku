@@ -17,6 +17,7 @@
 #include "playerMissile.h"
 #include "soundEffectManager.h"
 #include "dataContainer.h"
+#include "soundEffectManager.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -365,14 +366,12 @@ void AttackPlayerMissile(PLAYERMODEL *player)
 			continue;
 		}
 
-		for (int j = 0; j < 4; j++)
-		{
-			SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
-		}
+		SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
 		ReleaseRockonTarget(player, i);
 		player->target[i].use = false;
 	}
 
+	PlaySE(SOUND_MISSILELAUNCH);
 	player->lockonNum = 0;
 
 	if (!player->boostMode)
