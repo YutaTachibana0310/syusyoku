@@ -366,10 +366,7 @@ void AttackPlayerMissile(PLAYERMODEL *player)
 			continue;
 		}
 
-		for (int j = 0; j < 4; j++)
-		{
-			SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
-		}
+		SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
 		ReleaseRockonTarget(player, i);
 		player->target[i].use = false;
 	}

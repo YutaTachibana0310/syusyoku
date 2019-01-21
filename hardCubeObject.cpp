@@ -376,7 +376,7 @@ void CheckDestroyHardCube(void)
 			PlaySE(SOUND_SMALLEXPL);
 			//DamageAllCubeObject();
 
-			if(ptr->scale > 1.5f)
+			if(ptr->scale > 1.8f)
 				SetCameraShaker(BONUSCUBE_CAMERA_SHAKE_LENGTH);
 			
 			DisableHardCube(ptr);

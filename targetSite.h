@@ -23,7 +23,7 @@ typedef struct
 	D3DXVECTOR3 screenPos;
 	D3DXVECTOR3 targetPos;
 	D3DXVECTOR3 insideRot, outsideRot;
-
+	float baseScale;
 	//D3DXVECTOR3 topL, topR, bottomL, bottomR;
 
 }TARGETSITE;

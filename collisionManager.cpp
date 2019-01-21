@@ -23,6 +23,7 @@
 #define COLLISION_REGION_TOP					(-5000.0f)	//判定空間の上端
 #define COLLISION_REGION_BOTTOM					(5000.0f)	//判定空間の下端
 
+#define PLAYERBULLET_DAMAGE						(1.0f)
 /**************************************
 構造体定義
 ***************************************/
@@ -183,7 +184,7 @@ bool CheckCollisionPlayerBulletAndCubeLower(DWORD elem, PLAYERBULLET *bullet, bo
 			cntCheck++;
 			if (ChechHitBoundingCube(&bullet->collider2, &cube->collider))
 			{
-				cube->hp -= 1.0f;
+				cube->hp -= PLAYERBULLET_DAMAGE;
 				bullet->destroyRequest = true;
 				return true;
 			}
@@ -227,7 +228,7 @@ bool CheckCollisionPlayerBulletAndCubeUpper(DWORD elem, PLAYERBULLET *bullet)
 				cntCheck++;
 				if (ChechHitBoundingCube(&bullet->collider2, &cube->collider))
 				{
-					cube->hp -= 1.0f;
+					cube->hp -= PLAYERBULLET_DAMAGE;
 					bullet->destroyRequest = true;
 					return false;
 				}
@@ -299,7 +300,7 @@ bool CheckCollisionPlayerBulletAndHardCubeLower(DWORD elem,	HARD_CUBE_OBJECT *ha
 			if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
 			{
 				BurstPlayerBullet(bullet);
-				hardCube->hp -= 1.0f;
+				hardCube->hp -= PLAYERBULLET_DAMAGE;
 			}
 
 			//次のキューブへ
@@ -341,7 +342,7 @@ bool CheckCollisionPlayerBulletAndHardCubeUpper(DWORD elem, HARD_CUBE_OBJECT *ha
 				if (ChechHitBoundingCube(&bullet->collider2, &hardCube->collider))
 				{
 					BurstPlayerBullet(bullet);
-					hardCube->hp -= 1.0f;
+					hardCube->hp -= PLAYERBULLET_DAMAGE;
 					return true;
 				}
 
@@ -410,7 +411,7 @@ bool CheckCollisionBonusCubeAndPlayerBulletLower(DWORD elem, BONUS_CUBE_OBJECT *
 			if (ChechHitBoundingCube(&bullet->collider2, &bonusCube->collider))
 			{
 				BurstPlayerBullet(bullet);
-				bonusCube->hp -= 1.0f;
+				bonusCube->hp -= PLAYERBULLET_DAMAGE;
 			}
 		}
 	}
@@ -446,7 +447,7 @@ bool CheckCollisionBonusCubeAndPlayerBulletUpper(DWORD elem, BONUS_CUBE_OBJECT *
 				if (ChechHitBoundingCube(&bullet->collider2, &bonusCube->collider))
 				{
 					BurstPlayerBullet(bullet);
-					bonusCube->hp -= 1.0f;
+					bonusCube->hp -= PLAYERBULLET_DAMAGE;
 				}
 
 				bulletOFT = bulletOFT->next;

@@ -54,12 +54,13 @@ static D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];		//判定座標
 static D3DXVECTOR3 emmittPos[BATTLE_SPACE_MAX];		//エネミー生成位置
 static DWORD bonusStartFrame;
 static bool isBonusTime;
-
+static bool countState;
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void EmmittOnBonusTime(void);
 void EmmittOnNormalTime(void);
+void EmittFromStageData(void);
 
 /**************************************
 初期化処理
@@ -96,6 +97,7 @@ void InitBattleController(int num)
 	}
 
 	isBonusTime = false;
+	countState = true;
 }
 
 /**************************************
@@ -111,12 +113,19 @@ void UninitBattleController(int num)
 ***************************************/
 void UpdateBattleController(void)
 {
-	cntFrame++;
+	if (countState)
+		cntFrame++;
 
-	if(isBonusTime)
+	if (isBonusTime)
+	{
 		EmmittOnBonusTime();
+
+	}
 	else
-		EmmittOnNormalTime();
+	{
+		//EmmittOnNormalTime();
+		EmittFromStageData();
+	}
 }
 
 /**************************************
@@ -196,21 +205,6 @@ void EmmittOnNormalTime(void)
 		EmmittCubeObject(10, &emmittPos[decidedPos], 10.0f);
 	}
 
-	/*
-	自動生成のプログラムが間に合わなさそうなので
-	ステージデータを手打ちで作成して使用
-	*/
-	int cntData = 0;
-	STAGE_DATA *data = NULL;
-	cntData = UpdateStageData(&data, cntFrame);
-	for (int i = 0; i < cntData; i++, data++)
-	{
-		if (data->type < HardCubeTypeMax)
-			SetHardCubeObjectFromData(data);
-		else
-			SetBonusCube(&data->initPos);
-	}
-
 	//デバッグ情報表示
 	{
 		ImGui::Begin("BattleController");
@@ -265,4 +259,33 @@ void EmmittOnNormalTime(void)
 bool IsBonusTime(void)
 {
 	return isBonusTime;
+}
+
+/**************************************
+カウント状態セット処理
+***************************************/
+void SetBattleControllerCountState(bool state)
+{
+	countState = state;
+}
+
+/**************************************
+ステージデータからのキューブ放出処理
+***************************************/
+void EmittFromStageData(void)
+{
+	/*
+	自動生成のプログラムが間に合わなさそうなので
+	ステージデータを手打ちで作成して使用
+	*/
+	int cntData = 0;
+	STAGE_DATA *data = NULL;
+	cntData = UpdateStageData(&data, cntFrame);
+	for (int i = 0; i < cntData; i++, data++)
+	{
+		if (data->type < HardCubeTypeMax)
+			SetHardCubeObjectFromData(data);
+		else
+			SetBonusCube(&data->initPos);
+	}
 }

@@ -13,6 +13,8 @@
 #include "playerModel.h"
 #include "battleController.h"
 #include "EasingVector.h"
+#include "soundEffectManager.h"
+#include "cameraShaker.h"
 
 #include "debugWindow.h"
 
@@ -25,7 +27,7 @@
 #define BONUSCUBE_VTX_NUM				(24)
 #define BONUSCUBE_FIELD_NUM				(6)
 #define BONUSCUBE_TEX_NUM				(3)
-#define BONUSCUBE_INIT_HP				(50.0f)
+#define BONUSCUBE_INIT_HP				(2000.0f)
 #define BONUSCUBE_MOVE_MAX				(10)
 #define BONUSCUBE_MOVE_Z_NEAR			(300.0f)
 #define BONUSCUBE_MOVE_Z_FAR			(600.0f)
@@ -35,6 +37,7 @@
 #define BONUSCUBE_MOVE_DURATION			(90)
 #define BONUSCUBE_MOVE_WAIT				(30)
 #define PARTICLE_BONUSCUBE_COLOR		(D3DCOLOR_RGBA(255, 228, 121, 255))
+#define BONUSCUBE_CAMERASHAKE_LENGTH	(50.0f)
 
 static const char* TextureName[BONUSCUBE_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit09.png",
@@ -383,6 +386,8 @@ void CheckDestroyBonusCube(void)
 
 		if (ptr->hp <= 0.0f)
 		{
+			PlaySE(SOUND_SMALLEXPL);
+			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			DisableBonusCube(ptr);
 			StartBonusTime();
@@ -456,6 +461,7 @@ bool SetBonusCube(D3DXVECTOR3 *setPos)
 		ptr->active = true;
 		RegisterObjectToSpace(&ptr->collider, oft, OFT_BONUSCUBE);
 		ptr->cntMove = 0;
+		SetBattleControllerCountState(false);
 		StartBonusCubeMove(ptr);
 		return true;
 	}
@@ -470,6 +476,7 @@ void DisableBonusCube(BONUS_CUBE_OBJECT *ptr)
 {
 	ptr->active = false;
 	ptr->scale = 0.0f;
+	SetBattleControllerCountState(true);
 	RemoveObjectFromSpace(&objectForTree[ptr->id]);
 }
 

@@ -23,6 +23,9 @@
 /**************************************
 グローバル変数
 ***************************************/
+static const float InitHp[HardCubeTypeMax] = {
+	50.0f, 100.0f, 15.0f, 15.0f
+};
 
 /**************************************
 プロトタイプ宣言
@@ -49,7 +52,7 @@ void OnEnterHardCubeInit(HARD_CUBE_OBJECT *ptr)
 		ptr->scale = RandomRangef(HARDCUBE_SCALE_MIN, HARDCUBE_SCALE_CHARGE);
 	}
 
-	ptr->hp = HARDCUBE_INIT_HP * ptr->scale;
+	ptr->hp = InitHp[ptr->type];
 
 	if (ptr->type != HardCubeBezierType)
 		ChangeStateHardCube(ptr, HardCubeMove);

@@ -98,7 +98,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	if (player->atkInterbal == PLAYER_HOMINGATK_INTERBAL)
 		PlaySE(SOUND_READY);
 
-	if (GetKeyboardTrigger(DIK_Z))
+	if (GetAttackButtonRelease())
 	{
 		AttackPlayerMissile(player);
 	}
@@ -109,7 +109,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 	//ƒVƒ‡ƒbƒg”­ŽËˆ—
 	player->cntFrame++;
-	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0)
+	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0 && !GetAttackButtonPress())
 	{
 		SetPlayerBullet(player->shotpos1, PLAYERFPS_BULLETSPEED);
 		SetPlayerBullet(player->shotpos2, PLAYERFPS_BULLETSPEED);
