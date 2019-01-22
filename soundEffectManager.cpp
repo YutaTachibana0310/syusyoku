@@ -7,6 +7,8 @@
 #include "soundEffectManager.h"
 #include "sound.h"
 #include <tchar.h>
+#include "debugWindow.h"
+#include <stdio.h>
 
 #pragma comment ( lib, "dxguid.lib" )
 #pragma comment ( lib, "dsound.lib" )
@@ -15,6 +17,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define SOUND_POS_FAR_END			(10000.0f)
 
 /**************************************
 構造体定義
@@ -29,6 +32,8 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/burst00.wav"),
 	_T("data/SOUND/don18_B.wav"),
 	_T("data/SOUND/ready.wav"),
+	_T("data/SOUND/decision16.wav"),
+	_T("data/SOUND/gun29.wav"),
 	//_T("data/SOUND/hoge.wav"),
 };
 
@@ -37,6 +42,9 @@ static SOUNDEFFECT se[SOUND_MAX];
 /**************************************
 プロトタイプ宣言
 ***************************************/
+bool SaveSettingsSoundEffect(void);
+bool LoadSettingsSoundEffect(void);
+void DrawDebugWindowSoundEffect(void);
 
 /**************************************
 初期化処理
@@ -47,20 +55,14 @@ void InitSoundEffectManager(int num)
 
 	if (!initialized)
 	{
+		bool res = LoadSettingsSoundEffect();
 		SOUNDEFFECT *ptr = &se[0];
 		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
-			SetSoundVolume(ptr->clip, SOUND_VOLUME_INIT);
 		}
-		initialized = true;
-	}
 
-	SOUNDEFFECT *ptr = &se[0];
-	for (int i = 0; i < SOUND_MAX; i++)
-	{
-		ptr->playOrder = false;
-		SetSoundVolume(ptr->clip, 50.0f);
+		initialized = true;
 	}
 
 	return;
@@ -86,7 +88,7 @@ void UninitSoundEffectManager(int num)
 ***************************************/
 void UpdateSoundEffectManager(void)
 {
-
+	DrawDebugWindowSoundEffect();
 }
 
 /**************************************
@@ -94,6 +96,16 @@ void UpdateSoundEffectManager(void)
 ***************************************/
 void PlaySE(DEFINE_SOUNDEFFECT sound)
 {
+	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
+}
+
+/**************************************
+再生処理(3D版)
+***************************************/
+void PlaySE_3D(DEFINE_SOUNDEFFECT sound, float posZ)
+{
+	float decay = 1.0f - posZ / SOUND_POS_FAR_END;
+	SetSoundVolume(se[sound].clip, se[sound].volume * decay);
 	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
 }
 
@@ -129,3 +141,107 @@ void SetSEVolume(DEFINE_SOUNDEFFECT sound, float volume)
 	SetSoundVolume(se[sound].clip, volume);
 }
 
+/**************************************
+デバッグウィンドウ
+***************************************/
+void DrawDebugWindowSoundEffect(void)
+{
+	ImGui::Begin("SoundEffect");
+
+	ImGui::SliderFloat(STR(SOUND_LOCKON), &se[SOUND_LOCKON].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_MISSILELAUNCH), &se[SOUND_MISSILELAUNCH].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_SMALLEXPL), &se[SOUND_SMALLEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_READY), &se[SOUND_READY].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_DECISION), &se[SOUND_DECISION].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_SHOT), &se[SOUND_SHOT].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+
+	if (ImGui::Button("Save Settings"))
+	{
+		SaveSettingsSoundEffect();
+		for (int i = 0; i < SOUND_MAX; i++)
+		{
+			SetSoundVolume(se[i].clip, se[i].volume);
+		}
+	}
+
+	ImGui::End();
+
+	ImGui::Begin("PlaySound");
+
+	if (ImGui::Button(STR(SOUND_LOCKON)))	{ PlaySE(SOUND_LOCKON); }
+	if (ImGui::Button(STR(SOUND_MISSILELAUNCH))) { PlaySE(SOUND_MISSILELAUNCH); }
+	if (ImGui::Button(STR(SOUND_SMALLEXPL))) { PlaySE(SOUND_SMALLEXPL); }
+	if (ImGui::Button(STR(SOUND_READY))) { PlaySE(SOUND_READY); }
+	if (ImGui::Button(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
+	if (ImGui::Button(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
+
+	ImGui::NewLine();
+	static float length = 5000.0f;
+	ImGui::SliderFloat("Length", &length, 0.0f, SOUND_POS_FAR_END);
+	if (ImGui::Button("Play 3D"))
+	{
+		PlaySE_3D(SOUND_SMALLEXPL, length);
+	}
+
+
+	ImGui::End();
+}
+
+/**************************************
+設定保存処理
+***************************************/
+bool SaveSettingsSoundEffect(void)
+{
+	FILE *fp = NULL;
+	fp = fopen("data/SETTINGS/sound.ini", "wb");
+
+	if (fp == NULL)
+	{
+		return false;
+	}
+
+	for (int i = 0; i < SOUND_MAX; i++)
+	{
+		fwrite(&se[i].volume, sizeof(float), 1, fp);
+	}
+
+	fclose(fp);
+
+	return true;
+}
+
+/**************************************
+設定読み込み処理
+***************************************/
+bool LoadSettingsSoundEffect(void)
+{
+	FILE *fp = NULL;
+	fp = fopen("data/SETTINGS/sound.ini", "rb");
+
+	if (fp == NULL)
+	{
+		SOUNDEFFECT *ptr = &se[0];
+		for (int i = 0; i < SOUND_MAX; i++, ptr++)
+		{
+			ptr->volume = SOUND_VOLUME_INIT;
+		}
+		return false;
+	}
+
+	for (int i = 0; i < SOUND_MAX; i++)
+	{
+		int res = fread(&se[i].volume, sizeof(float), 1, fp);
+		if (res == EOF)
+			se[i].volume = SOUND_VOLUME_INIT;
+	}
+
+	fclose(fp);
+
+	return true;
+}

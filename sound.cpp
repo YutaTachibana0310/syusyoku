@@ -206,8 +206,7 @@ void SetSoundVolume(LPDIRECTSOUNDBUFFER8 pBuffer, float volume)
 	}
 
 	//ボリュームの単位をデシベルに変換
-	float tmp = SOUND_VOLUME_MAX - volume;
-	LONG decibel = (LONG)(1000 * log10((100 - tmp) / 100));
+	LONG decibel = (LONG)(2000.0f * log10(volume / 100.0f));
 	
 	if (decibel < DSBVOLUME_MIN)
 	{
