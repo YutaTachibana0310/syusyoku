@@ -50,6 +50,7 @@ static PARTICLE fire[EXPLOSIONFIRE_MAX];			//パーティクル構造体
 void InitExplosionFire(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
 	//配列初期化
 	for (int i = 0; i < EXPLOSIONFIRE_MAX; i++)
@@ -65,7 +66,8 @@ void InitExplosionFire(int num)
 		fire[i].active = false;
 	}
 
-	if (num == 0)
+	//初回のみ初期化
+	if (!initialized)
 	{
 		//頂点バッファ作成
 		MakeParticleVertexBuffer(vtx, EXPLOSIONFIRE_SIZE, &vtxBuff);
@@ -83,6 +85,8 @@ void InitExplosionFire(int num)
 
 		//テクスチャ読み込み
 		texture = CreateTextureFromFile((LPSTR)EXPLOSIONFIRE_TEXNAME, pDevice);
+
+		initialized = true;
 	}
 }
 

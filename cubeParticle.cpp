@@ -99,7 +99,7 @@ void CheckDestroyCubeParticle(void);			//死亡判定
 void InitCubeParticle(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
+	static bool initialized = false;
 	const float InitPos = -9999.9f, InitScale = 0.0f, InitRot = 0.0f;
 
 	//パラメータ初期化
@@ -114,7 +114,7 @@ void InitCubeParticle(int num)
 	}
 
 	//初回のみの初期化
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点バッファ作成
 		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
@@ -165,6 +165,8 @@ void InitCubeParticle(int num)
 		{
 			D3DXCreateTextureFromFile(pDevice, texName[i], &texture[i]);
 		}
+
+		initialized = true;
 	}
 }
 

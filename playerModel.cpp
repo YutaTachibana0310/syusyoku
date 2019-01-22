@@ -122,20 +122,23 @@ static LPDIRECT3DTEXTURE9 texture[PLAYER_TEXTURE_MAX];		//テクスチャ
 void InitPlayerModel(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	
+	static bool initialized = false;
+
 #ifdef _DEBUG
-	if (num == 0)
+	if (!initialized)
 	{
 		D3DXLoadMeshFromX(PLAYERMODEL_MODELNAME_DEBUG, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
+		initialized = true;
 	}
 #else
-	if (num == 0)
+	if (!initialized)
 	{
 		D3DXLoadMeshFromX(PLAYERMODEL_MODELNAME, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
 		for (int i = 0; i < PLAYER_TEXTURE_MAX; i++)
 		{
 			texture[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
 		}
+		initialized = true;
 	}
 #endif
 

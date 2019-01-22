@@ -26,7 +26,9 @@ static D3DMATERIAL9 material;		//当たり判定表示用マテリアル
 *****************************************************************************/
 void InitCollider(int num)
 {
-	if (num == 0)
+	static bool initialized = false;
+
+	if (!initialized)
 	{
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -67,6 +69,8 @@ void InitCollider(int num)
 		material.Emissive.g = 0.0f;
 		material.Emissive.b = 0.0f;
 		material.Emissive.a = 1.0f;
+
+		initialized = true;
 
 	}
 }

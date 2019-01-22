@@ -43,14 +43,16 @@ static const char* texturePath[GUI_NUMTEX_MAX] =
 ***************************************/
 void InitGUIManager(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	if (num == 0)
+	if (!initialized)
 	{
 		for (int i = 0; i < GUI_NUMTEX_MAX; i++)
 		{
 			texture[i] = CreateTextureFromFile((LPSTR)texturePath[i], pDevice);
 		}
+		initialized = true;
 	}
 
 	InitScoreGUI(num);

@@ -113,6 +113,7 @@ void DisableCubeObject(CUBE_OBJECT *ptr);	//非アクティブ処理
 ***************************************/
 void InitCubeObject(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//キューブ生成範囲
@@ -142,7 +143,7 @@ void InitCubeObject(int num)
 	}
 
 	//初回のみの初期化
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点バッファ作成
 		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
@@ -190,6 +191,8 @@ void InitCubeObject(int num)
 		{
 			D3DXCreateTextureFromFile(pDevice, texName[i], &texture[i]);
 		}
+
+		initialized = true;
 	}
 }
 

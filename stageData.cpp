@@ -34,11 +34,14 @@ bool LoadStageData(void);
 ***************************************/
 void InitStageData(int num)
 {
-	if (num == 0)
+	static bool initialized = false;
+	currentIndex = 0;
+
+	if (!initialized)
 	{
 		LoadStageData();
+		initialized = true;
 	}
-	currentIndex = 0;
 }
 
 /**************************************

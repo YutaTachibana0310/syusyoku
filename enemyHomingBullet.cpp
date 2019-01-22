@@ -63,8 +63,10 @@ void CalcEnemyHomingBulletAcceleration(ENEMYHOMINGBULLET *ptr);
 ***************************************/
 void InitEnemyHomingBullet(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	if (num == 0)
+
+	if (!initialized)
 	{
 		//テクスチャ読み込み
 		texture = CreateTextureFromFile((LPSTR)ENEMYHOMINGBULLET_TEXTURE_NAME, pDevice);
@@ -100,6 +102,8 @@ void InitEnemyHomingBullet(int num)
 		indexBuff->Lock(0, 0, &p, 0);
 		memcpy(p, index, sizeof(index));
 		indexBuff->Unlock();
+
+		initialized = true;
 	}
 
 	ENEMYHOMINGBULLET *ptr = &bullet[0];

@@ -58,7 +58,9 @@ static funcPlayerMissile Update[PLAYERMISSILE_STATEMAX] = {
 ***************************************/
 void InitPlayerMissile(int num)
 {
-	if (num == 0)
+	static bool initialized = false;
+
+	if (!initialized)
 	{
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -76,6 +78,8 @@ void InitPlayerMissile(int num)
 		{
 			return;
 		}
+
+		initialized = true;
 	}
 
 	PLAYERMISSILE *ptr = &missile[0];

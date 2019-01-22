@@ -78,8 +78,9 @@ static funcMiddleEnemy Exit[MiddleEnemyStateMax] = {
 void InitMiddleEnemy(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 #ifdef _DEBUG
-	if (num == 0)
+	if (!initialized)
 	{
 		D3DXLoadMeshFromX(MIDDLEENEMY_MODEL_NAME_DEBUG,
 			D3DXMESH_SYSTEMMEM,
@@ -89,9 +90,11 @@ void InitMiddleEnemy(int num)
 			NULL,
 			&numMaterial,
 			&mesh);
+
+		initialized = true;
 	}
 #else
-	if (num == 0)
+	if (!initialized)
 	{
 		HRESULT res = D3DXLoadMeshFromX(MIDDLEENEMY_MODEL_NAME, D3DXMESH_SYSTEMMEM, pDevice, NULL, &materials, NULL, &numMaterial, &mesh);
 		if (FAILED(res))
@@ -103,6 +106,8 @@ void InitMiddleEnemy(int num)
 		{
 			textures[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
 		}
+
+		initialized = true;
 	}
 #endif
 	MIDDLEENEMY *ptr = &middleEnemy[0];

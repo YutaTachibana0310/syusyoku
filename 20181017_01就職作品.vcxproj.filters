@@ -216,9 +216,6 @@
     <ClCompile Include="particleFramework.cpp">
       <Filter>ソース ファイル\Effect\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="particle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="logoScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -505,7 +502,7 @@
       <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
     </ClCompile>
     <ClCompile Include="hardCubeTutorial.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

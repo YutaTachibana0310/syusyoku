@@ -203,7 +203,6 @@
     <ClCompile Include="middleEnemyMove.cpp" />
     <ClCompile Include="middleEnemyWait.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
-    <ClCompile Include="particle.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
     <ClCompile Include="perlinNoise.cpp" />

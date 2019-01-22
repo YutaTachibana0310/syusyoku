@@ -34,16 +34,18 @@ static BGM bgmData[BGM_MAX];
 ***************************************/
 void InitBgmManager(int num)
 {
-	if (num == 0)
+	static bool initialized = false;
+
+	if (!initialized)
 	{
 		BGM *ptr = &bgmData[0];
 		for (int i = 0; i < BGM_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&BgmFileName[i][0]);
+			SetSoundVolume(ptr->clip, SOUND_VOLUME_INIT);
 		}
+		initialized = true;
 	}
-
-
 }
 
 /**************************************

@@ -52,15 +52,14 @@ static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
 ***************************************/
 void InitDataContainer(int num)
 {
-	if (num == 0)
-	{
-		currentScore = 0;
-		highScore = 0;			//TODO:ハイスコアの読み込みを実装
 
-		cntPowerUp = 0;
-		shotLevel = 0;
-		lockLevel = 0;
-	}
+	currentScore = 0;
+	highScore = 0;			//TODO:ハイスコアの読み込みを実装
+
+	cntPowerUp = 0;
+	shotLevel = 0;
+	lockLevel = 0;
+
 }
 
 /**************************************

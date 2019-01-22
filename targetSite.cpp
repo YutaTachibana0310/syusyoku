@@ -71,8 +71,9 @@ void MakeVertexTargetSite(void);
 void InitTargetSite(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
-	if (num == 0)
+	if (!initialized)
 	{
 		for (int i = 0; i < TARGETSITE_TEXTUREMAX; i++)
 		{
@@ -80,6 +81,7 @@ void InitTargetSite(int num)
 		}
 
 		MakeVertexTargetSite();
+		initialized = true;
 	}
 
 	TARGETSITE *ptr = &targetSite[0];

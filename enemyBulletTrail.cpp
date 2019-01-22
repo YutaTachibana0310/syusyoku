@@ -59,9 +59,10 @@ static LPDIRECT3DINDEXBUFFER9 indexBuff = NULL;			//インデックスバッファ
 ***************************************/
 void InitEnemyBulletTrail(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点作成
 		MakeParticleVertexBuffer(vtx, ENEMYBULLETTRAIL_MAX, &vtxBuff);
@@ -96,6 +97,8 @@ void InitEnemyBulletTrail(int num)
 
 		//テクスチャ読み込み
 		texture = CreateTextureFromFile((LPSTR)ENEMYBULLETTRAIL_TEXTURE_NAME, pDevice);
+
+		initialized = true;
 	}
 
 	ENEMYBULLET_TRAIL *ptr = &homingTrail[0];

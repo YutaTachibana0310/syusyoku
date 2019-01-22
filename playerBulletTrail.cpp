@@ -59,8 +59,10 @@ static LPDIRECT3DINDEXBUFFER9 indexBuff = NULL;			//インデックスバッファ
 ***************************************/
 void InitPlayerBulletTrail(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	if (num == 0)
+
+	if (!initialized)
 	{
 		//頂点作成
 		MakeParticleVertexBuffer(vtx, PLAYERBULLETTRAIL_TEXTURE_SIZE_X, &vtxBuff);
@@ -95,6 +97,8 @@ void InitPlayerBulletTrail(int num)
 
 		//テクスチャ読み込み
 		texture = CreateTextureFromFile((LPSTR)PLAYERBULLETTRAIL_TEXTURE_NAME, pDevice);
+
+		initialized = true;
 	}
 
 	PLAYERBULLET_TRAIL *ptr = &trail[0];

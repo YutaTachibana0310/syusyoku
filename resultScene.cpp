@@ -44,6 +44,7 @@ static float angle, radius;
 ******************************************************************************/
 HRESULT InitResultScene(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	pos = D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
@@ -54,14 +55,12 @@ HRESULT InitResultScene(int num)
 	// 頂点情報の作成
 	MakeVertexResultScene();
 
-	if (num == 0)
+	if (!initialized)
 	{
 		// テクスチャの読み込み
 		texture = CreateTextureFromFile((LPSTR)RESULTSCENE_TEXTURE_NAME, pDevice);
+		initialized = true;
 	}
-
-	return S_OK;
-
 	return S_OK;
 }
 

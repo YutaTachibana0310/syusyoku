@@ -71,6 +71,11 @@ bool CheckCollisionBonusCubeAndPlayerBulletUpper(DWORD elem, BONUS_CUBE_OBJECT *
 ***************************************/
 void InitCollisionManager(int num)
 {
+	static bool initialized = false;
+
+	if (initialized)
+		return;
+
 	//ŠeƒŒƒxƒ‹‚Ì‹óŠÔ”‚ğZo
 	spaceNum[0] = 1;
 	for (int i = 1; i < COLLISION_DIVISIONSPACE_LEVEL_MAX + 1; i++)
@@ -85,6 +90,7 @@ void InitCollisionManager(int num)
 		cellArray[OFTid] = (CCell**)malloc(sizeof(CCell*) * cellNum);
 		ZeroMemory(cellArray[OFTid], sizeof(CCell*) * cellNum);
 	}
+	initialized = true;
 }
 
 /**************************************
@@ -92,10 +98,13 @@ void InitCollisionManager(int num)
 ***************************************/
 void UninitCollisionManager(int num)
 {
-	for (int OFTid = 0; OFTid < OFT_ID_MAX; OFTid++)
+	if (num == 0)
 	{
-		free(cellArray[OFTid]);
-		cellArray[OFTid] = NULL;
+		for (int OFTid = 0; OFTid < OFT_ID_MAX; OFTid++)
+		{
+			free(cellArray[OFTid]);
+			cellArray[OFTid] = NULL;
+		}
 	}
 }
 

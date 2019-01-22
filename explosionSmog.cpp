@@ -50,6 +50,7 @@ static PARTICLE smog[EXPLOSIONSMOG_MAX];			//パーティクル構造体
 **********************************************/
 void InitExplosionSmog(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//配列初期化
@@ -66,7 +67,7 @@ void InitExplosionSmog(int num)
 		smog[i].active = false;
 	}
 
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点バッファ作成
 		MakeParticleVertexBuffer(vtx, EXPLOSIONSMOG_SIZE, &vtxBuff);
@@ -84,6 +85,8 @@ void InitExplosionSmog(int num)
 
 		//テクスチャ読み込み
 		texture = CreateTextureFromFile((LPSTR)EXPLOSIONSMOG_TEXNAME, pDevice);
+
+		initialized = true;
 	}
 }
 

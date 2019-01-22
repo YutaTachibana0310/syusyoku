@@ -64,6 +64,7 @@ void DrawDebugWindowExplosionFlare(void);
 void InitExplosionFlare(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
 	//配列初期化
 	for (int i = 0; i < EXPLOSIONFLARE_MAX; i++)
@@ -79,7 +80,7 @@ void InitExplosionFlare(int num)
 		flare[i].active = false;
 	}
 
-	if (num == 0)
+	if (!initialized)
 	{	//頂点バッファ作成
 	//pDevice->CreateV
 		MakeParticleVertexBuffer(vtx, EXPLOSIONFLARE_SIZE, &vtxBuff);
@@ -97,6 +98,8 @@ void InitExplosionFlare(int num)
 
 		//テクスチャ読み込み
 		texture = CreateTextureFromFile((LPSTR)EXPLOSIONFLARE_TEXNAME, pDevice);
+
+		initialized = true;
 	}
 }
 

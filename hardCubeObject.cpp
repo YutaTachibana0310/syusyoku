@@ -136,6 +136,7 @@ void OnUpdateHardCube(void);					//各状態更新処理
 ***************************************/
 void InitHardCubeObject(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//キューブ生成範囲
@@ -165,7 +166,7 @@ void InitHardCubeObject(int num)
 	}
 
 	//初回のみの初期化
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点バッファ作成
 		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
@@ -213,6 +214,8 @@ void InitHardCubeObject(int num)
 		{
 			D3DXCreateTextureFromFile(pDevice, TextureName[i], &texture[i]);
 		}
+
+		initialized = true;
 	}
 }
 

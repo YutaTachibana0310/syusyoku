@@ -89,6 +89,7 @@ static OBJECT_FOR_TREE objectForTree[BOSSCUBE_NUM_MAX]; //衝突判定用OBJECT_FOR_T
 ***************************************/
 void InitBossCubeObject(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//パラメータ初期化
@@ -96,7 +97,7 @@ void InitBossCubeObject(int num)
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
 	
 	//初回のみの初期化
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点バッファ作成
 		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
@@ -143,6 +144,8 @@ void InitBossCubeObject(int num)
 		{
 			D3DXCreateTextureFromFile(pDevice, TexName[i], &texture[i]);
 		}
+
+		initialized = true;
 	}
 }
 
