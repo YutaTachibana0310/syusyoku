@@ -105,7 +105,8 @@ static funcHardCube Enter[HardCubeStateMax] = {
 	OnEnterHardCubeHomingAttack,
 	OnEnterHardCubeCharge,
 	OnEnterHardCubeEscape,
-	OnEnterHardCubeBezier
+	OnEnterHardCubeBezier,
+	OnEnterHardCubeTutorial
 };
 
 //更新処理関数テーブル
@@ -117,6 +118,7 @@ static funcHardCube Update[HardCubeStateMax] = {
 	OnUpdateHardCubeCharge,
 	OnUpdateHardCubeEscape,
 	OnUpdateHardCubeBezier,
+	OnUpdateHardCubeTutorial
 };
 
 /**************************************
@@ -509,4 +511,30 @@ bool SetHardCubeObjectFromData(STAGE_DATA *data)
 	}
 
 	return false;
+}
+
+/**************************************
+ハードキューブセット処理(パラメータ直接指定)
+***************************************/
+HARD_CUBE_OBJECT* SetHardCubeObjectDirectData(D3DXVECTOR3 startPos, D3DXVECTOR3 goalPos, int type, D3DXVECTOR3 ctrl1, D3DXVECTOR3 ctrl2)
+{
+	HARD_CUBE_OBJECT *ptr = &cube[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++, oft++)
+	{
+		if (ptr->active)
+			continue;
+
+		ptr->pos = startPos;
+		ptr->goalPos = goalPos;
+		ptr->type = type;
+		ptr->controller1 = ctrl1;
+		ptr->controller2 = ctrl2;
+		ptr->active = true;
+		RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
+		ChangeStateHardCube(ptr, HardCubeInit);
+		return ptr;
+	}
+
+	return NULL;
 }

@@ -55,6 +55,7 @@ enum HARDCUBE_STATE
 	HardCubeCharge,
 	HardCubeEscape,
 	HardCubeBezier,
+	HardCubeTutorial,
 	HardCubeStateMax
 };
 
@@ -64,6 +65,7 @@ enum HARDCUBE_TYPE
 	HardCubeHomingType,
 	HardCubeChargeType,
 	HardCubeBezierType,
+	HardCubeTutorialType,
 	HardCubeTypeMax
 };
 
@@ -80,6 +82,7 @@ bool SetHardCubeObject(D3DXVECTOR3 *setPos);
 void DisableHardCube(HARD_CUBE_OBJECT *ptr);	//非アクティブ処理
 void ChangeStateHardCube(HARD_CUBE_OBJECT *ptr, int nextState);
 bool SetHardCubeObjectFromData(STAGE_DATA *data);
+HARD_CUBE_OBJECT* SetHardCubeObjectDirectData(D3DXVECTOR3 startPos, D3DXVECTOR3 goalPos, int type, D3DXVECTOR3 ctrl1, D3DXVECTOR3 ctrl2);
 
 //各状態入場処理関数
 void OnEnterHardCubeInit(HARD_CUBE_OBJECT *ptr);
@@ -89,6 +92,7 @@ void OnEnterHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeEscape(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeCharge(HARD_CUBE_OBJECT *ptr);
 void OnEnterHardCubeBezier(HARD_CUBE_OBJECT *ptr);
+void OnEnterHardCubeTutorial(HARD_CUBE_OBJECT *ptr);
 
 //各状態更新処理関数
 void OnUpdateHardCubeInit(HARD_CUBE_OBJECT *ptr);
@@ -98,5 +102,5 @@ void OnUpdateHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeEscape(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeCharge(HARD_CUBE_OBJECT *ptr);
 void OnUpdateHardCubeBezier(HARD_CUBE_OBJECT *ptr);
-
+void OnUpdateHardCubeTutorial(HARD_CUBE_OBJECT *ptr);
 #endif

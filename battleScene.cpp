@@ -29,15 +29,12 @@
 /*****************************************************************************
 マクロ定義
 *****************************************************************************/
-#define BATTLESCENE_TEXTURE_NAME	_T("data/TEXTURE/UI/battle.png")	// プレイヤーバレットのテクスチャ
-
-#define BATTLESCENE_TEXTURE_SIZE_X (200)			// テクスチャサイズX
-#define BATTLESCENE_TEXTURE_SIZE_Y (200)			// テクスチャサイズY
 
 /*****************************************************************************
 プロトタイプ宣言
 *****************************************************************************/
 void DrawDebugWindowBattleScene(void);
+
 /*****************************************************************************
 構造体定義
 *****************************************************************************/
@@ -64,7 +61,7 @@ HRESULT InitBattleScene(int num)
 {
 	if (num != 0)
 	{
-		SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		PlayBGM(BGM_BATTLESCENE);
 	}
 
@@ -121,7 +118,6 @@ void UpdateBattleScene(void)
 	GetTimerCount(&endPlayerUpdate);
 
 	GetTimerCount(&startSiteUpdate);
-	UpdateTargetSite();
 	UpdateRockonSite();
 	GetTimerCount(&endSiteUpdate);
 

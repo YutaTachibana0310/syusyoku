@@ -142,6 +142,7 @@
     <ClCompile Include="bonusCube.cpp" />
     <ClCompile Include="bonusTelop.cpp" />
     <ClCompile Include="bonusTimeGUI.cpp" />
+    <ClCompile Include="bossCubeObject.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="cubeObject.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="hardCubeMove.cpp" />
     <ClCompile Include="hardCubeNormalAttack.cpp" />
     <ClCompile Include="hardCubeObject.cpp" />
+    <ClCompile Include="hardCubeTutorial.cpp" />
     <ClCompile Include="hpGUI.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -221,6 +223,8 @@
     <ClCompile Include="playerModelTitleLaunch.cpp" />
     <ClCompile Include="playerModelTopView.cpp" />
     <ClCompile Include="playerModelTransition.cpp" />
+    <ClCompile Include="playerTutorialLockon.cpp" />
+    <ClCompile Include="playerTutorialMove.cpp" />
     <ClCompile Include="powerUpTelop.cpp" />
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="rockonSite.cpp" />
@@ -238,6 +242,15 @@
     <ClCompile Include="stageData.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
+    <ClCompile Include="tutorialBonusCube.cpp" />
+    <ClCompile Include="tutorialBonusTime.cpp" />
+    <ClCompile Include="tutorialController.cpp" />
+    <ClCompile Include="tutorialEnd.cpp" />
+    <ClCompile Include="tutorialHadCube.cpp" />
+    <ClCompile Include="tutorialHomingAttack.cpp" />
+    <ClCompile Include="tutorialLockon.cpp" />
+    <ClCompile Include="tutorialMove.cpp" />
+    <ClCompile Include="tutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battleCamera.h" />
@@ -247,6 +260,7 @@
     <ClInclude Include="bonusCube.h" />
     <ClInclude Include="bonusTelop.h" />
     <ClInclude Include="bonusTimeGUI.h" />
+    <ClInclude Include="bossCubeObject.h" />
     <ClInclude Include="cameraShaker.h" />
     <ClInclude Include="collisionManager.h" />
     <ClInclude Include="cubeObject.h" />
@@ -326,6 +340,8 @@
     <ClInclude Include="stageData.h" />
     <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />
+    <ClInclude Include="tutorialController.h" />
+    <ClInclude Include="tutorialScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\EFFECT\cubeObject.fx">

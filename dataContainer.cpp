@@ -124,7 +124,7 @@ void SetPowerUp(void)
 ***************************************/
 int GetShotLevel(void)
 {
-	return IsBonusTime() ? DATACONTAINER_SHOTLEVEL_MAX : shotLevel;
+	return IsBonusTime() ? DATACONTAINER_SHOTLEVEL_MAX : 0;
 }
 
 /**************************************

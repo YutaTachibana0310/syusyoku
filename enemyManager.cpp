@@ -38,8 +38,8 @@
 void InitEnemyManager(int num)
 {
 	InitEnemyMissile(num);
-	InitMiddleEnemy(num);
-	InitSmallEnemy(num);
+	//InitMiddleEnemy(num);
+	//InitSmallEnemy(num);
 	InitCubeObject(num);
 	InitHardCubeObject(num);
 	InitBonusCube(num);
@@ -55,8 +55,8 @@ void InitEnemyManager(int num)
 void UninitEnemyManager(int num)
 {
 	UninitEnemyMissile(num);
-	UninitMiddleEnemy(num);
-	UninitSmallEnemy(num);
+	//UninitMiddleEnemy(num);
+	//UninitSmallEnemy(num);
 	UninitCubeObject(num);
 	UninitHardCubeObject(num);
 	UninitBonusCube(num);
@@ -72,8 +72,8 @@ void UninitEnemyManager(int num)
 void UpdateEnemyManager(void)
 {
 	UpdateEnemyMissile();
-	UpdateMiddleEnemy();
-	UpdateSmallEnemy();
+	//UpdateMiddleEnemy();
+	//UpdateSmallEnemy();
 	UpdateCubeObject();
 	UpdateHardCubeObject();
 	UpdateBonusCube();
@@ -88,9 +88,9 @@ void UpdateEnemyManager(void)
 ***************************************/
 void DrawEnemyManager(void)
 {
-	DrawMiddleEnemy();
+	//DrawMiddleEnemy();
 	DrawEnemyMissile();
-	DrawSmallEnemy();
+	//DrawSmallEnemy();
 	DrawCubeObject();
 	DrawHardCubeObject();
 	DrawBonusCube();

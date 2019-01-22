@@ -11,7 +11,7 @@
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
-#define HARDCUBE_NORMALATTACK_INTERBAL		(60)
+#define HARDCUBE_NORMALATTACK_INTERBAL		(120)
 #define HARDCUBE_NORMALATTACK_DURATION		(HARDCUBE_NORMALATTACK_INTERBAL*5)
 #define HARDCUBE_NORNALATTACL_BULLETSPEED	(10.0f)
 

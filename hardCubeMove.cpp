@@ -21,6 +21,13 @@
 /**************************************
 グローバル変数
 ***************************************/
+static const int NextState[HardCubeTypeMax] = {
+	HardCubeNormalAttack,
+	HardCubeHomingAttack,
+	HardCubeCharge,
+	HardCubeBezier,
+	HardCubeTutorial
+};
 
 /**************************************
 プロトタイプ宣言
@@ -49,7 +56,7 @@ void OnUpdateHardCubeMove(HARD_CUBE_OBJECT *ptr)
 	if (ptr->cntFrame == ptr->moveDurtaion)
 	{
 		//int next = (ptr->scale > HARDCUBE_HOMING_BORDER) ? HardCubeHomingAttack : (ptr->scale > HARDCUBE_CHARGE_BORDER) ? HardCubeNormalAttack : HardCubeCharge;
-		int next = (ptr->type == HardCubeHomingType) ? HardCubeHomingAttack : (ptr->type == HardCubeNormalType) ? HardCubeNormalAttack : HardCubeCharge;
+		int next = NextState[ptr->type];
 		ChangeStateHardCube(ptr, next);
 	}
 }
