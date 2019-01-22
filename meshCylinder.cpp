@@ -51,6 +51,8 @@ void SetTextureOffsetMeshCylinder(float offset);
 //*****************************************************************************
 void InitMeshCylinder(int num)
 {
+	static bool initialized = false;
+
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	pos = D3DXVECTOR3(0.0f, 0.0f, -2500.0f);
@@ -68,13 +70,14 @@ void InitMeshCylinder(int num)
 	sizeBlockX = MESHCYLINDER_BLOCKSIZE;
 	sizeBlockZ = MESHCYLINDER_BLOCKSIZE;
 
-	if (num == 0)
+	if (!initialized)
 	{
 		texture[0] = CreateTextureFromFile((LPSTR)MESHCYLINDER_TEXTURE, pDevice);
 		texture[1] = CreateTextureFromFile((LPSTR)MESHCYLINDER_CIRCUIT1, pDevice);
 		texture[2] = CreateTextureFromFile((LPSTR)MESHCYLINDER_CIRCUIT2, pDevice);
 		SetVertexBufferCylinder();
 		SetIndexBufferCylinder();
+		initialized = true;
 	}
 }
 

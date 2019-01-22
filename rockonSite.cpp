@@ -43,12 +43,15 @@ void SetVertexRockonSite(ROCKONSITE *ptr);
 void InitRockonSite(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
-	if (num == 0)
+	if (!initialized)
 	{
 		texture = CreateTextureFromFile((LPSTR)ROCKONSITE_TEXTURE, pDevice);
 
 		MakeVertexRockonSite();
+
+		initialized = true;
 	}
 
 	ROCKONSITE *ptr = &rockon[0];

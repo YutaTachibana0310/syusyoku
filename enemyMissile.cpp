@@ -85,7 +85,9 @@ static LARGE_INTEGER startCollision, endCollision;
 **************************************/
 void InitEnemyMissile(int num)
 {
-	if (num == 0)
+	static bool initialized = false;
+
+	if (!initialized)
 	{
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
@@ -103,6 +105,8 @@ void InitEnemyMissile(int num)
 		{
 			return;
 		}
+
+		initialized = true;
 	}
 
 	ENEMYMISSILE *ptr = &missile[0];

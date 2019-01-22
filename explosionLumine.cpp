@@ -56,6 +56,7 @@ static EXPLOSION_LUMINE lumine[EXPLOSIONLUMINE_NUM_MAX];		//パーティクル配列
 ***************************************/
 void InitExplosionLumine(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	EXPLOSION_LUMINE *ptr = &lumine[0];
 
@@ -70,7 +71,7 @@ void InitExplosionLumine(int num)
 		vtxColor[i].a = 0.0f;
 	}
 
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点バッファ作成	
 		MakeParticleVertexBuffer(vtx, EXPLOSIONLUMINE_SIZE, &vtxBuff);
@@ -88,6 +89,8 @@ void InitExplosionLumine(int num)
 
 		//テクスチャ読み込み
 		texture = CreateTextureFromFile((LPSTR)EXPLOSIONLUMINE_TEX_NAME, pDevice);
+
+		initialized = true;
 	}
 }
 

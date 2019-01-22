@@ -43,13 +43,16 @@ static SOUNDEFFECT se[SOUND_MAX];
 ***************************************/
 void InitSoundEffectManager(int num)
 {
-	if (num == 0)
+	static bool initialized = false;
+
+	if (!initialized)
 	{
 		SOUNDEFFECT *ptr = &se[0];
 		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
 		}
+		initialized = true;
 	}
 
 	SOUNDEFFECT *ptr = &se[0];

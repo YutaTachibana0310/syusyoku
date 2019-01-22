@@ -69,16 +69,19 @@ void SetLockonGUIMaxTexture(int id);
 ***************************************/
 void InitLockonGUI(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	LOCKONGUI *ptr = &lockonGUI[0];
 
-	if (num == 0)
+	if (!initialized)
 	{
 		CreateVertexLockonGUI();
 
 		textTexture = CreateTextureFromFile((LPSTR)LOCKONGUI_TEXTTEX_NAME, pDevice);
 		barTexture = CreateTextureFromFile((LPSTR)LOCKONGUI_BARTEX_NAME, pDevice);
 		maxTexture = CreateTextureFromFile((LPSTR)LOCKONGUI_MAXTEX_NAME, pDevice);
+
+		initialized = true;
 	}
 
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)

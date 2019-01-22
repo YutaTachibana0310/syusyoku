@@ -43,12 +43,15 @@ void SetPlayerMissileUV(void);
 void InitPlayerMissileSmog(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
-	if (num == 0)
+	if (!initialized)
 	{
 		CreateVertexBufferPlayerMissileSmog();
 
 		texture = CreateTextureFromFile((LPSTR)PLAYERMISSILESMOG_TEXTURE, pDevice);
+
+		initialized = true;
 	}
 
 	PLAYERMISSILESMOG *ptr = &smog[0];

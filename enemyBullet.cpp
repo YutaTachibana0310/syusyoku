@@ -36,11 +36,14 @@ void CreateEnemyBulletVertexBuffer(void);
 ***************************************/
 void InitEnemyBullet(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	if (num == 0)
+
+	if (!initialized)
 	{
 		texture = CreateTextureFromFile((LPSTR)ENEMYBULLET_TEXTURE_NAME, pDevice);
 		CreateEnemyBulletVertexBuffer();
+		initialized = true;
 	}
 
 	ENEMYBULLET *ptr = &bullet[0];

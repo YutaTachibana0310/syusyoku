@@ -84,9 +84,10 @@ static const char* textureName[SMALLENEMY_TEXTURE_MAX] = {
 void InitSmallEnemy(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
 #ifdef _DEBUG
-	if (num == 0)
+	if (!initialized)
 	{
 		D3DXLoadMeshFromX(SMALLENEMY_MODEL_NAME_DEBUG,
 			D3DXMESH_SYSTEMMEM,
@@ -96,9 +97,11 @@ void InitSmallEnemy(int num)
 			NULL,
 			&numMaterial,
 			&mesh);
+
+		initialized = true;
 	}
 #else
-	if (num == 0)
+	if (!initialized)
 	{
 		if (FAILED(D3DXLoadMeshFromX(SMALLENEMY_MODEL_NAME,
 			D3DXMESH_SYSTEMMEM,
@@ -116,6 +119,8 @@ void InitSmallEnemy(int num)
 		{
 			textures[i] = CreateTextureFromFile((LPSTR)textureName[i], pDevice);
 		}
+
+		initialized = true;
 	}
 #endif
 	SMALLENEMY *ptr = &smallEnemy[0];

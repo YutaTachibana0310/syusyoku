@@ -75,8 +75,10 @@ void SetPlayerBulletLv4(D3DXVECTOR3 pos, float speed);
 ***************************************/
 void InitPlayerBullet(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	if (num == 0)
+
+	if (!initialized)
 	{
 		//CreatePlayerBulletVertexBufferFPS();
 		//CreatePlayerBulletVertexBufferSide();
@@ -85,6 +87,8 @@ void InitPlayerBullet(int num)
 		CreatePlayerBulletVertexBuffer();
 
 		tex = CreateTextureFromFile((LPSTR)PLAYERBULLET_TEXNAME, pDevice);
+
+		initialized = true;
 	}
 
 	PLAYERBULLET *ptr = &bullet[0];

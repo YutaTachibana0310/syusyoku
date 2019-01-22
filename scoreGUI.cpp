@@ -48,6 +48,7 @@ static SCOREGUI scoreGUI;								//スコアGUI構造体
 ******************************************************************************/
 HRESULT InitScoreGUI(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	SCOREGUI* ptr = &scoreGUI;
 
@@ -57,11 +58,12 @@ HRESULT InitScoreGUI(int num)
 	// 頂点情報の作成
 	MakeVertexScoreGUI();
 
-	if (num == 0)
+	if (!initialized)
 	{
 		// テクスチャの読み込み
 		texture = CreateTextureFromFile((LPSTR)SCOREGUI_TEXTURE_NAME, pDevice);
 		numTex = CreateTextureFromFile((LPSTR)SCOREGUI_NUMTEX_NAME, pDevice);
+		initialized = true;
 	}
 
 	return S_OK;

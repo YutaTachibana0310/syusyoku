@@ -82,13 +82,16 @@ void SetDiffisePowerUpTelop(float alpha);
 ***************************************/
 void InitPowerUpTelop(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	if (num == 0)
+	if (!initialized)
 	{
 		MakeVertexPowerUpTelop();
 
 		texture = CreateTextureFromFile((LPSTR)POWERUPTELOP_TEX_NAME, pDevice);
+
+		initialized = true;
 	}
 
 	SetDiffisePowerUpTelop(0.0f);

@@ -117,6 +117,7 @@ void StartBonusCubeMove(BONUS_CUBE_OBJECT *ptr);//移動開始処理
 ***************************************/
 void InitBonusCube(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//キューブ生成範囲
@@ -148,7 +149,7 @@ void InitBonusCube(int num)
 	}
 
 	//初回のみの初期化
-	if (num == 0)
+	if (!initialized)
 	{
 		//頂点バッファ作成
 		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
@@ -196,6 +197,8 @@ void InitBonusCube(int num)
 		{
 			D3DXCreateTextureFromFile(pDevice, TextureName[i], &texture[i]);
 		}
+
+		initialized = true;
 	}
 }
 

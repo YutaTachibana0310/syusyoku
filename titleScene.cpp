@@ -60,6 +60,7 @@ static TITLESCENE_STATE state;
 HRESULT InitTitleScene(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
 	//ロゴの初期設定
 	logoPos = TITLESCENE_LOGOTEX_POS;
@@ -69,10 +70,11 @@ HRESULT InitTitleScene(int num)
 	// 頂点情報の作成
 	MakeVertexTitleScene();
 
-	if (num == 0)
+	if (!initialized)
 	{
 		// テクスチャの読み込み
 		logoTex = CreateTextureFromFile((LPSTR)TITLESCENE_LOGOTEX_NAME, pDevice);
+		initialized = true;
 	}
 
 	if (num != 0)

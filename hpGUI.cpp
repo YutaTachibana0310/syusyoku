@@ -47,6 +47,7 @@ void SetTextureHPNum(int num);
 ***************************************/
 void InitHpGUI(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	HPGUI *ptr = &hpGUI;
 
@@ -55,10 +56,11 @@ void InitHpGUI(int num)
 
 	MakeVertexHPGUI();
 
-	if (num == 0)
+	if (!initialized)
 	{
 		texture = CreateTextureFromFile((LPSTR)HPGUI_TEXTURE_NAME, pDevice);
 		numTex = CreateTextureFromFile((LPSTR)HPGUI_NUMTEX_NAME, pDevice);
+		initialized = true;
 	}
 }
 

@@ -52,8 +52,9 @@ void DrawDebugWindowParticle(void);
 void InitParticleManager(int num)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	static bool initialized = false;
 
-	if (num == 0)
+	if (!initialized)
 	{
 		D3DVERTEXELEMENT9 declareElems[] = {
 			{ 0, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
@@ -69,6 +70,8 @@ void InitParticleManager(int num)
 		pDevice->CreateVertexDeclaration(declareElems, &declare);
 
 		D3DXCreateEffectFromFile(pDevice, PARTICLE_SHADER_PATH, 0, 0, 0, 0, &effect, NULL);
+
+		initialized = true;
 	}
 
 	InitExplosionSmog(num);

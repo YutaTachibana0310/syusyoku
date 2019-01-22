@@ -55,6 +55,7 @@ static LOGOSCENE_STATE state = LOGOSCENE_FADEIN;
 ******************************************************************************/
 HRESULT InitLogoScene(int num)
 {
+	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	pos = D3DXVECTOR3(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
@@ -65,10 +66,11 @@ HRESULT InitLogoScene(int num)
 	// 頂点情報の作成
 	MakeVertexLogoScene();
 
-	if (num == 0)
+	if (num == initialized)
 	{
 		// テクスチャの読み込み
 		texture = CreateTextureFromFile((LPSTR)LOGOSCENE_TEXTURE_NAME, pDevice);
+		initialized = true;
 	}
 
 	//カウントリセット
