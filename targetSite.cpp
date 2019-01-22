@@ -115,7 +115,7 @@ void UninitTargetSite(int num)
 /**************************************
 更新処理
 ***************************************/
-void UpdateTargetSite(void)
+void UpdateTargetSite(bool isOpen)
 {
 	TARGETSITE *ptr = &targetSite[0];
 	D3DXVECTOR3 tmpPos;
@@ -129,7 +129,7 @@ void UpdateTargetSite(void)
 		}
 
 		//スケール計算
-		float addValue = GetAttackButtonPress() ? TARGETSITE_OPEN_VALUE : -TARGETSITE_OPEN_VALUE;
+		float addValue = isOpen ? TARGETSITE_OPEN_VALUE : -TARGETSITE_OPEN_VALUE;
 		ptr->baseScale = Clampf(0.0f, 1.0f, ptr->baseScale + addValue);
 
 		//スクリーン座標更新

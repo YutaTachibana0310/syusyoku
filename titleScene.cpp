@@ -77,7 +77,7 @@ HRESULT InitTitleScene(int num)
 
 	if (num != 0)
 	{
-		SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		SetTitleTextureAlpha(0.0f);
 
 		InitMeshCylinder(num);
@@ -138,7 +138,7 @@ void UpdateTitleScene(void)
 		//SetScene(BattleScene);
 		state = TITLESCENE_STATEMAX;
 		ChangeStatePlayerModel(PlayerTitleLaunch);
-		SetSceneFade(BattleScene);
+		SetSceneFade(TutorialScene);
 	}
 
 	UpdateMeshCylinder();

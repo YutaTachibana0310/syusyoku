@@ -56,7 +56,9 @@ static funcPlayerModel Update[PlayerStateMax] = {
 	UpdatePlayerModelQuaterView,
 	UpdatePlayerModelTransition,
 	UpdatePlayerModelTitle,
-	UpdatePlayerModelTitleLaunch
+	UpdatePlayerModelTitleLaunch,
+	UpdatePlayerModelTutorialMove,
+	UpdatePlayerModelTutorialLockon
 };
 
 //入場処理関数テーブル
@@ -67,7 +69,9 @@ static funcPlayerModel Enter[PlayerStateMax] = {
 	EnterPlayerModelQuaterView,
 	EnterPlayerModelTransition,
 	EnterPlayerModelTitle,
-	EnterPlayerModelTitleLaunch
+	EnterPlayerModelTitleLaunch,
+	EnterPlayerModelTutorialMove,
+	EnterPlayerModelTutorialLockon
 };
 
 //退場処理関数テーブル
@@ -78,7 +82,9 @@ static funcPlayerModel Exit[PlayerStateMax] = {
 	ExitPlayerModelQuaterView,
 	ExitPlayerModelTransition,
 	ExitPlayerModelTitle,
-	ExitPlayerModelTitleLaunch
+	ExitPlayerModelTitleLaunch,
+	ExitPlayerModelTutorialMove,
+	ExitPlayerModelTutorialLockon,
 };
 
 //テクスチャ名

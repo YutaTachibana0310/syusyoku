@@ -10,10 +10,10 @@
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
-#define HARDCUBE_HOMINGATTACK_INTERBAL		(120)
+#define HARDCUBE_HOMINGATTACK_INTERBAL		(180)
 #define HARDCUBE_HOMINGATTACK_DURATION		(HARDCUBE_HOMINGATTACK_INTERBAL*5)
 #define HARDCUBE_HOMINGATTACK_DIRNUM		(4)
-#define HARDCUBE_HOMINGATTACK_REACHFRAME	(60)
+#define HARDCUBE_HOMINGATTACK_REACHFRAME	(100)
 #define HARDCUBE_HOMINGATTACK_SPEED			(150.0f)
 
 /**************************************

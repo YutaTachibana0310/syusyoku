@@ -22,6 +22,7 @@ enum DefineScene
 	TitleScene,
 	BattleScene,
 	ResultScene,
+	TutorialScene,
 	DefineSceneMax
 };
 

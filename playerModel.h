@@ -36,6 +36,8 @@ enum PlayerState
 	PlayerTransition,
 	PlayerTitle,
 	PlayerTitleLaunch,
+	PlayerTutorialMove,
+	PlayerTutorialLockon,
 	PlayerStateMax,
 };
 
@@ -87,4 +89,23 @@ void ChangeStatePlayerModel(int next);
 ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive, float *targetHP);
 void ReleaseRockonTarget(PLAYERMODEL *player, int targetID);
 void AttackPlayerMissile(PLAYERMODEL *player);
+
+//入場処理
+void EnterPlayerModelTutorialMove(PLAYERMODEL *ptr);
+void EnterPlayerModelTutorialLockon(PLAYERMODEL *ptr);
+
+//更新処理
+void UpdatePlayerModelTutorialMove(PLAYERMODEL *ptr);
+void UpdatePlayerModelTutorialLockon(PLAYERMODEL *ptr);
+
+//退場処理
+void ExitPlayerModelTutorialMove(PLAYERMODEL *ptr);
+void ExitPlayerModelTutorialLockon(PLAYERMODEL *ptr);
+
+//チュートリアルロックオン回数取得処理
+int GetTutorialLockOnNum(void);
+
+//チュートリアルホーミング攻撃回数取得処理
+int GetTutorialHomingAttackNum(void);
+
 #endif

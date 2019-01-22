@@ -24,7 +24,7 @@
 // マクロ定義
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"		// ウインドウのクラス名
-#define WINDOW_NAME		"影表示処理"		// ウインドウのキャプション名
+#define WINDOW_NAME		"サイバライド"		// ウインドウのキャプション名
 
 //*****************************************************************************
 // 構造体定義
@@ -48,7 +48,7 @@ LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
 static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0, 0);
 int					g_nCountFPS;			// FPSカウンタ
 #ifdef _DEBUG
-DefineScene startScene = BattleScene;
+DefineScene startScene = TutorialScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;

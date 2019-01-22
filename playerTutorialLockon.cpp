@@ -1,15 +1,14 @@
 //=====================================
 //
-//プレイヤーモデル一人称処理[playerModelFPS.cpp]
+//プレイヤーモデル一人称処理[playerTutorialLockon.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "playerModelFPS.h"
+#include "playerModel.h"
 #include "playerBullet.h"
 #include "input.h"
 #include "targetSite.h"
 #include "enemyMissile.h"
-#include "playerMissile.h"
 #include "lockonGUI.h"
 #include "dataContainer.h"
 #include "soundEffectManager.h"
@@ -17,13 +16,13 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERFPS_RANGE_X			(85.0f)
-#define PLAYERFPS_RANGE_Y			(55.0f)
-#define PLAYERFPS_MOVESPEED			(1.5f)
+#define PLAYERTUTOLOCKON_RANGE_X			(85.0f)
+#define PLAYERTUTOLOCKON_RANGE_Y			(55.0f)
+#define PLAYERTUTOLOCKON_MOVESPEED			(1.5f)
 
-#define PLAYERFPS_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
-#define PLAYERFPS_SHOTPOS_R			(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
-#define PLAYERFPS_BULLETSPEED		(40.0f)
+#define PLAYERTUTOLOCKON_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
+#define PLAYERTUTOLOCKON_SHOTPOS_R			(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
+#define PLAYERTUTOLOCKON_BULLETSPEED		(40.0f)
 /**************************************
 構造体定義
 ***************************************/
@@ -31,7 +30,7 @@
 /**************************************
 グローバル変数
 ***************************************/
-static int attackNum;
+static int lockonNum;
 
 /**************************************
 プロトタイプ宣言
@@ -41,20 +40,20 @@ static int attackNum;
 /**************************************
 更新処理
 ***************************************/
-void UpdatePlayerModelFPS(PLAYERMODEL *player)
+void UpdatePlayerModelTutorialLockon(PLAYERMODEL *player)
 {
 	int x = GetHorizontalInputPress();
 	int y = GetVerticalInputPress();
 
 	//移動処理
 	D3DXVECTOR3 moveDir = D3DXVECTOR3((float)x, (float)y, 0.0f);
-	moveDir = *D3DXVec3Normalize(&moveDir, &moveDir) * PLAYERFPS_MOVESPEED;
+	moveDir = *D3DXVec3Normalize(&moveDir, &moveDir) * PLAYERTUTOLOCKON_MOVESPEED;
 	player->pos = player->pos + moveDir;
 
 	player->destRot.z = x * PLAYER_DESTROT_MAX;
 
-	player->pos.x = Clampf(-PLAYERFPS_RANGE_X, PLAYERFPS_RANGE_X, player->pos.x);
-	player->pos.y = Clampf(-PLAYERFPS_RANGE_Y, PLAYERFPS_RANGE_Y, player->pos.y);
+	player->pos.x = Clampf(-PLAYERTUTOLOCKON_RANGE_X, PLAYERTUTOLOCKON_RANGE_X, player->pos.x);
+	player->pos.y = Clampf(-PLAYERTUTOLOCKON_RANGE_Y, PLAYERTUTOLOCKON_RANGE_Y, player->pos.y);
 
 	//ロックオンターゲットの更新確認
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
@@ -75,7 +74,11 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	//ターゲットサイト移動処理
 	TARGETSITE *site = GetTargetSiteAdr(player->id);
 	site->pos = player->pos;
-	UpdateTargetSite(GetAttackButtonPress());
+	bool pressAtkButton = GetAttackButtonPress();
+	UpdateTargetSite(pressAtkButton);
+	if (GetAttackButtonTrigger())
+		lockonNum++;
+	
 
 	//ロックオンサイトセット処理
 	int lockMax = GetLockonMax();
@@ -92,32 +95,38 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 
 	//攻撃処理
 	player->atkInterbal++;
-	if (player->atkInterbal == PLAYER_HOMINGATK_INTERBAL)
-		PlaySE(SOUND_READY);
 
 	if (GetAttackButtonRelease())
 	{
-		attackNum++;
-		AttackPlayerMissile(player);
+		for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
+		{
+			if (player->target[i].pos == NULL)
+				continue;
+
+			ReleaseRockonTarget(player, i);
+			player->target[i].use = false;
+			player->lockonNum = 0;
+		}
+		player->atkInterbal = 0;
 	}
 
 	//ショットポジション更新
-	D3DXVec3TransformCoord(&player->shotpos1, &PLAYERFPS_SHOTPOS_L, &player->mtxWorld);
-	D3DXVec3TransformCoord(&player->shotpos2, &PLAYERFPS_SHOTPOS_R, &player->mtxWorld);
+	D3DXVec3TransformCoord(&player->shotpos1, &PLAYERTUTOLOCKON_SHOTPOS_L, &player->mtxWorld);
+	D3DXVec3TransformCoord(&player->shotpos2, &PLAYERTUTOLOCKON_SHOTPOS_R, &player->mtxWorld);
 
 	//ショット発射処理
 	player->cntFrame++;
 	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0 && !GetAttackButtonPress())
 	{
-		SetPlayerBullet(player->shotpos1, PLAYERFPS_BULLETSPEED);
-		SetPlayerBullet(player->shotpos2, PLAYERFPS_BULLETSPEED);
+		SetPlayerBullet(player->shotpos1, PLAYERTUTOLOCKON_BULLETSPEED);
+		SetPlayerBullet(player->shotpos2, PLAYERTUTOLOCKON_BULLETSPEED);
 	}
 }
 
 /**************************************
 入場処理
 ***************************************/
-void EnterPlayerModelFPS(PLAYERMODEL *player)
+void EnterPlayerModelTutorialLockon(PLAYERMODEL *player)
 {
 	player->cntFrame = 0;
 	player->atkInterbal = PLAYER_HOMINGATK_INTERBAL;
@@ -125,7 +134,7 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 	//ターゲットサイト設定処理
 	TARGETSITE *site = GetTargetSiteAdr(player->id);
 	site->active = true;
-	site->pos = site->targetPos = player->pos;// + D3DXVECTOR3(0.0f, 0.0f, PLAYERFPS_TARGETSITE_POS_Z);
+	site->pos = site->targetPos = player->pos;// + D3DXVECTOR3(0.0f, 0.0f, PLAYERTUTOLOCKON_TARGETSITE_POS_Z);
 
 	//ロックオン対象初期化
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
@@ -137,56 +146,22 @@ void EnterPlayerModelFPS(PLAYERMODEL *player)
 	//ロックオンGUI表示
 	GetLockonGUIAdr(player->id)->active = true;
 
-	attackNum = 0;
+	lockonNum = 0;
+
 }
 
 /**************************************
 退場処理
 ***************************************/
-void ExitPlayerModelFPS(PLAYERMODEL *player)
+void ExitPlayerModelTutorialLockon(PLAYERMODEL *player)
 {
 
 }
 
 /**************************************
-ホーミング攻撃回数取得処理
+チュートリアルロックオン回数取得処理
 ***************************************/
-int GetTutorialHomingAttackNum(void)
+int GetTutorialLockOnNum(void)
 {
-	return attackNum;
+	return lockonNum;
 }
-
-#if 0
-/**************************************
-ホーミング攻撃処理
-***************************************/
-void AttackPlayerModelFPS(PLAYERMODEL *player)
-{
-	if (player->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
-	{
-		return;
-	}
-
-	if (player->lockonNum == 0)
-	{
-		return;
-	}
-
-	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
-	{
-		if (player->target[i].pos == NULL)
-		{
-			continue;
-		}
-
-		for (int j = 0; j < 4; j++)
-		{
-			SetPlayerMissile(player->target[i].pos, player->target[i].hp, player->target[i].active, player->pos);
-		}
-		ReleaseRockonTarget(player, i);
-		player->target[i].use = false;
-	}
-	player->atkInterbal = 0;
-	player->lockonNum = 0;
-}
-#endif

@@ -32,7 +32,7 @@ typedef struct
 ***************************************/
 void InitTargetSite(int num);
 void UninitTargetSite(int num);
-void UpdateTargetSite(void);
+void UpdateTargetSite(bool isOpen);
 void DrawTargetSite(void);
 void SetTargetSitePosition(D3DXVECTOR3 pos, int id);
 TARGETSITE *GetTargetSiteAdr(int id);

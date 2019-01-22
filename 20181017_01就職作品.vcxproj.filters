@@ -148,6 +148,15 @@
     <Filter Include="ソース ファイル\Battle\Enemy\cubeObject\states">
       <UniqueIdentifier>{98be64e7-d62a-4c96-9a97-5c99ea928fae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Controller">
+      <UniqueIdentifier>{d35c3623-2660-4506-baec-597a7c34d9c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Controller">
+      <UniqueIdentifier>{10b1fdfd-9b27-424f-b54e-bc0e3c7b223f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Controller\States">
+      <UniqueIdentifier>{25f44e09-562c-4e25-8b02-5f172b5c8e7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -281,9 +290,6 @@
     </ClCompile>
     <ClCompile Include="playerMissileStraight.cpp">
       <Filter>ソース ファイル\Battle\Player\playerMissile</Filter>
-    </ClCompile>
-    <ClCompile Include="hpGUI.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
     <ClCompile Include="lockonGUI.cpp">
       <Filter>ソース ファイル\GUI</Filter>
@@ -420,9 +426,6 @@
     <ClCompile Include="bonusCube.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
     </ClCompile>
-    <ClCompile Include="battleController.cpp">
-      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
-    </ClCompile>
     <ClCompile Include="fuzzyLogic.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
@@ -458,6 +461,51 @@
     </ClCompile>
     <ClCompile Include="hardCubeBezier.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
+    </ClCompile>
+    <ClCompile Include="bossCubeObject.cpp">
+      <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="hpGUI.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialController.cpp">
+      <Filter>ソース ファイル\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="battleController.cpp">
+      <Filter>ソース ファイル\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialHadCube.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialBonusTime.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialBonusCube.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialHomingAttack.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialLockon.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialMove.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorialEnd.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="playerTutorialMove.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="playerTutorialLockon.cpp">
+      <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="hardCubeTutorial.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -692,17 +740,11 @@
     <ClInclude Include="collider.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="collisionManager.h">
-      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
-    </ClInclude>
     <ClInclude Include="hardCubeObject.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
     </ClInclude>
     <ClInclude Include="bonusCube.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
-    </ClInclude>
-    <ClInclude Include="battleController.h">
-      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
     </ClInclude>
     <ClInclude Include="fuzzyLogic.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
@@ -718,6 +760,21 @@
     </ClInclude>
     <ClInclude Include="stageData.h">
       <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="bossCubeObject.h">
+      <Filter>ヘッダー ファイル\Battle\Enemy\cubeObject</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorialScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorialController.h">
+      <Filter>ヘッダー ファイル\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionManager.h">
+      <Filter>ヘッダー ファイル\Battle\BattleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="battleController.h">
+      <Filter>ヘッダー ファイル\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
