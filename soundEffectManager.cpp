@@ -51,6 +51,7 @@ void InitSoundEffectManager(int num)
 		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
+			SetSoundVolume(ptr->clip, SOUND_VOLUME_INIT);
 		}
 		initialized = true;
 	}

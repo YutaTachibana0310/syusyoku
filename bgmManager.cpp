@@ -42,6 +42,7 @@ void InitBgmManager(int num)
 		for (int i = 0; i < BGM_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&BgmFileName[i][0]);
+			SetSoundVolume(ptr->clip, SOUND_VOLUME_INIT);
 		}
 		initialized = true;
 	}

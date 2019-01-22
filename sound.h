@@ -7,8 +7,9 @@
 #include <mmsystem.h>
 
 // マクロ定義
-#define SOUND_VOLUME_MAX (100.0f)		//音量最大%
-#define SOUND_VOLUME_MIN (0.0f)			//音量最小%
+#define SOUND_VOLUME_MAX	(100.0f)		//音量最大%
+#define SOUND_VOLUME_MIN	(0.0f)			//音量最小%
+#define SOUND_VOLUME_INIT	(50.0f)			//初期音量
 
 enum
 {	// 再生用フラグ
