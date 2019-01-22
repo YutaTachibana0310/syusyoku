@@ -495,9 +495,9 @@ bool SetCubeObject(D3DXVECTOR3 *setPos, float speed = 8.0f)
 ******************************************/
 void DrawDebugWindowCube(void)
 {
-	ImGui::Begin("CubeObject");
+	BeginDebugWindow("CubeObject");
 
-	ImGui::Text("Active : %d", cntCube);
+	DebugText("Active : %d", cntCube);
 
-	ImGui::End();
+	EndDebugWindow("CubeObject");
 }

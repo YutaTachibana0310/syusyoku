@@ -119,10 +119,9 @@ void UpdateCollisionManager(void)
 	CheckCollisionHardCube();
 	CheckCollisionBonusCube();
 	
-	ImGui::Begin("CollisionManager");
-	ImGui::Text("CheckCount : %d", cnt);
-
-	ImGui::End();
+	BeginDebugWindow("CollisionManager");
+	DebugText("CheckCount : %d", cnt);
+	EndDebugWindow("CollisionManager");
 
 	if (++cntFrame % 20 == 0)
 		cnt = cntCheck;

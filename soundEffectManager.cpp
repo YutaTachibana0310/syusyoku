@@ -34,7 +34,6 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/ready.wav"),
 	_T("data/SOUND/decision16.wav"),
 	_T("data/SOUND/gun29.wav"),
-	//_T("data/SOUND/hoge.wav"),
 };
 
 static SOUNDEFFECT se[SOUND_MAX];
@@ -60,6 +59,7 @@ void InitSoundEffectManager(int num)
 		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
+			SetSoundVolume(ptr->clip, ptr->volume);
 		}
 
 		initialized = true;
@@ -146,22 +146,22 @@ void SetSEVolume(DEFINE_SOUNDEFFECT sound, float volume)
 ***************************************/
 void DrawDebugWindowSoundEffect(void)
 {
-	ImGui::Begin("SoundEffect");
+	BeginDebugWindow("SoundEffect");
 
-	ImGui::SliderFloat(STR(SOUND_LOCKON), &se[SOUND_LOCKON].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(SOUND_LOCKON), &se[SOUND_LOCKON].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
-	ImGui::SliderFloat(STR(SOUND_MISSILELAUNCH), &se[SOUND_MISSILELAUNCH].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(SOUND_MISSILELAUNCH), &se[SOUND_MISSILELAUNCH].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
-	ImGui::SliderFloat(STR(SOUND_SMALLEXPL), &se[SOUND_SMALLEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(SOUND_SMALLEXPL), &se[SOUND_SMALLEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
-	ImGui::SliderFloat(STR(SOUND_READY), &se[SOUND_READY].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(SOUND_READY), &se[SOUND_READY].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
-	ImGui::SliderFloat(STR(SOUND_DECISION), &se[SOUND_DECISION].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(SOUND_DECISION), &se[SOUND_DECISION].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
-	ImGui::SliderFloat(STR(SOUND_SHOT), &se[SOUND_SHOT].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(SOUND_SHOT), &se[SOUND_SHOT].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
 
-	if (ImGui::Button("Save Settings"))
+	if (DebugButton("Save Settings"))
 	{
 		SaveSettingsSoundEffect();
 		for (int i = 0; i < SOUND_MAX; i++)
@@ -170,27 +170,27 @@ void DrawDebugWindowSoundEffect(void)
 		}
 	}
 
-	ImGui::End();
+	EndDebugWindow("SoundEffect");
 
-	ImGui::Begin("PlaySound");
+	BeginDebugWindow("PlaySound");
 
-	if (ImGui::Button(STR(SOUND_LOCKON)))	{ PlaySE(SOUND_LOCKON); }
-	if (ImGui::Button(STR(SOUND_MISSILELAUNCH))) { PlaySE(SOUND_MISSILELAUNCH); }
-	if (ImGui::Button(STR(SOUND_SMALLEXPL))) { PlaySE(SOUND_SMALLEXPL); }
-	if (ImGui::Button(STR(SOUND_READY))) { PlaySE(SOUND_READY); }
-	if (ImGui::Button(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
-	if (ImGui::Button(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
+	if (DebugButton(STR(SOUND_LOCKON)))	{ PlaySE(SOUND_LOCKON); }
+	if (DebugButton(STR(SOUND_MISSILELAUNCH))) { PlaySE(SOUND_MISSILELAUNCH); }
+	if (DebugButton(STR(SOUND_SMALLEXPL))) { PlaySE(SOUND_SMALLEXPL); }
+	if (DebugButton(STR(SOUND_READY))) { PlaySE(SOUND_READY); }
+	if (DebugButton(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
+	if (DebugButton(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
 
-	ImGui::NewLine();
+	DebugNewLine();
 	static float length = 5000.0f;
-	ImGui::SliderFloat("Length", &length, 0.0f, SOUND_POS_FAR_END);
-	if (ImGui::Button("Play 3D"))
+	DebugSliderFloat("Length", &length, 0.0f, SOUND_POS_FAR_END);
+	if (DebugButton("Play 3D"))
 	{
 		PlaySE_3D(SOUND_SMALLEXPL, length);
 	}
 
 
-	ImGui::End();
+	EndDebugWindow("PlaySound");
 }
 
 /**************************************

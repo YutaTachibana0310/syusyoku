@@ -20,6 +20,10 @@
 #include "collisionManager.h"
 #include "bgmManager.h"
 
+//#include "imgui/imgui.h"
+//#include "imgui/imgui_impl_win32.h"
+//#include "imgui/imgui_impl_dx9.h"
+
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
@@ -38,7 +42,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 void Uninit(void);
 void Update(void);
 void Draw(void);
-IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void DrawDebugWindowMain(void);
 //*****************************************************************************
 // グローバル変数:
@@ -179,8 +182,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-		return true;
+	DebugWindPrcHandler(hWnd, uMsg, wParam, lParam);
 
 	switch(uMsg)
 	{
@@ -536,11 +538,9 @@ void SetBackColor(D3DXCOLOR color)
 //=============================================================================
 void DrawDebugWindowMain(void)
 {
-	ImGui::SetNextWindowSize(ImVec2(200.0f, 200.0f));
-	ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH - 205.0f, 5.0f));
-	ImGui::Begin("Main");
+	BeginDebugWindow("Main");
 
-	ImGui::Text("FPS : %d", g_nCountFPS);
+	DebugText("FPS : %d", g_nCountFPS);
 
-	ImGui::End();
+	EndDebugWindow("Main");
 }

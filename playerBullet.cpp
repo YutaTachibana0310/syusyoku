@@ -184,11 +184,6 @@ void UpdatePlayerBullet(void)
 		RemoveObjectFromSpace(oft);
 		RegisterObjectToSpace(&ptr->collider2, oft, OFT_PLAYERBULLET);
 	}
-
-	ImGui::Begin("PlayerBullet");
-	ImGui::Text("PlayerBulletMax : %d", PLAYERBULLET_MAX);
-	ImGui::Text("Acitve          : %d", cntActive);
-	ImGui::End();
 }
 
 /**************************************

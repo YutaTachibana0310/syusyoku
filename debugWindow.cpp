@@ -5,6 +5,9 @@
 //
 //=====================================
 #include "debugWindow.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx9.h"
 #include "input.h"
 
 /**************************************
@@ -25,6 +28,15 @@ static unsigned int cntFrame = 0;
 /**************************************
 プロトタイプ宣言
 ***************************************/
+IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+/**************************************
+デバッグウィンドウ用コールバック
+***************************************/
+LRESULT DebugWindPrcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	return ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
+}
 
 /**************************************
 初期化処理
@@ -133,4 +145,88 @@ double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end)
 	double msec = (double)span * 1000.0f / (double)frequency.QuadPart;
 
 	return msec;
+}
+
+/*************************************
+デバッグウィンドウ開始処理
+***************************************/
+void BeginDebugWindow(const char *label)
+{
+	ImGui::Begin(label);
+}
+
+/*************************************
+デバッグウィンドウ終了処理
+***************************************/
+void EndDebugWindow(const char *label)
+{
+	ImGui::End();
+}
+
+/*************************************
+デバッグテキスト表示処理
+***************************************/
+void DebugText(const char *str, ...)
+{
+	va_list ap;
+	va_start(ap, str);
+	ImGui::TextV(str, ap);
+	//ImGui::Text(str, ap);
+	va_end(ap);
+}
+
+/*************************************
+デバッグボタン表示処理
+***************************************/
+bool DebugButton(const char *label)
+{
+	return ImGui::Button(label);
+}
+
+/*************************************
+デバッグスライダー処理
+***************************************/
+void DebugSliderFloat(const char *label, float *adr, float min, float max)
+{
+	ImGui::SliderFloat(label, adr, min, max);
+}
+
+/*************************************
+デバッグカラーピッカー処理
+***************************************/
+void DebugColorEditor(const char *label, float array[4])
+{
+	ImGui::ColorEdit4(label, array);
+}
+
+/*************************************
+デバッグウィンドウ改行処理
+***************************************/
+void DebugNewLine(void)
+{
+	ImGui::NewLine();
+}
+
+/*************************************
+ツリー構造展開処理
+***************************************/
+void DebugTreeExpansion(bool isOpen)
+{
+	ImGui::SetNextTreeNodeOpen(isOpen, ImGuiSetCond_Once);
+}
+
+/*************************************
+ツリー構造プッシュ処理
+***************************************/
+bool DebugTreePush(const char *label)
+{
+	return ImGui::TreeNode(label);
+}
+
+/*************************************
+ツリー構造ポップ処理
+***************************************/
+void DebugTreePop(void)
+{
+	ImGui::TreePop();
 }

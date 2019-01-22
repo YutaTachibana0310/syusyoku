@@ -200,14 +200,14 @@ void DrawDebugWindowParticle(void)
 {
 	//ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
 	//ImGui::SetNextWindowPos(ImVec2(5.0f, 415.0f));
-	ImGui::Begin("ParticleManager");
+	BeginDebugWindow("ParticleManager");
 
-	ImGui::Text("Flare  : %fmsec", CalcProgressTime(startFlare, endFlare));
-	ImGui::Text("Fire   : %fmsec", CalcProgressTime(startFire, endFire));
-	ImGui::Text("Smog   : %fmsec", CalcProgressTime(startSmog, endSmog));
+	DebugText("Flare  : %fmsec", CalcProgressTime(startFlare, endFlare));
+	DebugText("Fire   : %fmsec", CalcProgressTime(startFire, endFire));
+	DebugText("Smog   : %fmsec", CalcProgressTime(startSmog, endSmog));
 
-	ImGui::NewLine();
-	ImGui::ColorEdit3("Cube Particle", cubeColor);
+	DebugNewLine();
+	DebugColorEditor("Cube Particle", cubeColor);
 
-	ImGui::End();
+	EndDebugWindow("ParticleManager");
 }

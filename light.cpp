@@ -100,21 +100,21 @@ void UninitLight(void)
 //=============================================================================
 void UpdateLight(void)
 {
-	ImGui::Begin("Light");
+	BeginDebugWindow("Light");
 
-	ImGui::ColorEdit4("Diffuse0", (float*)&g_aLight[0].Diffuse);
-	ImGui::ColorEdit4("Diffuse1", (float*)&g_aLight[1].Diffuse);
-	ImGui::ColorEdit4("Diffuse2", (float*)&g_aLight[2].Diffuse);
+	DebugColorEditor("Diffuse0", (float*)&g_aLight[0].Diffuse);
+	DebugColorEditor("Diffuse1", (float*)&g_aLight[1].Diffuse);
+	DebugColorEditor("Diffuse2", (float*)&g_aLight[2].Diffuse);
 
-	ImGui::NewLine();
+	DebugNewLine();
 
-	ImGui::ColorEdit4("Ambient0", (float*)&g_aLight[0].Ambient);
-	ImGui::ColorEdit4("Ambient1", (float*)&g_aLight[1].Ambient);
-	ImGui::ColorEdit4("Ambient2", (float*)&g_aLight[2].Ambient);
+	DebugColorEditor("Ambient0", (float*)&g_aLight[0].Ambient);
+	DebugColorEditor("Ambient1", (float*)&g_aLight[1].Ambient);
+	DebugColorEditor("Ambient2", (float*)&g_aLight[2].Ambient);
 
-	ImGui::NewLine();
+	DebugNewLine();
 
-	if (ImGui::Button("Save Settings"), &ImVec2(50.0f, 0.0f))
+	if (DebugButton("Save Settings"))
 	{
 		SaveLightSettings();
 	}
@@ -127,7 +127,7 @@ void UpdateLight(void)
 		pDevice->SetLight(i, &g_aLight[i]);
 	}
 
-	ImGui::End();
+	EndDebugWindow("Light");
 }
 
 //=============================================================================
@@ -136,7 +136,7 @@ void UpdateLight(void)
 bool LoadLightSettings(void)
 {
 	FILE *fp = fopen(LIGHT_SETTINGS_PATH, "rb");
-	
+
 	if (fp == NULL)
 		return false;
 
