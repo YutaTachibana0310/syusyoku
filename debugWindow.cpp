@@ -28,6 +28,15 @@ static unsigned int cntFrame = 0;
 /**************************************
 プロトタイプ宣言
 ***************************************/
+IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+/**************************************
+デバッグウィンドウ用コールバック
+***************************************/
+LRESULT DebugWindPrcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	return ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
+}
 
 /**************************************
 初期化処理

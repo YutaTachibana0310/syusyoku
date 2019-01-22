@@ -20,9 +20,9 @@
 #include "collisionManager.h"
 #include "bgmManager.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx9.h"
+//#include "imgui/imgui.h"
+//#include "imgui/imgui_impl_win32.h"
+//#include "imgui/imgui_impl_dx9.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -42,7 +42,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 void Uninit(void);
 void Update(void);
 void Draw(void);
-IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void DrawDebugWindowMain(void);
 //*****************************************************************************
 // グローバル変数:
@@ -183,8 +182,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 //=============================================================================
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-		return true;
+	DebugWindPrcHandler(hWnd, uMsg, wParam, lParam);
 
 	switch(uMsg)
 	{

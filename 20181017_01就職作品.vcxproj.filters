@@ -504,6 +504,9 @@
     <ClCompile Include="hardCubeTutorial.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
     </ClCompile>
+    <ClCompile Include="memoryAllocater.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -772,6 +775,9 @@
     </ClInclude>
     <ClInclude Include="battleController.h">
       <Filter>ヘッダー ファイル\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="memoryAllocater.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

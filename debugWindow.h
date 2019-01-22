@@ -21,6 +21,8 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
+LRESULT DebugWindPrcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 void InitDebugWindow(HWND hWnd, LPDIRECT3DDEVICE9 pDevice);
 void UninitDebugWindow(int num);
 void UpdateDebugWindow(void);
