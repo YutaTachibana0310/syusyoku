@@ -34,7 +34,6 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/ready.wav"),
 	_T("data/SOUND/decision16.wav"),
 	_T("data/SOUND/gun29.wav"),
-	//_T("data/SOUND/hoge.wav"),
 };
 
 static SOUNDEFFECT se[SOUND_MAX];
@@ -60,6 +59,7 @@ void InitSoundEffectManager(int num)
 		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
+			SetSoundVolume(ptr->clip, ptr->volume);
 		}
 
 		initialized = true;
