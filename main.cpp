@@ -19,10 +19,7 @@
 #include "dataContainer.h"
 #include "collisionManager.h"
 #include "bgmManager.h"
-
-//#include "imgui/imgui.h"
-//#include "imgui/imgui_impl_win32.h"
-//#include "imgui/imgui_impl_dx9.h"
+#include "memoryAllocater.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -402,6 +399,9 @@ void Uninit(void)
 	UninitBgmManager(0);
 	UninitSound();
 
+	//メモリアロケータ終了処理
+	UninitMemoryAllocater();
+
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
 #endif
@@ -432,6 +432,7 @@ void Update(void)
 	UpdateCamera();
 	UpdateLight();
 	UpdateSceneManager();
+	UpdateMemoryAllocater();
 }
 
 //=============================================================================

@@ -11,6 +11,7 @@
 #include "cubeObject.h"
 #include "hardCubeObject.h"
 #include "bonusCube.h"
+#include "memoryAllocater.h"
 
 #include "debugWindow.h"
 
@@ -87,7 +88,8 @@ void InitCollisionManager(int num)
 	cellNum = (spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX] * 4 - 1) / 3;
 	for (int OFTid = 0; OFTid < OFT_ID_MAX; OFTid++)
 	{
-		cellArray[OFTid] = (CCell**)malloc(sizeof(CCell*) * cellNum);
+		//cellArray[OFTid] = (CCell**)malloc(sizeof(CCell*) * cellNum);
+		cellArray[OFTid] = (CCell**)AllocMemory(sizeof(CCell*) * cellNum, "CollisionManager");
 		ZeroMemory(cellArray[OFTid], sizeof(CCell*) * cellNum);
 	}
 	initialized = true;
@@ -102,7 +104,8 @@ void UninitCollisionManager(int num)
 	{
 		for (int OFTid = 0; OFTid < OFT_ID_MAX; OFTid++)
 		{
-			free(cellArray[OFTid]);
+			//free(cellArray[OFTid]);
+			ReleaseMemory(sizeof(*cellArray[OFTid]), "CollisionManager", cellArray[OFTid]);
 			cellArray[OFTid] = NULL;
 		}
 	}
