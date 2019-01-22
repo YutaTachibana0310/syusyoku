@@ -198,64 +198,6 @@ void EmmittOnNormalTime(void)
 			maxValue = fuzzyValue[i];
 		}
 	}
-
-	//重みが一番大きかった座標へエネミーを生成
-	if (ImGui::RadioButton("NormalCube", enableEmmitt))
-	{
-		if (cntFrame % BATTLE_CUBEEMMITT_INTERBAL == 0 && enableEmmitt)
-		{
-			lastEmittFrame[decidedPos] = cntFrame;
-			EmmittCubeObject(1, &emmittPos[decidedPos], 10.0f);
-		}
-	}
-
-	//デバッグ情報表示
-	{
-		ImGui::Begin("BattleController");
-
-		//ImGui::Text("PlayerPos : %f, %f", playerPos.x, playerPos.y);
-
-		//ImGui::NewLine();
-		//ImGui::Text("Length");
-		//for (int i = 0; i < BATTLE_SPACE_MAX; i++)
-		//{
-		//	if (i % BATTLE_SPACE_DIVIDE_NUM != 0)
-		//		ImGui::SameLine();
-		//	ImGui::Text("%4f ", valueLength[i]);
-		//}
-		//for (int i = 0; i < BATTLE_SPACE_DIVIDE_NUM; i++)
-		//	ImGui::PlotHistogram("", &valueLength[i * BATTLE_SPACE_DIVIDE_NUM], BATTLE_SPACE_DIVIDE_NUM);
-
-		//ImGui::NewLine();
-		//ImGui::Text("Time");
-		//for (int i = 0; i < BATTLE_SPACE_MAX; i++)
-		//{
-		//	if (i % BATTLE_SPACE_DIVIDE_NUM != 0)
-		//		ImGui::SameLine();
-		//	ImGui::Text("%4f ", valueTime[i]);
-		//}
-		//for (int i = 0; i < BATTLE_SPACE_DIVIDE_NUM; i++)
-		//	ImGui::PlotHistogram("", &valueTime[i * BATTLE_SPACE_DIVIDE_NUM], BATTLE_SPACE_DIVIDE_NUM);
-
-		//ImGui::NewLine();
-		//for (int i = 0; i < BATTLE_SPACE_DIVIDE_NUM; i++)
-		//	ImGui::PlotHistogram("FuzzyValues",
-		//		&fuzzyValue[i * BATTLE_SPACE_DIVIDE_NUM],
-		//		BATTLE_SPACE_DIVIDE_NUM);
-
-		//ImGui::NewLine();
-		//if (ImGui::Button("Init Cube"))
-		//{
-		//	UninitCubeObject(1);
-		//}
-		//if (ImGui::Button("Start Bonus"))
-		//{
-		//	StartBonusTime();
-		//}
-		ImGui::Checkbox("Emmitt NormalCube", &enableEmmitt);
-		ImGui::End();
-
-	}
 }
 
 /**************************************

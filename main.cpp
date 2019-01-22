@@ -20,6 +20,10 @@
 #include "collisionManager.h"
 #include "bgmManager.h"
 
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx9.h"
+
 //*****************************************************************************
 // É}ÉNÉçíËã`
 //*****************************************************************************
@@ -536,11 +540,9 @@ void SetBackColor(D3DXCOLOR color)
 //=============================================================================
 void DrawDebugWindowMain(void)
 {
-	ImGui::SetNextWindowSize(ImVec2(200.0f, 200.0f));
-	ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH - 205.0f, 5.0f));
-	ImGui::Begin("Main");
+	BeginDebugWindow("Main");
 
-	ImGui::Text("FPS : %d", g_nCountFPS);
+	DebugText("FPS : %d", g_nCountFPS);
 
-	ImGui::End();
+	EndDebugWindow("Main");
 }

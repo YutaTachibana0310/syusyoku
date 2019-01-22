@@ -8,9 +8,6 @@
 #define _DEBUGWINDOW_H_
 
 #include "main.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx9.h"
 
 /**************************************
 マクロ定義
@@ -38,8 +35,12 @@ double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end);	//経過時間取得
 void BeginDebugWindow(const char *label);
 void EndDebugWindow(const char* label);
 void DebugText(const char *str, ...);
-void DebugButton(const char *label);
+bool DebugButton(const char *label);
 void DebugSliderFloat(const char *label, float *adr, float min, float max);
 void DebugColorEditor(const char *label, float array[4]);
+void DebugNewLine(void);
+void DebugTreeExpansion(bool isOpen);
+bool DebugTreePush(const char *label);
+void DebugTreePop(void);
 
 #endif

@@ -193,57 +193,54 @@ void DrawBattleScene(void)
 ******************************************************************************/
 void DrawDebugWindowBattleScene(void)
 {
-	//ImGui::SetNextWindowPos(ImVec2(5.0f, 5.0f));
-	//ImGui::SetNextWindowSize(ImVec2(300.0f, 350.0f));
-	ImGui::StyleColorsDark();
-	ImGui::Begin("BattleScene");
+	BeginDebugWindow("BattleScene");
 
-	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
-	if (ImGui::TreeNode("Player"))
+	DebugTreeExpansion(true);
+	if (DebugTreePush("Player"))
 	{
-		ImGui::Text("PlayerUpdate   : %fmsec", CalcProgressTime(startPlayerUpdate, endPlayerUpdate));
-		ImGui::Text("PlayerDraw     : %fmsec", CalcProgressTime(startPlayerDrawm, endPlayerDraw));
-		ImGui::TreePop();
+		DebugText("PlayerUpdate   : %fmsec", CalcProgressTime(startPlayerUpdate, endPlayerUpdate));
+		DebugText("PlayerDraw     : %fmsec", CalcProgressTime(startPlayerDrawm, endPlayerDraw));
+		DebugTreePop();
 	}
 
-	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
-	if (ImGui::TreeNode("PlayerMissile"))
+	DebugTreeExpansion(true);
+	if (DebugTreePush("PlayerMissile"))
 	{
-		ImGui::Text("PMissileUpdate : %fmsec", CalcProgressTime(startPMissileUpdate, endPMissileUpdate));
-		ImGui::Text("PMissileDraw   : %fmsec", CalcProgressTime(startPMissileDraw, endPMissileDraw));
-		ImGui::TreePop();
+		DebugText("PMissileUpdate : %fmsec", CalcProgressTime(startPMissileUpdate, endPMissileUpdate));
+		DebugText("PMissileDraw   : %fmsec", CalcProgressTime(startPMissileDraw, endPMissileDraw));
+		DebugTreePop();
 	}
 
-	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
-	if (ImGui::TreeNode("Enemy"))
+	DebugTreeExpansion(true);
+	if (DebugTreePush("Enemy"))
 	{
-		ImGui::Text("EnemyUpdate    : %fmsec", CalcProgressTime(startEnemyUpdate, endEnemyUpdate));
-		ImGui::Text("EnemyDraw      : %fmsec", CalcProgressTime(startEnemyDraw, endEnemyDraw));
-		ImGui::TreePop();
+		DebugText("EnemyUpdate    : %fmsec", CalcProgressTime(startEnemyUpdate, endEnemyUpdate));
+		DebugText("EnemyDraw      : %fmsec", CalcProgressTime(startEnemyDraw, endEnemyDraw));
+		DebugTreePop();
 	}
 
-	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
-	if (ImGui::TreeNode("Particle"))
+	DebugTreeExpansion(true);
+	if (DebugTreePush("Particle"))
 	{
-		ImGui::Text("ParticleUpdate : %fmsec", CalcProgressTime(startParticleUpdate, endParticleUpdate));
-		ImGui::Text("ParticleDraw   : %fmsec", CalcProgressTime(startParticleDraw, endParticleDraw));
-		ImGui::TreePop();
+		DebugText("ParticleUpdate : %fmsec", CalcProgressTime(startParticleUpdate, endParticleUpdate));
+		DebugText("ParticleDraw   : %fmsec", CalcProgressTime(startParticleDraw, endParticleDraw));
+		DebugTreePop();
 	}
 
-	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
-	if (ImGui::TreeNode("Site"))
+	DebugTreeExpansion(true);
+	if (DebugTreePush("Site"))
 	{
-		ImGui::Text("SiteUpdate     : %fmsec", CalcProgressTime(startSiteUpdate, endSiteUpdate));
-		ImGui::Text("SiteDraw       : %fmsec", CalcProgressTime(startSiteDraw, endSiteDraw));
-		ImGui::TreePop();
+		DebugText("SiteUpdate     : %fmsec", CalcProgressTime(startSiteUpdate, endSiteUpdate));
+		DebugText("SiteDraw       : %fmsec", CalcProgressTime(startSiteDraw, endSiteDraw));
+		DebugTreePop();
 	}
 
-	ImGui::SetNextTreeNodeOpen(true, ImGuiSetCond_Once);
-	if (ImGui::TreeNode("Collision"))
+	DebugTreeExpansion(true);
+	if (DebugTreePush("Collision"))
 	{
-		ImGui::Text("Collision		: %fmsec", CalcProgressTime(startCollision, endCollision));
-		ImGui::TreePop();
+		DebugText("Collision		: %fmsec", CalcProgressTime(startCollision, endCollision));
+		DebugTreePop();
 	}
 
-	ImGui::End();
+	EndDebugWindow("BattleScene");
 }

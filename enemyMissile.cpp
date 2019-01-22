@@ -397,16 +397,13 @@ void CheckDestroyEnemyMissile(void)
 ******************************************/
 void DrawDebugInfoEnemyMissile(void)
 {
-	ImGui::StyleColorsDark();
-	//ImGui::SetNextWindowSize(ImVec2(200.0f, 100.0f));
-	//ImGui::SetNextWindowPos(ImVec2(5.0f, 310.0f));
-	ImGui::Begin("EnemyMissle");
+	BeginDebugWindow("EnemyMissle");
 
-	ImGui::Text("Set       : %fmsec", CalcProgressTime(startSet, endSet));
-	ImGui::Text("Update    : %fmsec", CalcProgressTime(startUpdate, endUpdate));
-	ImGui::Text("Destroy   : %fmsec", CalcProgressTime(startParticle, endParticle));
-	ImGui::Text("Collision : %fmsec", CalcProgressTime(startCollision, endCollision));
+	DebugText("Set       : %fmsec", CalcProgressTime(startSet, endSet));
+	DebugText("Update    : %fmsec", CalcProgressTime(startUpdate, endUpdate));
+	DebugText("Destroy   : %fmsec", CalcProgressTime(startParticle, endParticle));
+	DebugText("Collision : %fmsec", CalcProgressTime(startCollision, endCollision));
 
-	ImGui::End();
+	EndDebugWindow("EnemyMissile");
 }
 #endif

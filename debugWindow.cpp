@@ -5,6 +5,9 @@
 //
 //=====================================
 #include "debugWindow.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx9.h"
 #include "input.h"
 
 /**************************************
@@ -158,7 +161,8 @@ void DebugText(const char *str, ...)
 {
 	va_list ap;
 	va_start(ap, str);
-	ImGui::Text(str, ap);
+	ImGui::TextV(str, ap);
+	//ImGui::Text(str, ap);
 	va_end(ap);
 }
 
@@ -184,4 +188,36 @@ void DebugSliderFloat(const char *label, float *adr, float min, float max)
 void DebugColorEditor(const char *label, float array[4])
 {
 	ImGui::ColorEdit4(label, array);
+}
+
+/*************************************
+デバッグウィンドウ改行処理
+***************************************/
+void DebugNewLine(void)
+{
+	ImGui::NewLine();
+}
+
+/*************************************
+ツリー構造展開処理
+***************************************/
+void DebugTreeExpansion(bool isOpen)
+{
+	ImGui::SetNextTreeNodeOpen(isOpen, ImGuiSetCond_Once);
+}
+
+/*************************************
+ツリー構造プッシュ処理
+***************************************/
+bool DebugTreePush(const char *label)
+{
+	return ImGui::TreeNode(label);
+}
+
+/*************************************
+ツリー構造ポップ処理
+***************************************/
+void DebugTreePop(void)
+{
+	ImGui::TreePop();
 }

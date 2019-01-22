@@ -165,13 +165,13 @@ void FadeOutBGM(DEFINE_BGM bgm, int duration)
 ***************************************/
 void DrawDebugWindowBGM(void)
 {
-	ImGui::Begin("BGM");
+	BeginDebugWindow("BGM");
 
-	ImGui::SliderFloat(STR(BGM_TITLESCENE), &bgmData[BGM_TITLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-	ImGui::SliderFloat(STR(BGM_TUTORIALSCENE), &bgmData[BGM_TUTORIALSCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-	ImGui::SliderFloat(STR(BGM_BATTLESCENE), &bgmData[BGM_BATTLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(BGM_TITLESCENE), &bgmData[BGM_TITLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(BGM_TUTORIALSCENE), &bgmData[BGM_TUTORIALSCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(BGM_BATTLESCENE), &bgmData[BGM_BATTLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
-	if (ImGui::Button("Save Settings"))
+	if (DebugButton("Save Settings"))
 	{
 		for (int i = 0; i < BGM_MAX; i++)
 		{
@@ -180,7 +180,7 @@ void DrawDebugWindowBGM(void)
 		SaveSettingsBGM();
 	}
 
-	ImGui::End();
+	EndDebugWindow("BGM");
 }
 
 /**************************************

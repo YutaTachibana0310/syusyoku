@@ -145,16 +145,6 @@ void UpdateTargetSite(bool isOpen)
 		//外側のサークルを更新
 		ptr->outsideRot.z += TARGETSITE_OUTCIRCLE_ROTVALUE;
 	}
-
-	ImGui::Begin("targetSite");
-	D3DXVECTOR3 posL = targetSite[0].pos + D3DXVECTOR3(TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y, 0.0f);
-	D3DXVECTOR3 screenL;
-	D3DXVec3TransformCoord(&screenL, &posL, &GetBattleCameraView());
-	D3DXVec3TransformCoord(&screenL, &screenL, &GetBattleCameraProjection());
-	TranslateViewPort(&screenL, &screenL);
-	float length = D3DXVec3Length(&(screenL - targetSite[0].screenPos));
-	ImGui::Text("CircirRadius : %f", length);
-	ImGui::End();
 }
 
 /**************************************
