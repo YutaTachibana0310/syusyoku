@@ -134,3 +134,54 @@ double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end)
 
 	return msec;
 }
+
+/*************************************
+デバッグウィンドウ開始処理
+***************************************/
+void BeginDebugWindow(const char *label)
+{
+	ImGui::Begin(label);
+}
+
+/*************************************
+デバッグウィンドウ終了処理
+***************************************/
+void EndDebugWindow(const char *label)
+{
+	ImGui::End();
+}
+
+/*************************************
+デバッグテキスト表示処理
+***************************************/
+void DebugText(const char *str, ...)
+{
+	va_list ap;
+	va_start(ap, str);
+	ImGui::Text(str, ap);
+	va_end(ap);
+}
+
+/*************************************
+デバッグボタン表示処理
+***************************************/
+bool DebugButton(const char *label)
+{
+	return ImGui::Button(label);
+}
+
+/*************************************
+デバッグスライダー処理
+***************************************/
+void DebugSliderFloat(const char *label, float *adr, float min, float max)
+{
+	ImGui::SliderFloat(label, adr, min, max);
+}
+
+/*************************************
+デバッグカラーピッカー処理
+***************************************/
+void DebugColorEditor(const char *label, float array[4])
+{
+	ImGui::ColorEdit4(label, array);
+}
