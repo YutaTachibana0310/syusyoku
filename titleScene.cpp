@@ -14,6 +14,8 @@
 #include "playerBulletTrail.h"
 #include "battleCamera.h"
 #include "sceneFade.h"
+#include "bgmManager.h"
+#include "soundEffectManager.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -80,6 +82,7 @@ HRESULT InitTitleScene(int num)
 	if (num != 0)
 	{
 		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		PlayBGM(BGM_TITLESCENE);
 		SetTitleTextureAlpha(0.0f);
 
 		InitMeshCylinder(num);
@@ -135,12 +138,14 @@ void UpdateTitleScene(void)
 		}
 	}
 
-	if (GetKeyboardTrigger(DIK_Z) && state == TITLESCENE_INPUTWAIT)
+	if (GetAttackButtonTrigger() && state == TITLESCENE_INPUTWAIT)
 	{
 		//SetScene(BattleScene);
 		state = TITLESCENE_STATEMAX;
 		ChangeStatePlayerModel(PlayerTitleLaunch);
 		SetSceneFade(TutorialScene);
+		PlaySE(SOUND_DECISION);
+		FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 	}
 
 	UpdateMeshCylinder();

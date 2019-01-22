@@ -7,6 +7,9 @@
 #include "bgmManager.h"
 #include "sound.h"
 #include <tchar.h>
+#include "Easing.h"
+#include "debugWindow.h"
+#include <stdio.h>
 
 /**************************************
 マクロ定義
@@ -21,6 +24,8 @@
 ***************************************/
 static const TCHAR* BgmFileName[BGM_MAX] = {
 	_T("data/SOUND/LAST_GUARDIAN.wav"),
+	_T("data/SOUND/Sword_dance.wav"),
+	_T("data/SOUND/P.L.A.Y..wav"),
 };
 
 static BGM bgmData[BGM_MAX];
@@ -28,6 +33,9 @@ static BGM bgmData[BGM_MAX];
 /**************************************
 プロトタイプ宣言
 ***************************************/
+bool SaveSettingsBGM(void);
+bool LoadSettingsBGM(void);
+void DrawDebugWindowBGM(void);
 
 /**************************************
 初期化処理
@@ -38,11 +46,13 @@ void InitBgmManager(int num)
 
 	if (!initialized)
 	{
+		bool res = LoadSettingsBGM();
+
 		BGM *ptr = &bgmData[0];
 		for (int i = 0; i < BGM_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&BgmFileName[i][0]);
-			SetSoundVolume(ptr->clip, SOUND_VOLUME_INIT);
+			SetSoundVolume(ptr->clip, ptr->volume);
 		}
 		initialized = true;
 	}
@@ -68,7 +78,31 @@ void UninitBgmManager(int num)
 ***************************************/
 void UpdateBgmManager(void)
 {
+	BGM *ptr = &bgmData[0];
+	for (int i = 0; i < BGM_MAX; i++, ptr++)
+	{
+		if (ptr->state == BGM_NORMAL)
+			continue;
 
+		ptr->cntFrame++;
+
+		//フェード処理
+		float t = (float)ptr->cntFrame / (float)ptr->fadeDuration;
+		float setVolume = (ptr->state == BGM_FADEIN) ? EaseLinear(t, 0.0f, ptr->volume) : EaseLinear(t, ptr->volume, 0.0f);
+		SetSoundVolume(ptr->clip, setVolume);
+
+		if (ptr->cntFrame == ptr->fadeDuration)
+		{
+			if (ptr->state == BGM_FADEOUT)
+				StopBGM((DEFINE_BGM)i);
+
+			ptr->state = BGM_NORMAL;
+		
+		
+		}
+	}
+
+	DrawDebugWindowBGM();
 }
 
 /**************************************
@@ -101,4 +135,103 @@ void ResumeBGM(DEFINE_BGM bgm)
 bool IsPlayingBGM(DEFINE_BGM bgm)
 {
 	return IsPlaying(bgmData[bgm].clip);
+}
+
+/**************************************
+フェードイン設定
+***************************************/
+void FadeInBGM(DEFINE_BGM bgm, int duration)
+{
+	BGM *ptr = &bgmData[bgm];
+	ptr->cntFrame = 0;
+	ptr->fadeDuration = duration;
+	ptr->state = BGM_FADEIN;
+	PlayBGM(bgm);
+}
+
+/**************************************
+フェードアウト設定
+***************************************/
+void FadeOutBGM(DEFINE_BGM bgm, int duration)
+{
+	BGM *ptr = &bgmData[bgm];
+	ptr->cntFrame = 0;
+	ptr->fadeDuration = duration;
+	ptr->state = BGM_FADEOUT;
+}
+
+/**************************************
+デバッグウィンドウ
+***************************************/
+void DrawDebugWindowBGM(void)
+{
+	ImGui::Begin("BGM");
+
+	ImGui::SliderFloat(STR(BGM_TITLESCENE), &bgmData[BGM_TITLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	ImGui::SliderFloat(STR(BGM_TUTORIALSCENE), &bgmData[BGM_TUTORIALSCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	ImGui::SliderFloat(STR(BGM_BATTLESCENE), &bgmData[BGM_BATTLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	if (ImGui::Button("Save Settings"))
+	{
+		for (int i = 0; i < BGM_MAX; i++)
+		{
+			SetSoundVolume(bgmData[i].clip, bgmData[i].volume);
+		}
+		SaveSettingsBGM();
+	}
+
+	ImGui::End();
+}
+
+/**************************************
+設定保存処理
+***************************************/
+bool SaveSettingsBGM(void)
+{
+	FILE *fp = NULL;
+
+	fp = fopen("data/SETTINGS/bgm.ini", "wb");
+
+	if (fp == NULL)
+	{
+		return false;
+	}
+
+	BGM *ptr = &bgmData[0];
+	for (int i = 0; i < BGM_MAX;i++, ptr++)
+	{
+		fwrite(&ptr->volume, sizeof(float), 1, fp);
+	}
+
+	fclose(fp);
+	return true;
+}
+
+/**************************************
+設定読み込み処理
+***************************************/
+bool LoadSettingsBGM(void)
+{
+	FILE *fp = NULL;
+
+	fp = fopen("data/SETTINGS/bgm.ini", "rb");
+	if (fp == NULL)
+	{
+		BGM *ptr = &bgmData[0];
+		for (int i = 0; i < BGM_MAX; i++, ptr++)
+		{
+			ptr->volume = SOUND_VOLUME_INIT;
+		}
+		return false;
+	}
+
+	BGM *ptr = &bgmData[0];
+	for (int i = 0; i < BGM_MAX; i++, ptr++)
+	{
+		int res = fread(&ptr->volume, sizeof(float), 1, fp);
+		if (res == EOF)
+			ptr->volume = SOUND_VOLUME_INIT;
+	}
+
+	return true;
 }

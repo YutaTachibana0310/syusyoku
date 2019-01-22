@@ -5,10 +5,12 @@
 //
 //=====================================
 #include "sceneFade.h"
+#include "bgmManager.h"
 
 /**************************************
 マクロ定義
 ***************************************/
+#define TUTORIAL_END_FADE_DURATION		(60)
 
 /**************************************
 構造体定義
@@ -27,6 +29,7 @@
 ***************************************/
 void OnEnterTutorialEnd(void)
 {
+	FadeOutBGM(BGM_TUTORIALSCENE, TUTORIAL_END_FADE_DURATION);
 	SetSceneFade(BattleScene);
 }
 

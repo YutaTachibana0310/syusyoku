@@ -24,11 +24,26 @@
 enum DEFINE_BGM
 {
 	BGM_BATTLESCENE,
+	BGM_TITLESCENE,
+	BGM_TUTORIALSCENE,
 	BGM_MAX
 };
 
-typedef struct {
+enum BGM_STATE
+{
+	BGM_NORMAL,
+	BGM_FADEIN,
+	BGM_FADEOUT,
+	BGM_STATEMAX
+};
+
+typedef struct _BGM{
 	LPDIRECTSOUNDBUFFER8 clip;
+	int fadeDuration;
+	int cntFrame;
+	float volume;
+	float targetVolume;
+	int state;
 
 }BGM;
 /**************************************
@@ -42,5 +57,7 @@ void PlayBGM(DEFINE_BGM bgm);
 void StopBGM(DEFINE_BGM bgm);
 void ResumeBGM(DEFINE_BGM bgm);
 bool IsPlayingBGM(DEFINE_BGM bgm);
+void FadeInBGM(DEFINE_BGM bgm, int duration);
+void FadeOutBGM(DEFINE_BGM bgm, int duration);
 
 #endif

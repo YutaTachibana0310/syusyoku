@@ -20,13 +20,15 @@
 #include "playerBulletTrail.h"
 #include "collisionManager.h"
 #include "tutorialController.h"
-
+#include "bgmManager.h"
 #include "input.h"
 #include "sceneFade.h"
+#include "soundEffectManager.h"
 
 /**************************************
 マクロ定義
 ***************************************/
+#define TUTORIALSCENE_FADE_DURATION		(60)
 
 /**************************************
 構造体定義
@@ -45,6 +47,7 @@
 ***************************************/
 HRESULT InitTutorialScene(int num)
 {
+	FadeInBGM(BGM_TUTORIALSCENE, TUTORIALSCENE_FADE_DURATION);
 	InitGUIManager(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
@@ -110,6 +113,7 @@ void UpdateTutorialScene(void)
 
 	if (GetKeyboardPress(DIK_RETURN))
 	{
+		FadeOutBGM(BGM_TUTORIALSCENE, TUTORIALSCENE_FADE_DURATION);
 		SetSceneFade(BattleScene);
 	}
 }

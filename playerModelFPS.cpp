@@ -109,6 +109,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	player->cntFrame++;
 	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0 && !GetAttackButtonPress())
 	{
+		PlaySE(SOUND_SHOT);
 		SetPlayerBullet(player->shotpos1, PLAYERFPS_BULLETSPEED);
 		SetPlayerBullet(player->shotpos2, PLAYERFPS_BULLETSPEED);
 	}

@@ -28,6 +28,8 @@ enum DEFINE_SOUNDEFFECT
 	SOUND_MISSILELAUNCH,
 	SOUND_SMALLEXPL,
 	SOUND_READY,
+	SOUND_DECISION,
+	SOUND_SHOT,
 	//SOUND_S_EXPLOSION,
 	SOUND_MAX
 };
@@ -36,6 +38,7 @@ typedef struct
 {
 	LPDIRECTSOUNDBUFFER8 clip;
 	bool playOrder;
+	float volume;
 }SOUNDEFFECT;
 
 /**************************************

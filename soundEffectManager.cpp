@@ -7,6 +7,8 @@
 #include "soundEffectManager.h"
 #include "sound.h"
 #include <tchar.h>
+#include "debugWindow.h"
+#include <stdio.h>
 
 #pragma comment ( lib, "dxguid.lib" )
 #pragma comment ( lib, "dsound.lib" )
@@ -29,6 +31,8 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/burst00.wav"),
 	_T("data/SOUND/don18_B.wav"),
 	_T("data/SOUND/ready.wav"),
+	_T("data/SOUND/decision16.wav"),
+	_T("data/SOUND/gun29.wav"),
 	//_T("data/SOUND/hoge.wav"),
 };
 
@@ -37,6 +41,9 @@ static SOUNDEFFECT se[SOUND_MAX];
 /**************************************
 プロトタイプ宣言
 ***************************************/
+bool SaveSettingsSoundEffect(void);
+bool LoadSettingsSoundEffect(void);
+void DrawDebugWindowSoundEffect(void);
 
 /**************************************
 初期化処理
@@ -47,12 +54,14 @@ void InitSoundEffectManager(int num)
 
 	if (!initialized)
 	{
+		bool res = LoadSettingsSoundEffect();
 		SOUNDEFFECT *ptr = &se[0];
 		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
 			SetSoundVolume(ptr->clip, SOUND_VOLUME_INIT);
 		}
+
 		initialized = true;
 	}
 
@@ -86,7 +95,7 @@ void UninitSoundEffectManager(int num)
 ***************************************/
 void UpdateSoundEffectManager(void)
 {
-
+	DrawDebugWindowSoundEffect();
 }
 
 /**************************************
@@ -129,3 +138,99 @@ void SetSEVolume(DEFINE_SOUNDEFFECT sound, float volume)
 	SetSoundVolume(se[sound].clip, volume);
 }
 
+/**************************************
+デバッグウィンドウ
+***************************************/
+void DrawDebugWindowSoundEffect(void)
+{
+	ImGui::Begin("SoundEffect");
+
+	ImGui::SliderFloat(STR(SOUND_LOCKON), &se[SOUND_LOCKON].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_MISSILELAUNCH), &se[SOUND_MISSILELAUNCH].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_SMALLEXPL), &se[SOUND_SMALLEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_READY), &se[SOUND_READY].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_DECISION), &se[SOUND_DECISION].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	ImGui::SliderFloat(STR(SOUND_SHOT), &se[SOUND_SHOT].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+
+	if (ImGui::Button("Save Settings"))
+	{
+		SaveSettingsSoundEffect();
+	}
+
+	ImGui::End();
+
+	ImGui::Begin("PlaySound");
+
+	if (ImGui::Button(STR(SOUND_LOCKON)))	{ PlaySE(SOUND_LOCKON); }
+	if (ImGui::Button(STR(SOUND_MISSILELAUNCH))) { PlaySE(SOUND_MISSILELAUNCH); }
+	if (ImGui::Button(STR(SOUND_SMALLEXPL))) { PlaySE(SOUND_SMALLEXPL); }
+	if (ImGui::Button(STR(SOUND_READY))) { PlaySE(SOUND_READY); }
+	if (ImGui::Button(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
+	if (ImGui::Button(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
+
+	for (int i = 0; i < SOUND_MAX; i++)
+	{
+		SetSoundVolume(se[i].clip, se[i].volume);
+	}
+
+	ImGui::End();
+}
+
+/**************************************
+設定保存処理
+***************************************/
+bool SaveSettingsSoundEffect(void)
+{
+	FILE *fp = NULL;
+	fp = fopen("data/SETTINGS/sound.ini", "wb");
+
+	if (fp == NULL)
+	{
+		return false;
+	}
+
+	for (int i = 0; i < SOUND_MAX; i++)
+	{
+		fwrite(&se[i].volume, sizeof(float), 1, fp);
+	}
+
+	fclose(fp);
+
+	return true;
+}
+
+/**************************************
+設定読み込み処理
+***************************************/
+bool LoadSettingsSoundEffect(void)
+{
+	FILE *fp = NULL;
+	fp = fopen("data/SETTINGS/sound.ini", "rb");
+
+	if (fp == NULL)
+	{
+		SOUNDEFFECT *ptr = &se[0];
+		for (int i = 0; i < SOUND_MAX; i++, ptr++)
+		{
+			ptr->volume = SOUND_VOLUME_INIT;
+		}
+		return false;
+	}
+
+	for (int i = 0; i < SOUND_MAX; i++)
+	{
+		int res = fread(&se[i].volume, sizeof(float), 1, fp);
+		if (res == EOF)
+			se[i].volume = SOUND_VOLUME_INIT;
+	}
+
+	fclose(fp);
+
+	return true;
+}
