@@ -49,6 +49,7 @@ void UninitSoundEffectManager(int num);
 void UpdateSoundEffectManager(void);
 
 void PlaySE(DEFINE_SOUNDEFFECT sound);
+void PlaySE_3D(DEFINE_SOUNDEFFECT sound, float posZ);
 void StopSE(DEFINE_SOUNDEFFECT sound);
 void ResumeSE(DEFINE_SOUNDEFFECT sound);
 bool IsPlayingSE(DEFINE_SOUNDEFFECT sound);

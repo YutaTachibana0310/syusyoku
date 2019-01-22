@@ -5,6 +5,7 @@
 //
 //=====================================
 #include "debugWindow.h"
+#include "input.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -64,6 +65,17 @@ void UpdateDebugWindow(void)
 ***************************************/
 void DrawDebugWindow(void)
 {
+	static bool enableDraw = true;
+
+	if (GetKeyboardTrigger(DIK_D) && GetKeyboardPress(DIK_LCONTROL))
+		enableDraw = !enableDraw;
+
+	if (!enableDraw)
+	{
+		ImGui::EndFrame();
+		return;
+	}
+	
 	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 }

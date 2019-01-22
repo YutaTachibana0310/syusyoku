@@ -381,7 +381,7 @@ void CheckDestroyCubeObject(void)
 		{
 			SetCubeExplosion(ptr->pos, PARTICLE_CUBE_COLOR);
 			AddScore(CUBEOBJECT_ADD_SCORE);
-			PlaySE(SOUND_SMALLEXPL);
+			PlaySE_3D(SOUND_SMALLEXPL, ptr->pos.z);
 			DisableCubeObject(ptr);
 		}
 	}

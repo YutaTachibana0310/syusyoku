@@ -17,6 +17,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define SOUND_POS_FAR_END			(10000.0f)
 
 /**************************************
 構造体定義
@@ -59,17 +60,9 @@ void InitSoundEffectManager(int num)
 		for (int i = 0; i < SOUND_MAX; i++, ptr++)
 		{
 			ptr->clip = LoadSound(&soundFileName[i][0]);
-			SetSoundVolume(ptr->clip, SOUND_VOLUME_INIT);
 		}
 
 		initialized = true;
-	}
-
-	SOUNDEFFECT *ptr = &se[0];
-	for (int i = 0; i < SOUND_MAX; i++)
-	{
-		ptr->playOrder = false;
-		SetSoundVolume(ptr->clip, 50.0f);
 	}
 
 	return;
@@ -103,6 +96,16 @@ void UpdateSoundEffectManager(void)
 ***************************************/
 void PlaySE(DEFINE_SOUNDEFFECT sound)
 {
+	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
+}
+
+/**************************************
+再生処理(3D版)
+***************************************/
+void PlaySE_3D(DEFINE_SOUNDEFFECT sound, float posZ)
+{
+	float decay = 1.0f - posZ / SOUND_POS_FAR_END;
+	SetSoundVolume(se[sound].clip, se[sound].volume * decay);
 	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
 }
 
@@ -161,6 +164,10 @@ void DrawDebugWindowSoundEffect(void)
 	if (ImGui::Button("Save Settings"))
 	{
 		SaveSettingsSoundEffect();
+		for (int i = 0; i < SOUND_MAX; i++)
+		{
+			SetSoundVolume(se[i].clip, se[i].volume);
+		}
 	}
 
 	ImGui::End();
@@ -174,10 +181,14 @@ void DrawDebugWindowSoundEffect(void)
 	if (ImGui::Button(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
 	if (ImGui::Button(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
 
-	for (int i = 0; i < SOUND_MAX; i++)
+	ImGui::NewLine();
+	static float length = 5000.0f;
+	ImGui::SliderFloat("Length", &length, 0.0f, SOUND_POS_FAR_END);
+	if (ImGui::Button("Play 3D"))
 	{
-		SetSoundVolume(se[i].clip, se[i].volume);
+		PlaySE_3D(SOUND_SMALLEXPL, length);
 	}
+
 
 	ImGui::End();
 }
