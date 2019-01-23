@@ -1,11 +1,11 @@
 //=====================================
 //
-//メモリアロケータヘッダ[memoryAllocater.h]
+//テンプレートヘッダ[debugTimer.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _MEMORYALLOCATER_H_
-#define _MEMORYALLOCATER_H_
+#ifndef _DEBUGTIMER_H_
+#define _DEBUGTIMER_H_
 
 #include "main.h"
 
@@ -20,9 +20,9 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void UninitMemoryAllocater(void);
-void UpdateMemoryAllocater(void);
-void* AllocMemory(size_t size, const char* label);
-void ReleaseMemory(size_t size, const char* label, void *p);
+void UninitDebugTimer(void);
+void DrawDebugTimer(const char* label);
+bool RegisterDebugTimer(const char* label);
+bool CountDebugTimer(const char* label, const char* tag);
 
 #endif

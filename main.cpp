@@ -19,10 +19,8 @@
 #include "dataContainer.h"
 #include "collisionManager.h"
 #include "bgmManager.h"
-
-//#include "imgui/imgui.h"
-//#include "imgui/imgui_impl_win32.h"
-//#include "imgui/imgui_impl_dx9.h"
+#include "memoryAllocater.h"
+#include "DebugTimer.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -51,7 +49,7 @@ LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
 static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0, 0);
 int					g_nCountFPS;			// FPSカウンタ
 #ifdef _DEBUG
-DefineScene startScene = LogoScene;
+DefineScene startScene = BattleScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
@@ -402,6 +400,12 @@ void Uninit(void)
 	UninitBgmManager(0);
 	UninitSound();
 
+	//メモリアロケータ終了処理
+	UninitMemoryAllocater();
+
+	//デバッグタイマー終了処理
+	UninitDebugTimer();
+
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
 #endif
@@ -432,6 +436,7 @@ void Update(void)
 	UpdateCamera();
 	UpdateLight();
 	UpdateSceneManager();
+	UpdateMemoryAllocater();
 }
 
 //=============================================================================

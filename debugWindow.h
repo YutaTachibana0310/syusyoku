@@ -41,8 +41,10 @@ bool DebugButton(const char *label);
 void DebugSliderFloat(const char *label, float *adr, float min, float max);
 void DebugColorEditor(const char *label, float array[4]);
 void DebugNewLine(void);
+void DebugSameLine(void);
 void DebugTreeExpansion(bool isOpen);
 bool DebugTreePush(const char *label);
 void DebugTreePop(void);
+void DebugProgressBar(float fraction, const char* label, D3DXVECTOR2 size = D3DXVECTOR2(-1.0f, 0.0f));
 
 #endif
