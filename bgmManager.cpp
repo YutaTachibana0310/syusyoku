@@ -26,6 +26,7 @@ static const TCHAR* BgmFileName[BGM_MAX] = {
 	_T("data/SOUND/LAST_GUARDIAN.wav"),
 	_T("data/SOUND/Sword_dance.wav"),
 	_T("data/SOUND/P.L.A.Y..wav"),
+	_T("data/SOUND/Landing+On+The+Moon_jingle.wav"),
 };
 
 static BGM bgmData[BGM_MAX];
@@ -140,13 +141,17 @@ bool IsPlayingBGM(DEFINE_BGM bgm)
 /**************************************
 フェードイン設定
 ***************************************/
-void FadeInBGM(DEFINE_BGM bgm, int duration)
+void FadeInBGM(DEFINE_BGM bgm, int duration, bool isResume)
 {
 	BGM *ptr = &bgmData[bgm];
 	ptr->cntFrame = 0;
 	ptr->fadeDuration = duration;
 	ptr->state = BGM_FADEIN;
-	PlayBGM(bgm);
+
+	if (isResume)
+		ResumeBGM(bgm);
+	else
+		PlayBGM(bgm);
 }
 
 /**************************************
@@ -170,6 +175,7 @@ void DrawDebugWindowBGM(void)
 	DebugSliderFloat(STR(BGM_TITLESCENE), &bgmData[BGM_TITLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 	DebugSliderFloat(STR(BGM_TUTORIALSCENE), &bgmData[BGM_TUTORIALSCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 	DebugSliderFloat(STR(BGM_BATTLESCENE), &bgmData[BGM_BATTLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(BGM_BONUSTIME), &bgmData[BGM_BONUSTIME].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
 	if (DebugButton("Save Settings"))
 	{
