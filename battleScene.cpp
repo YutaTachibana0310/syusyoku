@@ -25,10 +25,12 @@
 #include "bgmManager.h"
 
 #include "debugWindow.h"
+#include "DebugTimer.h"
 
 /*****************************************************************************
 マクロ定義
 *****************************************************************************/
+#define BATTLESCENE_LABEL "BattleScene"
 
 /*****************************************************************************
 プロトタイプ宣言
@@ -80,6 +82,7 @@ HRESULT InitBattleScene(int num)
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
 
+	RegisterDebugTimer(BATTLESCENE_LABEL);
 
 	return S_OK;
 }
@@ -111,38 +114,41 @@ void UpdateBattleScene(void)
 {
 	UpdateBattleController();
 
-	GetTimerCount(&startPlayerUpdate);
+	//GetTimerCount(&startPlayerUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
 	UpdatePlayerBullet();
 	UpdatePlayerModel();
 	UpdateBattleCamera();
 	GetTimerCount(&endPlayerUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
 
-	GetTimerCount(&startSiteUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 	UpdateRockonSite();
 	GetTimerCount(&endSiteUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 
 	UpdateMeshCylinder();
 
-	GetTimerCount(&startPMissileUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "PMissileUpdate");
 	UpdatePlayerMissile();
 	UpdatePlayerMissileSmog();
 	UpdatePlayerBulletTrail();
-	GetTimerCount(&endPMissileUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "PMissileUpdate");
 
-	GetTimerCount(&startParticleUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "ParticleUpdate");
 	UpdateParticleManager();
-	GetTimerCount(&endParticleUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "ParticleUpdate");
 
 	UpdateGUIManager();
 
-	GetTimerCount(&startEnemyUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "EnemyUpdate");
 	UpdateEnemyManager();
-	GetTimerCount(&endEnemyUpdate);
+	CountDebugTimer(BATTLESCENE_LABEL, "EnemyUpdate");
 
-	GetTimerCount(&startCollision);
+	CountDebugTimer(BATTLESCENE_LABEL, "CollisionUpdate");
 	CheckEnemyCollision();
 	UpdateCollisionManager();
-	GetTimerCount(&endCollision);
+	CountDebugTimer(BATTLESCENE_LABEL, "CollisionUpdate");
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
@@ -159,88 +165,31 @@ void DrawBattleScene(void)
 	DrawMeshCylinder();
 	//DrawCloud();
 
-	GetTimerCount(&startEnemyDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "EnemyDraw");
 	DrawEnemyManager();
-	GetTimerCount(&endEnemyDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "EnemyDraw");
 
-	GetTimerCount(&startPlayerDrawm);
+	CountDebugTimer(BATTLESCENE_LABEL, "PlayerDraw");
 	DrawPlayerModel();
-	GetTimerCount(&endPlayerDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "PlayerDraw");
 
-	GetTimerCount(&startPMissileDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "PMissileDraw");
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();
 	DrawPlayerBullet();
 	DrawPlayerBulletTrail();
-	GetTimerCount(&endPMissileDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "PMissileDraw");
 
-	GetTimerCount(&startParticleDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "ParticleDraw");
 	DrawParticleManager();
-	GetTimerCount(&endParticleDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "ParticleDraw");
 
-	GetTimerCount(&startSiteDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "siteDraw");
 	DrawRockonSite();
 	DrawTargetSite();
-	GetTimerCount(&endSiteDraw);
+	CountDebugTimer(BATTLESCENE_LABEL, "siteDraw");
 
 	DrawGUIManager();
 
-	DrawDebugWindowBattleScene();
-}
-
-/******************************************************************************
-デバッグウィンドウ表示
-******************************************************************************/
-void DrawDebugWindowBattleScene(void)
-{
-	BeginDebugWindow("BattleScene");
-
-	DebugTreeExpansion(true);
-	if (DebugTreePush("Player"))
-	{
-		DebugText("PlayerUpdate   : %fmsec", CalcProgressTime(startPlayerUpdate, endPlayerUpdate));
-		DebugText("PlayerDraw     : %fmsec", CalcProgressTime(startPlayerDrawm, endPlayerDraw));
-		DebugTreePop();
-	}
-
-	DebugTreeExpansion(true);
-	if (DebugTreePush("PlayerMissile"))
-	{
-		DebugText("PMissileUpdate : %fmsec", CalcProgressTime(startPMissileUpdate, endPMissileUpdate));
-		DebugText("PMissileDraw   : %fmsec", CalcProgressTime(startPMissileDraw, endPMissileDraw));
-		DebugTreePop();
-	}
-
-	DebugTreeExpansion(true);
-	if (DebugTreePush("Enemy"))
-	{
-		DebugText("EnemyUpdate    : %fmsec", CalcProgressTime(startEnemyUpdate, endEnemyUpdate));
-		DebugText("EnemyDraw      : %fmsec", CalcProgressTime(startEnemyDraw, endEnemyDraw));
-		DebugTreePop();
-	}
-
-	DebugTreeExpansion(true);
-	if (DebugTreePush("Particle"))
-	{
-		DebugText("ParticleUpdate : %fmsec", CalcProgressTime(startParticleUpdate, endParticleUpdate));
-		DebugText("ParticleDraw   : %fmsec", CalcProgressTime(startParticleDraw, endParticleDraw));
-		DebugTreePop();
-	}
-
-	DebugTreeExpansion(true);
-	if (DebugTreePush("Site"))
-	{
-		DebugText("SiteUpdate     : %fmsec", CalcProgressTime(startSiteUpdate, endSiteUpdate));
-		DebugText("SiteDraw       : %fmsec", CalcProgressTime(startSiteDraw, endSiteDraw));
-		DebugTreePop();
-	}
-
-	DebugTreeExpansion(true);
-	if (DebugTreePush("Collision"))
-	{
-		DebugText("Collision		: %fmsec", CalcProgressTime(startCollision, endCollision));
-		DebugTreePop();
-	}
-
-	EndDebugWindow("BattleScene");
+	DrawDebugTimer("BattleScene");
 }

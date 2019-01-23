@@ -507,6 +507,9 @@
     <ClCompile Include="memoryAllocater.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
+    <ClCompile Include="DebugTimer.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -777,6 +780,9 @@
       <Filter>ヘッダー ファイル\Controller</Filter>
     </ClInclude>
     <ClInclude Include="memoryAllocater.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugTimer.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>

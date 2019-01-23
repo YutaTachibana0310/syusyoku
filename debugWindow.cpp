@@ -208,6 +208,14 @@ void DebugNewLine(void)
 }
 
 /*************************************
+デバッグウィンドウ連続行処理
+***************************************/
+void DebugSameLine(void)
+{
+	ImGui::SameLine();
+}
+
+/*************************************
 ツリー構造展開処理
 ***************************************/
 void DebugTreeExpansion(bool isOpen)
@@ -229,4 +237,12 @@ bool DebugTreePush(const char *label)
 void DebugTreePop(void)
 {
 	ImGui::TreePop();
+}
+
+/*************************************
+プログレスバー処理
+***************************************/
+void DebugProgressBar(float fraction, const char* label, D3DXVECTOR2 size)
+{
+	ImGui::ProgressBar(fraction, ImVec2(size.x, size.y), label);
 }
