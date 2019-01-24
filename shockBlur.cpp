@@ -20,7 +20,7 @@
 typedef struct {
 	D3DXVECTOR3 vtx;
 	float rhw;
-	D3DXCOLOR color;
+	D3DCOLOR color;
 	D3DXVECTOR2 tex;
 }VTX_SCREEN_SQUARE;
 
@@ -69,7 +69,7 @@ void InitShcokBlur(int num)
 
 	effect->SetTechnique(tech);
 
-	pDevice->CreateVertexBuffer(sizeof(VTX_SCREEN_SQUARE) * NUM_POLYGON,
+	pDevice->CreateVertexBuffer(sizeof(VTX_SCREEN_SQUARE) * NUM_VERTEX,
 		D3DUSAGE_WRITEONLY,
 		FVF_SCREEN_SQUARE,
 		D3DPOOL_MANAGED,
