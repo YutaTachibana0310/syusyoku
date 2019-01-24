@@ -38,6 +38,9 @@
 
 #define BATTLE_BONUS_DURATION			(570)				//ボーナスタイム時間		
 #define BATTLE_BONUS_WAIT				(120)				//ボーナスタイムのスタートオフセット
+#define BATTLE_BONUS_EMMITT_RANGE		(200.0f)			//ボーナスタイムのキューブ生成範囲
+#define BATTLE_BONUS_POS_Z				(6000.0f)			//ボーナスタイム時のキューブ生成位置（Z）
+#define BATTLE_BONUS_SPEED				(35.0f)				//ボーナスタイムのキューブスピード
 
 #define BATTLE_CUBEEMMITT_INTERBAL		(120)
 
@@ -152,18 +155,17 @@ void StartBonusTime(void)
 ***************************************/
 void EmmittOnBonusTime(void)
 {
-	static float posZ = 3000.0f;
 
 	if ((int)(cntFrame - bonusStartFrame) < BATTLE_BONUS_DURATION)
 	{
 		for (int i = 0; i < 10; i++)
 		{
 			D3DXVECTOR3 emmittPos;
-			emmittPos.x = RandomRangef(-200.0f, 200.0f);
-			emmittPos.y = RandomRangef(-200.0f, 200.0f);
-			emmittPos.z = posZ;
+			emmittPos.x = RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.y = RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.z = BATTLE_BONUS_POS_Z;
 
-			EmmittCubeObject(1, &emmittPos, 20.0f);
+			EmmittCubeObject(1, &emmittPos, BATTLE_BONUS_SPEED);
 		}
 	}
 

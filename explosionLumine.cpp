@@ -14,9 +14,9 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define EXPLOSIONLUMINE_NUM_MAX				(1024)
-#define EXPLOSIONLUMINE_SIZE				(6.0f)
+#define EXPLOSIONLUMINE_SIZE				(4.0f)
 #define EXPLOSIONLUMINE_TEX_NAME			"data/TEXTURE/PARTICLE/explosionLumine.png"
-#define EXPLOSIONLUMINE_LIFEFRAME_BASE		(60)
+#define EXPLOSIONLUMINE_LIFEFRAME_BASE		(10)
 #define EXPLOSIONLUMINE_LIFEFRAME_RANGE		(30)
 #define EXPLOSIONLUMINE_POS_RANGE			(30.0f)
 

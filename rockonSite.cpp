@@ -19,6 +19,11 @@
 #define ROCKONSITE_INITSCALE		(20.0f)
 #define ROCKONSITE_ENDSCALE			(1.0f)
 #define ROCKONSITE_ANIMATIONFRAME	(15)
+#define ROCKONSITE_ROT_VALUE		(0.02f)
+#define ROCKONSITE_ROT_INTERBAL		(30)
+
+#define ROCKONSITE_TEXT_NAME		"data/TEXTURE/rockonText.png"
+#define ROCKONSITE_TEXT_OFFSET		(25.0f)
 
 /**************************************
 構造体定義
@@ -28,14 +33,17 @@
 グローバル変数
 ***************************************/
 static LPDIRECT3DTEXTURE9 texture;
+static LPDIRECT3DTEXTURE9 textTex;
 static ROCKONSITE rockon[ROCKONSITE_MAX];
 static VERTEX_2D vtxWk[NUM_VERTEX];
+static float vtxAngle, vtxRadius;
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void MakeVertexRockonSite(void);
 void SetVertexRockonSite(ROCKONSITE *ptr);
+void SetVertexRockonSiteText(ROCKONSITE *ptr);
 
 /**************************************
 初期化処理
@@ -48,7 +56,7 @@ void InitRockonSite(int num)
 	if (!initialized)
 	{
 		texture = CreateTextureFromFile((LPSTR)ROCKONSITE_TEXTURE, pDevice);
-
+		textTex = CreateTextureFromFile((LPSTR)ROCKONSITE_TEXT_NAME, pDevice);
 		MakeVertexRockonSite();
 
 		initialized = true;
@@ -61,6 +69,7 @@ void InitRockonSite(int num)
 		ptr->pos = D3DXVECTOR3(-9999.9f, -9999.9f, -9999.9f);
 		ptr->scale = 1.0f;
 		ptr->cntFrame = 0;
+		ptr->rot = 0.0f;
 	}
 }
 
@@ -87,8 +96,6 @@ void UninitRockonSite(int num)
 void UpdateRockonSite(void)
 {
 	ROCKONSITE *ptr = &rockon[0];
-	float t;
-
 	int cnt = 0;
 
 	for (int i = 0; i < ROCKONSITE_MAX; i++, ptr++)
@@ -98,14 +105,19 @@ void UpdateRockonSite(void)
 			continue;
 		}
 
+		ptr->cntFrame++;
 		//アニメーション
 		if (ptr->cntFrame < ROCKONSITE_ANIMATIONFRAME)
 		{
-			ptr->cntFrame++;
-			t = (float)ptr->cntFrame / ROCKONSITE_ANIMATIONFRAME;
+			float t = (float)ptr->cntFrame / ROCKONSITE_ANIMATIONFRAME;
 			ptr->scale = EaseOutCubic(t, ROCKONSITE_INITSCALE, ROCKONSITE_ENDSCALE);
 			ptr->alpha = EaseInCubic(t, 0.0f, 1.0f);
 		}
+
+		//回転
+		float t = (float)(ptr->cntFrame % (ROCKONSITE_ROT_INTERBAL + 1)) / ROCKONSITE_ROT_INTERBAL;
+		ptr->rot = EaseInOutCubic(t, 0.0f, D3DX_PI);
+
 
 		//ビュー変換、プロジェクション変換を行う
 		D3DXVec3TransformCoord(&ptr->pos, &ptr->pos, &GetBattleCameraView());
@@ -128,7 +140,6 @@ void DrawRockonSite(void)
 	D3DXMATRIX mtxTranslate;
 
 	pDevice->SetFVF(FVF_VERTEX_2D);
-	pDevice->SetTexture(0, texture);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 
 	ROCKONSITE *ptr = &rockon[0];
@@ -140,7 +151,12 @@ void DrawRockonSite(void)
 		}
 
 		//頂点を設定して描画
+		pDevice->SetTexture(0, texture);
 		SetVertexRockonSite(ptr);
+		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
+
+		pDevice->SetTexture(0, textTex);
+		SetVertexRockonSiteText(ptr);
 		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
 
 		//描画後は非アクティブに
@@ -169,6 +185,9 @@ void MakeVertexRockonSite(void)
 	vtxWk[1].tex = D3DXVECTOR2(1.0f, 0.0f);
 	vtxWk[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	vtxWk[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+	vtxAngle = atan2f(ROCKONSITE_SIZE, ROCKONSITE_SIZE);
+	vtxRadius = D3DXVec2Length(&D3DXVECTOR2(ROCKONSITE_SIZE, ROCKONSITE_SIZE));
 }
 
 /**************************************
@@ -176,21 +195,44 @@ void MakeVertexRockonSite(void)
 ***************************************/
 void SetVertexRockonSite(ROCKONSITE *ptr)
 {
-	vtxWk[0].vtx.x = ptr->pos.x - ROCKONSITE_SIZE * ptr->scale;
-	vtxWk[0].vtx.y = ptr->pos.y - ROCKONSITE_SIZE * ptr->scale;
-	vtxWk[1].vtx.x = ptr->pos.x + ROCKONSITE_SIZE * ptr->scale;
-	vtxWk[1].vtx.y = ptr->pos.y - ROCKONSITE_SIZE * ptr->scale;
-	vtxWk[2].vtx.x = ptr->pos.x - ROCKONSITE_SIZE * ptr->scale;
-	vtxWk[2].vtx.y = ptr->pos.y + ROCKONSITE_SIZE * ptr->scale;
-	vtxWk[3].vtx.x = ptr->pos.x + ROCKONSITE_SIZE * ptr->scale;
-	vtxWk[3].vtx.y = ptr->pos.y + ROCKONSITE_SIZE * ptr->scale;
+	vtxWk[0].vtx.x = ptr->pos.x - cosf(vtxAngle + ptr->rot) * vtxRadius * ptr->scale;
+	vtxWk[0].vtx.y = ptr->pos.y - sinf(vtxAngle + ptr->rot) * vtxRadius * ptr->scale;
+	vtxWk[1].vtx.x = ptr->pos.x + cosf(vtxAngle - ptr->rot) * vtxRadius * ptr->scale;
+	vtxWk[1].vtx.y = ptr->pos.y - sinf(vtxAngle - ptr->rot) * vtxRadius * ptr->scale;
+	vtxWk[2].vtx.x = ptr->pos.x - cosf(vtxAngle - ptr->rot) * vtxRadius * ptr->scale;
+	vtxWk[2].vtx.y = ptr->pos.y + sinf(vtxAngle - ptr->rot) * vtxRadius * ptr->scale;
+	vtxWk[3].vtx.x = ptr->pos.x + cosf(vtxAngle + ptr->rot) * vtxRadius * ptr->scale;
+	vtxWk[3].vtx.y = ptr->pos.y + sinf(vtxAngle + ptr->rot) * vtxRadius * ptr->scale;
 
 	vtxWk[0].diffuse =
 		vtxWk[1].diffuse =
 		vtxWk[2].diffuse =
 		vtxWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, ptr->alpha);
+}
 
+/**************************************
+頂点設定処理(文字版)
+***************************************/
+void SetVertexRockonSiteText(ROCKONSITE *ptr)
+{
+	vtxWk[0].vtx.x = ptr->pos.x - cosf(vtxAngle) * vtxRadius * ptr->scale;
+	vtxWk[0].vtx.y = ptr->pos.y - sinf(vtxAngle) * vtxRadius * ptr->scale;
+	vtxWk[1].vtx.x = ptr->pos.x + cosf(vtxAngle) * vtxRadius * ptr->scale;
+	vtxWk[1].vtx.y = ptr->pos.y - sinf(vtxAngle) * vtxRadius * ptr->scale;
+	vtxWk[2].vtx.x = ptr->pos.x - cosf(vtxAngle) * vtxRadius * ptr->scale;
+	vtxWk[2].vtx.y = ptr->pos.y + sinf(vtxAngle) * vtxRadius * ptr->scale;
+	vtxWk[3].vtx.x = ptr->pos.x + cosf(vtxAngle) * vtxRadius * ptr->scale;
+	vtxWk[3].vtx.y = ptr->pos.y + sinf(vtxAngle) * vtxRadius * ptr->scale;
 
+	for (int i = 0; i < NUM_VERTEX; i++)
+	{
+		vtxWk[i].vtx.y += ROCKONSITE_TEXT_OFFSET;
+	}
+
+	vtxWk[0].diffuse =
+		vtxWk[1].diffuse =
+		vtxWk[2].diffuse =
+		vtxWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, ptr->alpha);
 }
 
 /**************************************
