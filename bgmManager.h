@@ -26,6 +26,7 @@ enum DEFINE_BGM
 	BGM_BATTLESCENE,
 	BGM_TITLESCENE,
 	BGM_TUTORIALSCENE,
+	BGM_BONUSTIME,
 	BGM_MAX
 };
 
@@ -57,7 +58,7 @@ void PlayBGM(DEFINE_BGM bgm);
 void StopBGM(DEFINE_BGM bgm);
 void ResumeBGM(DEFINE_BGM bgm);
 bool IsPlayingBGM(DEFINE_BGM bgm);
-void FadeInBGM(DEFINE_BGM bgm, int duration);
+void FadeInBGM(DEFINE_BGM bgm, int duration, bool isResume = false);
 void FadeOutBGM(DEFINE_BGM bgm, int duration);
 
 #endif

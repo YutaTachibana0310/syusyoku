@@ -26,6 +26,7 @@ typedef struct
 	float scale;
 	int cntFrame;
 	float alpha;
+	float rot;
 }ROCKONSITE;
 
 /**************************************

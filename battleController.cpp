@@ -12,6 +12,7 @@
 #include "enemyManager.h"
 #include "bonusTelop.h"
 #include "stageData.h"
+#include "bgmManager.h"
 
 #include "cubeObject.h"
 #include "hardCubeObject.h"
@@ -36,9 +37,14 @@
 #define BATTLE_SPACE_MAX (BATTLE_SPACE_DIVIDE_NUM*BATTLE_SPACE_DIVIDE_NUM)	//分割された空間の総数
 
 #define BATTLE_BONUS_DURATION			(570)				//ボーナスタイム時間		
-#define BATTLE_BONUS_START				(30)				//ボーナスタイムのスタートオフセット
+#define BATTLE_BONUS_WAIT				(120)				//ボーナスタイムのスタートオフセット
+#define BATTLE_BONUS_EMMITT_RANGE		(200.0f)			//ボーナスタイムのキューブ生成範囲
+#define BATTLE_BONUS_POS_Z				(6000.0f)			//ボーナスタイム時のキューブ生成位置（Z）
+#define BATTLE_BONUS_SPEED				(35.0f)				//ボーナスタイムのキューブスピード
 
 #define BATTLE_CUBEEMMITT_INTERBAL		(120)
+
+#define BATTLE_BGM_FADE_DURATION		(120)
 
 /**************************************
 構造体定義
@@ -139,6 +145,9 @@ void StartBonusTime(void)
 	bonusStartFrame = cntFrame;// +BATTLE_BONUS_START;
 	isBonusTime = true;
 	StartBonusTelopAnim(true);
+
+	FadeInBGM(BGM_BONUSTIME, BATTLE_BGM_FADE_DURATION);
+	FadeOutBGM(BGM_BATTLESCENE, BATTLE_BGM_FADE_DURATION);
 }
 
 /**************************************
@@ -146,22 +155,27 @@ void StartBonusTime(void)
 ***************************************/
 void EmmittOnBonusTime(void)
 {
-	static float posZ = 3000.0f;
 
-	for (int i = 0; i < 10; i++)
+	if ((int)(cntFrame - bonusStartFrame) < BATTLE_BONUS_DURATION)
 	{
-		D3DXVECTOR3 emmittPos;
-		emmittPos.x = RandomRangef(-200.0f, 200.0f);
-		emmittPos.y = RandomRangef(-200.0f, 200.0f);
-		emmittPos.z = posZ;
+		for (int i = 0; i < 10; i++)
+		{
+			D3DXVECTOR3 emmittPos;
+			emmittPos.x = RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.y = RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.z = BATTLE_BONUS_POS_Z;
 
-		EmmittCubeObject(1, &emmittPos, 20.0f);
+			EmmittCubeObject(1, &emmittPos, BATTLE_BONUS_SPEED);
+		}
 	}
 
-	if ((int)(cntFrame - bonusStartFrame) > BATTLE_BONUS_DURATION)
+	if ((int)(cntFrame - bonusStartFrame) > BATTLE_BONUS_DURATION + BATTLE_BONUS_WAIT)
 	{
 		cntFrame = bonusStartFrame;
 		isBonusTime = false;
+
+		FadeOutBGM(BGM_BONUSTIME, BATTLE_BGM_FADE_DURATION);
+		FadeInBGM(BGM_BATTLESCENE, BATTLE_BGM_FADE_DURATION, true);
 	}
 }
 
