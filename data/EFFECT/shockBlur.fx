@@ -1,4 +1,4 @@
-float1 centerTexel;
+float2 centerTexel;
 float blurPower;
 float tU;
 float tV;

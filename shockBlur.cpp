@@ -129,12 +129,12 @@ void UpdateShcokBlur(void)
 void DrawShcokBlur(void)
 {
 	static float power = 5.0f;
-	static D3DXVECTOR2 center = D3DXVECTOR2(SCREEN_CENTER_X, SCREEN_CENTER_Y);
+	static D3DXVECTOR2 center = D3DXVECTOR2(0.5f, 0.5f);
 
 	BeginDebugWindow("ShockBlur");
 	DebugSliderFloat("power", &power, 0.0f, 100.0f);
-	DebugSliderFloat("centerX", &center.x, 0.0f, SCREEN_WIDTH);
-	DebugSliderFloat("centerY", &center.y, 0.0f, SCREEN_HEIGHT);
+	DebugSliderFloat("centerX", &center.x, 0.0f, 1.0f);//SCREEN_WIDTH);
+	DebugSliderFloat("centerY", &center.y, 0.0f, 1.0f);//SCREEN_HEIGHT);
 	EndDebugWindow("ShockBlur");
 
 	effect->SetFloat(blurPower, power);
@@ -142,6 +142,7 @@ void DrawShcokBlur(void)
 
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+	effect->SetTechnique(tech);
 	effect->Begin(NULL, 0);
 	effect->BeginPass(0);
 
