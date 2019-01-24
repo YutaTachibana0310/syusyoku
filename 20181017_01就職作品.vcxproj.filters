@@ -510,6 +510,9 @@
     <ClCompile Include="DebugTimer.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
+    <ClCompile Include="shockBlur.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -785,6 +788,9 @@
     <ClInclude Include="DebugTimer.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
+    <ClInclude Include="shockBlur.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\EFFECT\particle.fx">
@@ -797,6 +803,9 @@
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="data\EFFECT\cubeParticle.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\shockBlur.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>

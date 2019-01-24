@@ -21,6 +21,7 @@
 #include "bgmManager.h"
 #include "memoryAllocater.h"
 #include "DebugTimer.h"
+#include "shockBlur.h"
 
 //*****************************************************************************
 // マクロ定義
@@ -349,6 +350,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//データコンテナ初期化
 	InitDataContainer(0);
 
+	InitShcokBlur(0);
+
 	//デバッグウィンドウ初期化
 #ifdef USE_DEBUGWINDOW
 	InitDebugWindow(hWnd, g_pD3DDevice);
@@ -406,6 +409,8 @@ void Uninit(void)
 	//デバッグタイマー終了処理
 	UninitDebugTimer();
 
+	UninitShcokBlur(0);
+
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
 #endif
@@ -451,7 +456,7 @@ void Draw(void)
 	if(SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
 		DrawSceneManager();
-
+		DrawShcokBlur();
 		// デバッグ表示処理の描画
 		if(g_bDispDebug)
 		{
