@@ -22,7 +22,8 @@
 ***************************************/
 void UninitMemoryAllocater(void);
 void UpdateMemoryAllocater(void);
-void* AllocMemory(size_t size, const char* label);
-void ReleaseMemory(size_t size, const char* label, void *p);
 
+void* AllocMemory(size_t size, const char* label);					//メモリ確保処理
+void ReleaseMemory(size_t size, const char* label, void *p);		//メモリ解放処理
+void OnAllocMemory(size_t size, const char* label, bool isAlloc);	//メモリ情報リストへの通知
 #endif
