@@ -4,6 +4,7 @@
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
+#include "memoryAllocater.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
@@ -13,35 +14,36 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define MEMORYALLOCATER_LABEL_MAX	(32)
+#define MEMORYALLOCATER_LABEL_MAX	(32)	//つけられるラベルの最大文字数
+
 /**************************************
 構造体定義
 ***************************************/
 typedef struct _MEMORYINFO {
-	char label[MEMORYALLOCATER_LABEL_MAX];
-	size_t size;
-	_MEMORYINFO *next;
-}MEMORIINFO;
+	char label[MEMORYALLOCATER_LABEL_MAX];	//ラベル
+	size_t size;							//確保されたメモリのサイズ
+	_MEMORYINFO *next;						//リストの次のメモリ情報
+}MEMORYINFO;	//メモリ情報構造体
 
 /**************************************
 グローバル変数
 ***************************************/
-static MEMORIINFO *nodeHead = NULL;
+static MEMORYINFO *nodeHead = NULL;			//リストしたメモリ情報の先頭
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void OnAllocMemory(size_t size, const char* label, bool isAlloc);
 
 /**************************************
 終了処理
 ***************************************/
 void UninitMemoryAllocater(void)
 {
-	MEMORIINFO *node = nodeHead;
+	//リストしたメモリ情報をすべて解放
+	MEMORYINFO *node = nodeHead;
 	while (node != NULL)
 	{
-		MEMORIINFO *tmp = node->next;
+		MEMORYINFO *tmp = node->next;
 		free(node);
 		node = tmp;
 	}
@@ -52,9 +54,10 @@ void UninitMemoryAllocater(void)
 ***************************************/
 void UpdateMemoryAllocater(void)
 {
+	//メモリ情報を表示
 	BeginDebugWindow("Memory Usage");
 
-	for (MEMORIINFO *node = nodeHead; node != NULL; node = node->next)
+	for (MEMORYINFO *node = nodeHead; node != NULL; node = node->next)
 	{
 		DebugText("%s : %d[Byte]", node->label, node->size);
 	}
@@ -69,7 +72,7 @@ void* AllocMemory(size_t size, const char* label)
 {
 	void *p = NULL;
 
-
+	//メモリを確保
 	p = malloc(size);
 
 	if (!p)
@@ -78,6 +81,7 @@ void* AllocMemory(size_t size, const char* label)
 		return NULL;
 	}
 
+	//確保したメモリをリストに追加
 	OnAllocMemory(size, label, true);
 	return p;
 }
@@ -93,6 +97,7 @@ void ReleaseMemory(size_t size, const char* label, void *p)
 		return;
 	}
 
+	//解放したことをリストに通知
 	OnAllocMemory(size, label, false);
 	free(p);
 }
@@ -102,7 +107,8 @@ void ReleaseMemory(size_t size, const char* label, void *p)
 ***************************************/
 void OnAllocMemory(size_t size, const char* label, bool isAlloc)
 {
-	for (MEMORIINFO *node = nodeHead; node != NULL; node = node->next)
+	//リストの中からラベルに一致するメモリ情報を検索して更新
+	for (MEMORYINFO *node = nodeHead; node != NULL; node = node->next)
 	{
 		if (strcmp(node->label, label) == 0)
 		{
@@ -115,8 +121,9 @@ void OnAllocMemory(size_t size, const char* label, bool isAlloc)
 		}
 	}
 
-	MEMORIINFO *newNode = (MEMORIINFO*)malloc(sizeof(MEMORIINFO));
-	ZeroMemory(newNode, sizeof(MEMORIINFO));
+	//リスト内になかったので新規作成して追加
+	MEMORYINFO *newNode = (MEMORYINFO*)malloc(sizeof(MEMORYINFO));
+	ZeroMemory(newNode, sizeof(MEMORYINFO));
 
 	strcpy_s(newNode->label, MEMORYALLOCATER_LABEL_MAX, label);
 	newNode->size = size;

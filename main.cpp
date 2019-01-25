@@ -21,12 +21,14 @@
 #include "bgmManager.h"
 #include "memoryAllocater.h"
 #include "DebugTimer.h"
+#include "shockBlur.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"		// ウインドウのクラス名
 #define WINDOW_NAME		"サイバライド"		// ウインドウのキャプション名
+//#define TEST_POSTEFFECT
 
 //*****************************************************************************
 // 構造体定義
@@ -53,6 +55,9 @@ DefineScene startScene = BattleScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
+static LPDIRECT3DTEXTURE9 fullScreenTexture[2];
+static LPDIRECT3DSURFACE9 fullScreenSurface[2];
+static LPD3DXRENDERTOSURFACE renderToSurface;
 
 //=============================================================================
 // メイン関数
@@ -84,47 +89,47 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	};
 	HWND hWnd;
 	MSG msg;
-	
+
 	// ウィンドウクラスの登録
 	RegisterClassEx(&wcex);
 
 	// ウィンドウの作成
 	hWnd = CreateWindowEx(0,
-						CLASS_NAME,
-						WINDOW_NAME,
-						WS_OVERLAPPEDWINDOW,
-						0,//CW_USEDEFAULT,
-						0,//CW_USEDEFAULT,
-						SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2,
-						SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),
-						NULL,
-						NULL,
-						hInstance,
-						NULL);
+		CLASS_NAME,
+		WINDOW_NAME,
+		WS_OVERLAPPEDWINDOW,
+		0,//CW_USEDEFAULT,
+		0,//CW_USEDEFAULT,
+		SCREEN_WIDTH + GetSystemMetrics(SM_CXDLGFRAME) * 2,
+		SCREEN_HEIGHT + GetSystemMetrics(SM_CXDLGFRAME) * 2 + GetSystemMetrics(SM_CYCAPTION),
+		NULL,
+		NULL,
+		hInstance,
+		NULL);
 
 	// 初期化処理(ウィンドウを作成してから行う)
-	if(FAILED(Init(hInstance, hWnd, true)))
+	if (FAILED(Init(hInstance, hWnd, true)))
 	{
 		return -1;
 	}
 
 	// フレームカウント初期化
 	timeBeginPeriod(1);				// 分解能を設定
-	dwExecLastTime = 
-	dwFPSLastTime = timeGetTime();
+	dwExecLastTime =
+		dwFPSLastTime = timeGetTime();
 	dwCurrentTime =
-	dwFrameCount = 0;
+		dwFrameCount = 0;
 
 	// ウインドウの表示(初期化処理の後に呼ばないと駄目)
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
-	
+
 	// メッセージループ
-	while(1)
+	while (1)
 	{
-        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if(msg.message == WM_QUIT)
+			if (msg.message == WM_QUIT)
 			{// PostQuitMessage()が呼ばれたらループ終了
 				break;
 			}
@@ -134,18 +139,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-        }
+		}
 		else
 		{
 			dwCurrentTime = timeGetTime();
-			if((dwCurrentTime - dwFPSLastTime) >= 500)	// 0.5秒ごとに実行
+			if ((dwCurrentTime - dwFPSLastTime) >= 500)	// 0.5秒ごとに実行
 			{
 				g_nCountFPS = dwFrameCount * 1000 / (dwCurrentTime - dwFPSLastTime);
 				dwFPSLastTime = dwCurrentTime;
 				dwFrameCount = 0;
 			}
 
-			if((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
+			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
 			{
 #ifdef _DEBUG
 				PrintDebugProc("FPS:%d\n", g_nCountFPS);
@@ -163,7 +168,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			}
 		}
 	}
-	
+
 	// ウィンドウクラスの登録を解除
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
@@ -182,14 +187,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	DebugWindPrcHandler(hWnd, uMsg, wParam, lParam);
 
-	switch(uMsg)
+	switch (uMsg)
 	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 
 	case WM_KEYDOWN:
-		switch(wParam)
+		switch (wParam)
 		{
 		case VK_ESCAPE:
 			DestroyWindow(hWnd);
@@ -210,69 +215,69 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 {
 	D3DPRESENT_PARAMETERS d3dpp;
-    D3DDISPLAYMODE d3ddm;
+	D3DDISPLAYMODE d3ddm;
 
 	srand((unsigned)time(NULL));
 
 	// Direct3Dオブジェクトの作成
 	g_pD3D = Direct3DCreate9(D3D_SDK_VERSION);
-	if(g_pD3D == NULL)
+	if (g_pD3D == NULL)
 	{
 		return E_FAIL;
 	}
 
 	// 現在のディスプレイモードを取得
-    if(FAILED(g_pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &d3ddm)))
+	if (FAILED(g_pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &d3ddm)))
 	{
 		return E_FAIL;
 	}
 
 	// デバイスのプレゼンテーションパラメータの設定
 	ZeroMemory(&d3dpp, sizeof(d3dpp));							// ワークをゼロクリア
-	d3dpp.BackBufferCount			= 1;						// バックバッファの数
-	d3dpp.BackBufferWidth			= SCREEN_WIDTH;				// ゲーム画面サイズ(幅)
-	d3dpp.BackBufferHeight			= SCREEN_HEIGHT;			// ゲーム画面サイズ(高さ)
-	d3dpp.BackBufferFormat			= d3ddm.Format;				// カラーモードの指定
-	d3dpp.SwapEffect				= D3DSWAPEFFECT_DISCARD;	// 映像信号に同期してフリップする
-	d3dpp.Windowed					= bWindow;					// ウィンドウモード
-	d3dpp.EnableAutoDepthStencil	= TRUE;						// デプスバッファ（Ｚバッファ）とステンシルバッファを作成
-	d3dpp.AutoDepthStencilFormat	= D3DFMT_D16;				// デプスバッファとして16bitを使う
+	d3dpp.BackBufferCount = 1;						// バックバッファの数
+	d3dpp.BackBufferWidth = SCREEN_WIDTH;				// ゲーム画面サイズ(幅)
+	d3dpp.BackBufferHeight = SCREEN_HEIGHT;			// ゲーム画面サイズ(高さ)
+	d3dpp.BackBufferFormat = d3ddm.Format;				// カラーモードの指定
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;	// 映像信号に同期してフリップする
+	d3dpp.Windowed = bWindow;					// ウィンドウモード
+	d3dpp.EnableAutoDepthStencil = TRUE;						// デプスバッファ（Ｚバッファ）とステンシルバッファを作成
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D16;				// デプスバッファとして16bitを使う
 
-	if(bWindow)
+	if (bWindow)
 	{// ウィンドウモード
 		d3dpp.FullScreen_RefreshRateInHz = 0;								// リフレッシュレート
-		d3dpp.PresentationInterval       = D3DPRESENT_INTERVAL_IMMEDIATE;	// インターバル
+		d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;	// インターバル
 	}
 	else
 	{// フルスクリーンモード
 		d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;			// リフレッシュレート
-		d3dpp.PresentationInterval       = D3DPRESENT_INTERVAL_DEFAULT;		// インターバル
+		d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;		// インターバル
 	}
 
 	// デバイスの生成
 	// ディスプレイアダプタを表すためのデバイスを作成
 	// 描画と頂点処理をハードウェアで行なう
-	if(FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, 
-									D3DDEVTYPE_HAL, 
-									hWnd, 
-									D3DCREATE_HARDWARE_VERTEXPROCESSING, 
-									&d3dpp, &g_pD3DDevice)))
+	if (FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL,
+		hWnd,
+		D3DCREATE_HARDWARE_VERTEXPROCESSING,
+		&d3dpp, &g_pD3DDevice)))
 	{
 		// 上記の設定が失敗したら
 		// 描画をハードウェアで行い、頂点処理はCPUで行なう
-		if(FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, 
-										D3DDEVTYPE_HAL, 
-										hWnd, 
-										D3DCREATE_SOFTWARE_VERTEXPROCESSING, 
-										&d3dpp, &g_pD3DDevice)))
+		if (FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT,
+			D3DDEVTYPE_HAL,
+			hWnd,
+			D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+			&d3dpp, &g_pD3DDevice)))
 		{
 			// 上記の設定が失敗したら
 			// 描画と頂点処理をCPUで行なう
-			if(FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT, 
-											D3DDEVTYPE_REF,
-											hWnd, 
-											D3DCREATE_SOFTWARE_VERTEXPROCESSING, 
-											&d3dpp, &g_pD3DDevice)))
+			if (FAILED(g_pD3D->CreateDevice(D3DADAPTER_DEFAULT,
+				D3DDEVTYPE_REF,
+				hWnd,
+				D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+				&d3dpp, &g_pD3DDevice)))
 			{
 				// 初期化失敗
 				return E_FAIL;
@@ -281,7 +286,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// レンダリングステートパラメータの設定
-    g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);				// 裏面をカリング
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);				// 裏面をカリング
 	g_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);						// Zバッファを使用n
 	g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);				// αブレンドを行う
 	g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// αソースカラーの指定
@@ -317,6 +322,28 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 #endif
 
+#ifdef TEST_POSTEFFECT
+	for (int i = 0; i < 2; i++)
+	{
+		D3DXCreateTexture(g_pD3DDevice,
+			SCREEN_WIDTH,
+			SCREEN_HEIGHT,
+			1,
+			D3DUSAGE_RENDERTARGET,
+			D3DFMT_A8R8G8B8,
+			D3DPOOL_DEFAULT,
+			&fullScreenTexture[i]);
+		fullScreenTexture[i]->GetSurfaceLevel(0, &fullScreenSurface[i]);
+	}
+
+	D3DXCreateRenderToSurface(g_pD3DDevice,
+		SCREEN_WIDTH,
+		SCREEN_HEIGHT,
+		D3DFMT_A8R8G8B8,
+		TRUE,
+		D3DFMT_D16,
+		&renderToSurface);
+#endif
 	// 入力処理の初期化
 	InitInput(hInstance, hWnd);
 
@@ -337,7 +364,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//当たり判定初期化
 	InitCollider(0);
-	
+
 	//コリージョンマネージャ初期化
 	InitCollisionManager(0);
 
@@ -348,6 +375,10 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//データコンテナ初期化
 	InitDataContainer(0);
+
+#ifdef TEST_POSTEFFECT
+	InitShcokBlur(0);
+#endif
 
 	//デバッグウィンドウ初期化
 #ifdef USE_DEBUGWINDOW
@@ -366,17 +397,23 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 //=============================================================================
 void Uninit(void)
 {
-	if(g_pD3DDevice != NULL)
+	if (g_pD3DDevice != NULL)
 	{// デバイスの開放
 		g_pD3DDevice->Release();
 		g_pD3DDevice = NULL;
 	}
 
-	if(g_pD3D != NULL)
+	if (g_pD3D != NULL)
 	{// Direct3Dオブジェクトの開放
 		g_pD3D->Release();
 		g_pD3D = NULL;
 	}
+
+	SAFE_RELEASE(fullScreenSurface[0]);
+	SAFE_RELEASE(fullScreenSurface[1]);
+	SAFE_RELEASE(fullScreenSurface[0]);
+	SAFE_RELEASE(fullScreenSurface[1]);
+	SAFE_RELEASE(renderToSurface);
 
 	// 入力処理の終了処理
 	UninitInput();
@@ -405,6 +442,10 @@ void Uninit(void)
 
 	//デバッグタイマー終了処理
 	UninitDebugTimer();
+
+#ifdef TEST_POSTEFFECT
+	UninitShcokBlur(0);
+#endif
 
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
@@ -444,16 +485,51 @@ void Update(void)
 //=============================================================================
 void Draw(void)
 {
+#ifdef TEST_POSTEFFECT
+	D3DVIEWPORT9 viewPort;
+	g_pD3DDevice->GetViewport(&viewPort);
+	
+	//オブジェクト描画
+	renderToSurface->BeginScene(fullScreenSurface[0], &viewPort);
+	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
+	DrawSceneManager();
+	renderToSurface->EndScene(D3DX_FILTER_POINT);
+
+	//ブラー処理
+	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+	int Blur = 2;
+	for (int i = 0; i < Blur; i++)
+	{
+		renderToSurface->BeginScene(fullScreenSurface[(i + 1) % 2], &viewPort);
+		g_pD3DDevice->SetTexture(0, fullScreenTexture[i % 2]);
+		DrawShcokBlur();
+		renderToSurface->EndScene(D3DX_FILTER_POINT);
+	}
+
+	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+
+	//ブラーをバックバッファにレンダリング
+	g_pD3DDevice->BeginScene();
+	g_pD3DDevice->SetTexture(0, fullScreenTexture[(Blur + 1) % 2]);
+	DrawShcokBlur();
+	DrawDebugWindow();
+	g_pD3DDevice->EndScene();
+
+	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+
+#else
 	// バックバッファ＆Ｚバッファのクリア
 	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
 
 	// Direct3Dによる描画の開始
-	if(SUCCEEDED(g_pD3DDevice->BeginScene()))
+	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
 		DrawSceneManager();
 
 		// デバッグ表示処理の描画
-		if(g_bDispDebug)
+		if (g_bDispDebug)
 		{
 			DrawDebugProc();
 		}
@@ -470,6 +546,7 @@ void Draw(void)
 
 	// バックバッファとフロントバッファの入れ替え
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+#endif
 }
 
 //=============================================================================
