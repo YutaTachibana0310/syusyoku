@@ -78,4 +78,6 @@ LPDIRECT3DDEVICE9 GetDevice(void);
 LPDIRECT3DTEXTURE9 CreateTextureFromFile(LPSTR szName, LPDIRECT3DDEVICE9 lpD3DDevice);
 void TranslateViewPort(D3DXVECTOR3 *out, D3DXVECTOR3 *pos);
 void SetBackColor(D3DXCOLOR color);
+int GetCurrentScene(void);
+
 #endif

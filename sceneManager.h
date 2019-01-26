@@ -35,7 +35,7 @@ enum SceneResult
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitSceneManager(int num);
+void InitSceneManager(int* ptr);
 void UninitSceneManager(int num);
 void UninitScene(int num);
 void UpdateSceneManager(void);

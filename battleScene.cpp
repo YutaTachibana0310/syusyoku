@@ -17,7 +17,7 @@
 #include "playerMissile.h"
 #include "playerMissileSmog.h"
 #include "particleManager.h"
-#include "GUIManager.h"
+//#include "GUIManager.h"
 #include "enemyManager.h"
 #include "playerBulletTrail.h"
 #include "collisionManager.h"
@@ -69,7 +69,6 @@ HRESULT InitBattleScene(int num)
 
 	InitBattleController(num);
 
-	InitGUIManager(num);
 	InitCloud(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
@@ -103,7 +102,6 @@ void UninitBattleScene(int num)
 	UninitPlayerMissile(num);
 	UninitPlayerMissileSmog(num);
 	UninitPlayerBulletTrail(num);
-	UninitGUIManager(num);
 	UninitEnemyManager(num);
 }
 
@@ -138,8 +136,6 @@ void UpdateBattleScene(void)
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleUpdate");
 	UpdateParticleManager();
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleUpdate");
-
-	UpdateGUIManager();
 
 	CountDebugTimer(BATTLESCENE_LABEL, "EnemyUpdate");
 	UpdateEnemyManager();
@@ -188,8 +184,6 @@ void DrawBattleScene(void)
 	DrawRockonSite();
 	DrawTargetSite();
 	CountDebugTimer(BATTLESCENE_LABEL, "siteDraw");
-
-	DrawGUIManager();
 
 	DrawDebugTimer("BattleScene");
 }

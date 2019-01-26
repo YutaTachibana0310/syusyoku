@@ -88,7 +88,7 @@ HRESULT InitTitleScene(int num)
 		InitMeshCylinder(num);
 		InitPlayerModel(num);
 		InitPlayerBullet(num);
-		UninitPlayerBulletTrail(num);
+		InitPlayerBulletTrail(num);
 
 		state = TITLESCENE_FADEIN;
 		cntFrame = 0;
@@ -159,14 +159,20 @@ void UpdateTitleScene(void)
 ******************************************************************************/
 void DrawTitleScene(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
 	SetBattleCamera();
 
 	DrawMeshCylinder();
 	DrawPlayerModel();
 	DrawPlayerBullet();
 	DrawPlayerBulletTrail();
+}
+
+/******************************************************************************
+タイトルロゴ描画処理
+******************************************************************************/
+void DrawTitleLogo(void)
+{
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
@@ -177,7 +183,6 @@ void DrawTitleScene(void)
 	SetTextureTitleLogo();
 	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
 }
-
 
 /******************************************************************************
 頂点の作成

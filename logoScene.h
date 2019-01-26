@@ -19,9 +19,9 @@
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-HRESULT InitLogoScene(int num);							//プレイヤーバレット初期化処理
-void UninitLogoScene(int num);								//プレイヤーバレット終了処理
-void UpdateLogoScene(void);								//プレイヤーバレット更新処理
-void DrawLogoScene(void);								//プレイヤーバレット描画処理
-
+HRESULT InitLogoScene(int num);			//ロゴシーン初期化処理
+void UninitLogoScene(int num);			//ロゴシーン終了処理
+void UpdateLogoScene(void);				//ロゴシーン更新処理
+void DrawLogoScene(void);				//ロゴシーン描画処理
+void DrawCircleLogo(void);				//ロゴ描画処理
 #endif

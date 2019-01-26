@@ -1,11 +1,11 @@
 //=====================================
 //
-//衝撃ブラーヘッダ[shockBlur.h]
+//スクリーン背景ヘッダ[screenBG.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _SHOCKBLUR_H_
-#define _SHOCKBLUR_H_
+#ifndef _SCREENBG_H_
+#define _SCREENBG_H_
 
 #include "main.h"
 
@@ -20,10 +20,9 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitShcokBlur(int num);
-void UninitShcokBlur(int num);
-void UpdateShcokBlur(void);
-void DrawShcokBlur(void);
+void InitScreenBG(int num);
+void UninitScreenBG(int num);
+void UpdateScreenBG(void);
+void DrawScreenBG(void);
 
-void SetShockBlur(D3DXVECTOR3 setPos);
 #endif
