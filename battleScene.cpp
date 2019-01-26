@@ -67,7 +67,6 @@ HRESULT InitBattleScene(int num)
 		PlayBGM(BGM_BATTLESCENE);
 	}
 
-	InitBattleController(num);
 
 	InitCloud(num);
 	InitTargetSite(num);
@@ -80,6 +79,7 @@ HRESULT InitBattleScene(int num)
 	InitPlayerMissileSmog(num);
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
+	InitBattleController(num);
 
 	RegisterDebugTimer(BATTLESCENE_LABEL);
 

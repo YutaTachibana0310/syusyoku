@@ -95,6 +95,16 @@ void InitBattleController(int num)
 		}
 	}
 
+	//キューブを初期配置
+	for (int z = 0; z < 5000; z += 100)
+	{
+		int x = rand() % 3;
+		int y = rand() % 3;
+
+		D3DXVECTOR3 pos = D3DXVECTOR3(emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].x, emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].y, z);
+		EmmittCubeObject(1, &pos, BATTLE_CUBEEMMITT_SPEED);
+	}
+
 	//各パラメータを初期化
 	cntFrame = 0;
 	for (int i = 0; i < BATTLE_SPACE_MAX; i++)

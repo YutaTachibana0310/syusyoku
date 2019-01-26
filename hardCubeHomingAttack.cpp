@@ -47,7 +47,6 @@ void OnEnterHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr)
 ***************************************/
 void OnUpdateHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr)
 {
-	ptr->cntFrame++;
 	if (ptr->cntFrame % HARDCUBE_HOMINGATTACK_INTERBAL == 0)
 	{
 		for (int i = 0; i < HARDCUBE_HOMINGATTACK_DIRNUM; i++)
@@ -55,6 +54,7 @@ void OnUpdateHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr)
 			SetEnemyHomingBullet(ptr->pos, bulletVelocity[i], HARDCUBE_HOMINGATTACK_REACHFRAME);
 		}
 	}
+	ptr->cntFrame++;
 
 	if (ptr->cntFrame == HARDCUBE_HOMINGATTACK_DURATION)
 		ChangeStateHardCube(ptr, HardCubeEscape);

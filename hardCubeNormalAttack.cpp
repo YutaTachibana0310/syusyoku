@@ -40,7 +40,6 @@ void OnEnterHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr)
 ***************************************/
 void OnUpdateHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr)
 {
-	ptr->cntFrame++;
 	if (ptr->cntFrame % HARDCUBE_NORMALATTACK_INTERBAL == 0)
 	{
 		D3DXVECTOR3 dir = GetPlayerAdr(0)->pos - ptr->pos;
@@ -48,6 +47,7 @@ void OnUpdateHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr)
 		SetEnemyBullet(ptr->pos, dir, HARDCUBE_NORNALATTACL_BULLETSPEED);
 	}
 
+	ptr->cntFrame++;
 	if (ptr->cntFrame == HARDCUBE_NORMALATTACK_DURATION)
 		ChangeStateHardCube(ptr, HardCubeEscape);
 }
