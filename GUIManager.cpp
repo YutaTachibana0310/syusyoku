@@ -12,6 +12,7 @@
 #include "powerUpTelop.h"
 #include "bonusTelop.h"
 #include "bonusTimeGUI.h"
+#include "lockonLevelGUI.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -80,6 +81,7 @@ void InitGUIManager(int num)
 	InitBonusTelop(num);
 	InitBonusTimeGUI(num);
 	InitSceneFade(num);
+	InitLockonLevelGUI(num);
 }
 
 /**************************************
@@ -102,6 +104,7 @@ void UninitGUIManager(int num)
 	UninitBonusTelop(num);
 	UninitBonusTimeGUI(num);
 	UninitSceneFade(num);
+	UninitLockonLevelGUI(num);
 }
 
 /**************************************
@@ -116,6 +119,7 @@ void UpdateGUIManager(void)
 	UpdateBonusTelop();
 	UpdateBonusTimeGUI();
 	UpdateSceneFade();
+	UpdateLockonLevelGUI();
 }
 
 /**************************************
@@ -159,6 +163,7 @@ void DrawGUIonBattleScene(void)
 	DrawPowerUpTelop();
 	DrawBonusTelop();
 	DrawBonusTimeGUI();
+	DrawLockonLevelGUI();
 }
 
 /**************************************

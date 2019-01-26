@@ -195,6 +195,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="lockonGUI.cpp" />
+    <ClCompile Include="lockonLevelGUI.cpp" />
     <ClCompile Include="logoScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="memoryAllocater.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="lockonGUI.h" />
+    <ClInclude Include="lockonLevelGUI.h" />
     <ClInclude Include="memoryAllocater.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="middleEnemyModel.h" />

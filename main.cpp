@@ -317,7 +317,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
 		FLOAT StartPos = 2000;
-		FLOAT EndPos = 15000;
+		FLOAT EndPos = 10000;
 
 		g_pD3DDevice->SetRenderState(D3DRS_FOGENABLE, true);
 		g_pD3DDevice->SetRenderState(D3DRS_FOGCOLOR, backColor);
