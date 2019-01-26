@@ -6,6 +6,7 @@
 //=============================================================================
 #include "scoreGUI.h"
 #include "dataContainer.h"
+#include "debugWindow.h"
 
 /*****************************************************************************
 マクロ定義
@@ -42,6 +43,13 @@ static LPDIRECT3DTEXTURE9 texture = NULL;				// テクスチャへのポインタ
 static LPDIRECT3DTEXTURE9 numTex = NULL;				// 数字テクスチャ
 static VERTEX_2D vertexWk[NUM_VERTEX];					//頂点情報格納ワーク
 static SCOREGUI scoreGUI;								//スコアGUI構造体
+
+static D3DXVECTOR3 backInitPos = SCOREGUI_INITPOS;
+static D3DXVECTOR2 backSize = D3DXVECTOR2(SCOREGUI_TEXTURE_SIZE_X, SCOREGUI_TEXTURE_SIZE_Y);
+
+static D3DXVECTOR3 numInitPos = SCOREGUI_NUM_INITPOS;
+static D3DXVECTOR2 numSize = D3DXVECTOR2(SCOREGUI_NUMTEX_SIZE_X, SCOREGUI_NUMTEX_SIZE_Y);
+static float numOffset = SCOREGUI_NUM_OFFSETPOS;
 
 /******************************************************************************
 初期化処理
@@ -183,10 +191,10 @@ void SetTextureScoreNum(int cntPattern)
 void SetVertexScoreGUI(void)
 {
 	// 頂点座標の設定
-	vertexWk[0].vtx = SCOREGUI_INITPOS;
-	vertexWk[1].vtx = SCOREGUI_INITPOS + D3DXVECTOR3(SCOREGUI_TEXTURE_SIZE_X, 0.0f, 0.0f);
-	vertexWk[2].vtx = SCOREGUI_INITPOS + D3DXVECTOR3(0.0f, SCOREGUI_TEXTURE_SIZE_Y, 0.0f);
-	vertexWk[3].vtx = SCOREGUI_INITPOS + D3DXVECTOR3(SCOREGUI_TEXTURE_SIZE_X, SCOREGUI_TEXTURE_SIZE_Y, 0.0f);
+	vertexWk[0].vtx = backInitPos;
+	vertexWk[1].vtx = backInitPos + D3DXVECTOR3(backSize.x, 0.0f, 0.0f);
+	vertexWk[2].vtx = backInitPos + D3DXVECTOR3(0.0f, backSize.y, 0.0f);
+	vertexWk[3].vtx = backInitPos + D3DXVECTOR3(backSize.x, backSize.y, 0.0f);
 
 	// UV座標の設定
 	vertexWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -202,7 +210,7 @@ void SetVertexScoreNum(float offset)
 {
 	SCOREGUI *ptr = &scoreGUI;
 
-	D3DXVECTOR3 pos = SCOREGUI_NUM_INITPOS;
+	D3DXVECTOR3 pos = numInitPos;
 	pos.x += offset;
 
 	vertexWk[0].vtx.x = pos.x - cosf(ptr->angle) * ptr->radius;
@@ -213,4 +221,49 @@ void SetVertexScoreNum(float offset)
 	vertexWk[2].vtx.y = pos.y + sinf(ptr->angle) * ptr->radius;
 	vertexWk[3].vtx.x = pos.x + cosf(ptr->angle) * ptr->radius;
 	vertexWk[3].vtx.y = pos.y + sinf(ptr->angle) * ptr->radius;
+}
+/**************************************
+デバッグウィンドウ表示
+***************************************/
+void DrawScoreGUIDebug(void)
+{
+	static bool open = true;
+	DebugTreeExpansion(open);
+	if (DebugTreePush("SCOREGUI"))
+	{
+		DebugInputVector3(STR(backInitPos), &backInitPos);
+		DebugInputVector2(STR(backSize), &backSize);
+
+		DebugNewLine();
+		DebugInputVector3(STR(numInitPos), &numInitPos);
+		DebugInputVector2(STR(numSize), &numSize);
+		DebugInputFloat(STR(numOffset), &numOffset);
+
+		DebugTreePop();
+	}
+
+}
+
+/**************************************
+設定保存処理
+***************************************/
+void SaveSettingScoreGUI(FILE *fp)
+{
+	fwrite(&backInitPos, sizeof(backInitPos), 1, fp);
+	fwrite(&backSize, sizeof(backSize), 1, fp);
+	fwrite(&numInitPos, sizeof(numInitPos), 1, fp);
+	fwrite(&numSize, sizeof(numSize), 1, fp);
+	fwrite(&numOffset, sizeof(numOffset), 1, fp);
+}
+
+/**************************************
+設定読み込み処理
+***************************************/
+void LoadSettingsScoreGUI(FILE *fp)
+{
+	fread(&backInitPos, sizeof(backInitPos), 1, fp);
+	fread(&backSize, sizeof(backSize), 1, fp);
+	fread(&numInitPos, sizeof(numInitPos), 1, fp);
+	fread(&numSize, sizeof(numSize), 1, fp);
+	fread(&numOffset, sizeof(numOffset), 1, fp);
 }

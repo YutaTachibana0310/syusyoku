@@ -7,6 +7,7 @@
 #include "lockonLevelGUI.h"
 #include "GUIManager.h"
 #include "dataContainer.h"
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -18,8 +19,6 @@
 
 #define LOCKONLEVELGUI_NUMTEX_SIZE_X			(80.0f)
 #define LOCKONLEVELGUI_NUMTEX_SIZE_Y			(80.0f)
-#define LOCKONLEVELGUI_NUMTEX_DIVIDE_X			(5)
-#define LOCKONLEVELGUI_NUMTEX_DIVIDE_Y			(2)
 #define LOCKONLEVELGUI_NUMTEX_OFFSET			(-50.0f)
 #define LOCKONLEVELGUI_NUMTEX_INITPOS			(D3DXVECTOR3(SCREEN_WIDTH - 120.0f, 305.0f, 0.0f))
 
@@ -32,6 +31,13 @@
 ***************************************/
 static LPDIRECT3DTEXTURE9 texture;
 static VERTEX_2D vtxWk[NUM_VERTEX];
+
+static D3DXVECTOR3 backInitPos = LOCKONLEVELGUI_TEX_INITPOS;
+static D3DXVECTOR2 backSize = D3DXVECTOR2(LOCKONLEVELGUI_TEX_SIZE_X, LOCKONLEVELGUI_TEX_SIZE_Y);
+
+static D3DXVECTOR3 numInitPos = LOCKONLEVELGUI_NUMTEX_INITPOS;
+static D3DXVECTOR2 numSize = D3DXVECTOR2(LOCKONLEVELGUI_NUMTEX_SIZE_X, LOCKONLEVELGUI_NUMTEX_SIZE_Y);
+static float numOffset = LOCKONLEVELGUI_NUMTEX_OFFSET;
 
 /**************************************
 プロトタイプ宣言
@@ -112,18 +118,18 @@ void MakeVertexLockonLevelGUI(void)
 }
 
 /**************************************
-描画処理
+頂点設定処理
 ***************************************/
 void SetVertexLockonLevelGUI(void)
 {
-	vtxWk[0].vtx = LOCKONLEVELGUI_TEX_INITPOS;
-	vtxWk[1].vtx = LOCKONLEVELGUI_TEX_INITPOS + D3DXVECTOR3(LOCKONLEVELGUI_TEX_SIZE_X, 0.0f, 0.0f);
-	vtxWk[2].vtx = LOCKONLEVELGUI_TEX_INITPOS + D3DXVECTOR3(0.0f, LOCKONLEVELGUI_TEX_SIZE_Y, 0.0f);
-	vtxWk[3].vtx = LOCKONLEVELGUI_TEX_INITPOS + D3DXVECTOR3(LOCKONLEVELGUI_TEX_SIZE_X,LOCKONLEVELGUI_TEX_SIZE_Y, 0.0f);
+	vtxWk[0].vtx = backInitPos;
+	vtxWk[1].vtx = backInitPos + D3DXVECTOR3(backSize.x, 0.0f, 0.0f);
+	vtxWk[2].vtx = backInitPos + D3DXVECTOR3(0.0f, backSize.y, 0.0f);
+	vtxWk[3].vtx = backInitPos + D3DXVECTOR3(backSize.x, backSize.y, 0.0f);
 }
 
 /**************************************
-描画処理
+テクスチャ座標設定処理
 ***************************************/
 void SetTextureLockonLevelGUI(void)
 {
@@ -134,12 +140,58 @@ void SetTextureLockonLevelGUI(void)
 }
 
 /**************************************
-描画処理
+頂点設定処理
 ***************************************/
 void SetVertexLockonLevelNUM(void)
 {
-	vtxWk[0].vtx = LOCKONLEVELGUI_NUMTEX_INITPOS;
-	vtxWk[1].vtx = LOCKONLEVELGUI_NUMTEX_INITPOS + D3DXVECTOR3(LOCKONLEVELGUI_NUMTEX_SIZE_X, 0.0f, 0.0f);
-	vtxWk[2].vtx = LOCKONLEVELGUI_NUMTEX_INITPOS + D3DXVECTOR3(0.0f, LOCKONLEVELGUI_NUMTEX_SIZE_Y, 0.0f);
-	vtxWk[3].vtx = LOCKONLEVELGUI_NUMTEX_INITPOS + D3DXVECTOR3(LOCKONLEVELGUI_NUMTEX_SIZE_X, LOCKONLEVELGUI_NUMTEX_SIZE_Y, 0.0f);
+	vtxWk[0].vtx = numInitPos;
+	vtxWk[1].vtx = numInitPos + D3DXVECTOR3(numSize.x, 0.0f, 0.0f);
+	vtxWk[2].vtx = numInitPos + D3DXVECTOR3(0.0f, numSize.y, 0.0f);
+	vtxWk[3].vtx = numInitPos + D3DXVECTOR3(numSize.x, numSize.y, 0.0f);
+}
+
+/**************************************
+デバッグウィンドウ表示
+***************************************/
+void DrawLockOnlevelGUIDebug(void)
+{
+	static bool open = true;
+	DebugTreeExpansion(open);
+	if (DebugTreePush("LockonLevelGUI"))
+	{
+		DebugInputVector3(STR(backInitPos), &backInitPos);
+		DebugInputVector2(STR(backSize), &backSize);
+
+		DebugNewLine();
+		DebugInputVector3(STR(numInitPos), &numInitPos);
+		DebugInputVector2(STR(numSize), &numSize);
+		DebugInputFloat(STR(numOffset), &numOffset);
+
+		DebugTreePop();
+	}
+
+}
+
+/**************************************
+設定保存処理
+***************************************/
+void SaveSettingLockonLevelGUI(FILE *fp)
+{
+	fwrite(&backInitPos, sizeof(backInitPos), 1, fp);
+	fwrite(&backSize, sizeof(backSize), 1, fp);
+	fwrite(&numInitPos, sizeof(numInitPos), 1, fp);
+	fwrite(&numSize, sizeof(numSize), 1, fp);
+	fwrite(&numOffset, sizeof(numOffset), 1, fp);
+}
+
+/**************************************
+設定読み込み処理
+***************************************/
+void LoadSettingsLockonLevelGUI(FILE *fp)
+{
+	fread(&backInitPos, sizeof(backInitPos), 1, fp);
+	fread(&backSize, sizeof(backSize), 1, fp);
+	fread(&numInitPos, sizeof(numInitPos), 1, fp);
+	fread(&numSize, sizeof(numSize), 1, fp);
+	fread(&numOffset, sizeof(numOffset), 1, fp);
 }

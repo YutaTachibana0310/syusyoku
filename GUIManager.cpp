@@ -18,6 +18,8 @@
 #include "logoScene.h"
 #include "titleScene.h"
 #include "sceneFade.h"
+#include <stdio.h>
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -37,6 +39,7 @@ typedef void(*DrawGUI)(void);
 void DrawGUIonBattleScene(void);
 void DrawGUIonLogoScene(void);
 void DrawGUIonTitleScene(void);
+void LoadSettingsGUI(void);
 
 /**************************************
 グローバル変数
@@ -84,6 +87,8 @@ void InitGUIManager(int num)
 	InitSceneFade(num);
 	InitLockonLevelGUI(num);
 	InitLockonNumGUI(num);
+
+	//LoadSettingsGUI();
 }
 
 /**************************************
@@ -169,6 +174,29 @@ void DrawGUIonBattleScene(void)
 	DrawBonusTimeGUI();
 	DrawLockonLevelGUI();
 	DrawLockonNumGUI();
+
+#ifdef _DEBUG
+	DrawLockNumlevelGUIDebug();
+	DrawLockOnlevelGUIDebug();
+	DrawHPGUIDebug();
+	DrawScoreGUIDebug();
+
+	if (DebugButton("Save"))
+	{
+		FILE *fp = NULL;
+		fp = fopen("data/SETTINGS/gui.ini", "wb");
+
+		if (fp == NULL)
+			return;
+
+		SaveSettingLockonNumGUI(fp);
+		SaveSettingLockonLevelGUI(fp);
+		SaveSettinghpGUIGUI(fp);
+		SaveSettingScoreGUI(fp);
+
+		fclose(fp);
+	}
+#endif
 }
 
 /**************************************
@@ -192,4 +220,23 @@ void DrawGUINum(GUI_NUMTEXTURE textureID, int num, VERTEX_2D *vtxWk)
 	pDevice->SetTexture(0, texture[textureID]);
 	
 	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
+}
+
+/**************************************
+設定読み込み処理
+**************************************/
+void LoadSettingsGUI(void)
+{
+	FILE *fp = NULL;
+	fp = fopen("data/SETTINGS/gui.ini", "rb");
+
+	if (fp == NULL)
+		return;
+
+	LoadSettingsLockonNumGUI(fp);
+	LoadSettingsLockonLevelGUI(fp);
+	LoadSettingshpGUIGUI(fp);
+	LoadSettingsScoreGUI(fp);
+
+	fclose(fp);
 }
