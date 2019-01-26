@@ -13,7 +13,7 @@
 ***************************************/
 #define HARDCUBE_CHARGE_DURATION		(60)
 #define HARDCUBE_CHARGE_SPEED			(10.0f)
-
+#define HARDCUBE_CHARGE_BORDER_Z		(-100.0f)
 /**************************************
 \‘¢‘Ì’è‹`
 ***************************************/
@@ -46,4 +46,7 @@ void OnUpdateHardCubeCharge(HARD_CUBE_OBJECT *ptr)
 	float t = (float)ptr->cntFrame / (float)HARDCUBE_CHARGE_DURATION;
 	ptr->moveSpeed = EaseInCubic(t, 0.0f, HARDCUBE_CHARGE_SPEED);
 	ptr->pos += ptr->moveDir * ptr->moveSpeed;
+
+	if (ptr->pos.z < HARDCUBE_CHARGE_BORDER_Z)
+		DisableHardCube(ptr);
 }

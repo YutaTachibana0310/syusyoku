@@ -86,7 +86,7 @@ void InitGUIManager(int num)
 	InitBonusTimeGUI(num);
 	InitSceneFade(num);
 	InitLockonLevelGUI(num);
-	InitLockonNumGUI(num);
+	//InitLockonNumGUI(num);
 
 	//LoadSettingsGUI();
 }
@@ -112,7 +112,7 @@ void UninitGUIManager(int num)
 	UninitBonusTimeGUI(num);
 	UninitSceneFade(num);
 	UninitLockonLevelGUI(num);
-	UninitLockonNumGUI(num);
+	//UninitLockonNumGUI(num);
 }
 
 /**************************************
@@ -128,7 +128,7 @@ void UpdateGUIManager(void)
 	UpdateBonusTimeGUI();
 	UpdateSceneFade();
 	UpdateLockonLevelGUI();
-	UpdateLockonNumGUI();
+	//UpdateLockonNumGUI();
 }
 
 /**************************************
