@@ -14,6 +14,7 @@
 #include "cubeObject.h"
 #include "cameraShaker.h"
 #include "soundEffectManager.h"
+#include "shockBlur.h"
 
 #include "stageData.h"
 
@@ -381,8 +382,12 @@ void CheckDestroyHardCube(void)
 			PlaySE(SOUND_SMALLEXPL);
 			//DamageAllCubeObject();
 
-			if(ptr->scale > 1.8f)
+			if (ptr->type == HardCubeHomingType)
+			{
 				SetCameraShaker(BONUSCUBE_CAMERA_SHAKE_LENGTH);
+				SetShockBlur(ptr->pos);
+				PlaySE(SOUND_MIDDLEEXPL);
+			}
 			
 			DisableHardCube(ptr);
 		}

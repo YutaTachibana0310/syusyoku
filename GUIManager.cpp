@@ -5,12 +5,19 @@
 //
 //=====================================
 #include "GUIManager.h"
+#include "sceneManager.h"
 #include "scoreGUI.h"
 #include "hpGUI.h"
 #include "lockonGUI.h"
 #include "powerUpTelop.h"
 #include "bonusTelop.h"
 #include "bonusTimeGUI.h"
+#include "lockonLevelGUI.h"
+#include "lockonNumGUI.h"
+
+#include "logoScene.h"
+#include "titleScene.h"
+#include "sceneFade.h"
 
 /**************************************
 マクロ定義
@@ -22,6 +29,14 @@
 /**************************************
 構造体定義
 ***************************************/
+typedef void(*DrawGUI)(void);
+
+/**************************************
+プロトタイプ宣言
+***************************************/
+void DrawGUIonBattleScene(void);
+void DrawGUIonLogoScene(void);
+void DrawGUIonTitleScene(void);
 
 /**************************************
 グローバル変数
@@ -34,9 +49,14 @@ static const char* texturePath[GUI_NUMTEX_MAX] =
 	"data/TEXTURE/UI/timeNum.png"
 };
 
-/**************************************
-プロトタイプ宣言
-***************************************/
+//各シーンのGUI描画処理テーブル
+static DrawGUI Draw[DefineSceneMax] = {
+	DrawGUIonLogoScene,
+	DrawGUIonTitleScene,
+	DrawGUIonBattleScene,
+	NULL,
+	NULL
+};
 
 /**************************************
 初期化処理
@@ -61,6 +81,9 @@ void InitGUIManager(int num)
 	InitPowerUpTelop(num);
 	InitBonusTelop(num);
 	InitBonusTimeGUI(num);
+	InitSceneFade(num);
+	InitLockonLevelGUI(num);
+	InitLockonNumGUI(num);
 }
 
 /**************************************
@@ -82,6 +105,9 @@ void UninitGUIManager(int num)
 	UninitPowerUpTelop(num);
 	UninitBonusTelop(num);
 	UninitBonusTimeGUI(num);
+	UninitSceneFade(num);
+	UninitLockonLevelGUI(num);
+	UninitLockonNumGUI(num);
 }
 
 /**************************************
@@ -95,6 +121,9 @@ void UpdateGUIManager(void)
 	UpdatePowerUpTelop();
 	UpdateBonusTelop();
 	UpdateBonusTimeGUI();
+	UpdateSceneFade();
+	UpdateLockonLevelGUI();
+	UpdateLockonNumGUI();
 }
 
 /**************************************
@@ -102,12 +131,44 @@ void UpdateGUIManager(void)
 ***************************************/
 void DrawGUIManager(void)
 {
+	int scene = GetCurrentScene();
+	if (Draw[scene] != NULL)
+	{
+		Draw[scene]();
+	}
+
+	DrawSceneFade();
+}
+
+/**************************************
+ロゴシーンGUI描画処理
+***************************************/
+void DrawGUIonLogoScene(void)
+{
+	DrawCircleLogo();
+}
+
+/**************************************
+タイトルシーンGUI描画処理
+***************************************/
+void DrawGUIonTitleScene(void)
+{
+	DrawTitleLogo();
+}
+
+/**************************************
+バトルシーンGUI描画処理
+***************************************/
+void DrawGUIonBattleScene(void)
+{
 	DrawScoreGUI();
 	DrawHpGUI();
 	DrawLockonGUI();
 	DrawPowerUpTelop();
 	DrawBonusTelop();
 	DrawBonusTimeGUI();
+	DrawLockonLevelGUI();
+	DrawLockonNumGUI();
 }
 
 /**************************************

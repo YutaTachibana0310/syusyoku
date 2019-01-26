@@ -21,14 +21,15 @@
 #include "bgmManager.h"
 #include "memoryAllocater.h"
 #include "DebugTimer.h"
-#include "shockBlur.h"
+#include "postEffectManager.h"
+#include "screenBG.h"
+#include "GUIManager.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"		// ウインドウのクラス名
 #define WINDOW_NAME		"サイバライド"		// ウインドウのキャプション名
-//#define TEST_POSTEFFECT
 
 //*****************************************************************************
 // 構造体定義
@@ -43,6 +44,7 @@ void Uninit(void);
 void Update(void);
 void Draw(void);
 void DrawDebugWindowMain(void);
+
 //*****************************************************************************
 // グローバル変数:
 //*****************************************************************************
@@ -55,9 +57,13 @@ DefineScene startScene = BattleScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;
+
+//スクリーン全体を覆うテクスチャ
 static LPDIRECT3DTEXTURE9 fullScreenTexture[2];
 static LPDIRECT3DSURFACE9 fullScreenSurface[2];
-static LPD3DXRENDERTOSURFACE renderToSurface;
+
+//現在のシーン
+static int currentScene = LogoScene;
 
 //=============================================================================
 // メイン関数
@@ -311,7 +317,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	if ((caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE) != 0)
 	{
 		FLOAT StartPos = 2000;
-		FLOAT EndPos = 15000;
+		FLOAT EndPos = 10000;
 
 		g_pD3DDevice->SetRenderState(D3DRS_FOGENABLE, true);
 		g_pD3DDevice->SetRenderState(D3DRS_FOGCOLOR, backColor);
@@ -322,28 +328,20 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 #endif
 
-#ifdef TEST_POSTEFFECT
+	//描画用のフルスクリーンテクスチャを作成しサーフェイスを取得
 	for (int i = 0; i < 2; i++)
 	{
-		D3DXCreateTexture(g_pD3DDevice,
-			SCREEN_WIDTH,
+		g_pD3DDevice->CreateTexture(SCREEN_WIDTH,
 			SCREEN_HEIGHT,
 			1,
 			D3DUSAGE_RENDERTARGET,
 			D3DFMT_A8R8G8B8,
 			D3DPOOL_DEFAULT,
-			&fullScreenTexture[i]);
+			&fullScreenTexture[i],
+			NULL);
 		fullScreenTexture[i]->GetSurfaceLevel(0, &fullScreenSurface[i]);
 	}
 
-	D3DXCreateRenderToSurface(g_pD3DDevice,
-		SCREEN_WIDTH,
-		SCREEN_HEIGHT,
-		D3DFMT_A8R8G8B8,
-		TRUE,
-		D3DFMT_D16,
-		&renderToSurface);
-#endif
 	// 入力処理の初期化
 	InitInput(hInstance, hWnd);
 
@@ -357,7 +355,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitLight();
 
 	//シーンマネージャ初期化
-	InitSceneManager(0);
+	InitSceneManager(&currentScene);
 
 	//パーティクルマネージャ初期化
 	InitParticleManager(0);
@@ -376,9 +374,14 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//データコンテナ初期化
 	InitDataContainer(0);
 
-#ifdef TEST_POSTEFFECT
-	InitShcokBlur(0);
-#endif
+	//スクリーン背景初期化
+	InitScreenBG(0);
+	
+	//ポストエフェクト初期化
+	InitPostEffectManager(0);
+
+	//GUIマネージャ初期化
+	InitGUIManager(0);
 
 	//デバッグウィンドウ初期化
 #ifdef USE_DEBUGWINDOW
@@ -413,7 +416,6 @@ void Uninit(void)
 	SAFE_RELEASE(fullScreenSurface[1]);
 	SAFE_RELEASE(fullScreenSurface[0]);
 	SAFE_RELEASE(fullScreenSurface[1]);
-	SAFE_RELEASE(renderToSurface);
 
 	// 入力処理の終了処理
 	UninitInput();
@@ -443,9 +445,14 @@ void Uninit(void)
 	//デバッグタイマー終了処理
 	UninitDebugTimer();
 
-#ifdef TEST_POSTEFFECT
-	UninitShcokBlur(0);
-#endif
+	//スクリーン背景終了処理1
+	UninitScreenBG(0);
+
+	//ポストエフェクト終了処理
+	UninitPostEffectManager(0);
+
+	//GUIマネージャ終了処理
+	UninitGUIManager(0);
 
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
@@ -478,6 +485,8 @@ void Update(void)
 	UpdateLight();
 	UpdateSceneManager();
 	UpdateMemoryAllocater();
+	UpdatePostEffectManager();
+	UpdateGUIManager();
 }
 
 //=============================================================================
@@ -485,68 +494,26 @@ void Update(void)
 //=============================================================================
 void Draw(void)
 {
-#ifdef TEST_POSTEFFECT
-	D3DVIEWPORT9 viewPort;
-	g_pD3DDevice->GetViewport(&viewPort);
-	
-	//オブジェクト描画
-	renderToSurface->BeginScene(fullScreenSurface[0], &viewPort);
-	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
-	DrawSceneManager();
-	renderToSurface->EndScene(D3DX_FILTER_POINT);
-
-	//ブラー処理
-	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
-	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
-	int Blur = 2;
-	for (int i = 0; i < Blur; i++)
-	{
-		renderToSurface->BeginScene(fullScreenSurface[(i + 1) % 2], &viewPort);
-		g_pD3DDevice->SetTexture(0, fullScreenTexture[i % 2]);
-		DrawShcokBlur();
-		renderToSurface->EndScene(D3DX_FILTER_POINT);
-	}
-
-	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
-	g_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
-
-	//ブラーをバックバッファにレンダリング
-	g_pD3DDevice->BeginScene();
-	g_pD3DDevice->SetTexture(0, fullScreenTexture[(Blur + 1) % 2]);
-	DrawShcokBlur();
-	DrawDebugWindow();
-	g_pD3DDevice->EndScene();
-
-	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
-
-#else
-	// バックバッファ＆Ｚバッファのクリア
-	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
-
-	// Direct3Dによる描画の開始
+	LPDIRECT3DSURFACE9 oldSurface = NULL;
+	g_pD3DDevice->GetRenderTarget(0, &oldSurface);
+	g_pD3DDevice->SetRenderTarget(0, fullScreenSurface[0]);
+;	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
+		DrawScreenBG();
+
 		DrawSceneManager();
 
-		// デバッグ表示処理の描画
-		if (g_bDispDebug)
-		{
-			DrawDebugProc();
-		}
+		DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface);
 
-		DrawDebugWindowMain();
+		DrawGUIManager();
 
-#ifdef USE_DEBUGWINDOW
 		DrawDebugWindow();
-#endif
 
-		// Direct3Dによる描画の終了
 		g_pD3DDevice->EndScene();
 	}
 
-	// バックバッファとフロントバッファの入れ替え
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
-#endif
 }
 
 //=============================================================================
@@ -625,4 +592,12 @@ void DrawDebugWindowMain(void)
 	DebugText("FPS : %d", g_nCountFPS);
 
 	EndDebugWindow("Main");
+}
+
+//=============================================================================
+// シーン取得処理
+//=============================================================================
+int GetCurrentScene(void)
+{
+	return currentScene;
 }

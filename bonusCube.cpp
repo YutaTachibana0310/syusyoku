@@ -15,6 +15,7 @@
 #include "EasingVector.h"
 #include "soundEffectManager.h"
 #include "cameraShaker.h"
+#include "shockBlur.h"
 
 #include "debugWindow.h"
 
@@ -392,6 +393,7 @@ void CheckDestroyBonusCube(void)
 			PlaySE(SOUND_SMALLEXPL);
 			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
+			SetShockBlur(ptr->pos);
 			DisableBonusCube(ptr);
 			StartBonusTime();
 		}

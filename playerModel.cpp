@@ -155,8 +155,8 @@ void InitPlayerModel(int num)
 		ptr->boostMode = false;
 	}
 
-	ChangeStatePlayerModel(PlayerFPS);
 	model[0].active = true;
+	ChangeStatePlayerModel(PlayerFPS);
 }
 
 /**************************************

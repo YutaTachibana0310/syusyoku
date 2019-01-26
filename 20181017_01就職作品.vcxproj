@@ -195,6 +195,8 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="lockonGUI.cpp" />
+    <ClCompile Include="lockonLevelGUI.cpp" />
+    <ClCompile Include="lockonNumGUI.cpp" />
     <ClCompile Include="logoScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="memoryAllocater.cpp" />
@@ -226,12 +228,14 @@
     <ClCompile Include="playerModelTransition.cpp" />
     <ClCompile Include="playerTutorialLockon.cpp" />
     <ClCompile Include="playerTutorialMove.cpp" />
+    <ClCompile Include="postEffectManager.cpp" />
     <ClCompile Include="powerUpTelop.cpp" />
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="rockonSite.cpp" />
     <ClCompile Include="sceneFade.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="scoreGUI.cpp" />
+    <ClCompile Include="screenBG.cpp" />
     <ClCompile Include="shockBlur.cpp" />
     <ClCompile Include="skyBG.cpp" />
     <ClCompile Include="smallEnemyAttack.cpp" />
@@ -307,6 +311,8 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="lockonGUI.h" />
+    <ClInclude Include="lockonLevelGUI.h" />
+    <ClInclude Include="lockonNumGUI.h" />
     <ClInclude Include="memoryAllocater.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="middleEnemyModel.h" />
@@ -331,12 +337,14 @@
     <ClInclude Include="playerModelTitleLaunch.h" />
     <ClInclude Include="playerModelTopView.h" />
     <ClInclude Include="playerModelTransition.h" />
+    <ClInclude Include="postEffectManager.h" />
     <ClInclude Include="powerUpTelop.h" />
     <ClInclude Include="resultScene.h" />
     <ClInclude Include="rockonSite.h" />
     <ClInclude Include="sceneFade.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="scoreGUI.h" />
+    <ClInclude Include="screenBG.h" />
     <ClInclude Include="shockBlur.h" />
     <ClInclude Include="skyBG.h" />
     <ClInclude Include="smallEnemyModel.h" />

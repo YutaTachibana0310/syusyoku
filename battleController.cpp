@@ -42,7 +42,9 @@
 #define BATTLE_BONUS_POS_Z				(6000.0f)			//ボーナスタイム時のキューブ生成位置（Z）
 #define BATTLE_BONUS_SPEED				(35.0f)				//ボーナスタイムのキューブスピード
 
-#define BATTLE_CUBEEMMITT_INTERBAL		(120)
+#define BATTLE_CUBEEMMITT_INTERBAL		(60)
+#define BATTLE_CUBEEMMITT_NUM			(3)
+#define BATTLE_CUBEEMMITT_SPEED			(10.0f)
 
 #define BATTLE_BGM_FADE_DURATION		(120)
 
@@ -75,23 +77,21 @@ void InitBattleController(int num)
 {
 	InitStageData(num);
 
-	if (num == 0)
+
+	//生成範囲を分割してエネミーの生成座標を計算
+	float spaceUnitWidth = SCREEN_WIDTH / BATTLE_SPACE_DIVIDE_NUM;
+	float spaceUnitHeight = SCREEN_HEIGHT / BATTLE_SPACE_DIVIDE_NUM;
+
+	for (int y = 0; y < BATTLE_SPACE_DIVIDE_NUM; y++)
 	{
-		//生成範囲を分割してエネミーの生成座標を計算
-		float spaceUnitWidth = SCREEN_WIDTH / BATTLE_SPACE_DIVIDE_NUM;
-		float spaceUnitHeight = SCREEN_HEIGHT / BATTLE_SPACE_DIVIDE_NUM;
-
-		for (int y = 0; y < BATTLE_SPACE_DIVIDE_NUM; y++)
+		for (int x = 0; x < BATTLE_SPACE_DIVIDE_NUM; x++)
 		{
-			for (int x = 0; x < BATTLE_SPACE_DIVIDE_NUM; x++)
-			{
-				checkPos[y * BATTLE_SPACE_DIVIDE_NUM + x].x = spaceUnitWidth * (x + 0.5f);
-				checkPos[y * BATTLE_SPACE_DIVIDE_NUM + x].y = spaceUnitHeight * (y + 0.5f);
+			checkPos[y * BATTLE_SPACE_DIVIDE_NUM + x].x = spaceUnitWidth * (x + 0.5f);
+			checkPos[y * BATTLE_SPACE_DIVIDE_NUM + x].y = spaceUnitHeight * (y + 0.5f);
 
-				emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].x = (BATTLE_SPACE_RIGHT_BORDER - BATTLE_SPACE_LEFT_BORDER) / BATTLE_SPACE_DIVIDE_NUM * (x + 0.5f) + BATTLE_SPACE_LEFT_BORDER;
-				emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].y = (BATTLE_SPACE_TOP_BORDER - BATTLE_SPACE_BOTTOM_BORDER) / BATTLE_SPACE_DIVIDE_NUM * (y + 0.5f) + BATTLE_SPACE_BOTTOM_BORDER;
-				emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].z = 5000.0f;
-			}
+			emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].x = (BATTLE_SPACE_RIGHT_BORDER - BATTLE_SPACE_LEFT_BORDER) / BATTLE_SPACE_DIVIDE_NUM * (x + 0.5f) + BATTLE_SPACE_LEFT_BORDER;
+			emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].y = (BATTLE_SPACE_TOP_BORDER - BATTLE_SPACE_BOTTOM_BORDER) / BATTLE_SPACE_DIVIDE_NUM * (y + 0.5f) + BATTLE_SPACE_BOTTOM_BORDER;
+			emmittPos[y * BATTLE_SPACE_DIVIDE_NUM + x].z = 5000.0f;
 		}
 	}
 
@@ -184,11 +184,13 @@ void EmmittOnBonusTime(void)
 ***************************************/
 void EmmittOnNormalTime(void)
 {
-	static float valueLength[BATTLE_SPACE_MAX];
-	static float valueTime[BATTLE_SPACE_MAX];
-	static float fuzzyValue[BATTLE_SPACE_MAX];
-	static bool enableEmmitt = false;
-	static int decidedPos;
+	if (cntFrame % BATTLE_CUBEEMMITT_INTERBAL != 0)
+		return;
+
+	float valueLength[BATTLE_SPACE_MAX];
+	float valueTime[BATTLE_SPACE_MAX];
+	float fuzzyValue[BATTLE_SPACE_MAX];
+	int decidedPos;
 
 	D3DXVECTOR3 playerPos;
 	float maxValue = -9999.9f;
@@ -212,6 +214,9 @@ void EmmittOnNormalTime(void)
 			maxValue = fuzzyValue[i];
 		}
 	}
+
+	EmmittCubeObject(BATTLE_CUBEEMMITT_NUM, &emmittPos[decidedPos], BATTLE_CUBEEMMITT_SPEED);
+	lastEmittFrame[decidedPos] = cntFrame;
 }
 
 /**************************************

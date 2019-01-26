@@ -34,6 +34,7 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/ready.wav"),
 	_T("data/SOUND/decision16.wav"),
 	_T("data/SOUND/gun29.wav"),
+	_T("data/SOUND/bom16.wav"),
 };
 
 static SOUNDEFFECT se[SOUND_MAX];
@@ -160,6 +161,8 @@ void DrawDebugWindowSoundEffect(void)
 
 	DebugSliderFloat(STR(SOUND_SHOT), &se[SOUND_SHOT].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
+	DebugSliderFloat(STR(SOUND_MIDDLEEXPL), &se[SOUND_MIDDLEEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
 
 	if (DebugButton("Save Settings"))
 	{
@@ -180,6 +183,7 @@ void DrawDebugWindowSoundEffect(void)
 	if (DebugButton(STR(SOUND_READY))) { PlaySE(SOUND_READY); }
 	if (DebugButton(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
 	if (DebugButton(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
+	if (DebugButton(STR(SOUND_MIDDLEEXPL))) { PlaySE(SOUND_MIDDLEEXPL); }
 
 	DebugNewLine();
 	static float length = 5000.0f;

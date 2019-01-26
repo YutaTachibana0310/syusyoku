@@ -10,7 +10,6 @@
 #include "battleScene.h"
 #include "resultScene.h"
 #include "particleManager.h"
-#include "sceneFade.h"
 #include "tutorialScene.h"
 
 /**************************************
@@ -27,7 +26,7 @@ typedef void(*SceneUninit)(int num);	//シーンの終了処理の関数ポインタ定義
 /**************************************
 グローバル変数
 ***************************************/
-static int currentSceneId = LogoScene;
+static int* currentSceneId;
 
 //各シーン初期化処理
 static SceneInit Init[] =
@@ -76,15 +75,15 @@ static SceneFunc Draw[] =
 /**************************************
 初期化処理
 ***************************************/
-void InitSceneManager(int num)
+void InitSceneManager(int* ptr)
 {
 
-	for (int i = 0; i < DefineSceneMax; i++)
+	/*for (int i = 0; i < DefineSceneMax; i++)
 	{
 		Init[i](num);
-	}
+	}*/
 
-	InitSceneFade(num);
+	currentSceneId = ptr;
 }
 
 /**************************************
@@ -92,7 +91,7 @@ void InitSceneManager(int num)
 ***************************************/
 void InitScene(int num)
 {
-	Init[currentSceneId](num);
+	Init[*currentSceneId](num);
 }
 
 /**************************************
@@ -104,8 +103,6 @@ void UninitSceneManager(int num)
 	{
 		Uninit[i](num);
 	}
-
-	UninitSceneFade(num);
 }
 
 /**************************************
@@ -113,7 +110,7 @@ void UninitSceneManager(int num)
 ***************************************/
 void UninitScene(int num)
 {
-	Uninit[currentSceneId](num);
+	Uninit[*currentSceneId](num);
 }
 
 /**************************************
@@ -121,9 +118,7 @@ void UninitScene(int num)
 ***************************************/
 void UpdateSceneManager(void)
 {
-	Update[currentSceneId]();
-
-	UpdateSceneFade();
+	Update[*currentSceneId]();
 }
 
 /**************************************
@@ -131,9 +126,7 @@ void UpdateSceneManager(void)
 ***************************************/
 void DrawSceneManager(void)
 {
-	Draw[currentSceneId]();
-
-	DrawSceneFade();
+	Draw[*currentSceneId]();
 }
 
 /**************************************
@@ -143,6 +136,6 @@ void SetScene(DefineScene sceneId)
 {
 	UninitScene(1);
 	UninitParticleManager(1);
-	currentSceneId = sceneId;
+	*currentSceneId = sceneId;
 	InitScene(1);
 }

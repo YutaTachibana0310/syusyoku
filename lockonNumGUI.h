@@ -1,11 +1,11 @@
 //=====================================
 //
-//衝撃ブラーヘッダ[shockBlur.h]
+//ロックオン数GUIヘッダ[lockonNumGUI.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _SHOCKBLUR_H_
-#define _SHOCKBLUR_H_
+#ifndef _LOCKONNUMGUI_H_
+#define _LOCKONNUMGUI_H_
 
 #include "main.h"
 
@@ -20,10 +20,9 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitShcokBlur(int num);
-void UninitShcokBlur(int num);
-void UpdateShcokBlur(void);
-void DrawShcokBlur(void);
+void InitLockonNumGUI(int num);
+void UninitLockonNumGUI(int num);
+void UpdateLockonNumGUI(void);
+void DrawLockonNumGUI(void);
 
-void SetShockBlur(D3DXVECTOR3 setPos);
 #endif

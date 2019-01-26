@@ -66,7 +66,7 @@ HRESULT InitLogoScene(int num)
 	// 頂点情報の作成
 	MakeVertexLogoScene();
 
-	if (num == initialized)
+	if (!initialized)
 	{
 		// テクスチャの読み込み
 		texture = CreateTextureFromFile((LPSTR)LOGOSCENE_TEXTURE_NAME, pDevice);
@@ -145,9 +145,17 @@ void UpdateLogoScene(void)
 ******************************************************************************/
 void DrawLogoScene(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
 	SetCamera();
+
+	
+}
+
+/******************************************************************************
+ロゴ描画
+******************************************************************************/
+void DrawCircleLogo(void)
+{
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	// 頂点フォーマットの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
@@ -158,7 +166,6 @@ void DrawLogoScene(void)
 	// ポリゴンの描画
 	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
 }
-
 
 /******************************************************************************
 頂点の作成

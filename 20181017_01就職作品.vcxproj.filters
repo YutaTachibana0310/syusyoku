@@ -157,6 +157,12 @@
     <Filter Include="ソース ファイル\Controller\States">
       <UniqueIdentifier>{25f44e09-562c-4e25-8b02-5f172b5c8e7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Effect\PostEffect">
+      <UniqueIdentifier>{587a84ad-e5b0-4092-8885-2778e5d552ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\PostEffect">
+      <UniqueIdentifier>{d31f67a1-9544-4f41-a7b7-63555c4b8621}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -510,8 +516,20 @@
     <ClCompile Include="DebugTimer.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
+    <ClCompile Include="screenBG.cpp">
+      <Filter>ソース ファイル\Battle\BackGround</Filter>
+    </ClCompile>
     <ClCompile Include="shockBlur.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
+      <Filter>ソース ファイル\Effect\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="postEffectManager.cpp">
+      <Filter>ソース ファイル\Effect\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="lockonLevelGUI.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="lockonNumGUI.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -571,9 +589,6 @@
     </ClInclude>
     <ClInclude Include="particleFramework.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="particle.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="logoScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
@@ -790,6 +805,21 @@
     </ClInclude>
     <ClInclude Include="shockBlur.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="screenBG.h">
+      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="postEffectManager.h">
+      <Filter>ヘッダー ファイル\Effect\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="lockonLevelGUI.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lockonNumGUI.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
