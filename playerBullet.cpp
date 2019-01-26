@@ -238,7 +238,7 @@ void DrawPlayerBullet(void)
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 
-#ifdef _DEBUG
+#if 0
 	ptr = &bullet[0];
 	for (int i = 0; i < PLAYERBULLET_MAX; i++, ptr++)
 	{
