@@ -32,7 +32,7 @@ static int cntFrame;
 static int animIndex;
 
 static const float AnimDuration[SHOCKBLUR_ANIM_MAX] = {
-	10, 60, 10
+	5, 20, 5
 };
 
 static const float AnimStartPower[SHOCKBLUR_ANIM_MAX] = {
