@@ -13,6 +13,7 @@
 /**************************************
 マクロ定義
 ***************************************/
+#define COLLISION_DIVISIONSPACE_LEVEL_MAX		(6)			//空間レベルの最大レベル
 
 /**************************************
 構造体定義
@@ -42,8 +43,19 @@ enum OFT_ID
 	OFT_CUBEOBJECT,
 	OFT_HARDCUBE,
 	OFT_BONUSCUBE,
+	OFT_PLAYER,
+	OFT_ENEMYBULLET,
+	OFT_ENEMYHOMINGBULLET,
 	OFT_ID_MAX
 };
+
+//コリージョンマネージャ構造体
+typedef struct {
+	unsigned int spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX];	//各レベルの空間数
+	DWORD cellNum;												//空間数の総和
+	CCell **cellArray[OFT_ID_MAX];								//オブジェクトが登録される空間配列
+
+}COLLISION_MANAGER;
 /**************************************
 プロトタイプ宣言
 ***************************************/

@@ -1,11 +1,11 @@
 //=====================================
 //
-//ステージデータヘッダ[stageData.h]
+//ステージクリアテロップヘッダ[stageClearTelop.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _STAGEDATA_H_
-#define _STAGEDATA_H_
+#ifndef _STAGECLEARTELOP_H_
+#define _STAGECLEARTELOP_H_
 
 #include "main.h"
 
@@ -16,21 +16,14 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef struct
-{
-	int emmittFrame;
-	int type;
-	D3DXVECTOR3 initPos;
-	D3DXVECTOR3 targetPos;
-	D3DXVECTOR3 controller1;
-	D3DXVECTOR3 controller2;
-}STAGE_DATA;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitStageData(int num);
-void UninitStageData(int num);
-int UpdateStageData(STAGE_DATA **out, DWORD currentFrame);
-bool IsStageEnd(void);
+void InitStageClearTelop(int num);
+void UninitStageClearTelop(int num);
+void UpdateStageClearTelop(void);
+void DrawStageClearTelop(void);
+void SetStageClearTelop(void);
 
 #endif

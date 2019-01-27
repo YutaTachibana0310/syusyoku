@@ -18,6 +18,7 @@
 #include "soundEffectManager.h"
 #include "dataContainer.h"
 #include "soundEffectManager.h"
+#include "collisionManager.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -26,12 +27,13 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define PLAYERMODEL_MODELNAME		"data/MODEL/player001.x"
-#define PLAYER_ROTATEMAGNI			(0.2f)
-#define PLATER_ROTATEVALUE_MAX		(0.085f)
-#define PLAYER_TEXTURE_MAX			(19)
-#define PLAYERMODEL_MODELNAME_DEBUG	"data/MODEL/airplane000.x"
-
+#define PLAYERMODEL_MODELNAME			"data/MODEL/player001.x"
+#define PLAYER_ROTATEMAGNI				(0.2f)
+#define PLATER_ROTATEVALUE_MAX			(0.085f)
+#define PLAYER_TEXTURE_MAX				(19)
+#define PLAYERMODEL_MODELNAME_DEBUG		"data/MODEL/airplane000.x"
+#define PLAYERMODEL_COLLIDER_LENGTH		(D3DXVECTOR3(6.0f, 4.0f, 14.0f))
+#define PLAYERMODE_INVINCIBLE_DURATION	(180)
 
 /**************************************
 構造体定義
@@ -42,6 +44,7 @@ typedef void(*funcPlayerModel)(PLAYERMODEL *player);
 グローバル変数
 ***************************************/
 static PLAYERMODEL model[PLAYERMODEL_MAX];
+static OBJECT_FOR_TREE objectForTree[PLAYERMODEL_MAX];
 static LPD3DXMESH mesh = NULL;
 static LPD3DXBUFFER materials = NULL;
 static DWORD numMaterial = 0;
@@ -143,7 +146,8 @@ void InitPlayerModel(int num)
 #endif
 
 	PLAYERMODEL *ptr = &model[0];
-	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++, oft++)
 	{
 		ptr->pos = D3DXVECTOR3(0, 0, 0);
 		
@@ -153,6 +157,12 @@ void InitPlayerModel(int num)
 		ptr->id = i;
 
 		ptr->boostMode = false;
+
+		ptr->collider.pos = &ptr->pos;
+		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->collider.length = PLAYERMODEL_COLLIDER_LENGTH;
+
+		CreateOFT(oft, (void*)ptr);
 	}
 
 	model[0].active = true;
@@ -165,9 +175,11 @@ void InitPlayerModel(int num)
 void UninitPlayerModel(int num)
 {
 	PLAYERMODEL *ptr = &model[0];
-	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
+		RemoveObjectFromSpace(oft);
 	}
 
 	if (num == 0)
@@ -183,22 +195,35 @@ void UninitPlayerModel(int num)
 void UpdatePlayerModel(void)
 {
 	PLAYERMODEL *ptr = &model[0];
-
-	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++, oft++)
 	{
 		if (!ptr->active)
 		{
 			continue;
 		}
 
+		//各状態に応じて更新処理
 		Update[playerState](ptr);
 
+		//モデルを回転
 		D3DXVECTOR3 diff = ptr->destRot - ptr->rot;
 		ptr->rot.x += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.x * PLAYER_ROTATEMAGNI);
 		ptr->rot.y += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.y * PLAYER_ROTATEMAGNI);
 		ptr->rot.z += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.z * PLAYER_ROTATEMAGNI);
 
-		PrintDebugProc("playerpos[%d]:%f %f %f\n", i, ptr->pos.x, ptr->pos.y, ptr->pos.z);
+		//無敵時間の終了を判定
+		if (ptr->cntFrame - ptr->invincibleStart > PLAYERMODE_INVINCIBLE_DURATION)
+		{
+			ptr->isInvincible = false;
+		}
+
+		//衝突空間への登録を更新
+		RemoveObjectFromSpace(oft);
+		if (ptr->active)
+		{
+			RegisterObjectToSpace(&ptr->collider, oft, OFT_PLAYER);
+		}
 	}
 
 
@@ -246,6 +271,8 @@ void DrawPlayerModel(void)
 			pDevice->SetTexture(0, texture[j]);
 			mesh->DrawSubset(j);
 		}
+
+		DrawBoundingCube(&ptr->collider);
 	}
 
 	pDevice->SetMaterial(&matDef);

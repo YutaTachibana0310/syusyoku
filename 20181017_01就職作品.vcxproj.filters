@@ -163,6 +163,9 @@
     <Filter Include="ヘッダー ファイル\Effect\PostEffect">
       <UniqueIdentifier>{d31f67a1-9544-4f41-a7b7-63555c4b8621}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\BattleSystem\collision">
+      <UniqueIdentifier>{e4c8130e-da6a-4550-9490-2b4df78210db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -378,6 +381,9 @@
     <ClCompile Include="imgui\imgui_impl_dx9.cpp">
       <Filter>ソース ファイル\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="debugWindow.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
     <ClCompile Include="imgui\imgui_impl_win32.cpp">
       <Filter>ソース ファイル\imgui</Filter>
     </ClCompile>
@@ -416,9 +422,6 @@
     </ClCompile>
     <ClCompile Include="collider.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="collisionManager.cpp">
-      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
     </ClCompile>
     <ClCompile Include="hardCubeObject.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
@@ -528,8 +531,41 @@
     <ClCompile Include="lockonNumGUI.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="debugWindow.cpp">
-      <Filter>ソース ファイル\FrameWork</Filter>
+    <ClCompile Include="collisionManager.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionHardCube.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionCubeObject.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionBonusCube.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionEnemyBullet.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionEnemyHomingBullet.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="bulletParticle.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="monotone.cpp">
+      <Filter>ソース ファイル\Effect\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="gameoverTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gameoverScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="stageClearScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="stageClearTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -719,6 +755,9 @@
     <ClInclude Include="imgui\imstb_textedit.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="debugWindow.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
     <ClInclude Include="imgui\imgui_impl_win32.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
@@ -800,9 +839,6 @@
     <ClInclude Include="DebugTimer.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="shockBlur.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="screenBG.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
@@ -818,8 +854,26 @@
     <ClInclude Include="lockonNumGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="debugWindow.h">
-      <Filter>ヘッダー ファイル\FrameWork</Filter>
+    <ClInclude Include="bulletParticle.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="monotone.h">
+      <Filter>ヘッダー ファイル\Effect\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="shockBlur.h">
+      <Filter>ヘッダー ファイル\Effect\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="gameoverTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gameoverScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="stageClearScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="stageClearTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -836,6 +890,9 @@
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="data\EFFECT\shockBlur.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\monotone.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>

@@ -11,6 +11,7 @@
 #include "EasingVector.h"
 #include "battleCamera.h"
 #include "rockonSite.h"
+#include "collider.h"
 
 #define PLAYER_INITMOVE_FRAME		(30)
 #define PLAYERMODEL_MAX				(1)
@@ -74,6 +75,11 @@ typedef struct
 	bool boostMode;
 
 	D3DXVECTOR3 shotpos1, shotpos2;
+
+	COLLIDER_CUBE collider;
+
+	int invincibleStart;
+	bool isInvincible;
 
 }PLAYERMODEL;
 

@@ -143,9 +143,15 @@
     <ClCompile Include="bonusTelop.cpp" />
     <ClCompile Include="bonusTimeGUI.cpp" />
     <ClCompile Include="bossCubeObject.cpp" />
+    <ClCompile Include="bulletParticle.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
+    <ClCompile Include="collisionBonusCube.cpp" />
+    <ClCompile Include="collisionEnemyBullet.cpp" />
+    <ClCompile Include="collisionEnemyHomingBullet.cpp" />
+    <ClCompile Include="collisionHardCube.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="cubeObject.cpp" />
+    <ClCompile Include="collisionCubeObject.cpp" />
     <ClCompile Include="cubeParticle.cpp" />
     <ClCompile Include="dataContainer.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
@@ -175,6 +181,8 @@
     <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
     <ClCompile Include="fuzzyLogic.cpp" />
+    <ClCompile Include="gameoverScene.cpp" />
+    <ClCompile Include="gameoverTelop.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="hardCubeBezier.cpp" />
     <ClCompile Include="hardCubeCharge.cpp" />
@@ -206,6 +214,7 @@
     <ClCompile Include="middleEnemyModel.cpp" />
     <ClCompile Include="middleEnemyMove.cpp" />
     <ClCompile Include="middleEnemyWait.cpp" />
+    <ClCompile Include="monotone.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
@@ -245,6 +254,8 @@
     <ClCompile Include="smallEnemyWait.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
+    <ClCompile Include="stageClearScene.cpp" />
+    <ClCompile Include="stageClearTelop.cpp" />
     <ClCompile Include="stageData.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
@@ -267,6 +278,7 @@
     <ClInclude Include="bonusTelop.h" />
     <ClInclude Include="bonusTimeGUI.h" />
     <ClInclude Include="bossCubeObject.h" />
+    <ClInclude Include="bulletParticle.h" />
     <ClInclude Include="cameraShaker.h" />
     <ClInclude Include="collisionManager.h" />
     <ClInclude Include="cubeObject.h" />
@@ -299,6 +311,8 @@
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
     <ClInclude Include="fuzzyLogic.h" />
+    <ClInclude Include="gameoverScene.h" />
+    <ClInclude Include="gameoverTelop.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="hardCubeObject.h" />
     <ClInclude Include="hpGUI.h" />
@@ -316,6 +330,7 @@
     <ClInclude Include="memoryAllocater.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="middleEnemyModel.h" />
+    <ClInclude Include="monotone.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerBulletTrail.h" />
     <ClInclude Include="playerMissile.h" />
@@ -350,6 +365,8 @@
     <ClInclude Include="smallEnemyModel.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="soundEffectManager.h" />
+    <ClInclude Include="stageClearScene.h" />
+    <ClInclude Include="stageClearTelop.h" />
     <ClInclude Include="stageData.h" />
     <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />
@@ -376,6 +393,16 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\monotone.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">2.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="data\EFFECT\particle.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>

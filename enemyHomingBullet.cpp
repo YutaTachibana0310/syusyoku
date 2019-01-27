@@ -9,6 +9,7 @@
 #include "playerModel.h"
 #include "particleFramework.h"
 #include "enemyBulletTrail.h"
+#include "collisionManager.h"
 
 /**************************************
 マクロ定義
@@ -19,6 +20,7 @@
 #define ENEMYHOMINGBULLET_DISABLE_BORDER_Z		(-200.0f)
 #define ENEMYHOMINGBULLET_ACCELERATION_MAX		(500.0f)
 #define ENEMYHOMINGBULLET_SHADER_NAME			"data/EFFECT/particle.fx"
+#define ENEMYHOMINGBULLET_COLLIDER_LENGTH		(2.0f)
 
 /**************************************
 構造体定義
@@ -29,6 +31,7 @@
 ***************************************/
 static LPDIRECT3DTEXTURE9 texture;
 static ENEMYHOMINGBULLET bullet[ENEMYHOMINGBULLET_MAX];
+static OBJECT_FOR_TREE objectForTree[ENEMYHOMINGBULLET_MAX];
 
 static D3DXMATRIX pos[ENEMYHOMINGBULLET_MAX];			//ワールド座標配列
 static VERTEX_COLOR vtxColor[ENEMYHOMINGBULLET_MAX];	//頂点ディフューズ配列
@@ -107,11 +110,16 @@ void InitEnemyHomingBullet(int num)
 	}
 
 	ENEMYHOMINGBULLET *ptr = &bullet[0];
-	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
 		vtxColor[i].r = vtxColor[i].g = vtxColor[i].b = 1.0f;
+		ptr->collider.pos = &ptr->pos;
+		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->collider.length = D3DXVECTOR3(ENEMYHOMINGBULLET_COLLIDER_LENGTH, ENEMYHOMINGBULLET_COLLIDER_LENGTH, ENEMYHOMINGBULLET_COLLIDER_LENGTH);
 		ptr->alpha = 0.0f;
+		CreateOFT(oft, (void*)ptr);
 	}
 }
 
@@ -131,9 +139,11 @@ void UninitEnemyHomingBullet(int num)
 	}
 
 	ENEMYHOMINGBULLET *ptr = &bullet[0];
-	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
+		RemoveObjectFromSpace(oft);
 		ptr->alpha = 0.0f;
 	}
 }
@@ -144,6 +154,7 @@ void UninitEnemyHomingBullet(int num)
 void UpdateEnemyHomingBullet(void)
 {
 	ENEMYHOMINGBULLET *ptr = &bullet[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
 	D3DXMATRIX mtxTranslate;
 	D3DXMATRIX *pPos = &pos[0];
 
@@ -152,6 +163,7 @@ void UpdateEnemyHomingBullet(void)
 
 		if (!ptr->active)
 		{
+			vtxColor[i].a = 0.0f;
 			continue;
 		}
 
@@ -177,6 +189,15 @@ void UpdateEnemyHomingBullet(void)
 		GetInvRotBattleCamera(pPos);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
+	}
+
+	ptr = &bullet[0];
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, oft++, ptr++)
+	{
+		//衝突空間への登録更新
+		RemoveObjectFromSpace(oft);
+		if (ptr->active)
+			RegisterObjectToSpace(&ptr->collider, oft, OFT_ENEMYHOMINGBULLET);
 	}
 
 	//頂点バッファにメモリコピー
@@ -245,6 +266,12 @@ void DrawEnemyHomingBullet(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
+
+	for (int i = 0 ; i < ENEMYHOMINGBULLET_MAX; i++)
+	{
+		if (bullet[i].active)
+			DrawBoundingCube(&bullet[i].collider);
+	}
 }
 
 #if 0

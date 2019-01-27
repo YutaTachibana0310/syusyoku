@@ -6,6 +6,7 @@
 //=====================================
 #include "postEffectManager.h"
 #include "shockBlur.h"
+#include "monotone.h"
 
 /**************************************
 マクロ定義
@@ -36,6 +37,7 @@ void InitPostEffectManager(int num)
 
 	//ポストエフェクト初期化
 	InitShcokBlur(num);
+	InitMonotone(num);
 
 	//頂点バッファが作成済みであればリターン
 	if (initialized)
@@ -84,6 +86,7 @@ void InitPostEffectManager(int num)
 void UninitPostEffectManager(int num)
 {
 	UninitShcokBlur(num);
+	UninitMonotone(num);
 
 	if (num == 0)
 	{
@@ -97,6 +100,7 @@ void UninitPostEffectManager(int num)
 void UpdatePostEffectManager(void)
 {
 	UpdateShcokBlur();
+	UpdateMonotone();
 }
 
 /**************************************
@@ -124,6 +128,15 @@ void DrawPostEffectManager(LPDIRECT3DTEXTURE9 tex[2], LPDIRECT3DSURFACE9 suf[2],
 			pDevice->SetTexture(0, tex[cntDraw % 2]);
 			DrawShcokBlur();
 		}
+	}
+
+	//モノトーンシェーダ描画
+	if (CheckActivePostEffect(EFFECT_MONOTONE))
+	{
+		pDevice->SetRenderTarget(0, suf[1 - cntDraw % 2]);
+		pDevice->SetTexture(0, tex[cntDraw % 2]);
+		DrawMonotone();
+		cntDraw++;
 	}
 
 	//結果をバックバッファへ描画

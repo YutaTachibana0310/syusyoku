@@ -9,6 +9,7 @@
 #include "logoScene.h"
 #include "input.h"
 #include "Easing.h"
+#include "titleScene.h"
 
 /*****************************************************************************
 マクロ定義
@@ -121,6 +122,7 @@ void UpdateLogoScene(void)
 		if (cntFrame == LOGOSCENE_FADEWAIT_END)
 		{
 			cntFrame = 0;
+			InitTitleScene(0);			//読み込みで固まるのでここで一旦ロード
 			state = LOGOSCENE_FADEOUT;
 		}
 		break;

@@ -7,6 +7,7 @@
 #include "enemyBullet.h"
 #include "battleCamera.h"
 #include "enemyBulletTrail.h"
+#include "collisionManager.h"
 
 /**************************************
 マクロ定義
@@ -15,6 +16,8 @@
 #define ENEMYBULLET_TEXTURE_SIZE_X		(5)
 #define ENEMYBULLET_TEXTURE_SIZE_Y		(5)
 #define ENEMYBULLET_DISABLE_BORDER_Z	(-200.0f)
+#define ENEMYBULLET_COLLIDER_LENGTH		(2.0f)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -25,6 +28,7 @@
 static LPDIRECT3DTEXTURE9 texture;
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
 static ENEMYBULLET bullet[ENEMYBULLET_MAX];
+static OBJECT_FOR_TREE objectForTree[ENEMYBULLET_MAX];
 
 /**************************************
 プロトタイプ宣言
@@ -47,8 +51,13 @@ void InitEnemyBullet(int num)
 	}
 
 	ENEMYBULLET *ptr = &bullet[0];
-	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++)
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++, oft++)
 	{
+		ptr->collider.pos = &ptr->pos;
+		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		ptr->collider.length = D3DXVECTOR3(ENEMYBULLET_COLLIDER_LENGTH, ENEMYBULLET_COLLIDER_LENGTH, ENEMYBULLET_COLLIDER_LENGTH);
+		CreateOFT(oft, (void*)ptr);
 		ptr->active = false;
 	}
 }
@@ -63,6 +72,14 @@ void UninitEnemyBullet(int num)
 		SAFE_RELEASE(texture);
 		SAFE_RELEASE(vtxBuff);
 	}
+
+	ENEMYBULLET *ptr = &bullet[0];
+	OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++, oft++)
+	{
+		ptr->active = false;
+		RemoveObjectFromSpace(oft);
+	}
 }
 
 /**************************************
@@ -71,7 +88,8 @@ void UninitEnemyBullet(int num)
 void UpdateEnemyBullet(void)
 {
 	ENEMYBULLET *ptr = &bullet[0];
-	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++)
+	_OBJECT_FOR_TREE *oft = &objectForTree[0];
+	for (int i = 0; i < ENEMYBULLET_MAX; i++, ptr++, oft++)
 	{
 		if (!ptr->active)
 		{
@@ -81,12 +99,19 @@ void UpdateEnemyBullet(void)
 		//トレイル設定
 		SetEnemyHomingBulletTrail(ptr->pos, NormalEnemyBulletTrail);
 
+		//座標更新
 		ptr->pos += ptr->moveDir * ptr->speed;
 
+		//境界判定
 		if (ptr->pos.z < ENEMYBULLET_DISABLE_BORDER_Z)
 		{
 			ptr->active = false;
 		}
+
+		//衝突空間への登録更新
+		RemoveObjectFromSpace(oft);
+		if (ptr->active)
+			RegisterObjectToSpace(&ptr->collider, oft, OFT_ENEMYBULLET);
 	}
 }
 
@@ -134,6 +159,9 @@ void DrawEnemyBullet(void)
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+		if(ptr->active)
+			DrawBoundingCube(&ptr->collider);
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);

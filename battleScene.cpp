@@ -23,6 +23,9 @@
 #include "collisionManager.h"
 #include "battleController.h"
 #include "bgmManager.h"
+#include "dataContainer.h"
+#include "stageData.h"
+#include "hardCubeObject.h"
 
 #include "debugWindow.h"
 #include "DebugTimer.h"
@@ -64,10 +67,9 @@ HRESULT InitBattleScene(int num)
 	if (num != 0)
 	{
 		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-		PlayBGM(BGM_BATTLESCENE);
 	}
 
-
+	InitDataContainer(num);
 	InitCloud(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
@@ -80,8 +82,10 @@ HRESULT InitBattleScene(int num)
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
 	InitBattleController(num);
+	
 
 	RegisterDebugTimer(BATTLESCENE_LABEL);
+	PlayBGM(BGM_BATTLESCENE);
 
 	return S_OK;
 }
@@ -91,18 +95,20 @@ HRESULT InitBattleScene(int num)
 ******************************************************************************/
 void UninitBattleScene(int num)
 {
-	UninitBattleController(num);
+	//NOTE:ゲームオーバーシーンで状態を使い回すのでマスク
 
-	UninitCloud(num);
-	UninitPlayerModel(num);
-	UninitPlayerBullet(num);
-	UninitTargetSite(num);
-	UninitRockonSite(num);
-	UninitMeshCylinder(num);
-	UninitPlayerMissile(num);
-	UninitPlayerMissileSmog(num);
-	UninitPlayerBulletTrail(num);
-	UninitEnemyManager(num);
+	UninitBattleController(num);
+	//UninitCloud(num);
+	//UninitPlayerModel(num);
+	//UninitPlayerBullet(num);
+	//UninitTargetSite(num);
+	//UninitRockonSite(num);
+	//UninitMeshCylinder(num);
+	//UninitPlayerMissile(num);
+	//UninitPlayerMissileSmog(num);
+	//UninitPlayerBulletTrail(num);
+	//UninitEnemyManager(num);
+	FadeOutBGM(BGM_BATTLESCENE, 30);
 }
 
 /******************************************************************************
@@ -123,6 +129,7 @@ void UpdateBattleScene(void)
 	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 	UpdateRockonSite();
 	GetTimerCount(&endSiteUpdate);
+
 	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 
 	UpdateMeshCylinder();
@@ -146,9 +153,21 @@ void UpdateBattleScene(void)
 	UpdateCollisionManager();
 	CountDebugTimer(BATTLESCENE_LABEL, "CollisionUpdate");
 
+	//ゲームオーバー判定
+	if (GetPlayerHP() <= 0.0f)
+	{
+		SetScene(GamveoverScene);
+	}
+
+	//ゲームクリア判定
+	if (IsStageEnd() && IsAllHardCubeDisable())
+	{
+		SetScene(StageClearScene);
+	}
+
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
-		SetScene(ResultScene);
+		SetScene(StageClearScene);
 	}
 }
 

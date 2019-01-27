@@ -1,11 +1,11 @@
 //=====================================
 //
-//ステージデータヘッダ[stageData.h]
+//モノトーンヘッダ[monotone.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _STAGEDATA_H_
-#define _STAGEDATA_H_
+#ifndef _MONOTONE_H_
+#define _MONOTONE_H_
 
 #include "main.h"
 
@@ -16,21 +16,13 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef struct
-{
-	int emmittFrame;
-	int type;
-	D3DXVECTOR3 initPos;
-	D3DXVECTOR3 targetPos;
-	D3DXVECTOR3 controller1;
-	D3DXVECTOR3 controller2;
-}STAGE_DATA;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitStageData(int num);
-void UninitStageData(int num);
-int UpdateStageData(STAGE_DATA **out, DWORD currentFrame);
-bool IsStageEnd(void);
-
+void InitMonotone(int num);
+void UninitMonotone(int num);
+void UpdateMonotone(void);
+void DrawMonotone(void);
+void SetMonotoneEffect(bool state);
 #endif

@@ -11,7 +11,7 @@
 #include "camera.h"
 #include "cubeParticle.h"
 #include "explosionLumine.h"
-
+#include "bulletParticle.h"
 #include "debugWindow.h"
 
 /**************************************
@@ -79,6 +79,7 @@ void InitParticleManager(int num)
 	InitExplosionFlare(num);
 	InitCubeParticle(num);
 	InitExplosionLumine(num);
+	InitBulletParticle(num);
 }
 
 /**************************************
@@ -91,6 +92,7 @@ void UninitParticleManager(int num)
 	UninitExplosionFlare(num);
 	UninitCubeParticle(num);
 	UninitExplosionLumine(num);
+	UninitBulletParticle(num);
 }
 
 /**************************************
@@ -114,6 +116,8 @@ void UpdateParticleManager(void)
 
 	UpdateExplosionLumine();
 
+	UpdateBulletParticle();
+
 	DrawDebugWindowParticle();
 }
 
@@ -133,6 +137,7 @@ void DrawParticleManager(void)
 	DrawExplosionSmog(declare, effect);
 	DrawExplosionFlare(declare, effect);
 	DrawExplosionFire(declare, effect);
+	DrawBulletParticle(declare, effect);
 	DrawExplosionLumine(effect);
 
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);

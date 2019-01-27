@@ -390,6 +390,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 #ifdef _DEBUG
 	SetScene(startScene);
+#else
+	SetScene(LogoScene);
 #endif
 
 	return S_OK;

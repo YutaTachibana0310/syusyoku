@@ -83,6 +83,7 @@ void DisableHardCube(HARD_CUBE_OBJECT *ptr);	//非アクティブ処理
 void ChangeStateHardCube(HARD_CUBE_OBJECT *ptr, int nextState);
 bool SetHardCubeObjectFromData(STAGE_DATA *data);
 HARD_CUBE_OBJECT* SetHardCubeObjectDirectData(D3DXVECTOR3 startPos, D3DXVECTOR3 goalPos, int type, D3DXVECTOR3 ctrl1, D3DXVECTOR3 ctrl2);
+bool IsAllHardCubeDisable(void);
 
 //各状態入場処理関数
 void OnEnterHardCubeInit(HARD_CUBE_OBJECT *ptr);

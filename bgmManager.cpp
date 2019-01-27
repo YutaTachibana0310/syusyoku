@@ -27,6 +27,8 @@ static const TCHAR* BgmFileName[BGM_MAX] = {
 	_T("data/SOUND/Sword_dance.wav"),
 	_T("data/SOUND/P.L.A.Y..wav"),
 	_T("data/SOUND/Landing+On+The+Moon_jingle.wav"),
+	_T("data/SOUND/gameover2.wav"),
+	_T("data/SOUND/To_the_Next_Generation.wav"),
 };
 
 static BGM bgmData[BGM_MAX];
@@ -111,6 +113,7 @@ void UpdateBgmManager(void)
 ***************************************/
 void PlayBGM(DEFINE_BGM bgm)
 {
+	SetSoundVolume(bgmData[bgm].clip, bgmData[bgm].volume);
 	PlaySoundBuffer(bgmData[bgm].clip, E_DS8_FLAG_LOOP, true);
 }
 
@@ -176,6 +179,9 @@ void DrawDebugWindowBGM(void)
 	DebugSliderFloat(STR(BGM_TUTORIALSCENE), &bgmData[BGM_TUTORIALSCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 	DebugSliderFloat(STR(BGM_BATTLESCENE), &bgmData[BGM_BATTLESCENE].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 	DebugSliderFloat(STR(BGM_BONUSTIME), &bgmData[BGM_BONUSTIME].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(BGM_GAMEOVER), &bgmData[BGM_GAMEOVER].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	DebugSliderFloat(STR(BGM_STAGECLEAR), &bgmData[BGM_STAGECLEAR].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
 
 	if (DebugButton("Save Settings"))
 	{

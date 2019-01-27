@@ -13,7 +13,7 @@
 ***************************************/
 #define DATACONTAINER_POWEUP_MAX		(7)		//パワーアップ最大回数
 #define DATACONTAINER_SHOTLEVEL_MAX		(4)		//ショットレベルマックス
-
+#define DATACONTAINER_PlAYERHP_INIT		(100.0f)//HP初期値
 /**************************************
 構造体定義
 ***************************************/
@@ -43,6 +43,9 @@ static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
 	18, 36, 48, 54
 };
 
+//プレイヤーHP
+static float playerHP;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -59,6 +62,8 @@ void InitDataContainer(int num)
 	cntPowerUp = 0;
 	shotLevel = 0;
 	lockLevel = 0;
+
+	playerHP = DATACONTAINER_PlAYERHP_INIT;
 
 }
 
@@ -79,6 +84,14 @@ void InitPowerUpParameter(void)
 	cntPowerUp = 0;
 	shotLevel = 0;
 	lockLevel = 0;
+}
+
+/**************************************
+HP初期化処理
+***************************************/
+void InitPlayerHP(void)
+{
+	playerHP = DATACONTAINER_PlAYERHP_INIT;
 }
 
 /**************************************
@@ -156,4 +169,23 @@ int GetCurrentScore(void)
 int GetHighScore(void)
 {
 	return highScore;
+}
+
+/**************************************
+HP取得処理
+***************************************/
+float GetPlayerHP(void)
+{
+	return playerHP;
+}
+
+/**************************************
+HP増減取得処理
+***************************************/
+void AddPlayerHP(float value)
+{
+	playerHP += value;
+
+	if (playerHP < 0.0f)
+		playerHP = 0.0f;
 }

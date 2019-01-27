@@ -8,6 +8,7 @@
 #define _ENEMYHOMINGBULLET_H_
 
 #include "main.h"
+#include "collider.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -29,6 +30,7 @@ typedef struct
 	D3DXVECTOR3 velocity;
 
 	float alpha;
+	COLLIDER_CUBE collider;
 
 }ENEMYHOMINGBULLET;
 /**************************************

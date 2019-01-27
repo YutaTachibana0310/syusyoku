@@ -123,3 +123,11 @@ bool LoadStageData(void)
 	fclose(fp);
 	return true;
 }
+
+/**************************************
+ステージデータが終わっているかどうか
+***************************************/
+bool IsStageEnd(void)
+{
+	return (currentIndex == dataMax) ? true : false;
+}

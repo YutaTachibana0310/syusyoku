@@ -11,6 +11,8 @@
 #include "resultScene.h"
 #include "particleManager.h"
 #include "tutorialScene.h"
+#include "gameoverScene.h"
+#include "stageClearScene.h"
 
 /**************************************
 マクロ定義
@@ -35,7 +37,9 @@ static SceneInit Init[] =
 	InitTitleScene,
 	InitBattleScene,
 	InitResultScene,
-	InitTutorialScene
+	InitTutorialScene,
+	InitGameoverScene,
+	InitStageClearScene
 };
 
 //各シーン終了処理
@@ -45,7 +49,9 @@ static SceneUninit Uninit[] =
 	UninitTitleScene,
 	UninitBattleScene,
 	UninitResultScene,
-	UninitTutorialScene
+	UninitTutorialScene,
+	UninitGameoverScene,
+	UninitStageClearScene,
 };
 
 //各シーン更新処理
@@ -55,7 +61,9 @@ static SceneFunc Update[] =
 	UpdateTitleScene,
 	UpdateBattleScene,
 	UpdateResultScene,
-	UpdateTutorialScene
+	UpdateTutorialScene,
+	UpdateGameoverScene,
+	UpdateStageClearScene,
 };
 
 //各シーン描画処理
@@ -65,7 +73,9 @@ static SceneFunc Draw[] =
 	DrawTitleScene,
 	DrawBattleScene,
 	DrawResultScene,
-	DrawTutorialScene
+	DrawTutorialScene,
+	DrawGameoverScene,
+	DrawStageClearScene,
 };
 
 /**************************************

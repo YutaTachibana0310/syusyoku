@@ -88,7 +88,7 @@ void InitBonusTelop(int num)
 	{
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-		for(int i = 0; i < BONUSTELOP_TEX_MAX; i++)
+		for (int i = 0; i < BONUSTELOP_TEX_MAX; i++)
 			texture[i] = CreateTextureFromFile((LPSTR)TexturePath[i], pDevice);
 
 		MakeVertexBonusTelop();
@@ -108,6 +108,14 @@ void UninitBonusTelop(int num)
 {
 	animIndex = BONUSTELOP_SEQUENCE_MAX;
 	cntFrame = 0;
+
+	if (num == 0)
+	{
+		for (int i = 0; i < BONUSTELOP_TEX_MAX; i++)
+		{
+			SAFE_RELEASE(texture[i]);
+		}
+	}
 }
 
 /**************************************
@@ -120,9 +128,11 @@ void UpdateBonusTelop(void)
 
 	cntFrame++;
 
+	//移動アニメーション
 	float t = (float)cntFrame / (float)AnimDuration[animIndex];
 	offsetPos = GetEasingValueVector(t, StartOffset[animIndex], EndOffset[animIndex], AnimType[animIndex]);
 
+	//遷移判定
 	if (cntFrame == AnimDuration[animIndex])
 	{
 		cntFrame = 0;
