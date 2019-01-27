@@ -13,7 +13,7 @@
 ***************************************/
 #define DATACONTAINER_POWEUP_MAX		(7)		//パワーアップ最大回数
 #define DATACONTAINER_SHOTLEVEL_MAX		(4)		//ショットレベルマックス
-#define DATACONTAINER_PlAYERHP_INIT		(1.0f)//HP初期値
+#define DATACONTAINER_PlAYERHP_INIT		(100.0f)//HP初期値
 /**************************************
 構造体定義
 ***************************************/

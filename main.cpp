@@ -53,7 +53,7 @@ LPDIRECT3DDEVICE9	g_pD3DDevice = NULL;	// Deviceオブジェクト(描画に必要)
 static D3DXCOLOR backColor = D3DCOLOR_RGBA(0, 0, 0, 0);
 int					g_nCountFPS;			// FPSカウンタ
 #ifdef _DEBUG
-DefineScene startScene = LogoScene;
+DefineScene startScene = BattleScene;
 #endif
 bool				g_bDispDebug = true;	// デバッグ表示ON/OFF
 static bool flgPause = false;

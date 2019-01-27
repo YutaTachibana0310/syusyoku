@@ -24,12 +24,13 @@
 #include "monotone.h"
 #include "gameoverTelop.h"
 #include "sceneFade.h"
+#include "stageClearTelop.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define STAGECLEAR_DURATION			(300)
-
+#define STAGECLEAR_DURATION			(240)
+			
 /**************************************
 構造体定義
 ***************************************/
@@ -52,8 +53,10 @@ HRESULT InitStageClearScene(int num)
 
 	//TODO:テロップ再生,BGM再生
 
+	SetStageClearTelop();
 	ChangeStatePlayerModel(PlayerTitleLaunch);
 	cntFrame = 0;
+	FadeInBGM(BGM_STAGECLEAR, 30);
 	return S_OK;
 }
 
@@ -71,7 +74,6 @@ void UninitStageClearScene(int num)
 	UninitPlayerMissileSmog(num);
 	UninitPlayerBulletTrail(num);
 	UninitEnemyManager(num);
-
 }
 
 /**************************************
@@ -102,6 +104,7 @@ void UpdateStageClearScene(void)
 	if (cntFrame == STAGECLEAR_DURATION)
 	{
 		SetSceneFade(TitleScene);
+		FadeOutBGM(BGM_STAGECLEAR, 60);
 	}
 }
 

@@ -564,6 +564,9 @@
     <ClCompile Include="stageClearScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="stageClearTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -868,6 +871,9 @@
     </ClInclude>
     <ClInclude Include="stageClearScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="stageClearTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@
 #include "lockonLevelGUI.h"
 #include "lockonNumGUI.h"
 #include "gameoverTelop.h"
+#include "stageClearTelop.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -93,6 +94,7 @@ void InitGUIManager(int num)
 	InitLockonLevelGUI(num);
 	InitLockonNumGUI(num);
 	InitGameoverTelop(num);
+	InitStageClearTelop(num);
 
 	//LoadSettingsGUI();
 }
@@ -120,6 +122,7 @@ void UninitGUIManager(int num)
 	UninitLockonLevelGUI(num);
 	UninitLockonNumGUI(num);
 	UninitGameoverTelop(num);
+	UninitStageClearTelop(num);
 }
 
 /**************************************
@@ -137,6 +140,7 @@ void UpdateGUIManager(void)
 	UpdateLockonLevelGUI();
 	UpdateLockonNumGUI();
 	UpdateGameoverTelop();
+	UpdateStageClearTelop();
 }
 
 /**************************************
@@ -220,16 +224,7 @@ void DrawGUIonGameoverScene(void)
 ***************************************/
 void DrawGUIonStageClearScene(void)
 {
-	DrawScoreGUI();
-	DrawHpGUI();
-	DrawLockonGUI();
-	DrawPowerUpTelop();
-	DrawBonusTelop();
-	DrawBonusTimeGUI();
-	DrawLockonLevelGUI();
-	DrawLockonNumGUI();
-
-	//TODO:テロップ病が
+	DrawStageClearTelop();
 }
 
 /**************************************
