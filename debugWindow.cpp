@@ -246,3 +246,27 @@ void DebugProgressBar(float fraction, const char* label, D3DXVECTOR2 size)
 {
 	ImGui::ProgressBar(fraction, ImVec2(size.x, size.y), label);
 }
+
+/*************************************
+3次元ベクトル入力処理
+***************************************/
+void DebugInputVector3(const char* label, D3DXVECTOR3 *vec)
+{
+	ImGui::InputFloat3(label, (float*)vec);
+}
+
+/*************************************
+2次元ベクトル入力処理
+***************************************/
+void DebugInputVector2(const char* label, D3DXVECTOR2 *vec)
+{
+	ImGui::InputFloat2(label, (float*)vec);
+}
+
+/*************************************
+float型入力処理
+***************************************/
+void DebugInputFloat(const char* label, float *var)
+{
+	ImGui::InputFloat(label, var);
+}

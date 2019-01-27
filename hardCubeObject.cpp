@@ -21,16 +21,16 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define HARDCUBE_EFFECT_NAME		"data/EFFECT/cubeObject.fx"	//シェーダ名
-#define HARDCUBE_SIZE				(10.0f)						//オブジェクトサイズ
-#define HARDCUBE_NUM_MAX			(128)						//最大数
-#define HARDCUBE_VTX_NUM			(24)						//頂点数
-#define HARDCUBE_FIELD_NUM			(6)							//面数
-#define HARDCUBE_TEX_NUM			(3)							//テクスチャ数
-#define HARDCUBE_INIT_HP			(10.0f)						//初期HP
-#define BONUSCUBE_CAMERA_SHAKE_LENGTH (10.0f)					//撃破時のカメラの揺れ幅
-#define HARDCUBE_SPEED_MAX		(10.0f)							//最大スピード
-#define HARDCUBE_SPEED_MIN		(5.0f)							//最小スピード
+#define HARDCUBE_EFFECT_NAME			"data/EFFECT/cubeObject.fx"	//シェーダ名
+#define HARDCUBE_SIZE					(10.0f)						//オブジェクトサイズ
+#define HARDCUBE_NUM_MAX				(128)						//最大数
+#define HARDCUBE_VTX_NUM				(24)						//頂点数
+#define HARDCUBE_FIELD_NUM				(6)							//面数
+#define HARDCUBE_TEX_NUM				(3)							//テクスチャ数
+#define HARDCUBE_INIT_HP				(10.0f)						//初期HP
+#define BONUSCUBE_CAMERA_SHAKE_LENGTH	(10.0f)						//撃破時のカメラの揺れ幅
+#define HARDCUBE_SPEED_MAX				(10.0f)						//最大スピード
+#define HARDCUBE_SPEED_MIN				(5.0f)						//最小スピード
 #define PARTICLE_HARDCUBE_COLOR			(D3DCOLOR_RGBA(255, 121, 121, 255))
 
 //テクスチャ名

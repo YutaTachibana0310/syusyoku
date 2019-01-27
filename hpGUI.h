@@ -8,7 +8,7 @@
 #define _HPGUI_H_
 
 #include "main.h"
-
+#include <stdio.h>
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -26,5 +26,7 @@ void InitHpGUI(int num);
 void UninitHpGUI(int num);
 void UpdateHpGUI(void);
 void DrawHpGUI(void);
-
+void DrawHPGUIDebug(void);
+void SaveSettinghpGUIGUI(FILE *fp);
+void LoadSettingshpGUIGUI(FILE *fp);
 #endif

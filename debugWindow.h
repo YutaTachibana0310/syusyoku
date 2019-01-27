@@ -46,5 +46,7 @@ void DebugTreeExpansion(bool isOpen);
 bool DebugTreePush(const char *label);
 void DebugTreePop(void);
 void DebugProgressBar(float fraction, const char* label, D3DXVECTOR2 size = D3DXVECTOR2(-1.0f, 0.0f));
-
+void DebugInputVector3(const char* label, D3DXVECTOR3 *vec);
+void DebugInputVector2(const char* label, D3DXVECTOR2 *vec);
+void DebugInputFloat(const char* label, float *var);
 #endif

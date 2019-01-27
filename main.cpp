@@ -354,9 +354,6 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// ライトの初期化
 	InitLight();
 
-	//シーンマネージャ初期化
-	InitSceneManager(&currentScene);
-
 	//パーティクルマネージャ初期化
 	InitParticleManager(0);
 
@@ -382,6 +379,9 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//GUIマネージャ初期化
 	InitGUIManager(0);
+
+	//シーンマネージャ初期化
+	InitSceneManager(&currentScene);
 
 	//デバッグウィンドウ初期化
 #ifdef USE_DEBUGWINDOW

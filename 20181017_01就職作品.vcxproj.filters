@@ -378,9 +378,6 @@
     <ClCompile Include="imgui\imgui_impl_dx9.cpp">
       <Filter>ソース ファイル\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="debugWindow.cpp">
-      <Filter>ソース ファイル\System</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui_impl_win32.cpp">
       <Filter>ソース ファイル\imgui</Filter>
     </ClCompile>
@@ -530,6 +527,9 @@
     </ClCompile>
     <ClCompile Include="lockonNumGUI.cpp">
       <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="debugWindow.cpp">
+      <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -719,9 +719,6 @@
     <ClInclude Include="imgui\imstb_textedit.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="debugWindow.h">
-      <Filter>ヘッダー ファイル\System</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imgui_impl_win32.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
@@ -820,6 +817,9 @@
     </ClInclude>
     <ClInclude Include="lockonNumGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="debugWindow.h">
+      <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,8 @@
 //
 //=====================================
 #include "hpGUI.h"
+#include "GUIManager.h"
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -34,6 +36,13 @@ static LPDIRECT3DTEXTURE9 numTex = NULL;
 static VERTEX_2D vtxWk[NUM_VERTEX];
 static HPGUI hpGUI;
 
+static D3DXVECTOR3 backInitPos = HPGUI_TEXTURE_INITPOS;
+static D3DXVECTOR2 backSize = D3DXVECTOR2(HPGUI_TEXTURE_SIZE_X, HPGUI_TEXTURE_SIZE_Y);
+
+static D3DXVECTOR3 numInitPos = HPGUI_NUMTEX_INITPOS;
+static D3DXVECTOR2 numSize = D3DXVECTOR2(HPGUI_NUMTEX_SIZE_X, HPGUI_NUMTEX_SIZE_Y);
+static float numOffset = HPGUI_NUMTEX_OFFSET;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -51,8 +60,8 @@ void InitHpGUI(int num)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	HPGUI *ptr = &hpGUI;
 
-	ptr->angle = atan2f(HPGUI_NUMTEX_SIZE_Y, HPGUI_NUMTEX_SIZE_X);
-	ptr->radius = D3DXVec2Length(&(D3DXVECTOR2(HPGUI_NUMTEX_SIZE_X, HPGUI_NUMTEX_SIZE_Y)));
+	ptr->angle = atan2f(numSize.y, numSize.x);
+	ptr->radius = D3DXVec2Length(&(numSize));
 
 	MakeVertexHPGUI();
 
@@ -107,9 +116,8 @@ void DrawHpGUI(void)
 	{
 		num = hp % 10;
 
-		SetVertexHPNum(i * HPGUI_NUMTEX_OFFSET);
-		SetTextureHPNum(num);
-		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
+		SetVertexHPNum(i * numOffset);
+		DrawGUINum(GUI_NUMSCORE, num, vtxWk);
 	}
 }
 
@@ -136,10 +144,10 @@ HRESULT MakeVertexHPGUI(void)
 ***************************************/
 void SetVertexHPGUI(void)
 {
-	vtxWk[0].vtx = HPGUI_TEXTURE_INITPOS;
-	vtxWk[1].vtx = HPGUI_TEXTURE_INITPOS + D3DXVECTOR3(HPGUI_TEXTURE_SIZE_X, 0.0f, 0.0f);
-	vtxWk[2].vtx = HPGUI_TEXTURE_INITPOS + D3DXVECTOR3(0.0f, HPGUI_TEXTURE_SIZE_Y, 0.0f);
-	vtxWk[3].vtx = HPGUI_TEXTURE_INITPOS + D3DXVECTOR3(HPGUI_TEXTURE_SIZE_X, HPGUI_TEXTURE_SIZE_Y, 0.0f);
+	vtxWk[0].vtx = backInitPos;
+	vtxWk[1].vtx = backInitPos + D3DXVECTOR3(backSize.x, 0.0f, 0.0f);
+	vtxWk[2].vtx = backInitPos + D3DXVECTOR3(0.0f, backSize.y, 0.0f);
+	vtxWk[3].vtx = backInitPos + D3DXVECTOR3(backSize.x, backSize.y, 0.0f);
 
 	vtxWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
 	vtxWk[1].tex = D3DXVECTOR2(1.0f, 0.0f);
@@ -152,7 +160,7 @@ HP数字頂点設定処理
 ***************************************/
 void SetVertexHPNum(float offset)
 {
-	D3DXVECTOR3 pos = HPGUI_NUMTEX_INITPOS;
+	D3DXVECTOR3 pos = numInitPos;
 	pos.x += offset;
 
 	HPGUI *ptr = &hpGUI;
@@ -180,4 +188,58 @@ void SetTextureHPNum(int num)
 	vtxWk[1].tex = D3DXVECTOR2((x + 1) * sizeX, y * sizeY);
 	vtxWk[2].tex = D3DXVECTOR2(x * sizeX, (y + 1) * sizeY);
 	vtxWk[3].tex = D3DXVECTOR2((x + 1) * sizeX, (y + 1) * sizeY);
+
+	HPGUI *ptr = &hpGUI;
+
+	ptr->angle = atan2f(numSize.y, numSize.x);
+	ptr->radius = D3DXVec2Length(&(numSize));
+}
+
+/**************************************
+デバッグウィンドウ表示
+***************************************/
+void DrawHPGUIDebug(void)
+{
+	static bool open = true;
+	DebugTreeExpansion(open);
+	if (DebugTreePush("HPGUI"))
+	{
+		DebugInputVector3(STR(backInitPos), &backInitPos);
+		DebugInputVector2(STR(backSize), &backSize);
+
+		DebugNewLine();
+		DebugInputVector3(STR(numInitPos), &numInitPos);
+		DebugInputVector2(STR(numSize), &numSize);
+		DebugInputFloat(STR(numOffset), &numOffset);
+
+		DebugTreePop();
+	}
+	HPGUI *ptr = &hpGUI;
+	ptr->angle = atan2f(numSize.y, numSize.x);
+	ptr->radius = D3DXVec2Length(&(numSize));
+
+}
+
+/**************************************
+設定保存処理
+***************************************/
+void SaveSettinghpGUIGUI(FILE *fp)
+{
+	fwrite(&backInitPos, sizeof(backInitPos), 1, fp);
+	fwrite(&backSize, sizeof(backSize), 1, fp);
+	fwrite(&numInitPos, sizeof(numInitPos), 1, fp);
+	fwrite(&numSize, sizeof(numSize), 1, fp);
+	fwrite(&numOffset, sizeof(numOffset), 1, fp);
+}
+
+/**************************************
+設定読み込み処理
+***************************************/
+void LoadSettingshpGUIGUI(FILE *fp)
+{
+	fread(&backInitPos, sizeof(backInitPos), 1, fp);
+	fread(&backSize, sizeof(backSize), 1, fp);
+	fread(&numInitPos, sizeof(numInitPos), 1, fp);
+	fread(&numSize, sizeof(numSize), 1, fp);
+	fread(&numOffset, sizeof(numOffset), 1, fp);
 }

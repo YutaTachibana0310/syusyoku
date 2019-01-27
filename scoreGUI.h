@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// プレイヤーバレットヘッダ [ScoreGUI.h]
+// スコアGUIヘッダ [ScoreGUI.h]
 // Author : GP11A341 21 立花雄太
 //
 //=============================================================================
@@ -8,7 +8,7 @@
 #define _SCOREGUI_H_
 
 #include "main.h"
-
+#include <stdio.h>
 // マクロ定義
 
 
@@ -23,9 +23,11 @@ typedef struct {
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
-HRESULT InitScoreGUI(int num);							//プレイヤーバレット初期化処理
-void UninitScoreGUI(int num);								//プレイヤーバレット終了処理
-void UpdateScoreGUI(void);								//プレイヤーバレット更新処理
-void DrawScoreGUI(void);								//プレイヤーバレット描画処理
-
+HRESULT InitScoreGUI(int num);							//スコアGUI初期化処理
+void UninitScoreGUI(int num);							//スコアGUI終了処理
+void UpdateScoreGUI(void);								//スコアGUI更新処理
+void DrawScoreGUI(void);								//スコアGUI描画処理
+void DrawScoreGUIDebug(void);
+void SaveSettingScoreGUI(FILE *fp);
+void LoadSettingsScoreGUI(FILE *fp);
 #endif
