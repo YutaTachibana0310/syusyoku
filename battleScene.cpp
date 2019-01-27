@@ -64,7 +64,6 @@ HRESULT InitBattleScene(int num)
 	if (num != 0)
 	{
 		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-		PlayBGM(BGM_BATTLESCENE);
 	}
 
 
@@ -82,6 +81,7 @@ HRESULT InitBattleScene(int num)
 	InitBattleController(num);
 
 	RegisterDebugTimer(BATTLESCENE_LABEL);
+	PlayBGM(BGM_BATTLESCENE);
 
 	return S_OK;
 }
@@ -91,18 +91,20 @@ HRESULT InitBattleScene(int num)
 ******************************************************************************/
 void UninitBattleScene(int num)
 {
-	UninitBattleController(num);
+	//NOTE:ゲームオーバーシーンで状態を使い回すのでマスク
 
-	UninitCloud(num);
-	UninitPlayerModel(num);
-	UninitPlayerBullet(num);
-	UninitTargetSite(num);
-	UninitRockonSite(num);
-	UninitMeshCylinder(num);
-	UninitPlayerMissile(num);
-	UninitPlayerMissileSmog(num);
-	UninitPlayerBulletTrail(num);
-	UninitEnemyManager(num);
+	UninitBattleController(num);
+	//UninitCloud(num);
+	//UninitPlayerModel(num);
+	//UninitPlayerBullet(num);
+	//UninitTargetSite(num);
+	//UninitRockonSite(num);
+	//UninitMeshCylinder(num);
+	//UninitPlayerMissile(num);
+	//UninitPlayerMissileSmog(num);
+	//UninitPlayerBulletTrail(num);
+	//UninitEnemyManager(num);
+	FadeOutBGM(BGM_BATTLESCENE, 30);
 }
 
 /******************************************************************************
@@ -148,7 +150,7 @@ void UpdateBattleScene(void)
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
-		SetScene(ResultScene);
+		SetScene(GamveoverScene);
 	}
 }
 

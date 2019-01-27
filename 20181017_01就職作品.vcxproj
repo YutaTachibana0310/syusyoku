@@ -181,6 +181,8 @@
     <ClCompile Include="flare.cpp" />
     <ClCompile Include="fractal.cpp" />
     <ClCompile Include="fuzzyLogic.cpp" />
+    <ClCompile Include="gameoverScene.cpp" />
+    <ClCompile Include="gameoverTelop.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="hardCubeBezier.cpp" />
     <ClCompile Include="hardCubeCharge.cpp" />
@@ -307,6 +309,8 @@
     <ClInclude Include="flare.h" />
     <ClInclude Include="fractal.h" />
     <ClInclude Include="fuzzyLogic.h" />
+    <ClInclude Include="gameoverScene.h" />
+    <ClInclude Include="gameoverTelop.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="hardCubeObject.h" />
     <ClInclude Include="hpGUI.h" />

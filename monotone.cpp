@@ -14,6 +14,7 @@
 マクロ定義
 ***************************************/
 #define MONOTONE_EFFECT_NAME		"data/EFFECT/monotone.fx"
+#define MONOTONE_FADE_DURATION		(30)
 
 /**************************************
 構造体定義
@@ -23,7 +24,7 @@
 グローバル変数
 ***************************************/
 static LPD3DXEFFECT effect;
-static D3DXHANDLE tech;
+static D3DXHANDLE tech, power;
 static bool active = false;
 static int cntFrame;
 
@@ -48,10 +49,12 @@ void InitMonotone(int num)
 	effect->GetTechniqueByName("tech");
 	effect->SetTechnique(tech);
 
+	power = effect->GetParameterByName(NULL, STR(power));
+
 	initialized = true;
 
-	active = true;
-	SetPostEffectUse(EFFECT_MONOTONE, true);
+	active = false;
+	SetPostEffectUse(EFFECT_MONOTONE,  active);
 }
 
 /**************************************
@@ -70,7 +73,13 @@ void UninitMonotone(int num)
 ***************************************/
 void UpdateMonotone(void)
 {
+	if (!active)
+		return;
 
+	cntFrame++;
+	float t = (float)cntFrame / (float)MONOTONE_FADE_DURATION;
+	float setPower = EaseLinear(t, 0.0f, 1.0f);
+	effect->SetFloat(power, setPower);
 }
 
 /**************************************
@@ -90,4 +99,13 @@ void DrawMonotone(void)
 
 	effect->EndPass();
 	effect->End();
+}
+
+/**************************************
+セット処理
+***************************************/
+void SetMonotoneEffect(bool state)
+{
+	active = state;
+	SetPostEffectUse(EFFECT_MONOTONE, state);
 }

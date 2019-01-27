@@ -1,11 +1,11 @@
 //=====================================
 //
-//モノトーンヘッダ[monotone.h]
+//ゲームオーバーテロップヘッダ[gameoverTelop.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _MONOTONE_H_
-#define _MONOTONE_H_
+#ifndef _GAMEOVERTELOP_H_
+#define _GAMEOVERTELOP_H_
 
 #include "main.h"
 
@@ -20,9 +20,10 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitMonotone(int num);
-void UninitMonotone(int num);
-void UpdateMonotone(void);
-void DrawMonotone(void);
-void SetMonotoneEffect(bool state);
+void InitGameoverTelop(int num);
+void UninitGameoverTelop(int num);
+void UpdateGameoverTelop(void);
+void DrawGameoverTelop(void);
+void SetGameoverTelop(void);
+
 #endif

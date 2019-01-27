@@ -14,6 +14,7 @@
 #include "bonusTimeGUI.h"
 #include "lockonLevelGUI.h"
 #include "lockonNumGUI.h"
+#include "gameoverTelop.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -40,6 +41,7 @@ void DrawGUIonBattleScene(void);
 void DrawGUIonLogoScene(void);
 void DrawGUIonTitleScene(void);
 void LoadSettingsGUI(void);
+void DrawGUIonGameoverScene(void);
 
 /**************************************
 グローバル変数
@@ -58,7 +60,8 @@ static DrawGUI Draw[DefineSceneMax] = {
 	DrawGUIonTitleScene,
 	DrawGUIonBattleScene,
 	NULL,
-	NULL
+	NULL,
+	DrawGUIonGameoverScene,
 };
 
 /**************************************
@@ -87,6 +90,7 @@ void InitGUIManager(int num)
 	InitSceneFade(num);
 	InitLockonLevelGUI(num);
 	InitLockonNumGUI(num);
+	InitGameoverTelop(num);
 
 	//LoadSettingsGUI();
 }
@@ -113,6 +117,7 @@ void UninitGUIManager(int num)
 	UninitSceneFade(num);
 	UninitLockonLevelGUI(num);
 	UninitLockonNumGUI(num);
+	UninitGameoverTelop(num);
 }
 
 /**************************************
@@ -129,6 +134,7 @@ void UpdateGUIManager(void)
 	UpdateSceneFade();
 	UpdateLockonLevelGUI();
 	UpdateLockonNumGUI();
+	UpdateGameoverTelop();
 }
 
 /**************************************
@@ -197,6 +203,14 @@ void DrawGUIonBattleScene(void)
 		fclose(fp);
 	}
 #endif
+}
+
+/**************************************
+ゲームオーバーシーン描画処理
+***************************************/
+void DrawGUIonGameoverScene(void)
+{
+	DrawGameoverTelop();
 }
 
 /**************************************

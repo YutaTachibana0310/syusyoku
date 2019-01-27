@@ -23,6 +23,7 @@ enum DefineScene
 	BattleScene,
 	ResultScene,
 	TutorialScene,
+	GamveoverScene,
 	DefineSceneMax
 };
 
