@@ -14,7 +14,7 @@
 マクロ定義
 ***************************************/
 #define INTERBAL_GETTIMER		(20)
-
+//#define USE_DEBUGFUNC _DEBUG
 /**************************************
 構造体定義
 ***************************************/
@@ -35,7 +35,11 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARA
 ***************************************/
 LRESULT DebugWindPrcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+#ifdef USE_DEBUGFUNC
 	return ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
+#else
+	return S_OK;
+#endif
 }
 
 /**************************************
@@ -43,12 +47,14 @@ LRESULT DebugWindPrcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 ***************************************/
 void InitDebugWindow(HWND hWnd, LPDIRECT3DDEVICE9 pDevice)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::CreateContext();
 
 	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX9_Init(pDevice);
 
 	ImGui::StyleColorsDark();
+#endif
 }
 
 /**************************************
@@ -56,8 +62,10 @@ void InitDebugWindow(HWND hWnd, LPDIRECT3DDEVICE9 pDevice)
 ***************************************/
 void UninitDebugWindow(int num)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();
+#endif
 }
 
 /**************************************
@@ -65,11 +73,13 @@ void UninitDebugWindow(int num)
 ***************************************/
 void UpdateDebugWindow(void)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui_ImplWin32_NewFrame();
 	ImGui_ImplDX9_NewFrame();
 	ImGui::NewFrame();
 
 	cntFrame++;
+#endif
 }
 
 /**************************************
@@ -77,6 +87,7 @@ void UpdateDebugWindow(void)
 ***************************************/
 void DrawDebugWindow(void)
 {
+#ifdef USE_DEBUGFUNC
 	static bool enableDraw = true;
 
 	if (GetKeyboardTrigger(DIK_D) && GetKeyboardPress(DIK_LCONTROL))
@@ -90,6 +101,7 @@ void DrawDebugWindow(void)
 	
 	ImGui::Render();
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+#endif
 }
 
 /**************************************
@@ -97,7 +109,9 @@ void DrawDebugWindow(void)
 ***************************************/
 void BeginTimerCount(void)
 {
+#ifdef USE_DEBUGFUNC
 	QueryPerformanceCounter(&timeCountBegin);
+#endif
 }
 
 /**************************************
@@ -105,6 +119,7 @@ void BeginTimerCount(void)
 ***************************************/
 double GetProgressTimerCount(void)
 {
+#ifdef USE_DEBUGFUNC
 	//タイマーの周波数を取得
 	LARGE_INTEGER frequencyTimer;
 	QueryPerformanceFrequency(&frequencyTimer);
@@ -118,6 +133,7 @@ double GetProgressTimerCount(void)
 	double msec = (double)span * 1000 / (double)frequencyTimer.QuadPart;
 
 	return msec;
+#endif
 }
 
 /**************************************
@@ -125,10 +141,12 @@ double GetProgressTimerCount(void)
 ***************************************/
 void GetTimerCount(LARGE_INTEGER *ptr)
 {
+#ifdef	USE_DEBUGFUNC
 	if (cntFrame % INTERBAL_GETTIMER != 0)
 		return;
 
 	QueryPerformanceCounter(ptr);
+#endif
 }
 
 /**************************************
@@ -136,6 +154,7 @@ void GetTimerCount(LARGE_INTEGER *ptr)
 ***************************************/
 double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end)
 {
+#ifdef USE_DEBUGFUNC
 	//タイマーの周波数取得
 	LARGE_INTEGER frequency;
 	QueryPerformanceFrequency(&frequency);
@@ -145,6 +164,9 @@ double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end)
 	double msec = (double)span * 1000.0f / (double)frequency.QuadPart;
 
 	return msec;
+#else
+	return 0.0f;
+#endif
 }
 
 /*************************************
@@ -152,7 +174,9 @@ double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end)
 ***************************************/
 void BeginDebugWindow(const char *label)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::Begin(label);
+#endif
 }
 
 /*************************************
@@ -160,7 +184,9 @@ void BeginDebugWindow(const char *label)
 ***************************************/
 void EndDebugWindow(const char *label)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::End();
+#endif
 }
 
 /*************************************
@@ -168,11 +194,13 @@ void EndDebugWindow(const char *label)
 ***************************************/
 void DebugText(const char *str, ...)
 {
+#ifdef USE_DEBUGFUNC
 	va_list ap;
 	va_start(ap, str);
 	ImGui::TextV(str, ap);
 	//ImGui::Text(str, ap);
 	va_end(ap);
+#endif
 }
 
 /*************************************
@@ -180,7 +208,11 @@ void DebugText(const char *str, ...)
 ***************************************/
 bool DebugButton(const char *label)
 {
+#ifdef USE_DEBUGFUNC
 	return ImGui::Button(label);
+#else
+	return false;
+#endif
 }
 
 /*************************************
@@ -188,7 +220,9 @@ bool DebugButton(const char *label)
 ***************************************/
 void DebugSliderFloat(const char *label, float *adr, float min, float max)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::SliderFloat(label, adr, min, max);
+#endif
 }
 
 /*************************************
@@ -196,7 +230,9 @@ void DebugSliderFloat(const char *label, float *adr, float min, float max)
 ***************************************/
 void DebugColorEditor(const char *label, float array[4])
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::ColorEdit4(label, array);
+#endif
 }
 
 /*************************************
@@ -204,7 +240,9 @@ void DebugColorEditor(const char *label, float array[4])
 ***************************************/
 void DebugNewLine(void)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::NewLine();
+#endif
 }
 
 /*************************************
@@ -212,7 +250,9 @@ void DebugNewLine(void)
 ***************************************/
 void DebugSameLine(void)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::SameLine();
+#endif
 }
 
 /*************************************
@@ -220,7 +260,9 @@ void DebugSameLine(void)
 ***************************************/
 void DebugTreeExpansion(bool isOpen)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::SetNextTreeNodeOpen(isOpen, ImGuiSetCond_Once);
+#endif
 }
 
 /*************************************
@@ -228,7 +270,9 @@ void DebugTreeExpansion(bool isOpen)
 ***************************************/
 bool DebugTreePush(const char *label)
 {
+#ifdef USE_DEBUGFUNC
 	return ImGui::TreeNode(label);
+#endif
 }
 
 /*************************************
@@ -236,7 +280,9 @@ bool DebugTreePush(const char *label)
 ***************************************/
 void DebugTreePop(void)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::TreePop();
+#endif
 }
 
 /*************************************
@@ -244,7 +290,9 @@ void DebugTreePop(void)
 ***************************************/
 void DebugProgressBar(float fraction, const char* label, D3DXVECTOR2 size)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::ProgressBar(fraction, ImVec2(size.x, size.y), label);
+#endif
 }
 
 /*************************************
@@ -252,7 +300,9 @@ void DebugProgressBar(float fraction, const char* label, D3DXVECTOR2 size)
 ***************************************/
 void DebugInputVector3(const char* label, D3DXVECTOR3 *vec)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::InputFloat3(label, (float*)vec);
+#endif
 }
 
 /*************************************
@@ -260,7 +310,9 @@ void DebugInputVector3(const char* label, D3DXVECTOR3 *vec)
 ***************************************/
 void DebugInputVector2(const char* label, D3DXVECTOR2 *vec)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::InputFloat2(label, (float*)vec);
+#endif
 }
 
 /*************************************
@@ -268,5 +320,7 @@ float型入力処理
 ***************************************/
 void DebugInputFloat(const char* label, float *var)
 {
+#ifdef USE_DEBUGFUNC
 	ImGui::InputFloat(label, var);
+#endif
 }

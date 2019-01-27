@@ -126,7 +126,4 @@ void DrawStageClearScene(void)
 	DrawPlayerBulletTrail();
 
 	DrawParticleManager();
-
-	DrawRockonSite();
-	DrawTargetSite();
 }
