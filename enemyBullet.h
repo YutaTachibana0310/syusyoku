@@ -8,6 +8,7 @@
 #define _ENEMYBULLET_H_
 
 #include "main.h"
+#include "collider.h"
 
 /**************************************
 マクロ定義
@@ -25,7 +26,7 @@ typedef struct
 
 	D3DXVECTOR3 moveDir;
 	float speed;
-
+	COLLIDER_CUBE collider;
 }ENEMYBULLET;
 /**************************************
 プロトタイプ宣言

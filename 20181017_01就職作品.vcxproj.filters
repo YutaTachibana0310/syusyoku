@@ -163,6 +163,9 @@
     <Filter Include="ヘッダー ファイル\Effect\PostEffect">
       <UniqueIdentifier>{d31f67a1-9544-4f41-a7b7-63555c4b8621}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Battle\BattleSystem\collision">
+      <UniqueIdentifier>{e4c8130e-da6a-4550-9490-2b4df78210db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -378,6 +381,9 @@
     <ClCompile Include="imgui\imgui_impl_dx9.cpp">
       <Filter>ソース ファイル\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="debugWindow.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
     <ClCompile Include="imgui\imgui_impl_win32.cpp">
       <Filter>ソース ファイル\imgui</Filter>
     </ClCompile>
@@ -416,9 +422,6 @@
     </ClCompile>
     <ClCompile Include="collider.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="collisionManager.cpp">
-      <Filter>ソース ファイル\Battle\BattleSystem</Filter>
     </ClCompile>
     <ClCompile Include="hardCubeObject.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject</Filter>
@@ -528,8 +531,11 @@
     <ClCompile Include="lockonNumGUI.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="debugWindow.cpp">
-      <Filter>ソース ファイル\FrameWork</Filter>
+    <ClCompile Include="collisionManager.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="cubeObjectCollision.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -719,6 +725,9 @@
     <ClInclude Include="imgui\imstb_textedit.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="debugWindow.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
     <ClInclude Include="imgui\imgui_impl_win32.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
     </ClInclude>
@@ -817,9 +826,6 @@
     </ClInclude>
     <ClInclude Include="lockonNumGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="debugWindow.h">
-      <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
