@@ -33,6 +33,7 @@
 #define PLAYER_TEXTURE_MAX				(19)
 #define PLAYERMODEL_MODELNAME_DEBUG		"data/MODEL/airplane000.x"
 #define PLAYERMODEL_COLLIDER_LENGTH		(D3DXVECTOR3(6.0f, 4.0f, 14.0f))
+#define PLAYERMODE_INVINCIBLE_DURATION	(180)
 
 /**************************************
 構造体定義
@@ -210,6 +211,12 @@ void UpdatePlayerModel(void)
 		ptr->rot.x += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.x * PLAYER_ROTATEMAGNI);
 		ptr->rot.y += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.y * PLAYER_ROTATEMAGNI);
 		ptr->rot.z += Clampf(-PLATER_ROTATEVALUE_MAX, PLATER_ROTATEVALUE_MAX, diff.z * PLAYER_ROTATEMAGNI);
+
+		//無敵時間の終了を判定
+		if (ptr->cntFrame - ptr->invincibleStart > PLAYERMODE_INVINCIBLE_DURATION)
+		{
+			ptr->isInvincible = false;
+		}
 
 		//衝突空間への登録を更新
 		RemoveObjectFromSpace(oft);

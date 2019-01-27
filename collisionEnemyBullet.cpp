@@ -8,10 +8,14 @@
 #include "enemyBullet.h"
 #include "playerModel.h"
 #include "cameraShaker.h"
+#include "bulletParticle.h"
+#include "dataContainer.h"
 
 /**************************************
 マクロ定義
 ***************************************/
+#define ENEMYBULLET_EMMITT_PARTICLENUM		(30)
+#define ENEMYBULLET_DAMAGE					(-5.0f)
 
 /**************************************
 構造体定義
@@ -47,7 +51,10 @@ void CheckCollisionEnemyBullet(COLLISION_MANAGER *manager)
 		for (; playerOFT != NULL; playerOFT = playerOFT->next)
 		{
 			PLAYERMODEL *player = (PLAYERMODEL*)playerOFT->object;
-			CheckCollisionEnemyBulletLower(cntCell, player, false, manager);
+			if (!player->isInvincible)
+			{
+				CheckCollisionEnemyBulletLower(cntCell, player, false, manager);
+			}
 		}
 	}
 }
@@ -82,7 +89,14 @@ bool CheckCollisionEnemyBulletLower(DWORD elem, PLAYERMODEL *player, bool isChec
 			ENEMYBULLET *bullet = (ENEMYBULLET*)bulletOFT->object;
 			if (ChechHitBoundingCube(&bullet->collider, &player->collider))
 			{
-				SetCameraShaker(5.0f);
+				//SetCameraShaker(5.0f);
+				EmmittBulletParticle(&bullet->pos, BULLETEXPL_NORMAL, ENEMYBULLET_EMMITT_PARTICLENUM);
+				AddPlayerHP(ENEMYBULLET_DAMAGE);
+				bullet->active = false;
+
+				//プレイヤーを無敵にセット
+				player->invincibleStart = player->cntFrame;
+				player->isInvincible = true;
 			}
 
 			//登録されている次のバレットへ
@@ -120,7 +134,14 @@ bool CheckCollisionEnemyBulletUpper(DWORD elem, PLAYERMODEL *player, COLLISION_M
 				ENEMYBULLET *bullet = (ENEMYBULLET*)bulletOFT->object;
 				if (ChechHitBoundingCube(&bullet->collider, &player->collider))
 				{
-					SetCameraShaker(5.0f);
+					//SetCameraShaker(5.0f);
+					EmmittBulletParticle(&bullet->pos, BULLETEXPL_NORMAL, ENEMYBULLET_EMMITT_PARTICLENUM);
+					AddPlayerHP(ENEMYBULLET_DAMAGE);
+					bullet->active = false;
+
+					//プレイヤーを無敵にセット
+					player->invincibleStart = player->cntFrame;
+					player->isInvincible = true;
 				}
 
 				//次のバレットへ

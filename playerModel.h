@@ -78,6 +78,9 @@ typedef struct
 
 	COLLIDER_CUBE collider;
 
+	int invincibleStart;
+	bool isInvincible;
+
 }PLAYERMODEL;
 
 /**************************************

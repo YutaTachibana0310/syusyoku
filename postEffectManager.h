@@ -18,6 +18,7 @@
 ***************************************/
 enum DEFINE_POSTEFFECT {
 	EFFECT_SHOCKBLUR,
+	EFFECT_MONOTONE,
 	EFFECT_MAX,
 };
 /**************************************

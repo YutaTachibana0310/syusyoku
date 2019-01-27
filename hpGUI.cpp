@@ -7,6 +7,7 @@
 #include "hpGUI.h"
 #include "GUIManager.h"
 #include "debugWindow.h"
+#include "dataContainer.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -109,7 +110,7 @@ void DrawHpGUI(void)
 
 	//”Žš‚ð•`‰æ
 	pDevice->SetTexture(0, numTex);
-	int hp = 100;
+	int hp = (int)GetPlayerHP();
 	int digitMax = (hp == 0) ? 1 : (int)log10f((float)hp) + 1;
 	int num = 0;
 	for (int i = 0; i < digitMax; i++, hp /= 10)

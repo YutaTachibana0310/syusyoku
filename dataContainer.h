@@ -32,4 +32,6 @@ int GetCurrentScore(void);
 int GetHighScore(void);
 int GetLockonMax(void);
 
+float GetPlayerHP(void);
+void AddPlayerHP(float value);
 #endif

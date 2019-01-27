@@ -158,11 +158,12 @@ void UpdateEnemyHomingBullet(void)
 	D3DXMATRIX mtxTranslate;
 	D3DXMATRIX *pPos = &pos[0];
 
-	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++, pPos++, oft++)
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++, pPos++)
 	{
 
 		if (!ptr->active)
 		{
+			vtxColor[i].a = 0.0f;
 			continue;
 		}
 
@@ -188,12 +189,15 @@ void UpdateEnemyHomingBullet(void)
 		GetInvRotBattleCamera(pPos);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 		D3DXMatrixMultiply(pPos, pPos, &mtxTranslate);
+	}
 
+	ptr = &bullet[0];
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, oft++, ptr++)
+	{
 		//衝突空間への登録更新
 		RemoveObjectFromSpace(oft);
 		if (ptr->active)
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_ENEMYHOMINGBULLET);
-
 	}
 
 	//頂点バッファにメモリコピー

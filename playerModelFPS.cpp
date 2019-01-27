@@ -121,6 +121,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 void EnterPlayerModelFPS(PLAYERMODEL *player)
 {
 	player->cntFrame = 0;
+	player->isInvincible = false;
 	player->atkInterbal = PLAYER_HOMINGATK_INTERBAL;
 
 	//ターゲットサイト設定処理

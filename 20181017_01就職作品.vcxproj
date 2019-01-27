@@ -143,6 +143,7 @@
     <ClCompile Include="bonusTelop.cpp" />
     <ClCompile Include="bonusTimeGUI.cpp" />
     <ClCompile Include="bossCubeObject.cpp" />
+    <ClCompile Include="bulletParticle.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
     <ClCompile Include="collisionBonusCube.cpp" />
     <ClCompile Include="collisionEnemyBullet.cpp" />
@@ -211,6 +212,7 @@
     <ClCompile Include="middleEnemyModel.cpp" />
     <ClCompile Include="middleEnemyMove.cpp" />
     <ClCompile Include="middleEnemyWait.cpp" />
+    <ClCompile Include="monotone.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
@@ -272,6 +274,7 @@
     <ClInclude Include="bonusTelop.h" />
     <ClInclude Include="bonusTimeGUI.h" />
     <ClInclude Include="bossCubeObject.h" />
+    <ClInclude Include="bulletParticle.h" />
     <ClInclude Include="cameraShaker.h" />
     <ClInclude Include="collisionManager.h" />
     <ClInclude Include="cubeObject.h" />
@@ -321,6 +324,7 @@
     <ClInclude Include="memoryAllocater.h" />
     <ClInclude Include="meshCylinder.h" />
     <ClInclude Include="middleEnemyModel.h" />
+    <ClInclude Include="monotone.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerBulletTrail.h" />
     <ClInclude Include="playerMissile.h" />
@@ -381,6 +385,16 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\monotone.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">2.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="data\EFFECT\particle.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>

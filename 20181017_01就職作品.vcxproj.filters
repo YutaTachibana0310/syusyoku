@@ -549,6 +549,12 @@
     <ClCompile Include="collisionEnemyHomingBullet.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
     </ClCompile>
+    <ClCompile Include="bulletParticle.cpp">
+      <Filter>ソース ファイル\Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="monotone.cpp">
+      <Filter>ソース ファイル\Effect\PostEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -821,9 +827,6 @@
     <ClInclude Include="DebugTimer.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="shockBlur.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="screenBG.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
@@ -838,6 +841,15 @@
     </ClInclude>
     <ClInclude Include="lockonNumGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="bulletParticle.h">
+      <Filter>ヘッダー ファイル\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="monotone.h">
+      <Filter>ヘッダー ファイル\Effect\PostEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="shockBlur.h">
+      <Filter>ヘッダー ファイル\Effect\PostEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -854,6 +866,9 @@
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="data\EFFECT\shockBlur.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\monotone.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
