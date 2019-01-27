@@ -543,6 +543,12 @@
     <ClCompile Include="collisionBonusCube.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
     </ClCompile>
+    <ClCompile Include="collisionEnemyBullet.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionEnemyHomingBullet.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">

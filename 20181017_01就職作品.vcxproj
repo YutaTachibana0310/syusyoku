@@ -145,6 +145,8 @@
     <ClCompile Include="bossCubeObject.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
     <ClCompile Include="collisionBonusCube.cpp" />
+    <ClCompile Include="collisionEnemyBullet.cpp" />
+    <ClCompile Include="collisionEnemyHomingBullet.cpp" />
     <ClCompile Include="collisionHardCube.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="cubeObject.cpp" />

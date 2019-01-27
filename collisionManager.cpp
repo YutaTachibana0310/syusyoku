@@ -58,6 +58,8 @@ DWORD GetPointElem(float posX, float posY);									//À•W¨üŒ`4•ª–Ø—v‘f”Ô†•ÏŠ
 void CheckCollisionCubeObject(COLLISION_MANAGER *manager);		//ƒLƒ…[ƒuƒIƒuƒWƒFƒNƒg‚ÌÕ“Ë”»’è
 void CheckCollisionHardCube(COLLISION_MANAGER *manager);		//ƒn[ƒhƒLƒ…[ƒu‚ÌÕ“Ë”»’è
 void CheckCollisionBonusCube(COLLISION_MANAGER *manager);		//ƒ{[ƒiƒXƒLƒ…[ƒu‚ÌÕ“Ë”»’è
+void CheckCollisionEnemyBullet(COLLISION_MANAGER *manager);		//ƒGƒlƒ~[ƒoƒŒƒbƒg‚ÌÕ“Ë”»’è
+void CheckCollisionEnemyHomingBullet(COLLISION_MANAGER *manager);//ƒGƒlƒ~[ƒz[ƒ~ƒ“ƒOƒoƒŒƒbƒg‚ÌÕ“Ë”»’è
 
 /**************************************
 ‰Šú‰»ˆ—
@@ -113,7 +115,9 @@ void UpdateCollisionManager(void)
 	CheckCollisionCubeObject(&manager);
 	CheckCollisionHardCube(&manager);
 	CheckCollisionBonusCube(&manager);
-	
+	CheckCollisionEnemyBullet(&manager);
+	CheckCollisionEnemyHomingBullet(&manager);
+
 	BeginDebugWindow("CollisionManager");
 	DebugText("CheckCount : %d", cnt);
 	EndDebugWindow("CollisionManager");

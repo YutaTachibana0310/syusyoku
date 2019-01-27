@@ -32,7 +32,7 @@
 #define PLATER_ROTATEVALUE_MAX			(0.085f)
 #define PLAYER_TEXTURE_MAX				(19)
 #define PLAYERMODEL_MODELNAME_DEBUG		"data/MODEL/airplane000.x"
-#define PLAYERMODEL_COLLIDER_LENGTH		(D3DXVECTOR3(20.0f, 20.0f, 20.0f))
+#define PLAYERMODEL_COLLIDER_LENGTH		(D3DXVECTOR3(6.0f, 4.0f, 14.0f))
 
 /**************************************
 \‘¢‘Ì’è‹`
@@ -264,6 +264,8 @@ void DrawPlayerModel(void)
 			pDevice->SetTexture(0, texture[j]);
 			mesh->DrawSubset(j);
 		}
+
+		DrawBoundingCube(&ptr->collider);
 	}
 
 	pDevice->SetMaterial(&matDef);

@@ -16,7 +16,7 @@
 #define ENEMYBULLET_TEXTURE_SIZE_X		(5)
 #define ENEMYBULLET_TEXTURE_SIZE_Y		(5)
 #define ENEMYBULLET_DISABLE_BORDER_Z	(-200.0f)
-#define ENEMYBULLET_COLLIDER_LENGTH		(10.0f)
+#define ENEMYBULLET_COLLIDER_LENGTH		(2.0f)
 
 /**************************************
 \‘¢‘Ì’è‹`
@@ -57,7 +57,7 @@ void InitEnemyBullet(int num)
 		ptr->collider.pos = &ptr->pos;
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->collider.length = D3DXVECTOR3(ENEMYBULLET_COLLIDER_LENGTH, ENEMYBULLET_COLLIDER_LENGTH, ENEMYBULLET_COLLIDER_LENGTH);
-		CreateOFT(oft, &ptr);
+		CreateOFT(oft, (void*)ptr);
 		ptr->active = false;
 	}
 }
@@ -159,6 +159,9 @@ void DrawEnemyBullet(void)
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+		if(ptr->active)
+			DrawBoundingCube(&ptr->collider);
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);

@@ -20,7 +20,7 @@
 #define ENEMYHOMINGBULLET_DISABLE_BORDER_Z		(-200.0f)
 #define ENEMYHOMINGBULLET_ACCELERATION_MAX		(500.0f)
 #define ENEMYHOMINGBULLET_SHADER_NAME			"data/EFFECT/particle.fx"
-#define ENEMYHOMINGBULLET_COLLIDER_LENGTH		(10.0f)
+#define ENEMYHOMINGBULLET_COLLIDER_LENGTH		(2.0f)
 
 /**************************************
 ç\ë¢ëÃíËã`
@@ -111,7 +111,7 @@ void InitEnemyHomingBullet(int num)
 
 	ENEMYHOMINGBULLET *ptr = &bullet[0];
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
-	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++, oft)
+	for (int i = 0; i < ENEMYHOMINGBULLET_MAX; i++, ptr++, oft++)
 	{
 		ptr->active = false;
 		vtxColor[i].r = vtxColor[i].g = vtxColor[i].b = 1.0f;
@@ -119,7 +119,7 @@ void InitEnemyHomingBullet(int num)
 		ptr->collider.offset = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		ptr->collider.length = D3DXVECTOR3(ENEMYHOMINGBULLET_COLLIDER_LENGTH, ENEMYHOMINGBULLET_COLLIDER_LENGTH, ENEMYHOMINGBULLET_COLLIDER_LENGTH);
 		ptr->alpha = 0.0f;
-		CreateOFT(oft, ptr);
+		CreateOFT(oft, (void*)ptr);
 	}
 }
 
@@ -262,6 +262,12 @@ void DrawEnemyHomingBullet(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
+
+	for (int i = 0 ; i < ENEMYHOMINGBULLET_MAX; i++)
+	{
+		if (bullet[i].active)
+			DrawBoundingCube(&bullet[i].collider);
+	}
 }
 
 #if 0
