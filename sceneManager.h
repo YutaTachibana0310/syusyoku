@@ -24,6 +24,7 @@ enum DefineScene
 	ResultScene,
 	TutorialScene,
 	GamveoverScene,
+	StageClearScene,
 	DefineSceneMax
 };
 

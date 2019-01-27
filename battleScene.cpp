@@ -23,6 +23,9 @@
 #include "collisionManager.h"
 #include "battleController.h"
 #include "bgmManager.h"
+#include "dataContainer.h"
+#include "stageData.h"
+#include "hardCubeObject.h"
 
 #include "debugWindow.h"
 #include "DebugTimer.h"
@@ -66,7 +69,7 @@ HRESULT InitBattleScene(int num)
 		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
-
+	InitDataContainer(num);
 	InitCloud(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
@@ -79,6 +82,7 @@ HRESULT InitBattleScene(int num)
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
 	InitBattleController(num);
+	
 
 	RegisterDebugTimer(BATTLESCENE_LABEL);
 	PlayBGM(BGM_BATTLESCENE);
@@ -125,6 +129,7 @@ void UpdateBattleScene(void)
 	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 	UpdateRockonSite();
 	GetTimerCount(&endSiteUpdate);
+
 	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 
 	UpdateMeshCylinder();
@@ -148,9 +153,16 @@ void UpdateBattleScene(void)
 	UpdateCollisionManager();
 	CountDebugTimer(BATTLESCENE_LABEL, "CollisionUpdate");
 
-	if (GetKeyboardTrigger(DIK_RETURN))
+	//ゲームオーバー判定
+	if (GetPlayerHP() <= 0.0f)
 	{
 		SetScene(GamveoverScene);
+	}
+
+	//ゲームクリア判定
+	if (IsStageEnd() && IsAllHardCubeDisable())
+	{
+		SetScene(StageClearScene);
 	}
 }
 

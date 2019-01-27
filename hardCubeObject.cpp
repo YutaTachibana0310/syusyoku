@@ -97,6 +97,7 @@ static LPDIRECT3DINDEXBUFFER9 indexBuff;				//インデックスバッファ
 static D3DXMATRIX mtxWorld[HARDCUBE_NUM_MAX];			//ワールド変換行列
 static HARD_CUBE_OBJECT cube[HARDCUBE_NUM_MAX];			//ハードキューブ配列
 static OBJECT_FOR_TREE objectForTree[HARDCUBE_NUM_MAX];	//衝突判定用OBJECT_FOR_TREE配列
+static bool iaAllCubeDisable;
 
 //入場処理関数テーブル
 static funcHardCube Enter[HardCubeStateMax] = {
@@ -165,6 +166,7 @@ void InitHardCubeObject(int num)
 
 		CreateOFT(oft, (void*)ptr);
 	}
+	iaAllCubeDisable = false;
 
 	//初回のみの初期化
 	if (!initialized)
@@ -370,6 +372,7 @@ void CalcHardCubeWorldMatrix(void)
 ***************************************/
 void CheckDestroyHardCube(void)
 {
+	iaAllCubeDisable = true;
 	HARD_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
 	{
@@ -390,6 +393,11 @@ void CheckDestroyHardCube(void)
 			}
 			
 			DisableHardCube(ptr);
+		}
+		else
+		{
+			//一つでもアクティブなハードキューブがある
+			iaAllCubeDisable = false;
 		}
 	}
 }
@@ -545,4 +553,12 @@ HARD_CUBE_OBJECT* SetHardCubeObjectDirectData(D3DXVECTOR3 startPos, D3DXVECTOR3 
 	}
 
 	return NULL;
+}
+
+/**************************************
+ハードキューブ全滅判定
+***************************************/
+bool IsAllHardCubeDisable(void)
+{
+	return iaAllCubeDisable;
 }

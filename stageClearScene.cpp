@@ -1,10 +1,10 @@
 //=====================================
 //
-//ゲームオーバーシーン処理[gameoverScene.cpp]
+//stageClearScene処理[stageClearScene.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "gameoverScene.h"
+#include "stageClearScene.h"
 #include "sceneManager.h"
 #include "input.h"
 #include "playerModel.h"
@@ -25,11 +25,10 @@
 #include "gameoverTelop.h"
 #include "sceneFade.h"
 
-
 /**************************************
 マクロ定義
 ***************************************/
-#define GAMEOVER_DURATION		(300)
+#define STAGECLEAR_DURATION			(300)
 
 /**************************************
 構造体定義
@@ -47,21 +46,21 @@ static int cntFrame;
 /**************************************
 初期化処理
 ***************************************/
-HRESULT InitGameoverScene(int num)
+HRESULT InitStageClearScene(int num)
 {
-	//NOTE:バトルシーンの状態を使い回すので各オブジェクトの初期化はしない
+	//NOTE*バトルシーンの状態を使い回すので各オブジェクトの初期化はしない
 
-	SetMonotoneEffect(true);
-	SetGameoverTelop();
+	//TODO:テロップ再生,BGM再生
+
+	ChangeStatePlayerModel(PlayerTitleLaunch);
 	cntFrame = 0;
-	FadeInBGM(BGM_GAMEOVER, 30, false);
 	return S_OK;
 }
 
 /**************************************
 終了処理
 ***************************************/
-void UninitGameoverScene(int num)
+void UninitStageClearScene(int num)
 {
 	UninitPlayerModel(num);
 	UninitPlayerBullet(num);
@@ -73,18 +72,15 @@ void UninitGameoverScene(int num)
 	UninitPlayerBulletTrail(num);
 	UninitEnemyManager(num);
 
-	SetMonotoneEffect(false);
-	FadeOutBGM(BGM_GAMEOVER, 10);
 }
 
 /**************************************
 更新処理
 ***************************************/
-void UpdateGameoverScene(void)
+void UpdateStageClearScene(void)
 {
-
 	UpdatePlayerBullet();
-	//UpdatePlayerModel();
+	UpdatePlayerModel();
 	UpdateBattleCamera();
 
 	UpdateRockonSite();
@@ -103,7 +99,7 @@ void UpdateGameoverScene(void)
 	UpdateCollisionManager();
 
 	cntFrame++;
-	if (cntFrame == GAMEOVER_DURATION)
+	if (cntFrame == STAGECLEAR_DURATION)
 	{
 		SetSceneFade(TitleScene);
 	}
@@ -112,7 +108,7 @@ void UpdateGameoverScene(void)
 /**************************************
 描画処理
 ***************************************/
-void DrawGameoverScene(void)
+void DrawStageClearScene(void)
 {
 	SetBattleCamera();
 	DrawMeshCylinder();

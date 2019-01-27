@@ -79,16 +79,16 @@ HRESULT InitTitleScene(int num)
 		initialized = true;
 	}
 
+	InitMeshCylinder(num);
+	InitPlayerModel(num);
+	InitPlayerBullet(num);
+	InitPlayerBulletTrail(num);
+
 	if (num != 0)
 	{
 		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		PlayBGM(BGM_TITLESCENE);
 		SetTitleTextureAlpha(0.0f);
-
-		InitMeshCylinder(num);
-		InitPlayerModel(num);
-		InitPlayerBullet(num);
-		InitPlayerBulletTrail(num);
 
 		state = TITLESCENE_FADEIN;
 		cntFrame = 0;
@@ -125,7 +125,7 @@ void UninitTitleScene(int num)
 ******************************************************************************/
 void UpdateTitleScene(void)
 {
-	
+
 	if (state == TITLESCENE_FADEIN)
 	{
 		cntFrame++;

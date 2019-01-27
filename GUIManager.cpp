@@ -42,6 +42,7 @@ void DrawGUIonLogoScene(void);
 void DrawGUIonTitleScene(void);
 void LoadSettingsGUI(void);
 void DrawGUIonGameoverScene(void);
+void DrawGUIonStageClearScene(void);
 
 /**************************************
 グローバル変数
@@ -62,6 +63,7 @@ static DrawGUI Draw[DefineSceneMax] = {
 	NULL,
 	NULL,
 	DrawGUIonGameoverScene,
+	DrawGUIonStageClearScene
 };
 
 /**************************************
@@ -211,6 +213,23 @@ void DrawGUIonBattleScene(void)
 void DrawGUIonGameoverScene(void)
 {
 	DrawGameoverTelop();
+}
+
+/**************************************
+ステージクリアシーン描画処理
+***************************************/
+void DrawGUIonStageClearScene(void)
+{
+	DrawScoreGUI();
+	DrawHpGUI();
+	DrawLockonGUI();
+	DrawPowerUpTelop();
+	DrawBonusTelop();
+	DrawBonusTimeGUI();
+	DrawLockonLevelGUI();
+	DrawLockonNumGUI();
+
+	//TODO:テロップ病が
 }
 
 /**************************************

@@ -561,6 +561,9 @@
     <ClCompile Include="gameoverScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="stageClearScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -861,6 +864,9 @@
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
     <ClInclude Include="gameoverScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="stageClearScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>

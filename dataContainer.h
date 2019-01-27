@@ -23,8 +23,10 @@
 プロトタイプ宣言
 ***************************************/
 void InitDataContainer(int num);
+
 void AddScore(int addValue);
 void SetPowerUp(void);
+void InitPlayerHP(void);
 
 int GetShotLevel(void);
 int GetLockonLevel(void);

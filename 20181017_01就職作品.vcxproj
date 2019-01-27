@@ -254,6 +254,7 @@
     <ClCompile Include="smallEnemyWait.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
+    <ClCompile Include="stageClearScene.cpp" />
     <ClCompile Include="stageData.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
@@ -363,6 +364,7 @@
     <ClInclude Include="smallEnemyModel.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="soundEffectManager.h" />
+    <ClInclude Include="stageClearScene.h" />
     <ClInclude Include="stageData.h" />
     <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />

@@ -47,7 +47,6 @@
 ***************************************/
 HRESULT InitTutorialScene(int num)
 {
-	FadeInBGM(BGM_TUTORIALSCENE, TUTORIALSCENE_FADE_DURATION);
 	InitGUIManager(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
@@ -61,6 +60,7 @@ HRESULT InitTutorialScene(int num)
 	InitEnemyManager(num);
 	InitTutorialController(num);
 
+	FadeInBGM(BGM_TUTORIALSCENE, TUTORIALSCENE_FADE_DURATION);
 	return S_OK;
 }
 
