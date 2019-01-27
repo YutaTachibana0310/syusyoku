@@ -144,9 +144,11 @@
     <ClCompile Include="bonusTimeGUI.cpp" />
     <ClCompile Include="bossCubeObject.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
+    <ClCompile Include="collisionBonusCube.cpp" />
+    <ClCompile Include="collisionHardCube.cpp" />
     <ClCompile Include="collisionManager.cpp" />
     <ClCompile Include="cubeObject.cpp" />
-    <ClCompile Include="cubeObjectCollision.cpp" />
+    <ClCompile Include="collisionCubeObject.cpp" />
     <ClCompile Include="cubeParticle.cpp" />
     <ClCompile Include="dataContainer.cpp" />
     <ClCompile Include="DebugTimer.cpp" />

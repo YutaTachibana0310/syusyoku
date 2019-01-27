@@ -534,7 +534,13 @@
     <ClCompile Include="collisionManager.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
     </ClCompile>
-    <ClCompile Include="cubeObjectCollision.cpp">
+    <ClCompile Include="collisionHardCube.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionCubeObject.cpp">
+      <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionBonusCube.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
     </ClCompile>
   </ItemGroup>
