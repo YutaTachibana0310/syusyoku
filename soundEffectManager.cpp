@@ -35,6 +35,9 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/decision16.wav"),
 	_T("data/SOUND/gun29.wav"),
 	_T("data/SOUND/bom16.wav"),
+	_T("data/SOUND/freeze06.wav"),
+	_T("data/SOUND/magic-attack-holy1.wav"),
+	_T("data/SOUND/bom30.wav"),
 };
 
 static SOUNDEFFECT se[SOUND_MAX];
@@ -163,6 +166,11 @@ void DrawDebugWindowSoundEffect(void)
 
 	DebugSliderFloat(STR(SOUND_MIDDLEEXPL), &se[SOUND_MIDDLEEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
+	DebugSliderFloat(STR(SOUND_BONUSEXPL), &se[SOUND_BONUSEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	DebugSliderFloat(STR(SOUND_BONUSSTART), &se[SOUND_BONUSSTART].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
+	DebugSliderFloat(STR(SOUND_NORMALEXPL), &se[SOUND_NORMALEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
 	if (DebugButton("Save Settings"))
 	{
@@ -184,6 +192,9 @@ void DrawDebugWindowSoundEffect(void)
 	if (DebugButton(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
 	if (DebugButton(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
 	if (DebugButton(STR(SOUND_MIDDLEEXPL))) { PlaySE(SOUND_MIDDLEEXPL); }
+	if (DebugButton(STR(SOUND_BONUSEXPL))) { PlaySE(SOUND_BONUSEXPL); }
+	if (DebugButton(STR(SOUND_BONUSSTART))) { PlaySE(SOUND_BONUSSTART); }
+	if (DebugButton(STR(SOUND_NORMALEXPL))) { PlaySE(SOUND_NORMALEXPL); }
 
 	DebugNewLine();
 	static float length = 5000.0f;

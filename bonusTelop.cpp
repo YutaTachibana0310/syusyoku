@@ -7,6 +7,7 @@
 #include "bonusTelop.h"
 #include "EasingVector.h"
 #include "bonusTimeGUI.h"
+#include "soundEffectManager.h"
 
 /**************************************
 マクロ定義
@@ -18,6 +19,7 @@
 #define BONUSTELOP_DISP_POS				(D3DXVECTOR3(SCREEN_CENTER_X, 300.0f, 0.0f))
 #define BONUSTELOP_SEQUENCE_MAX			(3)
 #define BONUSTELOP_SET_COUNT			(600)
+#define BONUSTELOP_PLAYSE_TIMING		(1)
 
 //アニメーション開始位置
 static const D3DXVECTOR3 StartOffset[BONUSTELOP_SEQUENCE_MAX] = {
@@ -228,4 +230,8 @@ void StartBonusTelopAnim(bool isStart)
 	animIndex = 0;
 	cntFrame = 0;
 	isStartTelop = isStart;
+
+	//開始テロップのみSE再生
+	if(isStart)
+		PlaySE(SOUND_BONUSSTART);
 }

@@ -38,7 +38,7 @@
 #define BONUSCUBE_MOVE_DURATION			(90)
 #define BONUSCUBE_MOVE_WAIT				(30)
 #define PARTICLE_BONUSCUBE_COLOR		(D3DCOLOR_RGBA(255, 228, 121, 255))
-#define BONUSCUBE_CAMERASHAKE_LENGTH	(20.0f)
+#define BONUSCUBE_CAMERASHAKE_LENGTH	(5.0f)
 #define BONUSCUBE_EMMITT_OFFST			(300.0f)
 #define BONUSCUBE_EMMITT_BASE			(D3DXVECTOR3(-BONUSCUBE_EMMITT_OFFST, -BONUSCUBE_EMMITT_OFFST, -100.0f))
 
@@ -399,7 +399,7 @@ void CheckDestroyBonusCube(void)
 		if (ptr->hp <= 0.0f)
 		{
 			//TODO:Œø‰Ê‰¹‚ðê—p‚Ì‚à‚Ì‚É·‚µ‘Ö‚¦
-			PlaySE(SOUND_SMALLEXPL);
+			PlaySE(SOUND_BONUSEXPL);
 			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			SetShockBlur(ptr->pos);
