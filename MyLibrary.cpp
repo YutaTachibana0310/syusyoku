@@ -44,6 +44,8 @@ void UninitMyLibrary(void)
 	{
 		if (texture[i] != NULL)
 		{
+
+
 			texture[i]->Release();
 			texture[i] = NULL;
 		}
@@ -60,6 +62,13 @@ void UninitMyLibrary(void)
 float RandomRangef(float x, float y)
 {
 	return rand() % 100 * (y - x) / 100.0f + x;
+
+	/*
+	float frand(unsigned v) {
+		unsigned res = (v >> 9) | 0x3f800000;
+		return (*(float*)&res) - 1.0f;
+	}
+	*/
 }
 
 /******************************************************************************

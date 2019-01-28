@@ -15,7 +15,7 @@
 #define ENEMYBULLETTRAIL_TEXTURE_SIZE_X		(6)
 #define ENEMYBULLETTRAIL_TEXTURE_SIZE_Y		(6)
 #define ENEMYBULLETTRAIL_LIFE_END			(20)
-#define ENEMYBULLETTRAIL_SHADER_NAME		"particle.fx"
+#define ENEMYBULLETTRAIL_SHADER_NAME		"data/EFFECT/particle.fx"
 
 /**************************************
 ç\ë¢ëÃíËã`
