@@ -33,6 +33,12 @@ typedef struct {
 	int cntMove;						//移動回数
 }BONUS_CUBE_OBJECT;
 
+enum BATTLECONTROLLER_STATE {
+	BattleNormalTime,
+	BattleWaitBonusTimeBegin,
+	BattleBonusTime,
+	BattleStateMax
+};
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -43,5 +49,6 @@ void DrawBonusCube(void);
 
 void LockonBonusCube(void);
 bool SetBonusCube(D3DXVECTOR3 *setPos);
+bool IsAllBonusCubeDisable(void);
 
 #endif

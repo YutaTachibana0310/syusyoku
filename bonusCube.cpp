@@ -24,7 +24,7 @@
 ***************************************/
 #define BONUSCUBE_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
 #define BONUSCUBE_SIZE					(15.0f)
-#define BONUSCUBE_NUM_MAX				(4)
+#define BONUSCUBE_NUM_MAX				(9)
 #define BONUSCUBE_VTX_NUM				(24)
 #define BONUSCUBE_FIELD_NUM				(6)
 #define BONUSCUBE_TEX_NUM				(3)
@@ -101,7 +101,7 @@ static LPDIRECT3DINDEXBUFFER9 indexBuff;					//インデックスバッファ
 static D3DXMATRIX mtxWorld[BONUSCUBE_NUM_MAX];				//ワールド変換行列
 static BONUS_CUBE_OBJECT cube[BONUSCUBE_NUM_MAX];			//ボーナスキューブ配列
 static OBJECT_FOR_TREE objectForTree[BONUSCUBE_NUM_MAX];	//衝突判定用OBJECT_FOR_TREE配列
-
+static bool isAllCubeDisable;								//キューブ全滅判定
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -382,14 +382,19 @@ void CalcBonusCubeWorldMatrix(void)
 ***************************************/
 void CheckDestroyBonusCube(void)
 {
+	isAllCubeDisable = true;
 	BONUS_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < BONUSCUBE_NUM_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
+		{
+			isAllCubeDisable = false;
 			continue;
+		}
 
 		if (ptr->hp <= 0.0f)
 		{
+			//TODO:効果音を専用のものに差し替え
 			PlaySE(SOUND_SMALLEXPL);
 			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
@@ -508,4 +513,12 @@ void StartBonusCubeMove(BONUS_CUBE_OBJECT *ptr)
 		ptr->goalPos.y = RandomRangef(-BONUSCUBE_MOVE_Y_RANGE, BONUSCUBE_MOVE_Y_RANGE);
 		ptr->goalPos.z = RandomRangef(BONUSCUBE_MOVE_Z_NEAR, BONUSCUBE_MOVE_Z_FAR);
 	}
+}
+
+/**************************************
+ボーナスキューブ全滅判定
+***************************************/
+bool IsAllBonusCubeDisable(void)
+{
+	return isAllCubeDisable;
 }

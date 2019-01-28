@@ -567,6 +567,15 @@
     <ClCompile Include="stageClearTelop.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="battleNormalTime.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="battleBonusTime.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="battleWaitBonusTimeBegin.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
