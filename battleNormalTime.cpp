@@ -73,7 +73,7 @@ void EmittFromStageData(BATTLECONTROLLER *controller)
 		else
 		{
 			ChangeStateBattleController(BattleWaitBonusTimeBegin);
-			SetBonusCube(&data->initPos);
+			SetBonusCube();
 		}
 	}
 }

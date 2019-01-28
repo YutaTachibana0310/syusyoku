@@ -142,7 +142,7 @@ void EmmittBonusCube(D3DXVECTOR3 *setPos)
 {
 	//テロップ表示とか
 
-	SetBonusCube(setPos);
+	SetBonusCube();
 }
 
 /**************************************
