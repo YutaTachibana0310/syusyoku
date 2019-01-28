@@ -152,7 +152,7 @@ void DrawShcokBlur(void)
 /**************************************
 ƒZƒbƒgˆ—
 ***************************************/
-void SetShockBlur(D3DXVECTOR3 setPos)
+void SetShockBlur(D3DXVECTOR3 setPos, float power)
 {
 	D3DXMATRIX view, projection;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -166,6 +166,7 @@ void SetShockBlur(D3DXVECTOR3 setPos)
 
 	float center[] = { setPos.x / SCREEN_WIDTH, setPos.y / SCREEN_HEIGHT };
 	effect->SetFloatArray(centerTexel, center, 2);
+	effect->SetFloat(blurPower, power);
 	effect->CommitChanges();
 
 	active = true;

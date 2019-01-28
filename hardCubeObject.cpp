@@ -28,10 +28,12 @@
 #define HARDCUBE_FIELD_NUM				(6)							//面数
 #define HARDCUBE_TEX_NUM				(3)							//テクスチャ数
 #define HARDCUBE_INIT_HP				(10.0f)						//初期HP
-#define BONUSCUBE_CAMERA_SHAKE_LENGTH	(10.0f)						//撃破時のカメラの揺れ幅
+#define HARDCUBEHOMING_CAMERA_SHAKE_LENGTH	(10.0f)					//撃破時のカメラの揺れ幅
+#define HARDCUBENORMAL_CAMERA_SHAKE_LENGTH	(1.0f)					//撃墜時のカメラの揺れ幅
 #define HARDCUBE_SPEED_MAX				(10.0f)						//最大スピード
 #define HARDCUBE_SPEED_MIN				(5.0f)						//最小スピード
 #define PARTICLE_HARDCUBE_COLOR			(D3DCOLOR_RGBA(255, 121, 121, 255))
+#define HARDCUBE_NORMAL_BLURPOWER		(0.5f)
 
 //テクスチャ名
 static const char* TextureName[HARDCUBE_TEX_NUM] = {
@@ -387,7 +389,7 @@ void CheckDestroyHardCube(void)
 
 			if (ptr->type == HardCubeHomingType)
 			{
-				SetCameraShaker(BONUSCUBE_CAMERA_SHAKE_LENGTH);
+				SetCameraShaker(HARDCUBEHOMING_CAMERA_SHAKE_LENGTH);
 				SetShockBlur(ptr->pos);
 				PlaySE(SOUND_MIDDLEEXPL);
 			}

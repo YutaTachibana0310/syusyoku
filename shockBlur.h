@@ -25,5 +25,5 @@ void UninitShcokBlur(int num);
 void UpdateShcokBlur(void);
 void DrawShcokBlur(void);
 
-void SetShockBlur(D3DXVECTOR3 setPos);
+void SetShockBlur(D3DXVECTOR3 setPos, float power = 5.0f);
 #endif

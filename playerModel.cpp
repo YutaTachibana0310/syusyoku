@@ -271,8 +271,9 @@ void DrawPlayerModel(void)
 			pDevice->SetTexture(0, texture[j]);
 			mesh->DrawSubset(j);
 		}
-
+#ifdef _DEBUG
 		DrawBoundingCube(&ptr->collider);
+#endif
 	}
 
 	pDevice->SetMaterial(&matDef);

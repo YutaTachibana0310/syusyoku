@@ -18,27 +18,29 @@
 #include "shockBlur.h"
 
 #include "debugWindow.h"
-
+#include <math.h>
 /**************************************
 マクロ定義
 ***************************************/
 #define BONUSCUBE_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
 #define BONUSCUBE_SIZE					(15.0f)
-#define BONUSCUBE_NUM_MAX				(4)
+#define BONUSCUBE_NUM_MAX				(9)
 #define BONUSCUBE_VTX_NUM				(24)
 #define BONUSCUBE_FIELD_NUM				(6)
 #define BONUSCUBE_TEX_NUM				(3)
-#define BONUSCUBE_INIT_HP				(2000.0f)
+#define BONUSCUBE_INIT_HP				(30.0f)
 #define BONUSCUBE_MOVE_MAX				(10)
 #define BONUSCUBE_MOVE_Z_NEAR			(300.0f)
-#define BONUSCUBE_MOVE_Z_FAR			(600.0f)
+#define BONUSCUBE_MOVE_Z_FAR			(1000.0f)
 #define BONUSCUBE_MOVE_END_Z			(10000.0f)
 #define BONUSCUBE_MOVE_X_RANGE			(300.0f)
 #define BONUSCUBE_MOVE_Y_RANGE			(200.0f)
 #define BONUSCUBE_MOVE_DURATION			(90)
 #define BONUSCUBE_MOVE_WAIT				(30)
 #define PARTICLE_BONUSCUBE_COLOR		(D3DCOLOR_RGBA(255, 228, 121, 255))
-#define BONUSCUBE_CAMERASHAKE_LENGTH	(20.0f)
+#define BONUSCUBE_CAMERASHAKE_LENGTH	(5.0f)
+#define BONUSCUBE_EMMITT_OFFST			(300.0f)
+#define BONUSCUBE_EMMITT_BASE			(D3DXVECTOR3(-BONUSCUBE_EMMITT_OFFST, -BONUSCUBE_EMMITT_OFFST, -100.0f))
 
 static const char* TextureName[BONUSCUBE_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit09.png",
@@ -60,36 +62,36 @@ typedef struct {
 ***************************************/
 //単位頂点
 static BONUSCUBE_VTX vtx[BONUSCUBE_VTX_NUM] = {
-//上
-{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f },
-{ BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f },
-{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-{ BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-//前
-{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f },
-{ BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f },
-{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f },
-{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f },
-//下
-{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f },
-{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f },
-{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f },
-{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f },
-//後ろ
-{ BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f },
-{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f },
-{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-//左
-{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },
-{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f },
-{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f },
-{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f },
-//右
-{ BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-{ BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f },
-{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+	//上
+	{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f },
+	{ BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f },
+	{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	//前
+	{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f },
+	{ BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f },
+	{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f },
+	{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f },
+	//下
+	{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f },
+	{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f },
+	{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f },
+	{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f },
+	//後ろ
+	{ BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f },
+	{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f },
+	{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+	{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+	//左
+	{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },
+	{ -BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f },
+	{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f },
+	{ -BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f },
+	//右
+	{ BONUSCUBE_SIZE, BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+	{ BONUSCUBE_SIZE, BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+	{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE,-BONUSCUBE_SIZE, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+	{ BONUSCUBE_SIZE,-BONUSCUBE_SIZE, BONUSCUBE_SIZE, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
 };
 
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff, worldBuff;			//頂点バッファ
@@ -101,6 +103,8 @@ static LPDIRECT3DINDEXBUFFER9 indexBuff;					//インデックスバッファ
 static D3DXMATRIX mtxWorld[BONUSCUBE_NUM_MAX];				//ワールド変換行列
 static BONUS_CUBE_OBJECT cube[BONUSCUBE_NUM_MAX];			//ボーナスキューブ配列
 static OBJECT_FOR_TREE objectForTree[BONUSCUBE_NUM_MAX];	//衝突判定用OBJECT_FOR_TREE配列
+static bool isAllCubeDisable;								//キューブ全滅判定
+static bool escapedAnyCube;									//キューブ逃走判定
 
 /**************************************
 プロトタイプ宣言
@@ -330,6 +334,7 @@ void MoveBonusCube(void)
 			ptr->cntMove++;
 			if (ptr->cntMove > BONUSCUBE_MOVE_MAX)
 			{
+				escapedAnyCube = true;
 				DisableBonusCube(ptr);
 			}
 			else
@@ -383,21 +388,31 @@ void CalcBonusCubeWorldMatrix(void)
 void CheckDestroyBonusCube(void)
 {
 	BONUS_CUBE_OBJECT *ptr = &cube[0];
+	int cntActive = 0;
 	for (int i = 0; i < BONUSCUBE_NUM_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
+		{
 			continue;
+		}
 
 		if (ptr->hp <= 0.0f)
 		{
-			PlaySE(SOUND_SMALLEXPL);
+			//TODO:効果音を専用のものに差し替え
+			PlaySE(SOUND_BONUSEXPL);
 			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			SetShockBlur(ptr->pos);
 			DisableBonusCube(ptr);
 			StartBonusTime();
 		}
+		else
+		{
+			cntActive++;
+		}
 	}
+
+	isAllCubeDisable = (cntActive == 0) ? true : false;
 }
 
 /**************************************
@@ -451,26 +466,27 @@ void LockonBonusCube(void)
 /**************************************
 セット処理
 ***************************************/
-bool SetBonusCube(D3DXVECTOR3 *setPos)
+bool SetBonusCube(void)
 {
 	BONUS_CUBE_OBJECT *ptr = &cube[0];
 	OBJECT_FOR_TREE *oft = &objectForTree[0];
-	for (int i = 0; i < BONUSCUBE_NUM_MAX; i++, ptr++, oft++)
+	int loopMax = (int)sqrt(BONUSCUBE_NUM_MAX);
+	for (int i = 0; i < loopMax; i++)
 	{
-		if (ptr->active)
-			continue;
-
-		ptr->hp = BONUSCUBE_INIT_HP;
-		ptr->pos = *setPos;
-		ptr->scale = 1.0f;
-		ptr->active = true;
-		RegisterObjectToSpace(&ptr->collider, oft, OFT_BONUSCUBE);
-		ptr->cntMove = 0;
-		SetBattleControllerCountState(false);
-		StartBonusCubeMove(ptr);
-		return true;
+		for (int j = 0; j < loopMax; j++, ptr++, oft++)
+		{
+			ptr->hp = BONUSCUBE_INIT_HP;
+			ptr->pos = BONUSCUBE_EMMITT_BASE + D3DXVECTOR3(BONUSCUBE_EMMITT_OFFST * i, BONUSCUBE_EMMITT_OFFST * j, 0.0f);
+			ptr->scale = 1.0f;
+			ptr->active = true;
+			RegisterObjectToSpace(&ptr->collider, oft, OFT_BONUSCUBE);
+			ptr->cntMove = 0;
+			StartBonusCubeMove(ptr);
+		}
 	}
 
+	escapedAnyCube = false;
+	isAllCubeDisable = false;
 	return false;
 }
 
@@ -481,7 +497,6 @@ void DisableBonusCube(BONUS_CUBE_OBJECT *ptr)
 {
 	ptr->active = false;
 	ptr->scale = 0.0f;
-	SetBattleControllerCountState(true);
 	RemoveObjectFromSpace(&objectForTree[ptr->id]);
 }
 
@@ -500,7 +515,7 @@ void StartBonusCubeMove(BONUS_CUBE_OBJECT *ptr)
 	else if (ptr->cntMove == 0)
 	{
 		ptr->goalPos = ptr->startPos;
-		ptr->goalPos.z = RandomRangef(BONUSCUBE_MOVE_Z_NEAR, BONUSCUBE_MOVE_Z_FAR);
+		ptr->goalPos.z = BONUSCUBE_MOVE_Z_FAR;
 	}
 	else
 	{
@@ -508,4 +523,20 @@ void StartBonusCubeMove(BONUS_CUBE_OBJECT *ptr)
 		ptr->goalPos.y = RandomRangef(-BONUSCUBE_MOVE_Y_RANGE, BONUSCUBE_MOVE_Y_RANGE);
 		ptr->goalPos.z = RandomRangef(BONUSCUBE_MOVE_Z_NEAR, BONUSCUBE_MOVE_Z_FAR);
 	}
+}
+
+/**************************************
+ボーナスキューブ全滅判定
+***************************************/
+bool IsAllBonusCubeDisable(void)
+{
+	return isAllCubeDisable;
+}
+
+/**************************************
+ボーナスキューブ逃走判定
+***************************************/
+bool CheckEscapedBonusCube(void)
+{
+	return escapedAnyCube;
 }

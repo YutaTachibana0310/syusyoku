@@ -42,6 +42,7 @@ void UpdateBonusCube(void);
 void DrawBonusCube(void);
 
 void LockonBonusCube(void);
-bool SetBonusCube(D3DXVECTOR3 *setPos);
+bool SetBonusCube(void);
+bool IsAllBonusCubeDisable(void);
 
 #endif

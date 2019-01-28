@@ -135,8 +135,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="battleWaitBonusTimeBegin.cpp" />
+    <ClCompile Include="battleBonusTime.cpp" />
     <ClCompile Include="battleCamera.cpp" />
     <ClCompile Include="battleController.cpp" />
+    <ClCompile Include="battleNormalTime.cpp" />
     <ClCompile Include="battleScene.cpp" />
     <ClCompile Include="bgmManager.cpp" />
     <ClCompile Include="bonusCube.cpp" />
