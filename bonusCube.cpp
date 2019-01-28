@@ -24,7 +24,7 @@
 ***************************************/
 #define BONUSCUBE_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
 #define BONUSCUBE_SIZE					(15.0f)
-#define BONUSCUBE_NUM_MAX				(9)
+#define BONUSCUBE_NUM_MAX				(1)
 #define BONUSCUBE_VTX_NUM				(24)
 #define BONUSCUBE_FIELD_NUM				(6)
 #define BONUSCUBE_TEX_NUM				(3)
@@ -102,6 +102,8 @@ static D3DXMATRIX mtxWorld[BONUSCUBE_NUM_MAX];				//ワールド変換行列
 static BONUS_CUBE_OBJECT cube[BONUSCUBE_NUM_MAX];			//ボーナスキューブ配列
 static OBJECT_FOR_TREE objectForTree[BONUSCUBE_NUM_MAX];	//衝突判定用OBJECT_FOR_TREE配列
 static bool isAllCubeDisable;								//キューブ全滅判定
+static bool escapedAnyCube;									//キューブ逃走判定
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -330,6 +332,7 @@ void MoveBonusCube(void)
 			ptr->cntMove++;
 			if (ptr->cntMove > BONUSCUBE_MOVE_MAX)
 			{
+				escapedAnyCube = true;
 				DisableBonusCube(ptr);
 			}
 			else
@@ -382,13 +385,12 @@ void CalcBonusCubeWorldMatrix(void)
 ***************************************/
 void CheckDestroyBonusCube(void)
 {
-	isAllCubeDisable = true;
 	BONUS_CUBE_OBJECT *ptr = &cube[0];
+	int cntActive = 0;
 	for (int i = 0; i < BONUSCUBE_NUM_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
-		{
-			isAllCubeDisable = false;
+		{			
 			continue;
 		}
 
@@ -402,7 +404,13 @@ void CheckDestroyBonusCube(void)
 			DisableBonusCube(ptr);
 			StartBonusTime();
 		}
+		else
+		{
+			cntActive++;
+		}
 	}
+
+	isAllCubeDisable = (cntActive == 0) ? true : false;
 }
 
 /**************************************
@@ -471,8 +479,9 @@ bool SetBonusCube(D3DXVECTOR3 *setPos)
 		ptr->active = true;
 		RegisterObjectToSpace(&ptr->collider, oft, OFT_BONUSCUBE);
 		ptr->cntMove = 0;
-		SetBattleControllerCountState(false);
 		StartBonusCubeMove(ptr);
+		escapedAnyCube = false;
+		isAllCubeDisable = false;
 		return true;
 	}
 
@@ -486,7 +495,6 @@ void DisableBonusCube(BONUS_CUBE_OBJECT *ptr)
 {
 	ptr->active = false;
 	ptr->scale = 0.0f;
-	SetBattleControllerCountState(true);
 	RemoveObjectFromSpace(&objectForTree[ptr->id]);
 }
 
@@ -521,4 +529,12 @@ void StartBonusCubeMove(BONUS_CUBE_OBJECT *ptr)
 bool IsAllBonusCubeDisable(void)
 {
 	return isAllCubeDisable;
+}
+
+/**************************************
+ボーナスキューブ逃走判定
+***************************************/
+bool CheckEscapedBonusCube(void)
+{
+	return escapedAnyCube;
 }

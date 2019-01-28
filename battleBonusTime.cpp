@@ -52,6 +52,7 @@ void OnEnterBattleBonusTime(BATTLECONTROLLER *controller)
 ***************************************/
 void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 {
+	controller->cntFrame++;
 	//ボーナスタイム中にキューブを放出する期間
 	if ((int)(controller->cntFrame - controller->bonusStartFrame) < BATTLE_BONUS_DURATION)
 	{
@@ -70,9 +71,8 @@ void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 	if ((int)(controller->cntFrame - controller->bonusStartFrame) > BATTLE_BONUS_DURATION + BATTLE_BONUS_WAIT)
 	{
 		controller->cntFrame = controller->bonusStartFrame;
-		//isBonusTime = false;
-
 		FadeOutBGM(BGM_BONUSTIME, BATTLEBONUS_BGM_FADE_DURATION);
 		FadeInBGM(BGM_BATTLESCENE, BATTLEBONUS_BGM_FADE_DURATION, true);
+		ChangeStateBattleController(BattleNormalTime);
 	}
 }

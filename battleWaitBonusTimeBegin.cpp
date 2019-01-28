@@ -38,9 +38,18 @@ void OnEnterBattleWaitBonusTimeBegin(BATTLECONTROLLER *controller)
 void OnUpdateBattleWaitBonusTimeBegin(BATTLECONTROLLER *controller)
 {
 	cntFrame++;
-	if (cntFrame % BATTLE_EMMITT_INTERBAL != 0)
+	if (cntFrame % BATTLE_EMMITT_INTERBAL == 0)
 		EmmittFromFuzzy(controller);
 
 	//遷移処理
-
+	if (IsAllBonusCubeDisable())
+	{
+		//全てのボーナスキューブが撃墜されたらボーナスタイムへ遷移
+		ChangeStateBattleController(BattleBonusTime);
+	}
+	else if (CheckEscapedBonusCube())
+	{
+		//一つでもボーナスキューブを逃したらノーマルタイムへ遷移
+		ChangeStateBattleController(BattleNormalTime);
+	}
 }

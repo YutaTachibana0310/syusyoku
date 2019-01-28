@@ -36,6 +36,14 @@ typedef struct {
 	int currentState;									//現在の状態
 	int prevState;										//一つ前の状態
 }BATTLECONTROLLER;
+
+//バトルコントローラの各ステート
+enum BATTLECONTROLLER_STATE {
+	BattleNormalTime,
+	BattleWaitBonusTimeBegin,
+	BattleBonusTime,
+	BattleStateMax
+};
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -47,4 +55,5 @@ bool IsBonusTime(void);
 void SetBattleControllerCountState(bool state);
 void EmmittFromFuzzy(BATTLECONTROLLER *controller);
 void ChangeStateBattleController(int next);
+bool CheckEscapedBonusCube(void);
 #endif

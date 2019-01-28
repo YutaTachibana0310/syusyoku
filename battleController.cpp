@@ -62,8 +62,8 @@ void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller);
 /**************************************
 ƒOƒ[ƒoƒ‹•Ï”
 ***************************************/
-static bool isBonusTime;
-static bool countState;
+//static bool isBonusTime;
+//static bool countState;
 
 static BATTLECONTROLLER controller;
 
@@ -122,8 +122,8 @@ void InitBattleController(int num)
 		controller.lastEmittFrame[i] = 0xffffffff;
 	}
 
-	isBonusTime = false;
-	countState = true;
+	controller.currentState = BattleNormalTime;
+	controller.prevState = BattleNormalTime;
 }
 
 /**************************************
@@ -240,7 +240,10 @@ void EmmittOnNormalTime(void)
 ***************************************/
 bool IsBonusTime(void)
 {
-	return isBonusTime;
+	if (controller.currentState == BattleBonusTime)
+		return true;
+	else
+		return false;
 }
 
 /**************************************
@@ -248,7 +251,7 @@ bool IsBonusTime(void)
 ***************************************/
 void SetBattleControllerCountState(bool state)
 {
-	countState = state;
+	//countState = state;
 }
 
 /**************************************
@@ -280,7 +283,7 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 	float valueLength[BATTLE_SPACE_MAX];
 	float valueTime[BATTLE_SPACE_MAX];
 	float fuzzyValue[BATTLE_SPACE_MAX];
-	int decidedPos;
+	int decidedPos = 0;
 
 	D3DXVECTOR3 playerPos;
 	float maxValue = -9999.9f;
@@ -305,6 +308,6 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 		}
 	}
 
-	EmmittCubeObject(BATTLE_CUBEEMMITT_NUM, &controller->emmittPos[decidedPos], BATTLE_CUBEEMMITT_SPEED);
+	EmmittCubeObject(BATTLE_CUBEEMMITT_NUM, &(controller->emmittPos[decidedPos]), BATTLE_CUBEEMMITT_SPEED);
 	controller->lastEmittFrame[decidedPos] = controller->cntFrame;
 }

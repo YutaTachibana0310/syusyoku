@@ -14,7 +14,8 @@
 マクロ定義
 ***************************************/
 #define INTERBAL_GETTIMER		(20)
-//#define USE_DEBUGFUNC _DEBUG
+#define USE_DEBUGFUNC _DEBUG
+
 /**************************************
 構造体定義
 ***************************************/
@@ -133,6 +134,8 @@ double GetProgressTimerCount(void)
 	double msec = (double)span * 1000 / (double)frequencyTimer.QuadPart;
 
 	return msec;
+#else 
+	return 0.0f;
 #endif
 }
 
@@ -272,6 +275,8 @@ bool DebugTreePush(const char *label)
 {
 #ifdef USE_DEBUGFUNC
 	return ImGui::TreeNode(label);
+#else
+	return  false;
 #endif
 }
 

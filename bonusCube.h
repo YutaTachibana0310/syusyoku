@@ -33,12 +33,6 @@ typedef struct {
 	int cntMove;						//移動回数
 }BONUS_CUBE_OBJECT;
 
-enum BATTLECONTROLLER_STATE {
-	BattleNormalTime,
-	BattleWaitBonusTimeBegin,
-	BattleBonusTime,
-	BattleStateMax
-};
 /**************************************
 プロトタイプ宣言
 ***************************************/

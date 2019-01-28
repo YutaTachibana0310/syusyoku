@@ -47,7 +47,7 @@ void OnUpdateBattleNormalTime(BATTLECONTROLLER *controller)
 	controller->cntFrame++;
 	EmittFromStageData(controller);
 
-	if (controller->cntFrame % BATTLE_EMMITT_INTERBAL != 0)
+	if (controller->cntFrame % BATTLE_EMMITT_INTERBAL == 0)
 		EmmittFromFuzzy(controller);
 
 }
@@ -67,8 +67,13 @@ void EmittFromStageData(BATTLECONTROLLER *controller)
 	for (int i = 0; i < cntData; i++, data++)
 	{
 		if (data->type < HardCubeTypeMax)
+		{
 			SetHardCubeObjectFromData(data);
+		}
 		else
+		{
+			ChangeStateBattleController(BattleWaitBonusTimeBegin);
 			SetBonusCube(&data->initPos);
+		}
 	}
 }
