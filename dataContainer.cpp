@@ -7,13 +7,17 @@
 #include "dataContainer.h"
 #include "powerUpTelop.h"
 #include "battleController.h"
+#include <stdio.h>
+#include <string.h>
 
 /**************************************
 マクロ定義
 ***************************************/
-#define DATACONTAINER_POWEUP_MAX		(7)		//パワーアップ最大回数
-#define DATACONTAINER_SHOTLEVEL_MAX		(4)		//ショットレベルマックス
-#define DATACONTAINER_PlAYERHP_INIT		(100.0f)//HP初期値
+#define DATACONTAINER_POWEUP_MAX		(7)			//パワーアップ最大回数
+#define DATACONTAINER_SHOTLEVEL_MAX		(4)			//ショットレベルマックス
+#define DATACONTAINER_PlAYERHP_INIT		(100.0f)	//HP初期値
+#define DATACONTAINER_SAVEDATA_PATH		"data/SETTINGS/data.ini"	//ハイスコアデータのファイルパス	
+
 /**************************************
 構造体定義
 ***************************************/
@@ -22,7 +26,8 @@
 グローバル変数
 ***************************************/
 //スコア関連パラメータ
-static int currentScore, highScore;
+static int currentScore;
+static DATA_HIGHSCRE highScore[DATACONTAINER_HIGHSCORE_MAX];
 
 //パワーアップ関連パラメータ
 static int cntPowerUp, shotLevel, lockLevel;
@@ -57,7 +62,7 @@ void InitDataContainer(int num)
 {
 
 	currentScore = 0;
-	highScore = 0;			//TODO:ハイスコアの読み込みを実装
+	LoadHighScoreData();
 
 	cntPowerUp = 0;
 	shotLevel = 0;
@@ -73,7 +78,7 @@ void InitDataContainer(int num)
 void InitScoreParameter(void)
 {
 	currentScore = 0;
-	highScore = 0;				//TODO:ハイスコアの読み込みを追加
+	//highScore = 0;				//TODO:ハイスコアの読み込みを追加
 }
 
 /**************************************
@@ -166,7 +171,7 @@ int GetCurrentScore(void)
 /**************************************
 ハイスコア取得処理
 ***************************************/
-int GetHighScore(void)
+DATA_HIGHSCRE* GetHighScore(void)
 {
 	return highScore;
 }
@@ -188,4 +193,47 @@ void AddPlayerHP(float value)
 
 	if (playerHP < 0.0f)
 		playerHP = 0.0f;
+}
+
+/**************************************
+ハイスコアデータ読み込み処理
+***************************************/
+bool LoadHighScoreData(void)
+{
+	FILE *fp = NULL;
+	fopen(DATACONTAINER_SAVEDATA_PATH, "rb");
+
+	//読み込みに失敗したのでハイスコアを初期化してリターン
+	if (fp == NULL)
+	{
+		for (int i = 0; i < DATACONTAINER_HIGHSCORE_MAX; i++)
+		{
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].score = (i + 1) * 100000;
+			strcpy_s(highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName, "HAL");
+		}
+		return false;
+	}
+
+	fread(&highScore, sizeof(DATA_HIGHSCRE), DATACONTAINER_HIGHSCORE_MAX, fp);
+	fclose(fp);
+	return true;
+}
+
+/**************************************
+ハイスコアデータ保存処理
+***************************************/
+bool SaveHighScoreData(void)
+{
+	FILE *fp = NULL;
+	fopen(DATACONTAINER_SAVEDATA_PATH, "wb");
+
+	//読み込み失敗
+	if (fp == NULL)
+	{
+		return false;
+	}
+
+	fwrite(highScore, sizeof(DATA_HIGHSCRE), DATACONTAINER_HIGHSCORE_MAX, fp);
+	fclose(fp);
+	return true;
 }

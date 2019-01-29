@@ -50,9 +50,7 @@ enum BATTLECONTROLLER_STATE {
 void InitBattleController(int num);
 void UninitBattleController(int num);
 void UpdateBattleController(void);
-void StartBonusTime(void);
 bool IsBonusTime(void);
-void SetBattleControllerCountState(bool state);
 void EmmittFromFuzzy(BATTLECONTROLLER *controller);
 void ChangeStateBattleController(int next);
 bool CheckEscapedBonusCube(void);

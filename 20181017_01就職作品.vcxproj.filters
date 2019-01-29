@@ -576,6 +576,9 @@
     <ClCompile Include="battleWaitBonusTimeBegin.cpp">
       <Filter>ソース ファイル\Controller\States</Filter>
     </ClCompile>
+    <ClCompile Include="nameEntryScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -883,6 +886,9 @@
     </ClInclude>
     <ClInclude Include="stageClearTelop.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
