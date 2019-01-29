@@ -14,7 +14,7 @@
 マクロ定義
 ***************************************/
 #define INTERBAL_GETTIMER		(20)
-#define USE_DEBUGFUNC _DEBUG
+//#define USE_DEBUGFUNC _DEBUG
 
 /**************************************
 構造体定義

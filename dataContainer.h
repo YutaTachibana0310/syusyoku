@@ -14,10 +14,15 @@
 ***************************************/
 #define DATACONTAINER_SHOTLEVEL_MAX		(4)		//ショットレベル最大値
 #define DATACONTAINER_LOCKLEVEL_MAX		(3)		//ロックオンレベル最大値
-
+#define DATACONTAINER_PLAYERNAME_MAX	(5)		//プレイヤー名最大文字数
+#define DATACONTAINER_HIGHSCORE_MAX		(10)	//ハイスコアの保存数
 /**************************************
 構造体定義
 ***************************************/
+typedef struct {
+	int score;
+	char playerName[DATACONTAINER_PLAYERNAME_MAX];
+}DATA_HIGHSCRE;
 
 /**************************************
 プロトタイプ宣言
@@ -31,9 +36,13 @@ void InitPlayerHP(void);
 int GetShotLevel(void);
 int GetLockonLevel(void);
 int GetCurrentScore(void);
-int GetHighScore(void);
+DATA_HIGHSCRE* GetHighScore(void);
 int GetLockonMax(void);
 
 float GetPlayerHP(void);
 void AddPlayerHP(float value);
+
+bool LoadHighScoreData(void);
+bool SaveHighScoreData(void);
+
 #endif

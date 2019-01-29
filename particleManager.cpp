@@ -17,7 +17,7 @@
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
-#define PARTICLE_SHADER_PATH	"particle.fx"
+#define PARTICLE_SHADER_PATH	"data/EFFECT/particle.fx"
 
 #define PARTICLE_EMMITT_NUM_FIRE		(10)
 #define PARTICLE_EMMITT_NUM_SMOG		(10)

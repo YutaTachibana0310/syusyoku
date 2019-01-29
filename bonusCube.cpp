@@ -404,7 +404,6 @@ void CheckDestroyBonusCube(void)
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			SetShockBlur(ptr->pos);
 			DisableBonusCube(ptr);
-			StartBonusTime();
 		}
 		else
 		{
