@@ -1,9 +1,11 @@
 //=====================================
 //
-//テンプレート処理[template.cpp]
+//ネームエントリーシーン処理[nameEntryScene.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
+#include "nameEntryScene.h"
+#include "sceneManager.h"
 
 /**************************************
 マクロ定義
@@ -24,7 +26,7 @@
 /**************************************
 初期化処理
 ***************************************/
-void InitTemplate(int num)
+HRESULT InitNameEntryScene(int num)
 {
 
 }
@@ -32,7 +34,7 @@ void InitTemplate(int num)
 /**************************************
 終了処理
 ***************************************/
-void UninitTemplate(int num)
+void UninitNameEntryScene(int num)
 {
 
 }
@@ -40,7 +42,7 @@ void UninitTemplate(int num)
 /**************************************
 更新処理
 ***************************************/
-void UpdateTemplate(void)
+void UpdateNameEntryScene(void)
 {
 
 }
@@ -48,7 +50,7 @@ void UpdateTemplate(void)
 /**************************************
 描画処理
 ***************************************/
-void DrawTemplate(void)
+void DrawNameEntryScene(void)
 {
 
 }

@@ -1,11 +1,11 @@
 //=====================================
 //
-//テンプレートヘッダ[nameEntryScene.h]
+//ネームエントリーシーンヘッダ[nameEntryScene.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+#ifndef _NAMEENTRYSCENE_H_
+#define _NAMEENTRYSCENE_H_
 
 #include "main.h"
 
@@ -20,9 +20,9 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitTemplate(int num);
-void UninitTemplate(int num);
-void UpdateTemplate(void);
-void DrawTemplate(void);
+HRESULT InitNameEntryScene(int num);
+void UninitNameEntryScene(int num);
+void UpdateNameEntryScene(void);
+void DrawNameEntryScene(void);
 
 #endif
