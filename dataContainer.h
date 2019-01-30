@@ -21,7 +21,7 @@
 ***************************************/
 typedef struct {
 	int score;
-	char playerName[DATACONTAINER_PLAYERNAME_MAX];
+	int playerName[DATACONTAINER_PLAYERNAME_MAX];
 }DATA_HIGHSCRE;
 
 /**************************************

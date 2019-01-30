@@ -209,7 +209,11 @@ bool LoadHighScoreData(void)
 		for (int i = 0; i < DATACONTAINER_HIGHSCORE_MAX; i++)
 		{
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].score = (i + 1) * 100000;
-			strcpy_s(highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName, "HAL");
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[0] = 7;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[1] = 0;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[2] = 11;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[3] = 31;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[4] = 31;
 		}
 		return false;
 	}

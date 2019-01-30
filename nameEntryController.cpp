@@ -1,14 +1,13 @@
 //=====================================
 //
-//ネームエントリーシーン処理[nameEntryScene.cpp]
+//ネームエントリーコントローラ処理[nameEntryController.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "nameEntryScene.h"
-#include "sceneManager.h"
-#include "nameEntryBG.h"
-#include "battleCamera.h"
 #include "nameEntryController.h"
+#include "dataContainer.h"
+#include "rankingName.h"
+#include "input.h"
 
 /**************************************
 マクロ定義
@@ -21,6 +20,8 @@
 /**************************************
 グローバル変数
 ***************************************/
+static unsigned int scoreIndex;
+static unsigned int nameIndex;
 
 /**************************************
 プロトタイプ宣言
@@ -29,38 +30,37 @@
 /**************************************
 初期化処理
 ***************************************/
-HRESULT InitNameEntryScene(int num)
+void InitNameEntryController(int num)
 {
-	//InitNameEntryBG(num);
-	InitBattleCamera();
-	UninitNameEntryController(num);
-	return S_OK;
+	scoreIndex = 0;
+	nameIndex = 0;
 }
 
 /**************************************
 終了処理
 ***************************************/
-void UninitNameEntryScene(int num)
+void UninitNameEntryController(int num)
 {
-	//UninitNameEntryBG(num);
-	UninitNameEntryController(num);
+
 }
 
 /**************************************
 更新処理
 ***************************************/
-void UpdateNameEntryScene(void)
+void UpdateNameEntryController(void)
 {
-	//UpdateNameEntryBG();
-	UpdateNameEntryController();
+	DATA_HIGHSCRE *data = GetHighScore();
+	int inputX = GetHorizontalInputRepeat();
+	int inputY = GetVerticalInputRepeat();
+
+	nameIndex = Clamp(0, DATACONTAINER_PLAYERNAME_MAX - 1, nameIndex + inputX);
+	data[scoreIndex].playerName[nameIndex] = WrapAround(0, CHARCHIP_END, data[scoreIndex].playerName[nameIndex] + inputY);
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawNameEntryScene(void)
+void DrawNameEntryController(void)
 {
-	SetBattleCamera();
 
-	//DrawNameEntryBG();
 }

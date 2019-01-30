@@ -39,6 +39,8 @@ void UpdateInput(void);
 
 int GetHorizontalInputPress(void);
 int GetVerticalInputPress(void);
+int GetHorizontalInputRepeat(void);
+int GetVerticalInputRepeat(void);
 bool GetAttackButtonTrigger(void);
 bool GetAttackButtonPress(void);
 bool GetAttackButtonRelease(void);

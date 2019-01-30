@@ -17,6 +17,8 @@
 #include "gameoverTelop.h"
 #include "stageClearTelop.h"
 #include "nameEntryRanking.h"
+#include "rankingScore.h"
+#include "rankingName.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -55,7 +57,8 @@ static const char* texturePath[GUI_NUMTEX_MAX] =
 {
 	"data/TEXTURE/UI/scoreNum.png",
 	"data/TEXTURE/UI/lockonNum.png",
-	"data/TEXTURE/UI/timeNum.png"
+	"data/TEXTURE/UI/timeNum.png",
+	"data/TEXTURE/UI/rankingNum.png"
 };
 
 //各シーンのGUI描画処理テーブル
@@ -99,6 +102,8 @@ void InitGUIManager(int num)
 	InitGameoverTelop(num);
 	InitStageClearTelop(num);
 	InitNameEntryRanking(num);
+	InitRankingScore(num);
+	InitRankingName(num);
 
 	//LoadSettingsGUI();
 }
@@ -128,6 +133,8 @@ void UninitGUIManager(int num)
 	UninitGameoverTelop(num);
 	UninitStageClearTelop(num);
 	UninitNameEntryRanking(num);
+	UninitRankingScore(num);
+	UninitRankingName(num);
 }
 
 /**************************************
@@ -147,6 +154,8 @@ void UpdateGUIManager(void)
 	UpdateGameoverTelop();
 	UpdateStageClearTelop();
 	UpdateNameEntryRanking();
+	UpdateRankingScore();
+	UpdateRankingName();
 }
 
 /**************************************
@@ -239,6 +248,8 @@ void DrawGUIonStageClearScene(void)
 void DrawGUIonNameEntryScene(void)
 {
 	DrawNameEntryRanking();
+	DrawRankingScore();
+	DrawRankingName();
 }
 
 /**************************************

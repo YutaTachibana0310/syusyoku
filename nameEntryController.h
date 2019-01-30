@@ -1,11 +1,11 @@
 //=====================================
 //
-//GUIマネージャヘッダ[GUIManager.h]
+//ネームエントリーコントローラヘッダ[nameEntryController.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+#ifndef _NAMEENTYCONTROLLER_H_
+#define _NAMEENTYCONTROLLER_H_
 
 #include "main.h"
 
@@ -16,20 +16,13 @@
 /**************************************
 構造体定義
 ***************************************/
-enum GUI_NUMTEXTURE
-{
-	GUI_NUMSCORE,
-	GUI_NUMLOCKON,
-	GUI_NUMBONUSTIME,
-	GUI_NUMRANKING,
-	GUI_NUMTEX_MAX
-};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitGUIManager(int num);
-void UninitGUIManager(int num);
-void UpdateGUIManager(void);
-void DrawGUIManager(void);
-void DrawGUINum(GUI_NUMTEXTURE textureID, int num, VERTEX_2D *vtxWk);
+void InitNameEntryController(int num);
+void UninitNameEntryController(int num);
+void UpdateNameEntryController(void);
+void DrawNameEntryController(void);
+
 #endif

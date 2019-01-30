@@ -585,6 +585,15 @@
     <ClCompile Include="nameEntryRanking.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="rankingScore.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="rankingName.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryController.cpp">
+      <Filter>ソース ファイル\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -901,6 +910,15 @@
     </ClInclude>
     <ClInclude Include="nameEntryRanking.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingScore.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingName.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryController.h">
+      <Filter>ヘッダー ファイル\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
