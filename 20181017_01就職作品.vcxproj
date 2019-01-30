@@ -220,6 +220,7 @@
     <ClCompile Include="monotone.cpp" />
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="nameEntryBG.cpp" />
+    <ClCompile Include="nameEntryRanking.cpp" />
     <ClCompile Include="nameEntryScene.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
@@ -337,6 +338,7 @@
     <ClInclude Include="middleEnemyModel.h" />
     <ClInclude Include="monotone.h" />
     <ClInclude Include="nameEntryBG.h" />
+    <ClInclude Include="nameEntryRanking.h" />
     <ClInclude Include="nameEntryScene.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerBulletTrail.h" />

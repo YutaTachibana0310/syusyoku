@@ -5,6 +5,8 @@
 //
 //=====================================
 #include "nameEntryBG.h"
+#include "fractal.h"
+#include "debugWindow.h"
 
 /**************************************
 マクロ定義
@@ -30,8 +32,9 @@ static int numVertex;
 static int numPolygon;
 static int numIndex;
 static float sizeX, sizeZ;
-static float *heightMap;
-static D3DXVECTOR3 rot;
+static float heightMagni = 1.0f;
+static float heightMap[NAMEENTRYBG_VTX_NUM*NAMEENTRYBG_VTX_NUM];
+static D3DXVECTOR3 rot, pos;
 
 /**************************************
 プロトタイプ宣言
@@ -75,9 +78,12 @@ void InitNameEntryBG(int num)
 			&indexBuff,
 			NULL);
 
+		SetUpFractal(NAMEENTRYBG_VTX_NUM, 2.5f);
+
 	}
 
 	//中点変位法により高さマップを生成
+	InitializeHeightMap2(heightMap, NAMEENTRYBG_VTX_NUM);
 
 	//頂点バッファ、インデックスバッファを設定
 	SetVertexBuffer();
@@ -103,7 +109,22 @@ void UninitNameEntryBG(int num)
 ***************************************/
 void UpdateNameEntryBG(void)
 {
+	static float size = NAMEENTRYBG_BLOCK_SIZE;
+	static float magni = 1.0f;
 
+	BeginDebugWindow("NameEntryBG");
+	if (DebugSliderFloat("size", &size, 1.0f, 1000.0f))
+	{
+		sizeX = sizeZ = size;
+		SetVertexBuffer();
+	}
+
+	if (DebugSliderFloat("magni", &magni, 1.0f, 100.0f))
+	{
+		heightMagni = magni;
+		SetVertexBuffer();
+	}
+	EndDebugWindow("NameEntryBG");
 }
 
 /**************************************
@@ -113,12 +134,15 @@ void DrawNameEntryBG(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
-	D3DXMATRIX mtxWorld, mtxRot;
+	D3DXMATRIX mtxWorld, mtxRot, mtxTranslate;
 
 	D3DXMatrixIdentity(&mtxWorld);
 
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.y);
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
+
+	D3DXMatrixTranslation(&mtxTranslate, pos.x, pos.y, pos.z);
+	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 
 	pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
@@ -150,9 +174,9 @@ void SetVertexBuffer(void)
 		{
 			pVtx[x + z * NAMEENTRYBG_VTX_NUM].vtx.x = -(numBlock / 2.0f) * sizeX + x * sizeX;
 
-			pVtx[x + z * NAMEENTRYBG_VTX_NUM].vtx.y = heightMap[x + z * NAMEENTRYBG_VTX_NUM];
+			pVtx[x + z * NAMEENTRYBG_VTX_NUM].vtx.y = heightMap[x + z * NAMEENTRYBG_VTX_NUM] * heightMagni;
 
-			pVtx[x + z * NAMEENTRYBG_VTX_NUM].vtx.z = (numBlock)* sizeZ - z * sizeZ;
+			pVtx[x + z * NAMEENTRYBG_VTX_NUM].vtx.z = (numBlock / 2.0f) * sizeZ - z * sizeZ;
 
 			pVtx[x + z * NAMEENTRYBG_VTX_NUM].diffuse = D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f);
 
@@ -180,16 +204,15 @@ void SetVertexBuffer(void)
 		}
 	}
 
-	float minHeight = 0.0f;
-
-	for (int i = 0; i < NAMEENTRYBG_VTX_NUM; i++)
+	float maxHeight = 0.0f;
+	for (int i = 0; i < NAMEENTRYBG_VTX_NUM*NAMEENTRYBG_VTX_NUM; i++)
 	{
-		for (int j = 0; j < NAMEENTRYBG_VTX_NUM; j++)
+		if (pVtx[i].vtx.y > maxHeight)
 		{
-			if (pVtx[i + j * NAMEENTRYBG_VTX_NUM].vtx.y < minHeight)
-				minHeight = pVtx[i + j * NAMEENTRYBG_VTX_NUM].vtx.y;
+			maxHeight = pVtx[i].vtx.y;
 		}
 	}
+	pos.y = -maxHeight;
 
 	vtxBuff->Unlock();
 }

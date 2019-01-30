@@ -221,10 +221,13 @@ bool DebugButton(const char *label)
 /*************************************
 デバッグスライダー処理
 ***************************************/
-void DebugSliderFloat(const char *label, float *adr, float min, float max)
+bool DebugSliderFloat(const char *label, float *adr, float min, float max)
 {
 #ifdef USE_DEBUGFUNC
-	ImGui::SliderFloat(label, adr, min, max);
+	return ImGui::SliderFloat(label, adr, min, max);
+
+#else
+	return false;
 #endif
 }
 

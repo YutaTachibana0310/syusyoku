@@ -582,6 +582,9 @@
     <ClCompile Include="nameEntryBG.cpp">
       <Filter>ソース ファイル\Battle\BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="nameEntryRanking.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -895,6 +898,9 @@
     </ClInclude>
     <ClInclude Include="nameEntryBG.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryRanking.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

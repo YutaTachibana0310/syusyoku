@@ -16,6 +16,7 @@
 #include "lockonNumGUI.h"
 #include "gameoverTelop.h"
 #include "stageClearTelop.h"
+#include "nameEntryRanking.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -44,6 +45,7 @@ void DrawGUIonTitleScene(void);
 void LoadSettingsGUI(void);
 void DrawGUIonGameoverScene(void);
 void DrawGUIonStageClearScene(void);
+void DrawGUIonNameEntryScene(void);
 
 /**************************************
 グローバル変数
@@ -64,7 +66,8 @@ static DrawGUI Draw[DefineSceneMax] = {
 	NULL,
 	NULL,
 	DrawGUIonGameoverScene,
-	DrawGUIonStageClearScene
+	DrawGUIonStageClearScene,
+	DrawGUIonNameEntryScene
 };
 
 /**************************************
@@ -95,6 +98,7 @@ void InitGUIManager(int num)
 	InitLockonNumGUI(num);
 	InitGameoverTelop(num);
 	InitStageClearTelop(num);
+	InitNameEntryRanking(num);
 
 	//LoadSettingsGUI();
 }
@@ -123,6 +127,7 @@ void UninitGUIManager(int num)
 	UninitLockonNumGUI(num);
 	UninitGameoverTelop(num);
 	UninitStageClearTelop(num);
+	UninitNameEntryRanking(num);
 }
 
 /**************************************
@@ -141,6 +146,7 @@ void UpdateGUIManager(void)
 	UpdateLockonNumGUI();
 	UpdateGameoverTelop();
 	UpdateStageClearTelop();
+	UpdateNameEntryRanking();
 }
 
 /**************************************
@@ -225,6 +231,14 @@ void DrawGUIonGameoverScene(void)
 void DrawGUIonStageClearScene(void)
 {
 	DrawStageClearTelop();
+}
+
+/**************************************
+ネームエントリーシーン描画処理
+***************************************/
+void DrawGUIonNameEntryScene(void)
+{
+	DrawNameEntryRanking();
 }
 
 /**************************************

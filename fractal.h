@@ -14,4 +14,5 @@
 **************************************************************/
 void InitializeHeightMap1(float *map, int elemNum, float centerHeight, int center); //2次元のハイトマップ生成
 void InitializeHeightMap2(float *map, int elemNum); //3次元のハイトマップ生成
+void SetUpFractal(int num, float seed);
 #endif // !_FRACTAL_H_
