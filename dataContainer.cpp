@@ -171,9 +171,9 @@ int GetCurrentScore(void)
 /**************************************
 ハイスコア取得処理
 ***************************************/
-DATA_HIGHSCRE* GetHighScore(void)
+DATA_HIGHSCRE* GetHighScore(int id)
 {
-	return highScore;
+	return &highScore[id];
 }
 
 /**************************************
@@ -212,8 +212,8 @@ bool LoadHighScoreData(void)
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[0] = 7;
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[1] = 0;
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[2] = 11;
-			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[3] = 31;
-			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[4] = 31;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[3] = 26;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[4] = 26;
 		}
 		return false;
 	}

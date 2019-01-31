@@ -221,6 +221,8 @@
     <ClCompile Include="MyLibrary.cpp" />
     <ClCompile Include="nameEntryBG.cpp" />
     <ClCompile Include="nameEntryController.cpp" />
+    <ClCompile Include="nameEntryCursor.cpp" />
+    <ClCompile Include="nameEntryInput.cpp" />
     <ClCompile Include="nameEntryRanking.cpp" />
     <ClCompile Include="nameEntryScene.cpp" />
     <ClCompile Include="particleFramework.cpp" />
@@ -342,6 +344,7 @@
     <ClInclude Include="monotone.h" />
     <ClInclude Include="nameEntryBG.h" />
     <ClInclude Include="nameEntryController.h" />
+    <ClInclude Include="nameEntryCursor.h" />
     <ClInclude Include="nameEntryRanking.h" />
     <ClInclude Include="nameEntryScene.h" />
     <ClInclude Include="playerBullet.h" />

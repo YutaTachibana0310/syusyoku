@@ -594,6 +594,12 @@
     <ClCompile Include="nameEntryController.cpp">
       <Filter>ソース ファイル\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="nameEntryCursor.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryInput.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -919,6 +925,9 @@
     </ClInclude>
     <ClInclude Include="nameEntryController.h">
       <Filter>ヘッダー ファイル\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryCursor.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

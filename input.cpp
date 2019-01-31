@@ -302,10 +302,10 @@ HRESULT UpdateKeyboard(void)
 				{
 					g_aKeyStateRepeat[nCntKey] = aKeyState[nCntKey];
 				}
-				else
-				{
-					g_aKeyStateRepeat[nCntKey] = 0;
-				}
+				//else
+				//{
+				//	g_aKeyStateRepeat[nCntKey] = 0;
+				//}
 			}
 			else
 			{

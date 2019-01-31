@@ -36,7 +36,7 @@ void InitPlayerHP(void);
 int GetShotLevel(void);
 int GetLockonLevel(void);
 int GetCurrentScore(void);
-DATA_HIGHSCRE* GetHighScore(void);
+DATA_HIGHSCRE* GetHighScore(int id = 0);
 int GetLockonMax(void);
 
 float GetPlayerHP(void);

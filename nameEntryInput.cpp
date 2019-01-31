@@ -1,14 +1,9 @@
 //=====================================
 //
-//ネームエントリーシーン処理[nameEntryScene.cpp]
+//テンプレート処理[nameEntryInput.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#include "nameEntryScene.h"
-#include "sceneManager.h"
-#include "nameEntryBG.h"
-#include "battleCamera.h"
-#include "nameEntryController.h"
 
 /**************************************
 マクロ定義
@@ -29,38 +24,31 @@
 /**************************************
 初期化処理
 ***************************************/
-HRESULT InitNameEntryScene(int num)
+void InitTemplate(int num)
 {
-	//InitNameEntryBG(num);
-	InitBattleCamera();
-	InitNameEntryController(num);
-	return S_OK;
+
 }
 
 /**************************************
 終了処理
 ***************************************/
-void UninitNameEntryScene(int num)
+void UninitTemplate(int num)
 {
-	//UninitNameEntryBG(num);
-	UninitNameEntryController(num);
+
 }
 
 /**************************************
 更新処理
 ***************************************/
-void UpdateNameEntryScene(void)
+void UpdateTemplate(void)
 {
-	//UpdateNameEntryBG();
-	UpdateNameEntryController();
+
 }
 
 /**************************************
 描画処理
 ***************************************/
-void DrawNameEntryScene(void)
+void DrawTemplate(void)
 {
-	SetBattleCamera();
 
-	//DrawNameEntryBG();
 }

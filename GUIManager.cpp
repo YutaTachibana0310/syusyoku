@@ -19,6 +19,7 @@
 #include "nameEntryRanking.h"
 #include "rankingScore.h"
 #include "rankingName.h"
+#include "nameEntryCursor.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -104,6 +105,7 @@ void InitGUIManager(int num)
 	InitNameEntryRanking(num);
 	InitRankingScore(num);
 	InitRankingName(num);
+	InitNameEntryCursor(num);
 
 	//LoadSettingsGUI();
 }
@@ -135,6 +137,7 @@ void UninitGUIManager(int num)
 	UninitNameEntryRanking(num);
 	UninitRankingScore(num);
 	UninitRankingName(num);
+	UninitNameEntryCursor(num);
 }
 
 /**************************************
@@ -156,6 +159,7 @@ void UpdateGUIManager(void)
 	UpdateNameEntryRanking();
 	UpdateRankingScore();
 	UpdateRankingName();
+	UpdateNameEntryCursor();
 }
 
 /**************************************
@@ -250,6 +254,7 @@ void DrawGUIonNameEntryScene(void)
 	DrawNameEntryRanking();
 	DrawRankingScore();
 	DrawRankingName();
+	DrawNameEntryCursor();
 }
 
 /**************************************

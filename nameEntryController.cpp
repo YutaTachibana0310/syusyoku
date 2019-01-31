@@ -8,6 +8,7 @@
 #include "dataContainer.h"
 #include "rankingName.h"
 #include "input.h"
+#include "nameEntryCursor.h"
 
 /**************************************
 マクロ定義
@@ -22,6 +23,7 @@
 ***************************************/
 static unsigned int scoreIndex;
 static unsigned int nameIndex;
+static DATA_HIGHSCRE *highScore = NULL;
 
 /**************************************
 プロトタイプ宣言
@@ -32,8 +34,14 @@ static unsigned int nameIndex;
 ***************************************/
 void InitNameEntryController(int num)
 {
-	scoreIndex = 0;
+	scoreIndex = 1;
 	nameIndex = 0;
+
+	highScore = GetHighScore(scoreIndex);
+	for (int i = 0; i < DATACONTAINER_PLAYERNAME_MAX; i++)
+	{
+		highScore->playerName[i] = 31;
+	}
 }
 
 /**************************************
@@ -54,7 +62,13 @@ void UpdateNameEntryController(void)
 	int inputY = GetVerticalInputRepeat();
 
 	nameIndex = Clamp(0, DATACONTAINER_PLAYERNAME_MAX - 1, nameIndex + inputX);
-	data[scoreIndex].playerName[nameIndex] = WrapAround(0, CHARCHIP_END, data[scoreIndex].playerName[nameIndex] + inputY);
+
+	if(highScore->playerName[nameIndex] == 31 )
+		
+	if(highScore->playerName[nameIndex] != 31)
+		highScore->playerName[nameIndex] = WrapAround(0, CHARCHIP_END, highScore->playerName[nameIndex] - inputY);
+
+	SetNameEntryCursor(scoreIndex, nameIndex);
 }
 
 /**************************************
