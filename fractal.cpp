@@ -31,14 +31,17 @@ void CreateHeightMap2(float *map);
 static float d = 2.0f;
 static const float minHeight = -400.0f, maxHeight = 400.0f;
 static int vtxNum;
+float dh = (float)1000 / 2, r = (float)pow(2, -1 * 0.9);
 
 /**************************************
 フラクタルセットアップ関数
 ***************************************/
-void SetUpFractal(int num, float seed)
+void SetUpFractal(int num, float seed, float range, float decay)
 {
 	vtxNum = num;
 	d = seed;
+	dh = range;
+	r = powf(2, -1 * decay);
 }
 
 /*************************************************
@@ -152,7 +155,7 @@ void CreateHeightMap2(float *map)
 {
 
 	int i, j, ni, nj, mi, mj, pmi, pmj, rectSize = vtxNum;
-	float dh = (float)1000 / 2, r = (float)pow(2, -1 * 0.9);
+	//float dh = (float)1000 / 2, r = (float)pow(2, -1 * 0.9);
 
 	//map[0][0] = 0;
 	map[0] = 0;

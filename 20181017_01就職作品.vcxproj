@@ -251,6 +251,7 @@
     <ClCompile Include="powerUpTelop.cpp" />
     <ClCompile Include="rankingName.cpp" />
     <ClCompile Include="rankingScore.cpp" />
+    <ClCompile Include="rankingTelop.cpp" />
     <ClCompile Include="resultScene.cpp" />
     <ClCompile Include="rockonSite.cpp" />
     <ClCompile Include="sceneFade.cpp" />
@@ -373,6 +374,7 @@
     <ClInclude Include="powerUpTelop.h" />
     <ClInclude Include="rankingName.h" />
     <ClInclude Include="rankingScore.h" />
+    <ClInclude Include="rankingTelop.h" />
     <ClInclude Include="resultScene.h" />
     <ClInclude Include="rockonSite.h" />
     <ClInclude Include="sceneFade.h" />

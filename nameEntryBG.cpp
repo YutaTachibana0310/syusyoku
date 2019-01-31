@@ -7,14 +7,15 @@
 #include "nameEntryBG.h"
 #include "fractal.h"
 #include "debugWindow.h"
+#include "Easing.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define NAMEENTRYBG_TEXTURE_NAME		"data/TEXTURE/nameEntryBG.jpg"
+#define NAMEENTRYBG_TEXTURE_NAME		"data/TEXTURE/OBJECT/nameEntryBG.jpg"
 #define NAMEENTRYBG_VTX_NUM				(128)
-#define NAMEENTRYBG_BLOCK_SIZE			(100.0f)
-
+#define NAMEENTRYBG_BLOCK_SIZE			(150.0f)
+#define NAMEENTRYBG_FADE_DURATION		(100)
 
 /**************************************
 構造体定義
@@ -35,12 +36,15 @@ static float sizeX, sizeZ;
 static float heightMagni = 1.0f;
 static float heightMap[NAMEENTRYBG_VTX_NUM*NAMEENTRYBG_VTX_NUM];
 static D3DXVECTOR3 rot, pos;
+static int cntFrame;
+static bool flgInclement;
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void SetVertexBuffer(void);
 void SetIndexBuffer(void);
+void SetDiffuseNameEntryBG(float alpha);
 
 /**************************************
 初期化処理
@@ -78,7 +82,7 @@ void InitNameEntryBG(int num)
 			&indexBuff,
 			NULL);
 
-		SetUpFractal(NAMEENTRYBG_VTX_NUM, 2.5f);
+		SetUpFractal(NAMEENTRYBG_VTX_NUM, 2.5f, 4000.0f, 0.95f);
 
 	}
 
@@ -89,6 +93,9 @@ void InitNameEntryBG(int num)
 	SetVertexBuffer();
 	SetIndexBuffer();
 	initialized = true;
+
+	flgInclement = true;
+	cntFrame = 0;
 }
 
 /**************************************
@@ -109,22 +116,12 @@ void UninitNameEntryBG(int num)
 ***************************************/
 void UpdateNameEntryBG(void)
 {
-	static float size = NAMEENTRYBG_BLOCK_SIZE;
-	static float magni = 1.0f;
+	rot.y += 0.001f;
 
-	BeginDebugWindow("NameEntryBG");
-	if (DebugSliderFloat("size", &size, 1.0f, 1000.0f))
-	{
-		sizeX = sizeZ = size;
-		SetVertexBuffer();
-	}
+	cntFrame += flgInclement ? 1 : -1;
 
-	if (DebugSliderFloat("magni", &magni, 1.0f, 100.0f))
-	{
-		heightMagni = magni;
-		SetVertexBuffer();
-	}
-	EndDebugWindow("NameEntryBG");
+	if (cntFrame == 0 || cntFrame == NAMEENTRYBG_FADE_DURATION)
+		flgInclement = !flgInclement;
 }
 
 /**************************************
@@ -138,7 +135,7 @@ void DrawNameEntryBG(void)
 
 	D3DXMatrixIdentity(&mtxWorld);
 
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.y);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
 	D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 
 	D3DXMatrixTranslation(&mtxTranslate, pos.x, pos.y, pos.z);
@@ -154,7 +151,14 @@ void DrawNameEntryBG(void)
 
 	pDevice->SetTexture(0, texture);
 
+	SetDiffuseNameEntryBG(1.0f);
 	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
+
+	float alpha = EaseInOutCubic((float)cntFrame / (float)NAMEENTRYBG_FADE_DURATION, 0.0f, 1.0f);
+	SetDiffuseNameEntryBG(alpha);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, numVertex, 0, numPolygon);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
 /**************************************
@@ -251,4 +255,21 @@ void SetIndexBuffer(void)
 	}
 
 	indexBuff->Unlock();
+}
+
+/**************************************
+ディフューズ設定処理
+***************************************/
+void SetDiffuseNameEntryBG(float alpha)
+{
+	VERTEX_3D *p = NULL;
+
+	vtxBuff->Lock(0, 0, (void**)&p, 0);
+
+	for (int i = 0; i < NAMEENTRYBG_VTX_NUM*NAMEENTRYBG_VTX_NUM; i++)
+	{
+		p[i].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
+	}
+
+	vtxBuff->Unlock();
 }

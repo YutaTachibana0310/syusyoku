@@ -20,6 +20,7 @@
 #include "rankingScore.h"
 #include "rankingName.h"
 #include "nameEntryCursor.h"
+#include "rankingTelop.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -106,6 +107,7 @@ void InitGUIManager(int num)
 	InitRankingScore(num);
 	InitRankingName(num);
 	InitNameEntryCursor(num);
+	InitRankingTelop(num);
 
 	//LoadSettingsGUI();
 }
@@ -138,6 +140,7 @@ void UninitGUIManager(int num)
 	UninitRankingScore(num);
 	UninitRankingName(num);
 	UninitNameEntryCursor(num);
+	UninitRankingTelop(num);
 }
 
 /**************************************
@@ -160,6 +163,7 @@ void UpdateGUIManager(void)
 	UpdateRankingScore();
 	UpdateRankingName();
 	UpdateNameEntryCursor();
+	UpdateRankingTelop();
 }
 
 /**************************************
@@ -255,6 +259,7 @@ void DrawGUIonNameEntryScene(void)
 	DrawRankingScore();
 	DrawRankingName();
 	DrawNameEntryCursor();
+	DrawRankingTelop();
 }
 
 /**************************************
