@@ -44,5 +44,6 @@ void AddPlayerHP(float value);
 
 bool LoadHighScoreData(void);
 bool SaveHighScoreData(void);
+bool CheckUpdateRanking(int *index);
 
 #endif

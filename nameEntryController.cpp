@@ -17,13 +17,24 @@
 /**************************************
 構造体定義
 ***************************************/
+typedef void(*funcNameEntryContoller)(NAMEENTRY*);
 
 /**************************************
 グローバル変数
 ***************************************/
-static unsigned int scoreIndex;
-static unsigned int nameIndex;
-static DATA_HIGHSCRE *highScore = NULL;
+static NAMEENTRY entity;
+
+//入場処理テーブル
+static funcNameEntryContoller Enter[NAMEENTRY_STATEMAX] = {
+	OnEnterNameEntryInput,
+	OnEnterNameEntryEnd
+};
+
+//更新処理table
+static funcNameEntryContoller Update[NAMEENTRY_STATEMAX] = {
+	OnUpdateNameEntryInput,
+	OnUpdateNameEntryEnd,
+};
 
 /**************************************
 プロトタイプ宣言
@@ -34,13 +45,32 @@ static DATA_HIGHSCRE *highScore = NULL;
 ***************************************/
 void InitNameEntryController(int num)
 {
-	scoreIndex = 1;
-	nameIndex = 0;
+	//ランキングの更新を確認
+	bool flgUpdate = CheckUpdateRanking(&entity.scoreIndex);
 
-	highScore = GetHighScore(scoreIndex);
-	for (int i = 0; i < DATACONTAINER_PLAYERNAME_MAX; i++)
+	//更新があった場合
+	if (flgUpdate)
 	{
-		highScore->playerName[i] = 31;
+		entity.highScore = GetHighScore(entity.scoreIndex);
+
+		//各パラメータをセット
+		entity.nameIndex = 0;
+		SetStateNameEntryCursor(true);
+
+		//プレイヤー名を初期化
+		for (int i = 0; i < DATACONTAINER_PLAYERNAME_MAX; i++)
+		{
+			entity.highScore->playerName[i] = 31;
+		}
+
+		//入力状態へ遷移
+		ChangeStateNameEntryController(NAMEENTRY_INPUT);
+	}
+
+	//更新がなかった場合
+	else
+	{
+		ChangeStateNameEntryController(NAMEENTRY_END);
 	}
 }
 
@@ -57,18 +87,7 @@ void UninitNameEntryController(int num)
 ***************************************/
 void UpdateNameEntryController(void)
 {
-	DATA_HIGHSCRE *data = GetHighScore();
-	int inputX = GetHorizontalInputRepeat();
-	int inputY = GetVerticalInputRepeat();
-
-	nameIndex = Clamp(0, DATACONTAINER_PLAYERNAME_MAX - 1, nameIndex + inputX);
-
-	if(highScore->playerName[nameIndex] == 31 )
-		
-	if(highScore->playerName[nameIndex] != 31)
-		highScore->playerName[nameIndex] = WrapAround(0, CHARCHIP_END, highScore->playerName[nameIndex] - inputY);
-
-	SetNameEntryCursor(scoreIndex, nameIndex);
+	Update[entity.currentState](&entity);
 }
 
 /**************************************
@@ -77,4 +96,13 @@ void UpdateNameEntryController(void)
 void DrawNameEntryController(void)
 {
 
+}
+
+/**************************************
+状態遷移処理
+***************************************/
+void ChangeStateNameEntryController(int next)
+{
+	entity.currentState = next;
+	Enter[entity.currentState](&entity);
 }

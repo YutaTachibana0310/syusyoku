@@ -32,6 +32,8 @@ static LPDIRECT3DTEXTURE9 texture;
 static VERTEX_2D vtxWk[NUM_VERTEX];
 static int cntFrame;
 static int cntAnim;
+static bool active;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -85,6 +87,9 @@ void UpdateNameEntryCursor(void)
 ***************************************/
 void DrawNameEntryCursor(void)
 {
+	if (!active)
+		return;
+
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	pDevice->SetTexture(0, texture);
@@ -141,4 +146,12 @@ void SetTextureNameEntryCursor(int num)
 	vtxWk[1].tex = D3DXVECTOR2((x+1) * sizeX, y * sizeY);
 	vtxWk[2].tex = D3DXVECTOR2(x * sizeX, (y+1) * sizeY);
 	vtxWk[3].tex = D3DXVECTOR2((x+1) * sizeX, (y+1) * sizeY);
+}
+
+/**************************************
+状態設定関数
+***************************************/
+void SetStateNameEntryCursor(bool setState)
+{
+	active = setState;
 }

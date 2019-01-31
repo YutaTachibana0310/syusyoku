@@ -31,7 +31,7 @@
 ***************************************/
 HRESULT InitNameEntryScene(int num)
 {
-	//InitNameEntryBG(num);
+	InitNameEntryBG(num);
 	InitBattleCamera();
 	InitNameEntryController(num);
 	return S_OK;
@@ -42,7 +42,7 @@ HRESULT InitNameEntryScene(int num)
 ***************************************/
 void UninitNameEntryScene(int num)
 {
-	//UninitNameEntryBG(num);
+	UninitNameEntryBG(num);
 	UninitNameEntryController(num);
 }
 
@@ -51,7 +51,7 @@ void UninitNameEntryScene(int num)
 ***************************************/
 void UpdateNameEntryScene(void)
 {
-	//UpdateNameEntryBG();
+	UpdateNameEntryBG();
 	UpdateNameEntryController();
 }
 
@@ -61,6 +61,5 @@ void UpdateNameEntryScene(void)
 void DrawNameEntryScene(void)
 {
 	SetBattleCamera();
-
-	//DrawNameEntryBG();
+	DrawNameEntryBG();
 }

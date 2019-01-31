@@ -25,4 +25,6 @@ void UninitNameEntryCursor(int num);
 void UpdateNameEntryCursor(void);
 void DrawNameEntryCursor(void);
 void SetNameEntryCursor(int rank, int offsetIndex);
+void SetStateNameEntryCursor(bool setState);
+
 #endif

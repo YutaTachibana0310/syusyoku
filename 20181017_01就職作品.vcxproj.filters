@@ -600,6 +600,9 @@
     <ClCompile Include="nameEntryInput.cpp">
       <Filter>ソース ファイル\Controller\States</Filter>
     </ClCompile>
+    <ClCompile Include="nameEntryEnd.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
