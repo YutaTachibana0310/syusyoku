@@ -6,6 +6,9 @@
 //=====================================
 #include "nameEntryScene.h"
 #include "sceneManager.h"
+#include "nameEntryBG.h"
+#include "battleCamera.h"
+#include "nameEntryController.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -28,7 +31,10 @@
 ***************************************/
 HRESULT InitNameEntryScene(int num)
 {
-
+	InitNameEntryBG(num);
+	InitBattleCamera();
+	InitNameEntryController(num);
+	return S_OK;
 }
 
 /**************************************
@@ -36,7 +42,8 @@ HRESULT InitNameEntryScene(int num)
 ***************************************/
 void UninitNameEntryScene(int num)
 {
-
+	UninitNameEntryBG(num);
+	UninitNameEntryController(num);
 }
 
 /**************************************
@@ -44,7 +51,8 @@ void UninitNameEntryScene(int num)
 ***************************************/
 void UpdateNameEntryScene(void)
 {
-
+	UpdateNameEntryBG();
+	UpdateNameEntryController();
 }
 
 /**************************************
@@ -52,5 +60,6 @@ void UpdateNameEntryScene(void)
 ***************************************/
 void DrawNameEntryScene(void)
 {
-
+	SetBattleCamera();
+	DrawNameEntryBG();
 }

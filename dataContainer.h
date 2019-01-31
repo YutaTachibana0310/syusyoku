@@ -21,7 +21,7 @@
 ***************************************/
 typedef struct {
 	int score;
-	char playerName[DATACONTAINER_PLAYERNAME_MAX];
+	int playerName[DATACONTAINER_PLAYERNAME_MAX];
 }DATA_HIGHSCRE;
 
 /**************************************
@@ -36,7 +36,7 @@ void InitPlayerHP(void);
 int GetShotLevel(void);
 int GetLockonLevel(void);
 int GetCurrentScore(void);
-DATA_HIGHSCRE* GetHighScore(void);
+DATA_HIGHSCRE* GetHighScore(int id = 0);
 int GetLockonMax(void);
 
 float GetPlayerHP(void);
@@ -44,5 +44,6 @@ void AddPlayerHP(float value);
 
 bool LoadHighScoreData(void);
 bool SaveHighScoreData(void);
+bool CheckUpdateRanking(int *index);
 
 #endif

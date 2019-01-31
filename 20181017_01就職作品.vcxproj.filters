@@ -579,6 +579,33 @@
     <ClCompile Include="nameEntryScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="nameEntryBG.cpp">
+      <Filter>ソース ファイル\Battle\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryRanking.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="rankingScore.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="rankingName.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryController.cpp">
+      <Filter>ソース ファイル\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryCursor.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryInput.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryEnd.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="rankingTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -889,6 +916,27 @@
     </ClInclude>
     <ClInclude Include="nameEntryScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryBG.h">
+      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryRanking.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingScore.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingName.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryController.h">
+      <Filter>ヘッダー ファイル\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryCursor.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

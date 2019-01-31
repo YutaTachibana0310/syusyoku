@@ -23,13 +23,26 @@ typedef struct
 プロトタイプ宣言
 ****************************************************/
 void CreateHeightMap1(int start, int end, float range, float *map);
-void CreateHeightMap2(Point tr, Point tl, Point br, Point bl, float range, float *map, int elemNum);
+void CreateHeightMap2(float *map);
 
 /***************************************************
 グローバル変数
 ***************************************************/
-static const float d = 2.0f;
+static float d = 2.0f;
 static const float minHeight = -400.0f, maxHeight = 400.0f;
+static int vtxNum;
+float dh = (float)1000 / 2, r = (float)pow(2, -1 * 0.9);
+
+/**************************************
+フラクタルセットアップ関数
+***************************************/
+void SetUpFractal(int num, float seed, float range, float decay)
+{
+	vtxNum = num;
+	d = seed;
+	dh = range;
+	r = powf(2, -1 * decay);
+}
 
 /*************************************************
 関数	：void InitializeHeightMap1(void)
@@ -84,49 +97,46 @@ void CreateHeightMap1(int start, int end, float range, float *map)
 **************************************************/
 void InitializeHeightMap2(float *map, int elemNum)
 {
-	Point bottomL = { elemNum, 0, RandomRangef(minHeight, maxHeight) };
-	bottomL.height = Clampf(minHeight, maxHeight, bottomL.height);
-	map[bottomL.z * (elemNum + 1) + bottomL.x] = bottomL.height;
+	const float maxHeight = 300.0f;
+	const float minHeight = -300.0f;
 
-	Point bottomR = { elemNum, elemNum, RandomRangef(minHeight, maxHeight) };
-	bottomR.height = Clampf(minHeight, maxHeight, bottomR.height);
-	map[bottomR.z * (elemNum + 1) + bottomR.x] = bottomR.height;
+	Point bottomL = { vtxNum, 0, RandomRangef(minHeight, maxHeight) };
+	//map[bottomL.x][bottomL.x] = bottomL.height;
+	map[bottomL.x * vtxNum + bottomL.x] = bottomL.height;
+
+	Point bottomR = { vtxNum, vtxNum, RandomRangef(minHeight, maxHeight) };
+	//map[bottomR.z][bottomR.x] = bottomR.height;
+	map[bottomR.z * vtxNum + bottomR.x] = bottomR.height;
 
 	Point topL = { 0, 0, RandomRangef(minHeight, maxHeight) };
-	topL.height = Clampf(minHeight, maxHeight, topL.height);
-	map[topL.z * (elemNum + 1) + topL.x] = topL.height;
+	//map[topL.z][topL.x] = topL.height;
+	map[topL.z * vtxNum + topL.x] = topL.height;
 
-	Point topR = { 0, elemNum, RandomRangef(minHeight, maxHeight) };
-	topR.height = Clampf(minHeight, maxHeight, topR.height);
-	map[topR.z * (elemNum + 1) + topR.x] = topR.height;
+	Point topR = { 0, vtxNum, RandomRangef(minHeight, maxHeight) };
+	//map[topR.z][topR.x] = topR.height;
+	map[topR.z * vtxNum + topR.x] = topR.height;
 
-	Point center = { elemNum / 2, elemNum / 2, maxHeight };
-	center.height = Clampf(minHeight, maxHeight, center.height);
-	map[center.z * (elemNum + 1) + center.x] = center.height;
+	Point center = { vtxNum / 2, vtxNum / 2, 1000.0f };
+	//map[center.z][center.x] = center.height;
+	map[center.z *vtxNum + center.x] = center.height;
 
-	Point bottom = { bottomL.z, center.x, (bottomL.height + bottomR.height) / 2.0f };
-	bottom.height = Clampf(minHeight, maxHeight, bottom.height);
-	map[bottom.z * (elemNum + 1) + bottom.x] = bottom.height;
+	Point bottom = { bottomL.z, center.x, (bottomL.height + bottomR.height) / 2 };
+	//map[bottom.z][bottom.x] = bottom.height;
+	map[bottom.z * vtxNum + bottom.x] = bottom.height;
 
-	Point top = { topR.z, center.x, (topL.height + topR.height) / 2.0f };
-	top.height = Clampf(minHeight, maxHeight, top.height);
-	map[top.z * (elemNum + 1) + top.x] = top.height;
+	Point top = { topR.z, center.x, (topL.height + topR.height) / 2 };
+	//map[top.z][top.x] = top.height;
+	map[top.z * vtxNum + top.x] = top.height;
 
-	Point left = { center.z, topL.x, (topL.height + bottomL.height) / 2.0f };
-	left.height = Clampf(minHeight, maxHeight, left.height);
-	map[left.z * (elemNum + 1) + left.x] = left.height;
+	Point left = { center.z, topL.x, (topL.height + bottomL.height) / 2 };
+	//map[left.z][left.x] = left.height;
+	map[left.z + vtxNum + left.z] = left.height;
 
-	Point right = { center.z, topR.x, (topR.height + bottomR.height) / 2.0f };
-	right.height = Clampf(minHeight, maxHeight, right.height);
-	map[right.z * (elemNum + 1) + right.x] = right.height;
+	Point right = { center.z, topR.x, (topR.height + bottomR.height) / 2 };
+	//map[right.z][right.x] = right.height;
+	map[right.z * vtxNum + right.z] = right.height;
 
-	float initRand = 2000.0f;
-
-	CreateHeightMap2(top, topL, center, left, initRand, map, elemNum);
-	CreateHeightMap2(topR, top, right, center, initRand, map, elemNum);
-	CreateHeightMap2(center, left, bottom, bottomL, initRand, map, elemNum);
-	CreateHeightMap2(right, center, bottomR, bottom, initRand, map, elemNum);
-
+	CreateHeightMap2(map);
 }
 
 /*************************************************
@@ -141,39 +151,57 @@ void InitializeHeightMap2(float *map, int elemNum)
 戻り値	：void
 説明	：3次元ハイトマップ生成
 **************************************************/
-void CreateHeightMap2(Point tr, Point tl, Point br, Point bl, float range, float *map, int elemNum)
+void CreateHeightMap2(float *map)
 {
-	if (abs(tr.x - tl.x) <= 1 || abs(br.z - tr.z) <= 1)
+
+	int i, j, ni, nj, mi, mj, pmi, pmj, rectSize = vtxNum;
+	//float dh = (float)1000 / 2, r = (float)pow(2, -1 * 0.9);
+
+	//map[0][0] = 0;
+	map[0] = 0;
+
+	while (rectSize > 0)
 	{
-		return;
+		for (int i = 0; i < vtxNum; i += rectSize)
+		{
+			for (int j = 0; j < vtxNum; j += rectSize)
+			{
+				ni = (i + rectSize) % vtxNum;
+				nj = (j + rectSize) % vtxNum;
+
+				mi = (i + rectSize / 2);
+				mj = (j + rectSize / 2);
+
+				//map[mj][mi] = (map[j][i] + map[j][ni] + map[nj][i] + map[nj][ni]) / 4 + RandomRangef(-dh / 2, dh / 2);
+				float average = (map[j * vtxNum + i] + map[j * vtxNum + ni] + map[nj * vtxNum + i] + map[nj * vtxNum + ni]) / 4;
+				map[mj * vtxNum + mi] = average + RandomRangef(-dh / 2, dh / 2);
+			}
+		}
+
+		for (int i = 0; i < vtxNum; i += rectSize)
+		{
+			for (int j = 0; j < vtxNum; j += rectSize)
+			{
+				ni = (i + rectSize) % vtxNum;
+				nj = (j + rectSize) % vtxNum;
+
+				mi = (i + rectSize / 2);
+				mj = (j + rectSize / 2);
+
+				pmi = (i - rectSize / 2 + vtxNum) % vtxNum;
+				pmj = (j - rectSize / 2 + vtxNum) % vtxNum;
+
+				//map[j][mi] = (map[j][i] + map[j][ni] + map[pmj][mi] + map[mj][mi]) / 4 + RandomRangef(-dh / 2, dh / 2);
+				float average1 = (map[j * vtxNum + i] + map[j * vtxNum + ni] + map[pmj * vtxNum + mi] + map[mj * vtxNum + mi]) / 4;
+				map[j * vtxNum + mi] = average1 + RandomRangef(-dh / 2, dh / 2);
+
+				//map[mj][i] = (map[j][i] + map[nj][i] + map[mj][pmi] + map[mj][mi]) / 4 + RandomRangef(-dh / 2, dh / 2);
+				float average2 = (map[j * vtxNum + i] + map[nj * vtxNum + i] + map[mj * vtxNum + pmi] + map[mj * vtxNum + mi]) / 4;
+				map[mj * vtxNum + i] = average2 + RandomRangef(-dh / 2, dh / 2);
+			}
+		}
+
+		rectSize /= 2;
+		dh *= r;
 	}
-
-	int z = (br.z + tr.z) / 2;
-	int x = (tr.x + tl.x) / 2;
-	map[z * (elemNum + 1) + x] = (tr.height + tl.height + br.height + bl.height) / 4.0f;
-	map[z * (elemNum + 1) + x] += RandomRangef(-range / 2.0f, range / 2.0f);
-	map[z * (elemNum + 1) + x] = Clampf(minHeight, maxHeight, map[z * (elemNum + 1) + x]);
-	Point c = { z, x, map[z * (elemNum + 1) + x] };
-
-	Point t = { tl.z, c.x, (tl.height + tr.height) / 2.0f };
-	t.height = Clampf(minHeight, maxHeight, t.height);
-	map[t.z * (elemNum + 1) + t.x] = t.height;
-
-	Point b = { bl.z, c.x, (bl.height + br.height) / 2.0f };
-	b.height = Clampf(minHeight, maxHeight, b.height);
-	map[b.z * (elemNum + 1) + b.x] = b.height;
-
-	Point r = { c.z, tr.x, (tr.height + br.height) / 2.0f };
-	r.height = Clampf(minHeight, maxHeight, r.height);
-	map[r.z * (elemNum + 1) + r.x] = r.height;
-
-	Point l = { c.z, bl.x, (tl.height + bl.height) / 2.0f };
-	l.height = Clampf(minHeight, maxHeight, l.height);
-	map[l.z * (elemNum + 1) + l.x] = l.height;
-
-	CreateHeightMap2(t, tl, c, l, range / d, map, elemNum);
-	CreateHeightMap2(tr, t, r, c, range / d, map, elemNum);
-	CreateHeightMap2(c, l, b, bl, range / d, map, elemNum);
-	CreateHeightMap2(r, c, br, b, range / d, map, elemNum);
-	return;
 }

@@ -1,11 +1,11 @@
 //=====================================
 //
-//GUIマネージャヘッダ[GUIManager.h]
+//ランキングスコアヘッダ[rankingScore.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+#ifndef _RANKINGSCORE_H_
+#define _RANKINGSCORE_H_
 
 #include "main.h"
 
@@ -16,20 +16,13 @@
 /**************************************
 構造体定義
 ***************************************/
-enum GUI_NUMTEXTURE
-{
-	GUI_NUMSCORE,
-	GUI_NUMLOCKON,
-	GUI_NUMBONUSTIME,
-	GUI_NUMRANKING,
-	GUI_NUMTEX_MAX
-};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitGUIManager(int num);
-void UninitGUIManager(int num);
-void UpdateGUIManager(void);
-void DrawGUIManager(void);
-void DrawGUINum(GUI_NUMTEXTURE textureID, int num, VERTEX_2D *vtxWk);
+void InitRankingScore(int num);
+void UninitRankingScore(int num);
+void UpdateRankingScore(void);
+void DrawRankingScore(void);
+
 #endif

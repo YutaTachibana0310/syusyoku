@@ -109,6 +109,40 @@ int GetVerticalInputPress(void)
 }
 
 //=============================================================================
+// …•½•ûŒü‚Ì“ü—Í‚Ìæ“¾
+//=============================================================================
+int GetHorizontalInputRepeat(void)
+{
+	if (padAxisXRepeat[0] != 0)
+		return padAxisXRepeat[0];
+
+	if (GetKeyboardRepeat(DIK_LEFT))
+		return -1;
+
+	if (GetKeyboardRepeat(DIK_RIGHT))
+		return 1;
+
+	return 0;
+}
+
+//=============================================================================
+// ‚’¼•ûŒü‚Ì“ü—Í‚Ìæ“¾
+//=============================================================================
+int GetVerticalInputRepeat(void)
+{
+	if (padAxisYRepeat[0] != 0)
+		return padAxisYRepeat[0];
+
+	if (GetKeyboardRepeat(DIK_UP))
+		return 1;
+
+	if (GetKeyboardRepeat(DIK_DOWN))
+		return -1;
+
+	return 0;
+}
+
+//=============================================================================
 // UŒ‚ƒ{ƒ^ƒ“‰Ÿ‰º‚Ìæ“¾
 //=============================================================================
 bool GetAttackButtonTrigger(void)
@@ -268,10 +302,10 @@ HRESULT UpdateKeyboard(void)
 				{
 					g_aKeyStateRepeat[nCntKey] = aKeyState[nCntKey];
 				}
-				else
-				{
-					g_aKeyStateRepeat[nCntKey] = 0;
-				}
+				//else
+				//{
+				//	g_aKeyStateRepeat[nCntKey] = 0;
+				//}
 			}
 			else
 			{

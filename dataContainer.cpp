@@ -54,6 +54,7 @@ static float playerHP;
 /**************************************
 プロトタイプ宣言
 ***************************************/
+void UpdateRanking(int index);
 
 /**************************************
 初期化処理
@@ -61,7 +62,7 @@ static float playerHP;
 void InitDataContainer(int num)
 {
 
-	currentScore = 0;
+	currentScore = 123459789;
 	LoadHighScoreData();
 
 	cntPowerUp = 0;
@@ -113,6 +114,33 @@ void AddScore(int addValue)
 
 	//エクステンド処理
 
+}
+
+/**************************************
+ランキング更新確認処理
+***************************************/
+bool CheckUpdateRanking(int *index)
+{
+	for (int i = 0; i < DATACONTAINER_HIGHSCORE_MAX; i++)
+	{
+		if (currentScore > highScore[i].score)
+		{
+			UpdateRanking(i);
+			*index = i;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**************************************
+ランキング更新確認処理
+***************************************/
+void UpdateRanking(int index)
+{
+	memcpy(&highScore[index + 1], &highScore[index], sizeof(DATA_HIGHSCRE)*(DATACONTAINER_HIGHSCORE_MAX - 1 - index));
+	highScore[index].score = currentScore;
 }
 
 /**************************************
@@ -171,9 +199,9 @@ int GetCurrentScore(void)
 /**************************************
 ハイスコア取得処理
 ***************************************/
-DATA_HIGHSCRE* GetHighScore(void)
+DATA_HIGHSCRE* GetHighScore(int id)
 {
-	return highScore;
+	return &highScore[id];
 }
 
 /**************************************
@@ -201,7 +229,7 @@ void AddPlayerHP(float value)
 bool LoadHighScoreData(void)
 {
 	FILE *fp = NULL;
-	fopen(DATACONTAINER_SAVEDATA_PATH, "rb");
+	fp = fopen(DATACONTAINER_SAVEDATA_PATH, "rb");
 
 	//読み込みに失敗したのでハイスコアを初期化してリターン
 	if (fp == NULL)
@@ -209,7 +237,11 @@ bool LoadHighScoreData(void)
 		for (int i = 0; i < DATACONTAINER_HIGHSCORE_MAX; i++)
 		{
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].score = (i + 1) * 100000;
-			strcpy_s(highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName, "HAL");
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[0] = 7;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[1] = 0;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[2] = 11;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[3] = 26;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[4] = 26;
 		}
 		return false;
 	}
@@ -225,7 +257,7 @@ bool LoadHighScoreData(void)
 bool SaveHighScoreData(void)
 {
 	FILE *fp = NULL;
-	fopen(DATACONTAINER_SAVEDATA_PATH, "wb");
+	fp = fopen(DATACONTAINER_SAVEDATA_PATH, "wb");
 
 	//読み込み失敗
 	if (fp == NULL)

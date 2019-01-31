@@ -48,9 +48,6 @@
 #define	NUM_VERTEX		(4)		// 頂点数
 #define	NUM_POLYGON		(2)		// ポリゴン数
 
-#define MESH_BLOCK_NUM	(128)
-#define BLOCK_SIZE	(50.0f * 128.0f / MESH_BLOCK_NUM)
-
 #define SAFE_RELEASE(p) {if(p){p->Release(); p = NULL;}}
 
 // 上記２Ｄポリゴン頂点フォーマットに合わせた構造体を定義

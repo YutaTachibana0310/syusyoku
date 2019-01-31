@@ -16,6 +16,11 @@
 #include "lockonNumGUI.h"
 #include "gameoverTelop.h"
 #include "stageClearTelop.h"
+#include "nameEntryRanking.h"
+#include "rankingScore.h"
+#include "rankingName.h"
+#include "nameEntryCursor.h"
+#include "rankingTelop.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -44,6 +49,7 @@ void DrawGUIonTitleScene(void);
 void LoadSettingsGUI(void);
 void DrawGUIonGameoverScene(void);
 void DrawGUIonStageClearScene(void);
+void DrawGUIonNameEntryScene(void);
 
 /**************************************
 グローバル変数
@@ -53,7 +59,8 @@ static const char* texturePath[GUI_NUMTEX_MAX] =
 {
 	"data/TEXTURE/UI/scoreNum.png",
 	"data/TEXTURE/UI/lockonNum.png",
-	"data/TEXTURE/UI/timeNum.png"
+	"data/TEXTURE/UI/timeNum.png",
+	"data/TEXTURE/UI/rankingNum.png"
 };
 
 //各シーンのGUI描画処理テーブル
@@ -64,7 +71,8 @@ static DrawGUI Draw[DefineSceneMax] = {
 	NULL,
 	NULL,
 	DrawGUIonGameoverScene,
-	DrawGUIonStageClearScene
+	DrawGUIonStageClearScene,
+	DrawGUIonNameEntryScene
 };
 
 /**************************************
@@ -95,6 +103,11 @@ void InitGUIManager(int num)
 	InitLockonNumGUI(num);
 	InitGameoverTelop(num);
 	InitStageClearTelop(num);
+	InitNameEntryRanking(num);
+	InitRankingScore(num);
+	InitRankingName(num);
+	InitNameEntryCursor(num);
+	InitRankingTelop(num);
 
 	//LoadSettingsGUI();
 }
@@ -123,6 +136,11 @@ void UninitGUIManager(int num)
 	UninitLockonNumGUI(num);
 	UninitGameoverTelop(num);
 	UninitStageClearTelop(num);
+	UninitNameEntryRanking(num);
+	UninitRankingScore(num);
+	UninitRankingName(num);
+	UninitNameEntryCursor(num);
+	UninitRankingTelop(num);
 }
 
 /**************************************
@@ -141,6 +159,11 @@ void UpdateGUIManager(void)
 	UpdateLockonNumGUI();
 	UpdateGameoverTelop();
 	UpdateStageClearTelop();
+	UpdateNameEntryRanking();
+	UpdateRankingScore();
+	UpdateRankingName();
+	UpdateNameEntryCursor();
+	UpdateRankingTelop();
 }
 
 /**************************************
@@ -225,6 +248,18 @@ void DrawGUIonGameoverScene(void)
 void DrawGUIonStageClearScene(void)
 {
 	DrawStageClearTelop();
+}
+
+/**************************************
+ネームエントリーシーン描画処理
+***************************************/
+void DrawGUIonNameEntryScene(void)
+{
+	DrawNameEntryRanking();
+	DrawRankingScore();
+	DrawRankingName();
+	DrawNameEntryCursor();
+	DrawRankingTelop();
 }
 
 /**************************************

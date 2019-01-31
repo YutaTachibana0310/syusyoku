@@ -1,4 +1,4 @@
-//=============================================================================
+ //=============================================================================
 //
 // バトルシーン処理 [battleScene.cpp]
 // Author : GP11A341 21 立花雄太
@@ -47,17 +47,6 @@ void DrawDebugWindowBattleScene(void);
 /*****************************************************************************
 グローバル変数
 *****************************************************************************/
-static LARGE_INTEGER startPlayerUpdate, endPlayerUpdate;
-static LARGE_INTEGER startPMissileUpdate, endPMissileUpdate;
-static LARGE_INTEGER startEnemyUpdate, endEnemyUpdate;
-static LARGE_INTEGER startSiteUpdate, endSiteUpdate;
-static LARGE_INTEGER startPlayerDrawm, endPlayerDraw;
-static LARGE_INTEGER startPMissileDraw, endPMissileDraw;
-static LARGE_INTEGER startEnemyDraw, endEnemyDraw;
-static LARGE_INTEGER startSiteDraw, endSiteDraw;
-static LARGE_INTEGER startParticleUpdate, endParticleUpdate;
-static LARGE_INTEGER startParticleDraw, endParticleDraw;
-static LARGE_INTEGER startCollision, endCollision;
 
 /******************************************************************************
 初期化処理
@@ -122,13 +111,10 @@ void UpdateBattleScene(void)
 	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
 	UpdatePlayerBullet();
 	UpdatePlayerModel();
-	UpdateBattleCamera();
-	GetTimerCount(&endPlayerUpdate);
 	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 	UpdateRockonSite();
-	GetTimerCount(&endSiteUpdate);
 
 	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
 

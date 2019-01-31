@@ -13,6 +13,7 @@
 #include "tutorialScene.h"
 #include "gameoverScene.h"
 #include "stageClearScene.h"
+#include "nameEntryScene.h"
 
 /**************************************
 マクロ定義
@@ -39,7 +40,8 @@ static SceneInit Init[] =
 	InitResultScene,
 	InitTutorialScene,
 	InitGameoverScene,
-	InitStageClearScene
+	InitStageClearScene,
+	InitNameEntryScene
 };
 
 //各シーン終了処理
@@ -52,6 +54,7 @@ static SceneUninit Uninit[] =
 	UninitTutorialScene,
 	UninitGameoverScene,
 	UninitStageClearScene,
+	UninitNameEntryScene
 };
 
 //各シーン更新処理
@@ -64,6 +67,7 @@ static SceneFunc Update[] =
 	UpdateTutorialScene,
 	UpdateGameoverScene,
 	UpdateStageClearScene,
+	UpdateNameEntryScene
 };
 
 //各シーン描画処理
@@ -76,6 +80,7 @@ static SceneFunc Draw[] =
 	DrawTutorialScene,
 	DrawGameoverScene,
 	DrawStageClearScene,
+	DrawNameEntryScene
 };
 
 /**************************************
