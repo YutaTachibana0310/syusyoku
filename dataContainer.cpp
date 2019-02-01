@@ -62,7 +62,7 @@ void UpdateRanking(int index);
 void InitDataContainer(int num)
 {
 
-	currentScore = 123459789;
+	currentScore = 55555;
 	LoadHighScoreData();
 
 	cntPowerUp = 0;
@@ -236,7 +236,7 @@ bool LoadHighScoreData(void)
 	{
 		for (int i = 0; i < DATACONTAINER_HIGHSCORE_MAX; i++)
 		{
-			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].score = (i + 1) * 100000;
+			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].score = (i + 1) * 10000;
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[0] = 7;
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[1] = 0;
 			highScore[DATACONTAINER_HIGHSCORE_MAX - i - 1].playerName[2] = 11;

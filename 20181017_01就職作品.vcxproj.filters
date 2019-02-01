@@ -606,6 +606,12 @@
     <ClCompile Include="rankingTelop.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="titleTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="entryTelop.cpp">
+      <Filter>ソース ファイル\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -936,6 +942,12 @@
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
     <ClInclude Include="rankingTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="titleTelop.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="entryTelop.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
   </ItemGroup>

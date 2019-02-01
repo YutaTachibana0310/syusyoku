@@ -9,6 +9,7 @@
 #include "nameEntryBG.h"
 #include "battleCamera.h"
 #include "nameEntryController.h"
+#include "bgmManager.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -31,6 +32,7 @@
 ***************************************/
 HRESULT InitNameEntryScene(int num)
 {
+	FadeInBGM(BGM_NAMEENTRY, 30);
 	InitNameEntryBG(num);
 	InitBattleCamera();
 	InitNameEntryController(num);

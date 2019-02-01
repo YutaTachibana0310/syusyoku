@@ -8,6 +8,8 @@
 #include "rankingName.h"
 #include "input.h"
 #include "nameEntryCursor.h"
+#include "entryTelop.h"
+#include "soundEffectManager.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -32,6 +34,8 @@ void OnEnterNameEntryInput(NAMEENTRY *entity)
 {
 	if (entity->highScore->playerName[entity->nameIndex] == CHARCHIP_NONE)
 		entity->highScore->playerName[entity->nameIndex] = CHARCHIP_A;
+
+	SetTextureEntryTelop(0);
 }
 
 /**************************************
@@ -54,6 +58,10 @@ void OnUpdateNameEntryInput(NAMEENTRY *entity)
 	//ó‘Ô‘JˆÚ
 	if (inputX == 0)
 		return;
+	else
+	{
+		PlaySE(SOUND_CURSOR);
+	}
 
 	if (entity->nameIndex == DATACONTAINER_PLAYERNAME_MAX)
 	{

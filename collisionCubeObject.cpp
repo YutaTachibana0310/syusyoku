@@ -12,7 +12,7 @@
 マクロ定義
 ***************************************/
 #define CUBEOBJ_PLAYERBULLET_DAMAGE						(1.0f)
-
+#define USE_DIVIDESPACE
 /**************************************
 構造体定義
 ***************************************/
@@ -26,12 +26,14 @@
 ***************************************/
 bool CheckCollisionCubeObjLower(DWORD elem, PLAYERBULLET *bullet, bool isCheckUpper, COLLISION_MANAGER *manager);
 bool CheckCollisionCubeObjUpper(DWORD elem, PLAYERBULLET *bullet, COLLISION_MANAGER *manager);
+void CheckCollisionAllCubeAndBullet(void);
 
 /**************************************
 衝突判定
 ***************************************/
 void CheckCollisionCubeObject(COLLISION_MANAGER *manager)
 {
+#ifdef USE_DIVIDESPACE
 	for (DWORD cntCell = 0; cntCell < manager->cellNum; cntCell++)
 	{
 		//空間が作成されていない場合の判定
@@ -56,6 +58,9 @@ void CheckCollisionCubeObject(COLLISION_MANAGER *manager)
 			}
 		}
 	}
+#else
+	CheckCollisionAllCubeAndBullet();
+#endif
 }
 
 /**************************************
@@ -147,4 +152,32 @@ bool CheckCollisionCubeObjUpper(DWORD elem, PLAYERBULLET *bullet, COLLISION_MANA
 	}
 
 	return false;
+}
+
+/*************************************
+総当たりでの判定
+**************************************/
+void CheckCollisionAllCubeAndBullet(void)
+{
+	CUBE_OBJECT *cube = GetCubeObjectAdr(0);
+	PLAYERBULLET *bullet = NULL;
+
+	for (int i = 0; i < CUBEOBJECT_NUM_MAX; i++, cube++)
+	{
+		if (!cube->active)
+			continue;
+
+		bullet = GetPlayerBulletAdr(0);
+		for (int j = 0; j < PLAYERBULLET_MAX; j++, bullet++)
+		{
+			if (!bullet->active)
+				continue;
+
+			if (ChechHitBoundingCube(&cube->collider, &bullet->collider2))
+			{
+				cube->hp -= CUBEOBJ_PLAYERBULLET_DAMAGE;
+				bullet->destroyRequest = true;
+			}
+		}
+	}
 }

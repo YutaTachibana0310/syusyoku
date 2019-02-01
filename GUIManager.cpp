@@ -21,6 +21,9 @@
 #include "rankingName.h"
 #include "nameEntryCursor.h"
 #include "rankingTelop.h"
+#include "tutorialController.h"
+#include "titleTelop.h"
+#include "entryTelop.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -50,6 +53,7 @@ void LoadSettingsGUI(void);
 void DrawGUIonGameoverScene(void);
 void DrawGUIonStageClearScene(void);
 void DrawGUIonNameEntryScene(void);
+void DrawGUIonTutorialScene(void);
 
 /**************************************
 グローバル変数
@@ -69,7 +73,7 @@ static DrawGUI Draw[DefineSceneMax] = {
 	DrawGUIonTitleScene,
 	DrawGUIonBattleScene,
 	NULL,
-	NULL,
+	DrawGUIonTutorialScene,
 	DrawGUIonGameoverScene,
 	DrawGUIonStageClearScene,
 	DrawGUIonNameEntryScene
@@ -108,6 +112,8 @@ void InitGUIManager(int num)
 	InitRankingName(num);
 	InitNameEntryCursor(num);
 	InitRankingTelop(num);
+	InitTitleTelop(num);
+	InitEntryTelop(num);
 
 	//LoadSettingsGUI();
 }
@@ -141,6 +147,8 @@ void UninitGUIManager(int num)
 	UninitRankingName(num);
 	UninitNameEntryCursor(num);
 	UninitRankingTelop(num);
+	UninitTitleTelop(num);
+	UninitEntryTelop(num);
 }
 
 /**************************************
@@ -164,6 +172,8 @@ void UpdateGUIManager(void)
 	UpdateRankingName();
 	UpdateNameEntryCursor();
 	UpdateRankingTelop();
+	UpdateTitleTelop();
+	UpdateEntryTelop();
 }
 
 /**************************************
@@ -194,6 +204,16 @@ void DrawGUIonLogoScene(void)
 void DrawGUIonTitleScene(void)
 {
 	DrawTitleLogo();
+	DrawTitleTelop();
+}
+
+/**************************************
+チュートリアルシーン描画処理
+***************************************/
+void DrawGUIonTutorialScene(void)
+{
+	DrawLockonGUI();
+	DrawTutorialController();
 }
 
 /**************************************
@@ -260,6 +280,7 @@ void DrawGUIonNameEntryScene(void)
 	DrawRankingName();
 	DrawNameEntryCursor();
 	DrawRankingTelop();
+	DrawEntryTelop();
 }
 
 /**************************************

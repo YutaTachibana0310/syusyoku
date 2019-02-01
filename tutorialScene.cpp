@@ -37,6 +37,7 @@
 /**************************************
 グローバル変数
 ***************************************/
+static bool isTransition;
 
 /**************************************
 プロトタイプ宣言
@@ -61,6 +62,7 @@ HRESULT InitTutorialScene(int num)
 	InitTutorialController(num);
 
 	FadeInBGM(BGM_TUTORIALSCENE, TUTORIALSCENE_FADE_DURATION);
+	isTransition = false;
 	return S_OK;
 }
 
@@ -111,8 +113,9 @@ void UpdateTutorialScene(void)
 
 	UpdateTutorialController();
 
-	if (GetKeyboardPress(DIK_RETURN))
+	if (GetKeyboardPress(DIK_RETURN) && !isTransition)
 	{
+		isTransition = true;
 		FadeOutBGM(BGM_TUTORIALSCENE, TUTORIALSCENE_FADE_DURATION);
 		SetSceneFade(BattleScene);
 	}
@@ -141,7 +144,7 @@ void DrawTutorialScene(void)
 	DrawRockonSite();
 	DrawTargetSite();
 
-	DrawGUIManager();
+	//rawGUIManager();
 
-	DrawTutorialController();
+	//DrawTutorialController();
 }

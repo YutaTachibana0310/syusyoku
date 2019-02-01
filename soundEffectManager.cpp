@@ -38,6 +38,7 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/freeze06.wav"),
 	_T("data/SOUND/magic-attack-holy1.wav"),
 	_T("data/SOUND/bom30.wav"),
+	_T("data/SOUND/cursor2.wav"),
 };
 
 static SOUNDEFFECT se[SOUND_MAX];
@@ -172,6 +173,8 @@ void DrawDebugWindowSoundEffect(void)
 
 	DebugSliderFloat(STR(SOUND_NORMALEXPL), &se[SOUND_NORMALEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 
+	DebugSliderFloat(STR(SOUND_CURSOR), &se[SOUND_CURSOR].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+
 	if (DebugButton("Save Settings"))
 	{
 		SaveSettingsSoundEffect();
@@ -195,6 +198,7 @@ void DrawDebugWindowSoundEffect(void)
 	if (DebugButton(STR(SOUND_BONUSEXPL))) { PlaySE(SOUND_BONUSEXPL); }
 	if (DebugButton(STR(SOUND_BONUSSTART))) { PlaySE(SOUND_BONUSSTART); }
 	if (DebugButton(STR(SOUND_NORMALEXPL))) { PlaySE(SOUND_NORMALEXPL); }
+	if (DebugButton(STR(SOUND_CURSOR))) { PlaySE(SOUND_CURSOR); }
 
 	DebugNewLine();
 	static float length = 5000.0f;

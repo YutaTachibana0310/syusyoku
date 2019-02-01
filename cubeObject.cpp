@@ -19,7 +19,6 @@
 #define CUBEOBJECT_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
 #define CUBEOBJECT_SIZE					(10.0f)		//キューブオブジェクトのサイズ
 #define CUBEOBJECT_VTX_NUM				(24)		//キューブオブジェクトの頂点数
-#define CUBEOBJECT_NUM_MAX				(2048)		//キューブオブジェクトの最大数
 #define CUBEOBJECT_FIELD_NUM			(6)			//キューブオブジェクトの面数
 #define CUBEOBJECT_TEX_NUM				(3)			//テクスチャ枚数
 #define CUBEOBJECT_INIT_HP				(0.01f)		//初期HP
@@ -488,6 +487,14 @@ bool SetCubeObject(D3DXVECTOR3 *setPos, float speed = 8.0f)
 	}
 
 	return false;
+}
+
+/*****************************************
+アドレス取得処理
+******************************************/
+CUBE_OBJECT *GetCubeObjectAdr(int num)
+{
+	return &cube[num];
 }
 
 /*****************************************

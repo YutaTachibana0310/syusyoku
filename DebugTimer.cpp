@@ -169,6 +169,7 @@ void DrawDebugTimer(const char *label)
 		return;
 
 	BeginDebugWindow(label);
+	DebugText("FPS : %d", GetCurrentFPS());
 
 	double progress = 0.0f;
 	for (TIMERNODE *node = ptr->latest; node != NULL; node = node->next)

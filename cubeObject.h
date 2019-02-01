@@ -13,7 +13,7 @@
 /**************************************
 マクロ定義
 ***************************************/
-
+#define CUBEOBJECT_NUM_MAX				(2048)		//キューブオブジェクトの最大数
 /**************************************
 構造体定義
 ***************************************/
@@ -41,4 +41,5 @@ void DrawCubeObject(void);
 void LockonCubeObject(void);
 void DamageAllCubeObject(void);
 bool SetCubeObject(D3DXVECTOR3 *setPos, float speed);
+CUBE_OBJECT *GetCubeObjectAdr(int num);
 #endif
