@@ -160,8 +160,6 @@ void DrawEnemyBullet(void)
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-		if(ptr->active)
-			DrawBoundingCube(&ptr->collider);
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);

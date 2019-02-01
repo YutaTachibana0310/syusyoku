@@ -266,12 +266,6 @@ void DrawEnemyHomingBullet(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
-
-	for (int i = 0 ; i < ENEMYHOMINGBULLET_MAX; i++)
-	{
-		if (bullet[i].active)
-			DrawBoundingCube(&bullet[i].collider);
-	}
 }
 
 #if 0

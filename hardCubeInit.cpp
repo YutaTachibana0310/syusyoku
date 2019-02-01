@@ -21,7 +21,7 @@
 ƒOƒ[ƒoƒ‹•Ï”
 ***************************************/
 static const float InitHp[HardCubeTypeMax] = {
-	50.0f, 100.0f, 15.0f, 15.0f, 50.0f
+	50.0f, 100.0f, 15.0f, 30.0f, 50.0f
 };
 
 static const float InitScale[HardCubeTypeMax] = {

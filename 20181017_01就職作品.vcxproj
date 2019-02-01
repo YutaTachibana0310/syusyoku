@@ -177,6 +177,7 @@
     <ClCompile Include="enemyMissileLaunch.cpp" />
     <ClCompile Include="enemyMissileSmog.cpp" />
     <ClCompile Include="enemyMissileStraight.cpp" />
+    <ClCompile Include="entryTelop.cpp" />
     <ClCompile Include="explosionFire.cpp" />
     <ClCompile Include="explosionFlare.cpp" />
     <ClCompile Include="explosionLumine.cpp" />
@@ -272,6 +273,7 @@
     <ClCompile Include="stageData.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
+    <ClCompile Include="titleTelop.cpp" />
     <ClCompile Include="tutorialBonusCube.cpp" />
     <ClCompile Include="tutorialBonusTime.cpp" />
     <ClCompile Include="tutorialController.cpp" />
@@ -317,6 +319,7 @@
     <ClInclude Include="enemyMissileLaunch.h" />
     <ClInclude Include="enemyMissileSmog.h" />
     <ClInclude Include="enemyMissileStraight.h" />
+    <ClInclude Include="entryTelop.h" />
     <ClInclude Include="explosionFire.h" />
     <ClInclude Include="explosionFlare.h" />
     <ClInclude Include="explosionLumine.h" />
@@ -391,6 +394,7 @@
     <ClInclude Include="stageData.h" />
     <ClInclude Include="targetSite.h" />
     <ClInclude Include="titleScene.h" />
+    <ClInclude Include="titleTelop.h" />
     <ClInclude Include="tutorialController.h" />
     <ClInclude Include="tutorialScene.h" />
   </ItemGroup>

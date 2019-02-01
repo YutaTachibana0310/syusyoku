@@ -103,7 +103,7 @@ void UpdateStageClearScene(void)
 	cntFrame++;
 	if (cntFrame == STAGECLEAR_DURATION)
 	{
-		SetSceneFade(TitleScene);
+		SetSceneFade(NameEntryScene);
 		FadeOutBGM(BGM_STAGECLEAR, 60);
 	}
 }

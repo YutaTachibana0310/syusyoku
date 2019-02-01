@@ -39,7 +39,7 @@ void InitRankingTelop(int num)
 	if (!initialized)
 	{
 		LPDIRECT3DDEVICE9 pDevice = GetDevice();
-		texture = CreateTextureFromFile(RANKINGTELOP_TEXTURE_NAME, pDevice);
+		texture = CreateTextureFromFile((LPSTR)RANKINGTELOP_TEXTURE_NAME, pDevice);
 		MakeVertexRankingTelop();
 	}
 }

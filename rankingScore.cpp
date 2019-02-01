@@ -13,7 +13,7 @@
 ***************************************/
 #define RANKINGSCORE_SIZE_X			(30.0f)
 #define RANKINGSCORE_SIZE_Y			(50.0f)
-#define RANKINGSCORE_BASEPOS		(D3DXVECTOR3(500.0f, 250.0f, 0.0f))
+#define RANKINGSCORE_BASEPOS		(D3DXVECTOR3(500.0f, 220.0f, 0.0f))
 #define RANKINGSCORE_OFFSET_X		(900.0f)
 #define RANKINGSCORE_OFFSET_Y		(150.0f)
 #define RANKINGSCORE_NUM_OFFSET		(-40.0f)

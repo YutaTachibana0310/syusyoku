@@ -150,11 +150,6 @@ void UpdateBattleScene(void)
 	{
 		SetScene(StageClearScene);
 	}
-
-	if (GetKeyboardTrigger(DIK_RETURN))
-	{
-		SetScene(StageClearScene);
-	}
 }
 
 /******************************************************************************
