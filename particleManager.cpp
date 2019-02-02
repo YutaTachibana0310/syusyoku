@@ -128,6 +128,8 @@ void DrawParticleManager(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
+	DrawCubeParticle();
+
 	GetDevice()->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
@@ -143,7 +145,6 @@ void DrawParticleManager(void)
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	GetDevice()->SetRenderState(D3DRS_LIGHTING, true);
 
-	DrawCubeParticle();
 }
 
 /**************************************

@@ -172,13 +172,14 @@ void DrawBattleScene(void)
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileDraw");
 	DrawPlayerMissile();
 	DrawPlayerMissileSmog();
-	DrawPlayerBullet();
-	DrawPlayerBulletTrail();
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileDraw");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleDraw");
 	DrawParticleManager();
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleDraw");
+
+	DrawPlayerBullet();
+	DrawPlayerBulletTrail();
 
 	CountDebugTimer(BATTLESCENE_LABEL, "siteDraw");
 	DrawRockonSite();
