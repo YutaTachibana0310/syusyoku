@@ -17,7 +17,7 @@
 マクロ定義
 ***************************************/
 #define CUBEOBJECT_EFFECT_NAME			"data/EFFECT/cubeObject.fx"
-#define CUBEOBJECT_SIZE					(10.0f)		//キューブオブジェクトのサイズ
+#define CUBEOBJECT_SIZE					(12.0f)		//キューブオブジェクトのサイズ
 #define CUBEOBJECT_VTX_NUM				(24)		//キューブオブジェクトの頂点数
 #define CUBEOBJECT_FIELD_NUM			(6)			//キューブオブジェクトの面数
 #define CUBEOBJECT_TEX_NUM				(3)			//テクスチャ枚数
@@ -52,37 +52,71 @@ typedef struct
 グローバル変数
 ***************************************/
 //キューブオブジェクトの単位頂点
-static CUBE_VTX vtx[CUBEOBJECT_VTX_NUM] = {
-	//上
-	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f },
-	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f },
-	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-	//前
-	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f },
-	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f },
-	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f },
-	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f },
-	//下
-	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f },
-	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f },
-	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f },
-	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f },
-	//後ろ
-	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f },
-	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f },
-	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-	//左
-	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },
-	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f },
-	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f },
-	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f },
-	//右
-	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f },
-	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+//static CUBE_VTX vtx[CUBEOBJECT_VTX_NUM] = {
+//	//上
+//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f },
+//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f },
+//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+//	//前
+//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f },
+//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f },
+//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f },
+//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f },
+//	//下
+//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f },
+//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f },
+//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f },
+//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f },
+//	//後ろ
+//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f },
+//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f },
+//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+//	//左
+//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },
+//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f },
+//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f },
+//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f },
+//	//右
+//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f },
+//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+//};
+
+static CUBE_VTX vtx[24] = {
+	{ 0.0f, 2 * CUBEOBJECT_SIZE,0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f} ,
+	{ CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f},
+	{ -CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f},
+
+	{ 0.0f, 2 * CUBEOBJECT_SIZE,0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f } ,
+	{ CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+	{ CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f},
+
+	{ 0.0f, 2 * CUBEOBJECT_SIZE,0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f } ,
+	{-CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	{CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+
+	{ 0.0f, 2 * CUBEOBJECT_SIZE,0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f } ,
+	{ -CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	{-CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+
+	{ 0.0f, -2 * CUBEOBJECT_SIZE, 0.0f,0.5f, 0.5f, 0.0f, 0.0f, 0.0f } ,
+	{ -CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+	{ CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+
+	{ 0.0f, -2 * CUBEOBJECT_SIZE,0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f } ,
+	{ CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+	{ CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+
+	{ 0.0f, -2 * CUBEOBJECT_SIZE, 0.0f,0.5f, 0.5f, 0.0f, 0.0f, 0.0f } ,
+	{ CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f},
+	{ -CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+
+	{ 0.0f, -2 * CUBEOBJECT_SIZE, 0.0f,0.5f, 0.5f, 0.0f, 0.0f, 0.0f } ,
+	{ -CUBEOBJECT_SIZE, 0.0f, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+	{ -CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
 };
 
 static LPDIRECT3DVERTEXBUFFER9 vtxBuff, worldBuff;		//頂点バッファ
@@ -144,6 +178,24 @@ void InitCubeObject(int num)
 	//初回のみの初期化
 	if (!initialized)
 	{
+
+		//法線計算
+		for (int i = 0; i < 8; i++)
+		{
+			D3DXVECTOR3 vec1, vec2;
+			vec1 = D3DXVECTOR3(vtx[i * 3 + 2].posX, vtx[i * 3 + 2].posY, vtx[i * 3 + 2].posZ) - D3DXVECTOR3(vtx[i * 3].posX, vtx[i * 3].posY, vtx[i * 3].posZ);
+			vec2 = D3DXVECTOR3(vtx[i * 3 + 1].posX, vtx[i * 3 + 1].posY, vtx[i * 3 + 1].posZ) - D3DXVECTOR3(vtx[i * 3].posX, vtx[i * 3].posY, vtx[i * 3].posZ);
+			D3DXVECTOR3 normal;
+			D3DXVec3Cross(&normal, &vec2, &vec1);
+			D3DXVec3Normalize(&normal, &normal);
+			for (int j = 0; j < 3; j++)
+			{
+				vtx[i * 3 + j].norX = normal.x;
+				vtx[i * 3 + j].norY = normal.y;
+				vtx[i * 3 + j].norZ = normal.z;
+			}
+		}
+
 		//頂点バッファ作成
 		pDevice->CreateVertexBuffer(sizeof(vtx), 0, 0, D3DPOOL_MANAGED, &vtxBuff, 0);
 		pDevice->CreateVertexBuffer(sizeof(mtxWorld), 0, 0, D3DPOOL_MANAGED, &worldBuff, 0);
@@ -165,7 +217,7 @@ void InitCubeObject(int num)
 		pDevice->CreateVertexDeclaration(declareElems, &declare);
 
 		//インデックスバッファ作成
-		WORD index[6 * CUBEOBJECT_FIELD_NUM];
+		/*WORD index[6 * CUBEOBJECT_FIELD_NUM];
 		for (int i = 0; i < 6; i++)
 		{
 			index[i * 6] = i * NUM_VERTEX;
@@ -174,6 +226,12 @@ void InitCubeObject(int num)
 			index[i * 6 + 3] = i * NUM_VERTEX + 2;
 			index[i * 6 + 4] = i * NUM_VERTEX + 1;
 			index[i * 6 + 5] = i * NUM_VERTEX + 3;
+		}*/
+
+		WORD index[24];
+		for (int i = 0; i < 24; i++)
+		{
+			index[i] = i;
 		}
 
 		pDevice->CreateIndexBuffer(sizeof(index), 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &indexBuff, 0);
