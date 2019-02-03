@@ -42,6 +42,7 @@ enum BATTLECONTROLLER_STATE {
 	BattleNormalTime,
 	BattleWaitBonusTimeBegin,
 	BattleBonusTime,
+	BattleBonusIntebal,
 	BattleStateMax
 };
 /**************************************

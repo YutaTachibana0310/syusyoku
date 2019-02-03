@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="baseGUI.cpp" />
+    <ClCompile Include="battleBonusInterbal.cpp" />
     <ClCompile Include="battleWaitBonusTimeBegin.cpp" />
     <ClCompile Include="battleBonusTime.cpp" />
     <ClCompile Include="battleCamera.cpp" />
@@ -143,6 +145,7 @@
     <ClCompile Include="battleScene.cpp" />
     <ClCompile Include="bgmManager.cpp" />
     <ClCompile Include="bonusCube.cpp" />
+    <ClCompile Include="bonusPositionTelop.cpp" />
     <ClCompile Include="bonusTelop.cpp" />
     <ClCompile Include="bonusTimeGUI.cpp" />
     <ClCompile Include="bossCubeObject.cpp" />
@@ -285,11 +288,13 @@
     <ClCompile Include="tutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="baseGUI.h" />
     <ClInclude Include="battleCamera.h" />
     <ClInclude Include="battleController.h" />
     <ClInclude Include="battleScene.h" />
     <ClInclude Include="bgmManager.h" />
     <ClInclude Include="bonusCube.h" />
+    <ClInclude Include="bonusPositinoTelop.h" />
     <ClInclude Include="bonusTelop.h" />
     <ClInclude Include="bonusTimeGUI.h" />
     <ClInclude Include="bossCubeObject.h" />

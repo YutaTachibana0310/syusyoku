@@ -47,11 +47,13 @@ typedef void(*funcBattleController)(BATTLECONTROLLER *controller);
 void OnEnterBattleNormalTime(BATTLECONTROLLER *controller);
 void OnEnterBattleWaitBonusTimeBegin(BATTLECONTROLLER *controller);
 void OnEnterBattleBonusTime(BATTLECONTROLLER *controller);
+void OnEnterBattleBonusInterbal(BATTLECONTROLLER *controller);
 
 //更新処理
 void OnUpdateBattleNormalTime(BATTLECONTROLLER *controller);
 void OnUpdateBattleWaitBonusTimeBegin(BATTLECONTROLLER *controller);
 void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller);
+void OnUpdateBattleBonusInterbal(BATTLECONTROLLER *controller);
 
 /**************************************
 グローバル変数
@@ -66,6 +68,7 @@ static funcBattleController Enter[BattleStateMax] = {
 	OnEnterBattleNormalTime,
 	OnEnterBattleWaitBonusTimeBegin,
 	OnEnterBattleBonusTime,
+	OnEnterBattleBonusInterbal
 };
 
 //更新処理テーブル
@@ -73,6 +76,7 @@ static funcBattleController Update[BattleStateMax] = {
 	OnUpdateBattleNormalTime,
 	OnUpdateBattleWaitBonusTimeBegin,
 	OnUpdateBattleBonusTime,
+	OnUpdateBattleBonusInterbal
 };
 
 /**************************************
@@ -141,6 +145,7 @@ void UpdateBattleController(void)
 ***************************************/
 void ChangeStateBattleController(int next)
 {
+	controller.prevState = controller.currentState;
 	controller.currentState = next;
 	Enter[controller.currentState](&controller);
 }
@@ -150,7 +155,7 @@ void ChangeStateBattleController(int next)
 ***************************************/
 bool IsBonusTime(void)
 {
-	if (controller.currentState == BattleBonusTime)
+	if (controller.currentState == BattleBonusTime || controller.currentState ==BattleBonusIntebal)
 		return true;
 	else
 		return false;

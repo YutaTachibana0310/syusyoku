@@ -48,7 +48,6 @@ static bool isTransition;
 ***************************************/
 HRESULT InitTutorialScene(int num)
 {
-	InitGUIManager(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
 	InitPlayerModel(num);
@@ -71,7 +70,6 @@ HRESULT InitTutorialScene(int num)
 ***************************************/
 void UninitTutorialScene(int num)
 {
-	UninitGUIManager(num);
 	UninitTargetSite(num);
 	UninitRockonSite(num);
 	UninitPlayerModel(num);
@@ -103,8 +101,6 @@ void UpdateTutorialScene(void)
 	UpdatePlayerBulletTrail();
 
 	UpdateParticleManager();
-
-	UpdateGUIManager();
 
 	UpdateEnemyManager();
 

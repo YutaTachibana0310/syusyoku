@@ -24,6 +24,7 @@
 #include "tutorialController.h"
 #include "titleTelop.h"
 #include "entryTelop.h"
+#include "bonusPositinoTelop.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -114,6 +115,7 @@ void InitGUIManager(int num)
 	InitRankingTelop(num);
 	InitTitleTelop(num);
 	InitEntryTelop(num);
+	InitBonusPositionTelop(num);
 
 	//LoadSettingsGUI();
 }
@@ -149,6 +151,7 @@ void UninitGUIManager(int num)
 	UninitRankingTelop(num);
 	UninitTitleTelop(num);
 	UninitEntryTelop(num);
+	UninitBonusPositionTelop(num);
 }
 
 /**************************************
@@ -174,6 +177,7 @@ void UpdateGUIManager(void)
 	UpdateRankingTelop();
 	UpdateTitleTelop();
 	UpdateEntryTelop();
+	UpdateBonusPositionTelop();
 }
 
 /**************************************
@@ -229,6 +233,7 @@ void DrawGUIonBattleScene(void)
 	DrawBonusTimeGUI();
 	DrawLockonLevelGUI();
 	DrawLockonNumGUI();
+	DrawBonusPositionTelop();
 
 #ifdef _DEBUG
 	DrawLockNumlevelGUIDebug();
