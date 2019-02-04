@@ -639,6 +639,9 @@
     <ClCompile Include="battleBonusInterbal.cpp">
       <Filter>ソース ファイル\Controller\States</Filter>
     </ClCompile>
+    <ClCompile Include="scoreMagniGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -981,6 +984,9 @@
       <Filter>ヘッダー ファイル\GUI\TitleScene</Filter>
     </ClInclude>
     <ClInclude Include="bonusPositinoTelop.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="scoreMagniGUI.h">
       <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
   </ItemGroup>

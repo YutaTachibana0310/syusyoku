@@ -34,6 +34,7 @@
 #define HARDCUBE_SPEED_MIN				(5.0f)						//最小スピード
 #define PARTICLE_HARDCUBE_COLOR			(D3DCOLOR_RGBA(255, 121, 121, 255))
 #define HARDCUBE_NORMAL_BLURPOWER		(0.5f)
+#define HARDCUBE_ADDSCORE				(500)
 
 //テクスチャ名
 static const char* TextureName[HARDCUBE_TEX_NUM] = {
@@ -392,6 +393,7 @@ void CheckDestroyHardCube(void)
 				SetCameraShaker(HARDCUBEHOMING_CAMERA_SHAKE_LENGTH);
 				SetShockBlur(ptr->pos);
 				PlaySE(SOUND_MIDDLEEXPL);
+				AddScore(HARDCUBE_ADDSCORE);
 			}
 			
 			DisableHardCube(ptr);

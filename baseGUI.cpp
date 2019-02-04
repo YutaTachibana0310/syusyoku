@@ -42,7 +42,6 @@ BaseGUI::BaseGUI(LPSTR texName, float sizeX, float sizeY)
 
 	this->SetVertex(D3DXVECTOR3(SCREEN_CENTER_X, SCREEN_CENTER_Y, 0.0f));
 
-
 	scale = 1.0f;
 }
 
@@ -52,6 +51,33 @@ BaseGUI::BaseGUI(LPSTR texName, float sizeX, float sizeY)
 BaseGUI::~BaseGUI()
 {
 	SAFE_RELEASE(texture);
+}
+
+/**************************************
+“Ç‚Ýž‚Ýˆ—
+***************************************/
+void BaseGUI::Load(LPSTR texName, float sizeX, float sizeY)
+{
+	if (texture != NULL)
+		return;
+
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	texture = CreateTextureFromFile(texName, pDevice);
+	size = D3DXVECTOR2(sizeX, sizeY);
+
+	vtxWk[0].rhw =
+		vtxWk[1].rhw =
+		vtxWk[2].rhw =
+		vtxWk[3].rhw = 1.0f;
+
+	this->SetTexture(1, 1, 0);
+
+	this->SetAlpha(1.0f);
+
+	this->SetVertex(D3DXVECTOR3(SCREEN_CENTER_X, SCREEN_CENTER_Y, 0.0f));
+
+	scale = 1.0f;
 }
 
 /**************************************

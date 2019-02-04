@@ -13,9 +13,10 @@
 マクロ定義
 ***************************************/
 #define DATACONTAINER_SHOTLEVEL_MAX		(4)		//ショットレベル最大値
-#define DATACONTAINER_LOCKLEVEL_MAX		(3)		//ロックオンレベル最大値
+#define DATACONTAINER_LOCKLEVEL_MAX		(7)		//ロックオンレベル最大値
 #define DATACONTAINER_PLAYERNAME_MAX	(5)		//プレイヤー名最大文字数
 #define DATACONTAINER_HIGHSCORE_MAX		(10)	//ハイスコアの保存数
+
 /**************************************
 構造体定義
 ***************************************/
@@ -45,5 +46,8 @@ void AddPlayerHP(float value);
 bool LoadHighScoreData(void);
 bool SaveHighScoreData(void);
 bool CheckUpdateRanking(int *index);
+
+void SetScoreMagni(int lockonNum);
+float GetScoreMagni(void);
 
 #endif

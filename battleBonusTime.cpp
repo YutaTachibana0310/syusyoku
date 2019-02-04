@@ -16,7 +16,7 @@
 #define BATTLEBONUS_BGM_FADE_DURATION	(120)
 #define BATTLE_BONUS_DURATION			(570)				//ボーナスタイム時間		
 #define BATTLE_BONUS_WAIT				(120)				//ボーナスタイムのスタートオフセット
-#define BATTLE_BONUS_EMMITT_RANGE		(2.0f)				//ボーナスタイムのキューブ生成範囲
+#define BATTLE_BONUS_EMMITT_RANGE		(200.0f)				//ボーナスタイムのキューブ生成範囲
 #define BATTLE_BONUS_POS_Z				(6000.0f)			//ボーナスタイム時のキューブ生成位置（Z）
 #define BATTLE_BONUS_SPEED				(35.0f)				//ボーナスタイムのキューブスピード
 #define BATTLE_BONUS_EMMITTPOS_MAX		(6)
@@ -65,9 +65,9 @@ void OnEnterBattleBonusTime(BATTLECONTROLLER *controller)
 		FadeOutBGM(BGM_BATTLESCENE, BATTLEBONUS_BGM_FADE_DURATION);
 	}
 	//位置表示
-	posIndex = RandomRange(0, BATTLE_BONUS_EMMITTPOS_MAX);
-	SetStateBonusPositionTelop(true);
-	SetPositionBonusPositionTelop(EmmittPos[posIndex]);
+	//posIndex = RandomRange(0, BATTLE_BONUS_EMMITTPOS_MAX);
+	//SetStateBonusPositionTelop(true);
+	//SetPositionBonusPositionTelop(EmmittPos[posIndex]);
 }
 
 /**************************************
@@ -85,8 +85,8 @@ void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 		for (int i = 0; i < 10; i++)
 		{
 			D3DXVECTOR3 emmittPos;
-			emmittPos.x = EmmittPos[posIndex].x + RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
-			emmittPos.y = EmmittPos[posIndex].y + RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.x = /*EmmittPos[posIndex].x +*/ RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.y = /*EmmittPos[posIndex].y +*/ RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
 			emmittPos.z = BATTLE_BONUS_POS_Z;
 
 			EmmittCubeObject(1, &emmittPos, BATTLE_BONUS_SPEED);
@@ -106,9 +106,9 @@ void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 	}
 
 	//インターバル判定
-	if (elapsedFrame % BATTLE_BONUS_SWITCH_TIMING == 0 && elapsedFrame + BATTLE_BONUS_SWITCH_TIMING < BATTLE_BONUS_DURATION + BATTLE_BONUS_WAIT)
-	{
-		ChangeStateBattleController(BattleBonusIntebal);
-		return;
-	}
+	//if (elapsedFrame % BATTLE_BONUS_SWITCH_TIMING == 0 && elapsedFrame + BATTLE_BONUS_SWITCH_TIMING < BATTLE_BONUS_DURATION + BATTLE_BONUS_WAIT)
+	//{
+	//	ChangeStateBattleController(BattleBonusIntebal);
+	//	return;
+	//}
 }
