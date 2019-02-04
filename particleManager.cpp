@@ -12,6 +12,7 @@
 #include "cubeParticle.h"
 #include "explosionLumine.h"
 #include "bulletParticle.h"
+#include "scoreMagniGUI.h"
 #include "debugWindow.h"
 
 /**************************************
@@ -80,6 +81,7 @@ void InitParticleManager(int num)
 	InitCubeParticle(num);
 	InitExplosionLumine(num);
 	InitBulletParticle(num);
+	InitScoreMagniGUI(num);
 }
 
 /**************************************
@@ -93,6 +95,7 @@ void UninitParticleManager(int num)
 	UninitCubeParticle(num);
 	UninitExplosionLumine(num);
 	UninitBulletParticle(num);
+	UninitScoreMagniGUI(num);
 }
 
 /**************************************
@@ -118,6 +121,8 @@ void UpdateParticleManager(void)
 
 	UpdateBulletParticle();
 
+	UpdateScoreMagniGUI();
+
 	DrawDebugWindowParticle();
 }
 
@@ -141,6 +146,7 @@ void DrawParticleManager(void)
 	DrawExplosionFire(declare, effect);
 	DrawBulletParticle(declare, effect);
 	DrawExplosionLumine(effect);
+	DrawScoreMagniGUI(effect);
 
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 	GetDevice()->SetRenderState(D3DRS_LIGHTING, true);

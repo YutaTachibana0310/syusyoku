@@ -17,6 +17,7 @@
 #include "cameraShaker.h"
 #include "shockBlur.h"
 #include "dataContainer.h"
+#include "scoreMagniGUI.h"
 
 #include "debugWindow.h"
 #include <math.h>
@@ -407,6 +408,7 @@ void CheckDestroyBonusCube(void)
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			SetShockBlur(ptr->pos);
 			AddScore(BONUSCUBE_ADDSCORE);
+			SetScoreMagniGUI(ptr->pos);
 			DisableBonusCube(ptr);
 		}
 		else

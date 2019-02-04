@@ -12,6 +12,7 @@
 #include "collisionManager.h"
 #include "debugWindow.h"
 #include "soundEffectManager.h"
+#include "scoreMagniGUI.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -440,6 +441,7 @@ void CheckDestroyCubeObject(void)
 			AddScore(CUBEOBJECT_ADD_SCORE);
 			PlaySE_3D(SOUND_SMALLEXPL, ptr->pos.z);
 			DisableCubeObject(ptr);
+			SetScoreMagniGUI(ptr->pos);
 		}
 	}
 }

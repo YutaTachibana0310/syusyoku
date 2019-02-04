@@ -217,33 +217,35 @@ D3DXMATRIX GetBattleCameraProjection(void)
 //=============================================================================
 // ƒJƒƒ‰‚ðŒü‚­‰ñ“]s—ñ‚ÌŽæ“¾
 //=============================================================================
-void GetInvRotBattleCamera(D3DXMATRIX *mtx)
+void GetInvRotBattleCamera(D3DXMATRIX *mtx, D3DXVECTOR3 *pAt)
 {
-	/*
-	D3DXMATRIX inv;
-	D3DXMatrixIdentity(&inv);
-	D3DXMatrixLookAtLH(&inv, &battleBattleCameraPos, objPos, &g_posBattleCameraU);
-	D3DXMatrixInverse(&inv, NULL, &inv);
-	inv._41 = 0.0f;
-	inv._42 = 0.0f;
-	inv._43 = 0.0f;
-	*/
+	if (pAt != NULL)
+	{
+		D3DXMATRIX inv;
+		D3DXMatrixIdentity(mtx);
+		D3DXMatrixLookAtLH(mtx, &camera.pos, pAt, &camera.up);
+		D3DXMatrixInverse(mtx, NULL, mtx);
+		mtx->_41 = 0.0f;
+		mtx->_42 = 0.0f;
+		mtx->_43 = 0.0f;
+	}
+	else {
+		mtx->_11 = camera.view._11;
+		mtx->_12 = camera.view._21;
+		mtx->_13 = camera.view._31;
 
-	mtx->_11 = camera.view._11;
-	mtx->_12 = camera.view._21;
-	mtx->_13 = camera.view._31;
+		mtx->_21 = camera.view._12;
+		mtx->_22 = camera.view._22;
+		mtx->_23 = camera.view._32;
 
-	mtx->_21 = camera.view._12;
-	mtx->_22 = camera.view._22;
-	mtx->_23 = camera.view._32;
+		mtx->_31 = camera.view._13;
+		mtx->_32 = camera.view._23;
+		mtx->_33 = camera.view._33;
 
-	mtx->_31 = camera.view._13;
-	mtx->_32 = camera.view._23;
-	mtx->_33 = camera.view._33;
-
-	mtx->_41 = 0.0f;
-	mtx->_42 = 0.0f;
-	mtx->_43 = 0.0f;
+		mtx->_41 = 0.0f;
+		mtx->_42 = 0.0f;
+		mtx->_43 = 0.0f;
+	}
 }
 
 //=============================================================================

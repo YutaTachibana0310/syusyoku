@@ -15,6 +15,7 @@
 #include "cameraShaker.h"
 #include "soundEffectManager.h"
 #include "shockBlur.h"
+#include "scoreMagniGUI.h"
 
 #include "stageData.h"
 
@@ -244,7 +245,7 @@ void UninitHardCubeObject(int num)
 		SAFE_RELEASE(declare);
 		SAFE_RELEASE(indexBuff);
 
-		for (int i = 0; i < HARDCUBE_TEX_NUM; i++) 
+		for (int i = 0; i < HARDCUBE_TEX_NUM; i++)
 		{
 			SAFE_RELEASE(texture[i]);
 		}
@@ -393,9 +394,10 @@ void CheckDestroyHardCube(void)
 				SetCameraShaker(HARDCUBEHOMING_CAMERA_SHAKE_LENGTH);
 				SetShockBlur(ptr->pos);
 				PlaySE(SOUND_MIDDLEEXPL);
-				AddScore(HARDCUBE_ADDSCORE);
 			}
-			
+
+			AddScore(HARDCUBE_ADDSCORE * ptr->scale);
+			SetScoreMagniGUI(ptr->pos);
 			DisableHardCube(ptr);
 		}
 		else
@@ -502,7 +504,7 @@ void OnUpdateHardCube(void)
 	HARD_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
 	{
-		if(ptr->active)
+		if (ptr->active)
 			Update[ptr->currentState](ptr);
 	}
 }

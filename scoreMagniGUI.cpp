@@ -13,16 +13,17 @@
 #include "particleManager.h"
 #include "dataContainer.h"
 #include "battleCamera.h"
+#include "Easing.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define SCOREMAGNIGUI_TEX_NAME		"data/TEXTURE/UI/bonusMagni.png"
-#define SCOREMAGNIGUI_SIZE_X		(0.0f)
-#define SCOREMAGNIGUI_SIZE_Y		(200.0f)
+#define SCOREMAGNIGUI_SIZE_X		(20.0f)
+#define SCOREMAGNIGUI_SIZE_Y		(20.0f)
 #define SCOREMAGNIGUI_POS			(D3DXVECTOR3(SCOREMAGNIGUI_SIZE_X / 2.0f, 200.0f, 0.0f))
 #define SCOREMAGNIGUI_MAX			(128)
-#define SCOREMAGNIGUI_FADE_DURATION	(120)
+#define SCOREMAGNIGUI_FADE_DURATION	(60)
 
 /**************************************
 構造体定義
@@ -41,9 +42,9 @@ static VERTEX_UV vtxUV[SCOREMAGNIGUI_MAX];
 
 static VERTEX_PARTICLE vtx[NUM_VERTEX] = {
 	{ -SCOREMAGNIGUI_SIZE_X,  SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.0f, 0.0f },
-	{  SCOREMAGNIGUI_SIZE_X,  SCOREMAGNIGUI_SIZE_Y, 0.0f, 1.0f, 0.0f },
+	{  SCOREMAGNIGUI_SIZE_X,  SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.5f, 0.0f },
 	{ -SCOREMAGNIGUI_SIZE_X, -SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.0f, 0.2f },
-	{  SCOREMAGNIGUI_SIZE_X, -SCOREMAGNIGUI_SIZE_Y, 0.0f, 1.0f, 0.2f },
+	{  SCOREMAGNIGUI_SIZE_X, -SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.5f, 0.2f },
 };
 
 static LPDIRECT3DINDEXBUFFER9 indexBuff;
@@ -111,25 +112,39 @@ void UninitScoreMagniGUI(int num)
 ***************************************/
 void UpdateScoreMagniGUI(void)
 {
-	D3DXMATRIX mtxTrans;
 	for (int i = 0; i < SCOREMAGNIGUI_MAX; i++)
 	{
 		if (!entity[i].active)
 			continue;
 
-		//透過
+		//カウンタ
 		entity[i].cntFrame++;
-		color[i].a = 1.0f - (float)entity[i].cntFrame / (float)SCOREMAGNIGUI_FADE_DURATION;
-
 		if (entity[i].cntFrame == SCOREMAGNIGUI_FADE_DURATION)
 		{
+			color[i].a = 0.0f;
 			entity[i].active = false;
+			continue;
 		}
 
+		//アニメーション
+		float t = (float)entity[i].cntFrame / (float)SCOREMAGNIGUI_FADE_DURATION;
+		float scale = EaseInExponential(t, 1.0f, 0.0f);
+
+		//テクスチャ切り替え
+		vtxUV[i].u = ((entity[i].cntFrame  / 5) % 2) * 0.5f;
+
+		//ワールド変換
+		D3DXMATRIX mtxRot, mtxScale, mtxTransrate;
 		D3DXMatrixIdentity(&world[i]);
-		GetInvRotBattleCamera(&world[i]);
-		D3DXMatrixTranslation(&mtxTrans, entity[i].pos.x, entity[i].pos.y, entity[i].pos.z);
-		D3DXMatrixMultiply(&world[i], &world[i], &mtxTrans);
+
+		D3DXMatrixScaling(&mtxScale, scale, scale, 1.0f);
+		D3DXMatrixMultiply(&world[i], &world[i], &mtxScale);
+
+		GetInvRotBattleCamera(&mtxRot, &entity[i].pos);
+		D3DXMatrixMultiply(&world[i], &world[i], &mtxRot);
+
+		D3DXMatrixTranslation(&mtxTransrate, entity[i].pos.x, entity[i].pos.y, entity[i].pos.z);
+		D3DXMatrixMultiply(&world[i], &world[i], &mtxTransrate);
 	}
 
 	//頂点バッファにメモリコピー
@@ -165,7 +180,7 @@ void DrawScoreMagniGUI(LPD3DXEFFECT effect)
 	effect->Begin(NULL, 0);
 	effect->BeginPass(0);
 
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, 4, 0, 2);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 	effect->EndPass();
 	effect->End();
 
@@ -200,9 +215,11 @@ void SetScoreMagniGUI(D3DXVECTOR3 pos)
 		else
 			vtxUV[i].v = 0.0f;
 
+		vtxUV[i].u = 0.0f;
+
 		entity[i].cntFrame = 0;
 		color[i].a = 1.0f;
 		entity[i].active = true;
-
+		return;
 	}
 }

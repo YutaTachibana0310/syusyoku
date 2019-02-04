@@ -265,7 +265,6 @@ void ColliisonPlayerMissileAndEnemyMissile(void)
 		{
 			*ptr->targetHP -= PLAYERMISSILE_DAMAGE;
 			SetEnemyExplosion(ptr->pos);
-			SetScoreMagniGUI(ptr->pos);
 			ptr->active = false;
 		}
 	}
