@@ -29,6 +29,7 @@ typedef struct {
 プロトタイプ宣言
 ***************************************/
 void InitDataContainer(int num);
+void UpdateDataContainer(void);
 
 void AddScore(int addValue);
 void SetPowerUp(void);

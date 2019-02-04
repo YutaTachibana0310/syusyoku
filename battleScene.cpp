@@ -178,8 +178,9 @@ void DrawBattleScene(void)
 	DrawParticleManager();
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleDraw");
 
-	DrawPlayerBullet();
-	DrawPlayerBulletTrail();
+	//パーティクルマネージャ内で描画
+	//DrawPlayerBullet();
+	//DrawPlayerBulletTrail();
 
 	CountDebugTimer(BATTLESCENE_LABEL, "siteDraw");
 	DrawRockonSite();

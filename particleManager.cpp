@@ -14,6 +14,8 @@
 #include "bulletParticle.h"
 #include "scoreMagniGUI.h"
 #include "debugWindow.h"
+#include "playerBullet.h"
+#include "playerBulletTrail.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -134,6 +136,9 @@ void DrawParticleManager(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	DrawCubeParticle();
+
+	DrawPlayerBullet();
+	DrawPlayerBulletTrail();
 
 	GetDevice()->SetRenderState(D3DRS_LIGHTING, false);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);

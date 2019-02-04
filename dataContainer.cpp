@@ -13,11 +13,11 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define DATACONTAINER_POWEUP_MAX		(7)			//パワーアップ最大回数
-#define DATACONTAINER_SHOTLEVEL_MAX		(4)			//ショットレベルマックス
-#define DATACONTAINER_PlAYERHP_INIT		(100.0f)	//HP初期値
-#define DATACONTAINER_SAVEDATA_PATH		"data/SETTINGS/data.ini"	//ハイスコアデータのファイルパス	
-
+#define DATACONTAINER_POWEUP_MAX			(7)			//パワーアップ最大回数
+#define DATACONTAINER_SHOTLEVEL_MAX			(4)			//ショットレベルマックス
+#define DATACONTAINER_PlAYERHP_INIT			(100.0f)	//HP初期値
+#define DATACONTAINER_SAVEDATA_PATH			"data/SETTINGS/data.ini"	//ハイスコアデータのファイルパス	
+#define DATACONTAINER_MAGNICOUNT_DURATION	(120)
 /**************************************
 構造体定義
 ***************************************/
@@ -52,6 +52,9 @@ static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX] = {
 //プレイヤーHP
 static float playerHP;
 
+//倍率カウンタ
+int cntFrameMagni;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -75,6 +78,21 @@ void InitDataContainer(int num)
 	scoreMagni = 1.0f;
 
 }
+/**************************************
+更新処理
+***************************************/
+void UpdateDataContainer(void)
+{
+	if (cntFrameMagni < DATACONTAINER_MAGNICOUNT_DURATION)
+	{
+		cntFrameMagni++;
+		if (cntFrameMagni == DATACONTAINER_MAGNICOUNT_DURATION)
+		{
+			scoreMagni = 1.0f;
+		}
+	}
+}
+
 
 /**************************************
 スコア関連初期化処理
@@ -284,6 +302,9 @@ void SetScoreMagni(int lockonNum)
 
 	//スコア倍率を計算(最大2^4 = 16倍, 最知恵2^0 = 1倍)
 	scoreMagni = powf(2.0f, per);
+
+	//カウンタセット
+	cntFrameMagni = 0;
 }
 
 /**************************************

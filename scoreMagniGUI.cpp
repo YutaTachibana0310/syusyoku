@@ -160,6 +160,8 @@ void DrawScoreMagniGUI(LPD3DXEFFECT effect)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	
+	pDevice->SetRenderState(D3DRS_ZENABLE, false);
+
 	pDevice->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | SCOREMAGNIGUI_MAX);
 	pDevice->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 	pDevice->SetStreamSourceFreq(2, D3DSTREAMSOURCE_INSTANCEDATA | 1);
@@ -187,6 +189,8 @@ void DrawScoreMagniGUI(LPD3DXEFFECT effect)
 	pDevice->SetStreamSourceFreq(0, 1);
 	pDevice->SetStreamSourceFreq(1, 1);
 	pDevice->SetStreamSourceFreq(2, 1);
+
+	pDevice->SetRenderState(D3DRS_ZENABLE, true);
 
 }
 
