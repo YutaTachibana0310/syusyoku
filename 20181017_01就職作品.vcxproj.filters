@@ -166,6 +166,24 @@
     <Filter Include="ソース ファイル\Battle\BattleSystem\collision">
       <UniqueIdentifier>{e4c8130e-da6a-4550-9490-2b4df78210db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GUI\TitleScene">
+      <UniqueIdentifier>{87591ac6-14fc-4a47-92b7-bc92d54d6024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GUI\BattleScene">
+      <UniqueIdentifier>{b4f5826f-eef8-4581-b9a9-b5b0a588d91f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GUI\nameEntryScene">
+      <UniqueIdentifier>{fe4111f8-9ad9-4d99-8a68-885a15a3e5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GUI\TitleScene">
+      <UniqueIdentifier>{d764e20c-87c6-42bc-9f44-dbd0eb6fd46d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GUI\NameEntryScene">
+      <UniqueIdentifier>{317a5001-0d74-4647-9c4d-e021ee8e52f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GUI\BattleScene">
+      <UniqueIdentifier>{0a354a3e-06dd-4ba0-8067-e28c73540f16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -276,9 +294,6 @@
     <ClCompile Include="meshCylinder.cpp">
       <Filter>ソース ファイル\Battle\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="scoreGUI.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="playerMissileSmog.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
@@ -296,9 +311,6 @@
     </ClCompile>
     <ClCompile Include="playerMissileStraight.cpp">
       <Filter>ソース ファイル\Battle\Player\playerMissile</Filter>
-    </ClCompile>
-    <ClCompile Include="lockonGUI.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
     <ClCompile Include="GUIManager.cpp">
       <Filter>ソース ファイル\GUI</Filter>
@@ -417,9 +429,6 @@
     <ClCompile Include="dataContainer.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="powerUpTelop.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="collider.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
     </ClCompile>
@@ -431,12 +440,6 @@
     </ClCompile>
     <ClCompile Include="fuzzyLogic.cpp">
       <Filter>ソース ファイル\FrameWork</Filter>
-    </ClCompile>
-    <ClCompile Include="bonusTelop.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="bonusTimeGUI.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
     <ClCompile Include="hardCubeInit.cpp">
       <Filter>ソース ファイル\Battle\Enemy\cubeObject\states</Filter>
@@ -470,9 +473,6 @@
     </ClCompile>
     <ClCompile Include="tutorialScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="hpGUI.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
     <ClCompile Include="tutorialController.cpp">
       <Filter>ソース ファイル\Controller</Filter>
@@ -525,12 +525,6 @@
     <ClCompile Include="postEffectManager.cpp">
       <Filter>ソース ファイル\Effect\PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="lockonLevelGUI.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="lockonNumGUI.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="collisionManager.cpp">
       <Filter>ソース ファイル\Battle\BattleSystem\collision</Filter>
     </ClCompile>
@@ -555,17 +549,11 @@
     <ClCompile Include="monotone.cpp">
       <Filter>ソース ファイル\Effect\PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="gameoverTelop.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="gameoverScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="stageClearScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="stageClearTelop.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
     <ClCompile Include="battleNormalTime.cpp">
       <Filter>ソース ファイル\Controller\States</Filter>
@@ -582,20 +570,8 @@
     <ClCompile Include="nameEntryBG.cpp">
       <Filter>ソース ファイル\Battle\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="nameEntryRanking.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="rankingScore.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="rankingName.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="nameEntryController.cpp">
       <Filter>ソース ファイル\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="nameEntryCursor.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
     <ClCompile Include="nameEntryInput.cpp">
       <Filter>ソース ファイル\Controller\States</Filter>
@@ -603,14 +579,68 @@
     <ClCompile Include="nameEntryEnd.cpp">
       <Filter>ソース ファイル\Controller\States</Filter>
     </ClCompile>
-    <ClCompile Include="rankingTelop.cpp">
+    <ClCompile Include="baseGUI.cpp">
       <Filter>ソース ファイル\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="titleTelop.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
+    <ClCompile Include="bonusTelop.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="bonusTimeGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="gameoverTelop.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="hpGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="lockonGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="lockonLevelGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="lockonNumGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="powerUpTelop.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="scoreGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="stageClearTelop.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
     </ClCompile>
     <ClCompile Include="entryTelop.cpp">
-      <Filter>ソース ファイル\GUI</Filter>
+      <Filter>ソース ファイル\GUI\nameEntryScene</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryCursor.cpp">
+      <Filter>ソース ファイル\GUI\nameEntryScene</Filter>
+    </ClCompile>
+    <ClCompile Include="nameEntryRanking.cpp">
+      <Filter>ソース ファイル\GUI\nameEntryScene</Filter>
+    </ClCompile>
+    <ClCompile Include="rankingName.cpp">
+      <Filter>ソース ファイル\GUI\nameEntryScene</Filter>
+    </ClCompile>
+    <ClCompile Include="rankingScore.cpp">
+      <Filter>ソース ファイル\GUI\nameEntryScene</Filter>
+    </ClCompile>
+    <ClCompile Include="rankingTelop.cpp">
+      <Filter>ソース ファイル\GUI\nameEntryScene</Filter>
+    </ClCompile>
+    <ClCompile Include="titleTelop.cpp">
+      <Filter>ソース ファイル\GUI\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="bonusPositionTelop.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="battleBonusInterbal.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
+    <ClCompile Include="scoreMagniGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -722,20 +752,11 @@
     <ClInclude Include="meshCylinder.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="scoreGUI.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="playerMissileSmog.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
     <ClInclude Include="playerMissile.h">
       <Filter>ヘッダー ファイル\Battle\Player\playerMissile</Filter>
-    </ClInclude>
-    <ClInclude Include="hpGUI.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="lockonGUI.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
     <ClInclude Include="GUIManager.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
@@ -836,9 +857,6 @@
     <ClInclude Include="dataContainer.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="powerUpTelop.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="collider.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
     </ClInclude>
@@ -850,12 +868,6 @@
     </ClInclude>
     <ClInclude Include="fuzzyLogic.h">
       <Filter>ヘッダー ファイル\FrameWork</Filter>
-    </ClInclude>
-    <ClInclude Include="bonusTelop.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="bonusTimeGUI.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
     <ClInclude Include="bgmManager.h">
       <Filter>ヘッダー ファイル\Sound</Filter>
@@ -893,12 +905,6 @@
     <ClInclude Include="particle.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="lockonLevelGUI.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="lockonNumGUI.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="bulletParticle.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
     </ClInclude>
@@ -908,17 +914,11 @@
     <ClInclude Include="shockBlur.h">
       <Filter>ヘッダー ファイル\Effect\PostEffect</Filter>
     </ClInclude>
-    <ClInclude Include="gameoverTelop.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="gameoverScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="stageClearScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="stageClearTelop.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
     <ClInclude Include="nameEntryScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
@@ -926,29 +926,68 @@
     <ClInclude Include="nameEntryBG.h">
       <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="nameEntryRanking.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="rankingScore.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="rankingName.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="nameEntryController.h">
       <Filter>ヘッダー ファイル\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="nameEntryCursor.h">
+    <ClInclude Include="baseGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="rankingTelop.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
+    <ClInclude Include="bonusTelop.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
-    <ClInclude Include="titleTelop.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
+    <ClInclude Include="bonusTimeGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="gameoverTelop.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="hpGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="lockonGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="lockonLevelGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="lockonNumGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="powerUpTelop.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="scoreGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="stageClearTelop.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
     <ClInclude Include="entryTelop.h">
-      <Filter>ヘッダー ファイル\GUI</Filter>
+      <Filter>ヘッダー ファイル\GUI\NameEntryScene</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryCursor.h">
+      <Filter>ヘッダー ファイル\GUI\NameEntryScene</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingName.h">
+      <Filter>ヘッダー ファイル\GUI\NameEntryScene</Filter>
+    </ClInclude>
+    <ClInclude Include="nameEntryRanking.h">
+      <Filter>ヘッダー ファイル\GUI\NameEntryScene</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingScore.h">
+      <Filter>ヘッダー ファイル\GUI\NameEntryScene</Filter>
+    </ClInclude>
+    <ClInclude Include="rankingTelop.h">
+      <Filter>ヘッダー ファイル\GUI\NameEntryScene</Filter>
+    </ClInclude>
+    <ClInclude Include="titleTelop.h">
+      <Filter>ヘッダー ファイル\GUI\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="bonusPositinoTelop.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="scoreMagniGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

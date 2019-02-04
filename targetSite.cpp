@@ -55,8 +55,8 @@ static const char* texturePath[] = {
 };
 
 //ロックオンレベルに応じたターゲットサイトのスケール
-static const float ScaleLevel[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
-	0.7f, 0.85f, 1.0f, 1.2f
+static const float ScaleLevel[DATACONTAINER_LOCKLEVEL_MAX] = {
+	0.6f,0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f
 };
 
 

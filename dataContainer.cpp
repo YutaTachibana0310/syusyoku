@@ -13,11 +13,11 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define DATACONTAINER_POWEUP_MAX		(7)			//パワーアップ最大回数
-#define DATACONTAINER_SHOTLEVEL_MAX		(4)			//ショットレベルマックス
-#define DATACONTAINER_PlAYERHP_INIT		(100.0f)	//HP初期値
-#define DATACONTAINER_SAVEDATA_PATH		"data/SETTINGS/data.ini"	//ハイスコアデータのファイルパス	
-
+#define DATACONTAINER_POWEUP_MAX			(7)			//パワーアップ最大回数
+#define DATACONTAINER_SHOTLEVEL_MAX			(4)			//ショットレベルマックス
+#define DATACONTAINER_PlAYERHP_INIT			(100.0f)	//HP初期値
+#define DATACONTAINER_SAVEDATA_PATH			"data/SETTINGS/data.ini"	//ハイスコアデータのファイルパス	
+#define DATACONTAINER_MAGNICOUNT_DURATION	(120)
 /**************************************
 構造体定義
 ***************************************/
@@ -28,28 +28,32 @@
 //スコア関連パラメータ
 static int currentScore;
 static DATA_HIGHSCRE highScore[DATACONTAINER_HIGHSCORE_MAX];
+static float scoreMagni;
 
 //パワーアップ関連パラメータ
 static int cntPowerUp, shotLevel, lockLevel;
 
 //パワーアップのしきい値
 static const int PowerUpBorder[DATACONTAINER_POWEUP_MAX] = {
-	500000,
-	1000000,
+	10000,
+	50000,
+	100000,
 	1500000,
 	2000000,
-	2500000,
 	3000000,
 	(int)INFINITY
 };
 
 //各ロックオンレベルでの最大ロックオン数
-static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX + 1] = {
-	18, 36, 48, 54
+static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX] = {
+	18, 26, 34, 42, 50, 58, 66
 };
 
 //プレイヤーHP
 static float playerHP;
+
+//倍率カウンタ
+int cntFrameMagni;
 
 /**************************************
 プロトタイプ宣言
@@ -62,7 +66,7 @@ void UpdateRanking(int index);
 void InitDataContainer(int num)
 {
 
-	currentScore = 55555;
+	currentScore = 0;
 	LoadHighScoreData();
 
 	cntPowerUp = 0;
@@ -71,7 +75,24 @@ void InitDataContainer(int num)
 
 	playerHP = DATACONTAINER_PlAYERHP_INIT;
 
+	scoreMagni = 1.0f;
+
 }
+/**************************************
+更新処理
+***************************************/
+void UpdateDataContainer(void)
+{
+	if (cntFrameMagni < DATACONTAINER_MAGNICOUNT_DURATION)
+	{
+		cntFrameMagni++;
+		if (cntFrameMagni == DATACONTAINER_MAGNICOUNT_DURATION)
+		{
+			scoreMagni = 1.0f;
+		}
+	}
+}
+
 
 /**************************************
 スコア関連初期化処理
@@ -79,6 +100,7 @@ void InitDataContainer(int num)
 void InitScoreParameter(void)
 {
 	currentScore = 0;
+
 	//highScore = 0;				//TODO:ハイスコアの読み込みを追加
 }
 
@@ -106,7 +128,7 @@ void InitPlayerHP(void)
 void AddScore(int addValue)
 {
 	//スコア加算処理
-	currentScore += addValue;
+	currentScore += (int)(addValue * scoreMagni);
 
 	//パワーアップ判定処理
 	if (currentScore >= PowerUpBorder[cntPowerUp])
@@ -154,14 +176,11 @@ void SetPowerUp(void)
 	//パワーアップカウント追加
 	cntPowerUp++;
 
-	//ショットレベルかロックレベルをアップ
-	if (cntPowerUp % 2 == 0)
-		lockLevel++;
-	else
-		shotLevel++;
+	//ロックレベルをアップ
+	lockLevel++;
 
 	//テロップ表示処理
-	StartPowerUpTelopAnimation(cntPowerUp % 2);
+	StartPowerUpTelopAnimation(0);
 }
 
 /**************************************
@@ -268,4 +287,30 @@ bool SaveHighScoreData(void)
 	fwrite(highScore, sizeof(DATA_HIGHSCRE), DATACONTAINER_HIGHSCORE_MAX, fp);
 	fclose(fp);
 	return true;
+}
+
+/**************************************
+ロックオンした数によるスコア倍率セット処理
+***************************************/
+void SetScoreMagni(int lockonNum)
+{
+	//現在の最大ロック数に対して割合算出
+	float per = (float)lockonNum / (float)LockonMax[lockLevel];
+
+	//割合を0から4の間に線形補間
+	per *= 4.0f;
+
+	//スコア倍率を計算(最大2^4 = 16倍, 最知恵2^0 = 1倍)
+	scoreMagni = powf(2.0f, per);
+
+	//カウンタセット
+	cntFrameMagni = 0;
+}
+
+/**************************************
+ロックオン倍率取得処理
+***************************************/
+float GetScoreMagni(void)
+{
+	return scoreMagni;
 }

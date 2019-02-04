@@ -486,6 +486,7 @@ void Update(void)
 
 	UpdateCamera();
 	UpdateLight();
+	UpdateDataContainer();
 	UpdateSceneManager();
 	UpdateMemoryAllocater();
 	UpdatePostEffectManager();

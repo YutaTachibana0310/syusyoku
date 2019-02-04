@@ -12,6 +12,7 @@
 #include "collisionManager.h"
 #include "debugWindow.h"
 #include "soundEffectManager.h"
+#include "scoreMagniGUI.h"
 
 /**************************************
 マクロ定義
@@ -22,7 +23,7 @@
 #define CUBEOBJECT_FIELD_NUM			(6)			//キューブオブジェクトの面数
 #define CUBEOBJECT_TEX_NUM				(3)			//テクスチャ枚数
 #define CUBEOBJECT_INIT_HP				(0.01f)		//初期HP
-#define CUBEOBJECT_ADD_SCORE			(5000)		//破壊時の加算スコア
+#define CUBEOBJECT_ADD_SCORE			(100)		//破壊時の加算スコア
 #define CUBEOBJECT_SCALE_MAX			(1.5f)		//キューブオブジェクト最大スケール
 #define CUBEOBJECT_SCALE_MIN			(0.7f)		//キューブオブジェクト最小スケール
 #define CUBEOBJECT_SPEED_MAX			(10.0f)		//キューブオブジェクト最大スピード
@@ -440,6 +441,7 @@ void CheckDestroyCubeObject(void)
 			AddScore(CUBEOBJECT_ADD_SCORE);
 			PlaySE_3D(SOUND_SMALLEXPL, ptr->pos.z);
 			DisableCubeObject(ptr);
+			SetScoreMagniGUI(ptr->pos);
 		}
 	}
 }

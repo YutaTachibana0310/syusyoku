@@ -16,6 +16,8 @@
 #include "soundEffectManager.h"
 #include "cameraShaker.h"
 #include "shockBlur.h"
+#include "dataContainer.h"
+#include "scoreMagniGUI.h"
 
 #include "debugWindow.h"
 #include <math.h>
@@ -41,6 +43,7 @@
 #define BONUSCUBE_CAMERASHAKE_LENGTH	(5.0f)
 #define BONUSCUBE_EMMITT_OFFST			(300.0f)
 #define BONUSCUBE_EMMITT_BASE			(D3DXVECTOR3(-BONUSCUBE_EMMITT_OFFST, -BONUSCUBE_EMMITT_OFFST, -100.0f))
+#define BONUSCUBE_ADDSCORE				(100)
 
 static const char* TextureName[BONUSCUBE_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit09.png",
@@ -404,6 +407,8 @@ void CheckDestroyBonusCube(void)
 			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			SetShockBlur(ptr->pos);
+			AddScore(BONUSCUBE_ADDSCORE);
+			SetScoreMagniGUI(ptr->pos);
 			DisableBonusCube(ptr);
 		}
 		else

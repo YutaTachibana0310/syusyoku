@@ -15,6 +15,7 @@
 #include "cameraShaker.h"
 #include "soundEffectManager.h"
 #include "shockBlur.h"
+#include "scoreMagniGUI.h"
 
 #include "stageData.h"
 
@@ -34,6 +35,7 @@
 #define HARDCUBE_SPEED_MIN				(5.0f)						//最小スピード
 #define PARTICLE_HARDCUBE_COLOR			(D3DCOLOR_RGBA(255, 121, 121, 255))
 #define HARDCUBE_NORMAL_BLURPOWER		(0.5f)
+#define HARDCUBE_ADDSCORE				(500)
 
 //テクスチャ名
 static const char* TextureName[HARDCUBE_TEX_NUM] = {
@@ -243,7 +245,7 @@ void UninitHardCubeObject(int num)
 		SAFE_RELEASE(declare);
 		SAFE_RELEASE(indexBuff);
 
-		for (int i = 0; i < HARDCUBE_TEX_NUM; i++) 
+		for (int i = 0; i < HARDCUBE_TEX_NUM; i++)
 		{
 			SAFE_RELEASE(texture[i]);
 		}
@@ -393,7 +395,9 @@ void CheckDestroyHardCube(void)
 				SetShockBlur(ptr->pos);
 				PlaySE(SOUND_MIDDLEEXPL);
 			}
-			
+
+			AddScore(HARDCUBE_ADDSCORE * ptr->scale);
+			SetScoreMagniGUI(ptr->pos);
 			DisableHardCube(ptr);
 		}
 		else
@@ -500,7 +504,7 @@ void OnUpdateHardCube(void)
 	HARD_CUBE_OBJECT *ptr = &cube[0];
 	for (int i = 0; i < HARDCUBE_NUM_MAX; i++, ptr++)
 	{
-		if(ptr->active)
+		if (ptr->active)
 			Update[ptr->currentState](ptr);
 	}
 }

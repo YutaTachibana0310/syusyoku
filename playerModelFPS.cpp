@@ -13,6 +13,7 @@
 #include "lockonGUI.h"
 #include "dataContainer.h"
 #include "soundEffectManager.h"
+#include "dataContainer.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`

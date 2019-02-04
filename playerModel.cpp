@@ -387,16 +387,22 @@ void ReleaseRockonTarget(PLAYERMODEL *player, int targetID)
 ***************************************/
 void AttackPlayerMissile(PLAYERMODEL *player)
 {
+	//インターバル中であればリターン
 	if (player->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
 	{
 		return;
 	}
 
+	//何もロックオンしていなければリターン
 	if (player->lockonNum == 0)
 	{
 		return;
 	}
 
+	//スコア倍率を設定
+	SetScoreMagni(player->lockonNum);
+
+	//ロックオン対象に向けてミサイル発射
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
 	{
 		if (player->target[i].pos == NULL)

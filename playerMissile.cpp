@@ -8,6 +8,7 @@
 #include "enemyMissile.h"
 #include "playerMissileSmog.h"
 #include "particleManager.h"
+#include "scoreMagniGUI.h"
 
 /**************************************
 É}ÉNÉçíËã`
