@@ -123,8 +123,11 @@ void UpdateBattleScene(void)
 
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileUpdate");
 	UpdatePlayerMissile();
-	UpdatePlayerMissileSmog();
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileUpdate");
+
+	CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
+	UpdatePlayerMissileSmog();
+	CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleUpdate");
 	UpdateParticleManager();

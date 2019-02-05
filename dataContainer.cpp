@@ -37,12 +37,12 @@ static int cntPowerUp, shotLevel, lockLevel;
 
 //パワーアップのしきい値
 static const int PowerUpBorder[DATACONTAINER_POWEUP_MAX] = {
-	10000,
-	50000,
 	100000,
-	1500000,
+	500000,
+	1000000,
 	2000000,
 	3000000,
+	4000000,
 	(int)INFINITY
 };
 

@@ -17,7 +17,7 @@
 #define DEBUGTIMER_LABEL_MAX		(36)
 #define DEBUGTIMER_COUNT_INTERBAL	(20)
 #define DEBUGTIMER_BAR_SIZE			(D3DXVECTOR2(75.0f, 0.0f))
-//#define USE_DEBUGTIMER
+#define USE_DEBUGTIMER
 
 /**************************************
 ç\ë¢ëÃíËã`
