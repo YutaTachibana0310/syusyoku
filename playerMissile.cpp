@@ -9,6 +9,7 @@
 #include "playerMissileSmog.h"
 #include "particleManager.h"
 #include "scoreMagniGUI.h"
+#include "DebugTimer.h"
 
 /**************************************
 マクロ定義
@@ -92,6 +93,8 @@ void InitPlayerMissile(int num)
 		//ptr->collider.active = false;
 		//ptr->collider.radius = false;
 	}
+
+	RegisterDebugTimer("PlayerMissile");
 }
 
 /**************************************
@@ -122,6 +125,7 @@ void UpdatePlayerMissile(void)
 	D3DXVECTOR3 acceleration;	//加速度
 	float period;
 
+	CountDebugTimer("PlayerMissile", "Update");
 	for (int i = 0; i < PLAYERMISSILE_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
@@ -134,8 +138,13 @@ void UpdatePlayerMissile(void)
 		//スモッグセット
 		SetPlayerMissileSmog(ptr->pos);
 	}
+	CountDebugTimer("PlayerMissile", "Update");
 
+	CountDebugTimer("PlayerMissile", "Collision");
 	ColliisonPlayerMissileAndEnemyMissile();
+	CountDebugTimer("PlayerMissile", "Collision");
+
+	DrawDebugTimer("PlayerMissile");
 }
 
 /**************************************

@@ -160,6 +160,7 @@
     <ClCompile Include="collisionCubeObject.cpp" />
     <ClCompile Include="cubeParticle.cpp" />
     <ClCompile Include="dataContainer.cpp" />
+    <ClCompile Include="debugScene.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="debugWindow.cpp" />
     <ClCompile Include="desertScene.cpp" />
@@ -261,7 +262,9 @@
     <ClCompile Include="sceneFade.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="scoreGUI.cpp" />
+    <ClCompile Include="scoreMagniGauge.cpp" />
     <ClCompile Include="scoreMagniGUI.cpp" />
+    <ClCompile Include="scoreMagniNumGUI.cpp" />
     <ClCompile Include="screenBG.cpp" />
     <ClCompile Include="shockBlur.cpp" />
     <ClCompile Include="skyBG.cpp" />
@@ -305,6 +308,7 @@
     <ClInclude Include="cubeObject.h" />
     <ClInclude Include="cubeParticle.h" />
     <ClInclude Include="dataContainer.h" />
+    <ClInclude Include="debugScene.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="debugWindow.h" />
     <ClInclude Include="desertScene.h" />
@@ -389,7 +393,9 @@
     <ClInclude Include="sceneFade.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="scoreGUI.h" />
+    <ClInclude Include="scoreMagniGauge.h" />
     <ClInclude Include="scoreMagniGUI.h" />
+    <ClInclude Include="scoreMagniNumGUI.h" />
     <ClInclude Include="screenBG.h" />
     <ClInclude Include="shockBlur.h" />
     <ClInclude Include="skyBG.h" />

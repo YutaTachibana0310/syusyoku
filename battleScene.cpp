@@ -111,6 +111,7 @@ void UpdateBattleScene(void)
 	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
 	UpdatePlayerBullet();
 	UpdatePlayerModel();
+	UpdatePlayerBulletTrail();
 	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "SiteUpdate");
@@ -122,9 +123,11 @@ void UpdateBattleScene(void)
 
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileUpdate");
 	UpdatePlayerMissile();
-	UpdatePlayerMissileSmog();
-	UpdatePlayerBulletTrail();
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileUpdate");
+
+	CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
+	UpdatePlayerMissileSmog();
+	CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleUpdate");
 	UpdateParticleManager();

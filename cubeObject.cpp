@@ -13,6 +13,7 @@
 #include "debugWindow.h"
 #include "soundEffectManager.h"
 #include "scoreMagniGUI.h"
+#include "DebugTimer.h"
 
 /**************************************
 マクロ定義
@@ -31,6 +32,7 @@
 
 #define CUBEOBJECT_SPEED_RANGE			(3.0f)
 #define PARTICLE_CUBE_COLOR				(D3DCOLOR_RGBA(103, 147, 255, 255))
+#define CUBEOBJECT_LABEL				"CubeObject"
 
 //テクスチャ名
 static const char* texName[CUBEOBJECT_TEX_NUM] = {
@@ -250,8 +252,11 @@ void InitCubeObject(int num)
 			D3DXCreateTextureFromFile(pDevice, texName[i], &texture[i]);
 		}
 
+		RegisterDebugTimer(CUBEOBJECT_LABEL);
 		initialized = true;
 	}
+
+
 }
 
 /**************************************
@@ -286,15 +291,27 @@ void UninitCubeObject(int num)
 ***************************************/
 void UpdateCubeObject(void)
 {
+	CountDebugTimer(CUBEOBJECT_LABEL, "CheckDestroy");
 	CheckDestroyCubeObject();
+	CountDebugTimer(CUBEOBJECT_LABEL, "CheckDestroy");
 
+	CountDebugTimer(CUBEOBJECT_LABEL, "Move");
 	MoveCubeObject();
+	CountDebugTimer(CUBEOBJECT_LABEL, "Move");
 
+	CountDebugTimer(CUBEOBJECT_LABEL, "Rotation");
 	RotationCubeObject();
+	CountDebugTimer(CUBEOBJECT_LABEL, "Rotation");
 
+	CountDebugTimer(CUBEOBJECT_LABEL, "CalcMatrix");
 	CalcCubeObjectWorldMartix();
+	CountDebugTimer(CUBEOBJECT_LABEL, "CalcMatrix");
 
+	CountDebugTimer(CUBEOBJECT_LABEL, "RegisterSpace");
 	RegisterCubeObjectToSpace();
+	CountDebugTimer(CUBEOBJECT_LABEL, "RegisterSpace");
+
+	DrawDebugTimer(CUBEOBJECT_LABEL);
 }
 
 /**************************************

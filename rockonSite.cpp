@@ -276,6 +276,9 @@ void ReleaseRockonSite(ROCKONSITE *ptr)
 ***************************************/
 void SetRockonSitePos(int id, D3DXVECTOR3 pos)
 {
+	if (pos.z < GetBattleCameraPos().z)
+		return;
+
 	rockon[id].pos = pos;
 	rockon[id].active = true;
 }

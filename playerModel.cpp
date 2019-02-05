@@ -19,6 +19,7 @@
 #include "dataContainer.h"
 #include "soundEffectManager.h"
 #include "collisionManager.h"
+#include "scoreMagniGauge.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -401,6 +402,7 @@ void AttackPlayerMissile(PLAYERMODEL *player)
 
 	//スコア倍率を設定
 	SetScoreMagni(player->lockonNum);
+	SetScoreMagniGauge();
 
 	//ロックオン対象に向けてミサイル発射
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)

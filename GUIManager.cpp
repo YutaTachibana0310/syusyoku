@@ -25,6 +25,8 @@
 #include "titleTelop.h"
 #include "entryTelop.h"
 #include "bonusPositinoTelop.h"
+#include "scoreMagniNumGUI.h"
+#include "scoreMagniGauge.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -116,6 +118,8 @@ void InitGUIManager(int num)
 	InitTitleTelop(num);
 	InitEntryTelop(num);
 	InitBonusPositionTelop(num);
+	InitScoreMagniNumGUI(num);
+	InitScoreMagniGauge(num);
 
 	//LoadSettingsGUI();
 }
@@ -152,6 +156,8 @@ void UninitGUIManager(int num)
 	UninitTitleTelop(num);
 	UninitEntryTelop(num);
 	UninitBonusPositionTelop(num);
+	UninitScoreMagniNumGUI(num);
+	UninitScoreMagniGauge(num);
 }
 
 /**************************************
@@ -178,6 +184,8 @@ void UpdateGUIManager(void)
 	UpdateTitleTelop();
 	UpdateEntryTelop();
 	UpdateBonusPositionTelop();
+	UpdateScoreMagniNumGUI();
+	UpdateScoreMagniGauge();
 }
 
 /**************************************
@@ -227,6 +235,7 @@ void DrawGUIonBattleScene(void)
 {
 	DrawScoreGUI();
 	DrawHpGUI();
+	DrawScoreMagniNumGUI();
 	DrawLockonGUI();
 	DrawPowerUpTelop();
 	DrawBonusTelop();
@@ -234,6 +243,7 @@ void DrawGUIonBattleScene(void)
 	DrawLockonLevelGUI();
 	DrawLockonNumGUI();
 	DrawBonusPositionTelop();
+	DrawScoreMagniGauge();
 
 #ifdef _DEBUG
 	DrawLockNumlevelGUIDebug();

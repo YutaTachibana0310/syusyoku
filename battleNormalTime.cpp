@@ -12,6 +12,7 @@
 #include "hardCubeObject.h"
 #include "bonusCube.h"
 #include "bonusTelop.h"
+#include "dataContainer.h"
 
 /**************************************
 マクロ定義
@@ -24,6 +25,9 @@
 /**************************************
 グローバル変数
 ***************************************/
+static int EmmittInterbal[DATACONTAINER_LOCKLEVEL_MAX] = {
+	60, 30, 40, 30, 25, 20, 15
+};
 
 /**************************************
 プロトタイプ宣言
@@ -47,7 +51,7 @@ void OnUpdateBattleNormalTime(BATTLECONTROLLER *controller)
 	controller->cntFrame++;
 	EmittFromStageData(controller);
 
-	if (controller->cntFrame % BATTLE_EMMITT_INTERBAL == 0)
+	if (controller->cntFrame % EmmittInterbal[GetLockonLevel()] == 0)
 		EmmittFromFuzzy(controller);
 
 }
