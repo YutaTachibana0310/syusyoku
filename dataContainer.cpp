@@ -19,6 +19,7 @@
 #define DATACONTAINER_SAVEDATA_PATH			"data/SETTINGS/data.ini"	//ハイスコアデータのファイルパス	
 #define DATACONTAINER_MAGNICOUNT_DURATION	(120)
 #define DATACONTAINER_SCOREMAGNI_MAX		(16.0f)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -175,10 +176,10 @@ void SetPowerUp(void)
 		return;
 
 	//パワーアップカウント追加
-	cntPowerUp++;
+	 cntPowerUp++;
 
 	//ロックレベルをアップ
-	lockLevel++;
+	lockLevel = Clamp(0, DATACONTAINER_LOCKLEVEL_MAX - 1, lockLevel + 1);
 
 	//テロップ表示処理
 	StartPowerUpTelopAnimation(0);

@@ -14,11 +14,13 @@
 #include "cubeObject.h"
 #include "hardCubeObject.h"
 #include "bonusCube.h"
+#include "DebugTimer.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define CUBEOBJECT_EMMITT_RANGE		(100.0f)
+#define ENEMYMANAGER_LABEL "EnemyManager"
 
 /**************************************
 構造体定義
@@ -47,6 +49,8 @@ void InitEnemyManager(int num)
 	InitEnemyBullet(num);
 	InitEnemyHomingBullet(num);
 	InitEnemyBulletTrail(num);
+
+	RegisterDebugTimer(ENEMYMANAGER_LABEL);
 }
 
 /**************************************
@@ -74,9 +78,18 @@ void UpdateEnemyManager(void)
 	UpdateEnemyMissile();
 	//UpdateMiddleEnemy();
 	//UpdateSmallEnemy();
+
+	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectUpdate");
 	UpdateCubeObject();
+	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectUpdate");
+
+	CountDebugTimer(ENEMYMANAGER_LABEL, "HardCubeUpdate");
 	UpdateHardCubeObject();
+	CountDebugTimer(ENEMYMANAGER_LABEL, "HardCubeUpdate");
+
+	CountDebugTimer(ENEMYMANAGER_LABEL, "BonusCubeUpdate");
 	UpdateBonusCube();
+	CountDebugTimer(ENEMYMANAGER_LABEL, "BonusCubeUpdate");
 
 	UpdateEnemyBullet();
 	UpdateEnemyHomingBullet();
@@ -91,13 +104,24 @@ void DrawEnemyManager(void)
 	//DrawMiddleEnemy();
 	DrawEnemyMissile();
 	//DrawSmallEnemy();
+
+	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectDraw");
 	DrawCubeObject();
+	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectDraw");
+
+	CountDebugTimer(ENEMYMANAGER_LABEL, "HardCubeDraw");
 	DrawHardCubeObject();
+	CountDebugTimer(ENEMYMANAGER_LABEL, "HardCubeDraw");
+
+	CountDebugTimer(ENEMYMANAGER_LABEL, "BonusCubeDraw");
 	DrawBonusCube();
+	CountDebugTimer(ENEMYMANAGER_LABEL, "BonusCubeDraw");
 
 	DrawEnemyBullet();
 	DrawEnemyHomingBullet();
 	DrawEnemyBulletTrail();
+
+	DrawDebugTimer(ENEMYMANAGER_LABEL);
 }
 
 /**************************************

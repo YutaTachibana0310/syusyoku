@@ -8,6 +8,7 @@
 #include "debugWindow.h"
 #include <string.h>
 #include <assert.h>
+#include <vector>
 
 /**************************************
 マクロ定義
@@ -16,10 +17,12 @@
 #define DEBUGTIMER_LABEL_MAX		(36)
 #define DEBUGTIMER_COUNT_INTERBAL	(20)
 #define DEBUGTIMER_BAR_SIZE			(D3DXVECTOR2(75.0f, 0.0f))
+//#define USE_DEBUGTIMER
 
 /**************************************
 構造体定義
 ***************************************/
+#ifdef USE_DEBUGTIMER
 typedef struct _TIMERNODE {
 	char tag[DEBUGTIMER_TAG_MAX];
 	LARGE_INTEGER start, end;
@@ -33,13 +36,14 @@ typedef struct _DEBUGTIMER {
 	TIMERNODE *head;
 	_DEBUGTIMER *next;
 }DEBUGTIMER;
-
+#endif
 /**************************************
 グローバル変数
 ***************************************/
+#ifdef USE_DEBUGTIMER
 static DEBUGTIMER *head = NULL;
 static DWORD cntFrame = 0;
-
+#endif
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -49,6 +53,7 @@ static DWORD cntFrame = 0;
 ***************************************/
 void UninitDebugTimer(void)
 {
+#ifdef USE_DEBUGTIMER
 	DEBUGTIMER *ptr = head;
 	while (ptr != NULL)
 	{
@@ -65,6 +70,7 @@ void UninitDebugTimer(void)
 		free(ptr);
 		ptr = tmp;
 	}
+#endif
 }
 
 /**************************************
@@ -72,7 +78,8 @@ void UninitDebugTimer(void)
 ***************************************/
 bool RegisterDebugTimer(const char* label)
 {
-	for (DEBUGTIMER *ptr = head; head != NULL; head = head->next)
+#ifdef USE_DEBUGTIMER
+	for (DEBUGTIMER *ptr = head; ptr != NULL; ptr = ptr->next)
 	{
 		if (strcmp(label, ptr->label) == 0)
 			return true;
@@ -91,6 +98,9 @@ bool RegisterDebugTimer(const char* label)
 	p->next = head;
 	head = p;
 	return true;
+#else
+	return false;
+#endif
 }
 
 /**************************************
@@ -98,6 +108,7 @@ bool RegisterDebugTimer(const char* label)
 ***************************************/
 bool CountDebugTimer(const char* label, const char* tag)
 {
+#ifdef USE_DEBUGTIMER
 	DEBUGTIMER *ptr = head;
 	while (ptr != NULL)
 	{
@@ -149,6 +160,9 @@ bool CountDebugTimer(const char* label, const char* tag)
 	}
 
 	return true;
+#else
+	return false;
+#endif
 }
 
 /**************************************
@@ -156,6 +170,7 @@ bool CountDebugTimer(const char* label, const char* tag)
 ***************************************/
 void DrawDebugTimer(const char *label)
 {
+#ifdef USE_DEBUGTIMER
 	DEBUGTIMER *ptr = head;
 	while (ptr != NULL)
 	{
@@ -176,6 +191,7 @@ void DrawDebugTimer(const char *label)
 	{
 		progress += CalcProgressTime(node->start, node->end);
 	}
+	DebugText("%3f[msec]", progress);
 
 	for (TIMERNODE *node = ptr->latest; node != NULL; node = node->next)
 	{
@@ -187,4 +203,5 @@ void DrawDebugTimer(const char *label)
 	}
 
 	EndDebugWindow(label);
+#endif
 }

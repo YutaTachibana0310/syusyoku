@@ -13,6 +13,7 @@
 #include "bonusTelop.h"
 #include "stageData.h"
 #include "bgmManager.h"
+#include "dataContainer.h"
 
 #include "cubeObject.h"
 #include "hardCubeObject.h"
@@ -77,6 +78,16 @@ static funcBattleController Update[BattleStateMax] = {
 	OnUpdateBattleWaitBonusTimeBegin,
 	OnUpdateBattleBonusTime,
 	OnUpdateBattleBonusInterbal
+};
+
+//放出数
+static const int EmmittNum[DATACONTAINER_LOCKLEVEL_MAX] = {
+	3, 3, 4, 4, 5, 5, 6
+};
+
+//スピード
+static const float EmmittSpeed[DATACONTAINER_LOCKLEVEL_MAX] = {
+	15.0f, 15.0f, 17.5f, 17.5f, 20.0f, 20.0f, 20.0f
 };
 
 /**************************************
@@ -194,6 +205,6 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 		}
 	}
 
-	EmmittCubeObject(BATTLE_CUBEEMMITT_NUM, &(controller->emmittPos[decidedPos]), BATTLE_CUBEEMMITT_SPEED);
+	EmmittCubeObject(EmmittNum[GetLockonLevel()], &(controller->emmittPos[decidedPos]), EmmittSpeed[GetLockonLevel()]);
 	controller->lastEmittFrame[decidedPos] = controller->cntFrame;
 }
