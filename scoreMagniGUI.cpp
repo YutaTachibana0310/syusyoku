@@ -24,6 +24,7 @@
 #define SCOREMAGNIGUI_POS			(D3DXVECTOR3(SCOREMAGNIGUI_SIZE_X / 2.0f, 200.0f, 0.0f))
 #define SCOREMAGNIGUI_MAX			(128)
 #define SCOREMAGNIGUI_FADE_DURATION	(60)
+#define SCOREMAGNIGUI_TEX_DIV_Y		(16)
 
 /**************************************
 \‘¢‘Ì’è‹`
@@ -43,8 +44,8 @@ static VERTEX_UV vtxUV[SCOREMAGNIGUI_MAX];
 static VERTEX_PARTICLE vtx[NUM_VERTEX] = {
 	{ -SCOREMAGNIGUI_SIZE_X,  SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.0f, 0.0f },
 	{  SCOREMAGNIGUI_SIZE_X,  SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.5f, 0.0f },
-	{ -SCOREMAGNIGUI_SIZE_X, -SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.0f, 0.2f },
-	{  SCOREMAGNIGUI_SIZE_X, -SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.5f, 0.2f },
+	{ -SCOREMAGNIGUI_SIZE_X, -SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.0f, 1.0f / SCOREMAGNIGUI_TEX_DIV_Y },
+	{  SCOREMAGNIGUI_SIZE_X, -SCOREMAGNIGUI_SIZE_Y, 0.0f, 0.5f, 1.0f / SCOREMAGNIGUI_TEX_DIV_Y },
 };
 
 static LPDIRECT3DINDEXBUFFER9 indexBuff;
@@ -206,20 +207,10 @@ void SetScoreMagniGUI(D3DXVECTOR3 pos)
 
 		entity[i].pos = pos;
 		
-		float magni = GetScoreMagni();
-
-		if (magni == 16.0f)
-			vtxUV[i].v = 0.8f;
-		else if (magni > 8.0f)
-			vtxUV[i].v = 0.6f;
-		else if (magni > 4.0f)
-			vtxUV[i].v = 0.4f;
-		else if (magni > 2.0f)
-			vtxUV[i].v = 0.2f;
-		else
-			vtxUV[i].v = 0.0f;
+		int magni = (int)GetScoreMagni() - 1;
 
 		vtxUV[i].u = 0.0f;
+		vtxUV[i].v = (float)magni / SCOREMAGNIGUI_TEX_DIV_Y;
 
 		entity[i].cntFrame = 0;
 		color[i].a = 1.0f;

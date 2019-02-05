@@ -642,6 +642,12 @@
     <ClCompile Include="scoreMagniGUI.cpp">
       <Filter>ソース ファイル\GUI\BattleScene</Filter>
     </ClCompile>
+    <ClCompile Include="scoreMagniNumGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="scoreMagniGauge.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -987,6 +993,12 @@
       <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
     <ClInclude Include="scoreMagniGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="scoreMagniNumGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="scoreMagniGauge.h">
       <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
   </ItemGroup>
