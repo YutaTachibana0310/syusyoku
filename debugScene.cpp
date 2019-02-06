@@ -31,6 +31,7 @@
 HRESULT InitDebugScene(int num)
 {
 	InitPlayerMissile(num);
+	return S_OK;
 }
 
 /**************************************

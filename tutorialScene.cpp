@@ -55,7 +55,7 @@ HRESULT InitTutorialScene(int num)
 	InitBattleCamera();
 	InitMeshCylinder(num);
 	InitPlayerMissile(num);
-	InitPlayerMissileSmog(num);
+	//InitPlayerMissileSmog(num);
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
 	InitTutorialController(num);
@@ -76,7 +76,7 @@ void UninitTutorialScene(int num)
 	UninitPlayerBullet(num);
 	UninitMeshCylinder(num);
 	UninitPlayerMissile(num);
-	UninitPlayerMissileSmog(num);
+	//UninitPlayerMissileSmog(num);
 	UninitPlayerBulletTrail(num);
 	UninitEnemyManager(num);
 	UninitTutorialController(num);
@@ -97,7 +97,7 @@ void UpdateTutorialScene(void)
 	UpdateMeshCylinder();
 
 	UpdatePlayerMissile();
-	UpdatePlayerMissileSmog();
+	//UpdatePlayerMissileSmog();
 	UpdatePlayerBulletTrail();
 
 	UpdateParticleManager();
@@ -131,7 +131,7 @@ void DrawTutorialScene(void)
 	DrawPlayerModel();
 
 	DrawPlayerMissile();
-	DrawPlayerMissileSmog();
+	//DrawPlayerMissileSmog();
 	DrawPlayerBullet();
 	DrawPlayerBulletTrail();
 
