@@ -67,7 +67,7 @@ HRESULT InitBattleScene(int num)
 	InitBattleCamera();
 	InitMeshCylinder(num);
 	InitPlayerMissile(num);
-	InitPlayerMissileSmog(num);
+	//InitPlayerMissileSmog(num);
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
 	InitBattleController(num);
@@ -125,9 +125,9 @@ void UpdateBattleScene(void)
 	UpdatePlayerMissile();
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileUpdate");
 
-	CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
-	UpdatePlayerMissileSmog();
-	CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
+	//CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
+	////UpdatePlayerMissileSmog();
+	//CountDebugTimer(BATTLESCENE_LABEL, "MissileSmogUpdate");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleUpdate");
 	UpdateParticleManager();
@@ -174,7 +174,7 @@ void DrawBattleScene(void)
 
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileDraw");
 	DrawPlayerMissile();
-	DrawPlayerMissileSmog();
+	//DrawPlayerMissileSmog();
 	CountDebugTimer(BATTLESCENE_LABEL, "PMissileDraw");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "ParticleDraw");

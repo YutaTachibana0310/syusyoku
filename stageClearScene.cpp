@@ -71,7 +71,7 @@ void UninitStageClearScene(int num)
 	UninitRockonSite(num);
 	UninitMeshCylinder(num);
 	UninitPlayerMissile(num);
-	UninitPlayerMissileSmog(num);
+	//UninitPlayerMissileSmog(num);
 	UninitPlayerBulletTrail(num);
 	UninitEnemyManager(num);
 }
@@ -90,7 +90,7 @@ void UpdateStageClearScene(void)
 	UpdateMeshCylinder();
 
 	UpdatePlayerMissile();
-	UpdatePlayerMissileSmog();
+	//UpdatePlayerMissileSmog();
 	UpdatePlayerBulletTrail();
 
 	UpdateParticleManager();
@@ -121,7 +121,7 @@ void DrawStageClearScene(void)
 	DrawPlayerModel();
 
 	DrawPlayerMissile();
-	DrawPlayerMissileSmog();
+	//DrawPlayerMissileSmog();
 	DrawPlayerBullet();
 	DrawPlayerBulletTrail();
 

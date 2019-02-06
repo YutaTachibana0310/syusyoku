@@ -31,6 +31,6 @@ typedef struct
 void InitPlayerMissileSmog(int num);
 void UninitPlayerMissileSmog(int num);
 void UpdatePlayerMissileSmog(void);
-void DrawPlayerMissileSmog(void);
+void DrawPlayerMissileSmog(LPD3DXEFFECT effect);
 void SetPlayerMissileSmog(D3DXVECTOR3 pos);
 #endif

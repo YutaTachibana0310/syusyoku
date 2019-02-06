@@ -69,7 +69,7 @@ void UninitGameoverScene(int num)
 	UninitRockonSite(num);
 	UninitMeshCylinder(num);
 	UninitPlayerMissile(num);
-	UninitPlayerMissileSmog(num);
+	//UninitPlayerMissileSmog(num);
 	UninitPlayerBulletTrail(num);
 	UninitEnemyManager(num);
 
@@ -92,7 +92,7 @@ void UpdateGameoverScene(void)
 	UpdateMeshCylinder();
 
 	UpdatePlayerMissile();
-	UpdatePlayerMissileSmog();
+	//UpdatePlayerMissileSmog();
 	UpdatePlayerBulletTrail();
 
 	UpdateParticleManager();
@@ -122,7 +122,7 @@ void DrawGameoverScene(void)
 	DrawPlayerModel();
 
 	DrawPlayerMissile();
-	DrawPlayerMissileSmog();
+	//DrawPlayerMissileSmog();
 	DrawPlayerBullet();
 	DrawPlayerBulletTrail();
 
