@@ -20,12 +20,12 @@
 #define	BATTLECAMERA_FAR					(20000.0f)				// ビュー平面のFarZ値
 #define BATTLECAMERA_LENGTH_FPS				(175.0f)
 #define BATTLECAMERA_LENGTH_TOP				(250.0f)
-#define BATTLECAMERA_LENGTH_SIDE			(200.0f)
+#define BATTLECAMERA_LENGTH_SIDE			(300.0f)
 #define BATTLECAMERA_LENGTH_QUATER			(200.0f)
 #define BATTLECAMERA_TOP_ANGLE_Y			(0.68f)
 #define BATTLECAMERA_QUATER_ANGLE_Y			(0.34f)
 #define BATTLECAMERA_QUATER_ANGLE_XZ		(1.19f)
-#define BATTLECAMERA_SIDE_ANGLE_Y			(0.17f)
+#define BATTLECAMERA_SIDE_ANGLE_Y			(0.34f)
 
 #define BATTLECAMERA_USE_QUATERNION			(0)
 //*****************************************************************************
@@ -62,7 +62,7 @@ static const D3DXVECTOR3 BattleCameraPos[] =
 	//縦
 	D3DXVECTOR3(0.0f, sinf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH_TOP , -cosf(BATTLECAMERA_TOP_ANGLE_Y) * BATTLECAMERA_LENGTH_TOP),
 	//横
-	D3DXVECTOR3(BATTLECAMERA_LENGTH_SIDE, 0.0f, 0.0f),
+	D3DXVECTOR3(cosf(BATTLECAMERA_SIDE_ANGLE_Y) * BATTLECAMERA_LENGTH_SIDE, 0.0f, -sinf(BATTLECAMERA_SIDE_ANGLE_Y) * BATTLECAMERA_LENGTH_SIDE),
 	//クォーター
 	D3DXVECTOR3(
 		cosf(BATTLECAMERA_QUATER_ANGLE_Y) * cosf(BATTLECAMERA_QUATER_ANGLE_XZ) * BATTLECAMERA_LENGTH_QUATER * 0.8f,
@@ -109,6 +109,8 @@ HRESULT InitBattleCamera(void)
 
 	InitCameraShaker(0);
 
+	
+
 	return S_OK;
 }
 
@@ -151,11 +153,6 @@ void UpdateBattleCamera(void)
 			camera.isMoving = false;
 			camera.currentState = camera.nextState;
 		}
-	}
-
-	if (GetKeyboardTrigger(DIK_M))
-	{
-		SetBattleCameraMove((camera.currentState + 1) % 4);
 	}
 }
 
@@ -270,12 +267,12 @@ void SetBattleCameraMove(int state)
 	camera.nextState = state;
 	camera.cntFrame = 0;
 
-	PLAYERMODEL *player = GetPlayerAdr(0);
-	for (int i = 0; i < PLAYERMODEL_MAX; i++, player++)
-	{
-		player->nextState = camera.nextState;
-	}
-	ChangeStatePlayerModel(PlayerTransition);
+	//PLAYERMODEL *player = GetPlayerAdr(0);
+	//for (int i = 0; i < PLAYERMODEL_MAX; i++, player++)
+	//{
+	//	player->nextState = camera.nextState;
+	//}
+	//ChangeStatePlayerModel(PlayerTransition);
 }
 
 //=============================================================================

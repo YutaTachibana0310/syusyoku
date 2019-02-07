@@ -35,6 +35,7 @@ typedef struct {
 	DWORD bonusStartFrame;								//ボーナスタイム開始タイミング
 	int currentState;									//現在の状態
 	int prevState;										//一つ前の状態
+	int viewMove;										//視点モード
 }BATTLECONTROLLER;
 
 //バトルコントローラの各ステート
@@ -45,6 +46,15 @@ enum BATTLECONTROLLER_STATE {
 	BattleBonusIntebal,
 	BattleStateMax
 };
+
+//バトルコントローラーの視点モード
+enum BATTLE_VIEWMODE {
+	BattleViewFPS,
+	BattleViewTop,
+	BattleViewSide,
+	BattleViewMax
+};
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -55,4 +65,5 @@ bool IsBonusTime(void);
 void EmmittFromFuzzy(BATTLECONTROLLER *controller);
 void ChangeStateBattleController(int next);
 bool CheckEscapedBonusCube(void);
+void ChangeViewModeBattleController(int next);
 #endif

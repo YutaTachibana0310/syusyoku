@@ -14,6 +14,7 @@
 #include "stageData.h"
 #include "bgmManager.h"
 #include "dataContainer.h"
+#include "playerModel.h"
 
 #include "cubeObject.h"
 #include "hardCubeObject.h"
@@ -133,6 +134,9 @@ void InitBattleController(int num)
 
 	controller.currentState = BattleNormalTime;
 	controller.prevState = BattleNormalTime;
+
+	ChangeViewModeBattleController(BattleViewFPS);
+
 }
 
 /**************************************
@@ -142,13 +146,18 @@ void UninitBattleController(int num)
 {
 	UninitStageData(num);
 }
-
+#include "input.h"
 /**************************************
 更新処理
 ***************************************/
 void UpdateBattleController(void)
 {
 	Update[controller.currentState](&controller);
+
+	if (GetKeyboardTrigger(DIK_M))
+	{
+		ChangeViewModeBattleController(++controller.viewMove % 3);
+	}
 }
 
 /**************************************
@@ -207,4 +216,17 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 
 	EmmittCubeObject(EmmittNum[GetLockonLevel()], &(controller->emmittPos[decidedPos]), EmmittSpeed[GetLockonLevel()]);
 	controller->lastEmittFrame[decidedPos] = controller->cntFrame;
+}
+
+/**************************************
+視点モード変更処理
+***************************************/
+void ChangeViewModeBattleController(int next)
+{
+	if (next >= BattleViewMax)
+		return;
+
+	controller.viewMove = next;
+	SetBattleCameraMove(next);
+	ChangeStatePlayerModel(next);
 }

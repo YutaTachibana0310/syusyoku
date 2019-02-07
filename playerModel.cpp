@@ -298,15 +298,20 @@ PLAYERMODEL *GetPlayerAdr(int num)
 *********************************************/
 void ChangeStatePlayerModel(int next)
 {
+	if (next <= PlayerQuaterView && playerState != PlayerTransition)
+		playerState = PlayerTransition;
+	else
+		playerState = next;
 
-	playerState = next;
 	PLAYERMODEL *ptr = &model[0];
-
 	//‘Þêˆ—
 	for (int i = 0; i < PLAYERMODEL_MAX; i++, ptr++)
 	{
 		if (!ptr->active)
 			continue;
+
+		if (next <= PlayerQuaterView)
+			ptr->nextState = next;
 
 		Exit[playerState](ptr);
 		Enter[playerState](ptr);

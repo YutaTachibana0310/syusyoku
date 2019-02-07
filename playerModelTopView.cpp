@@ -15,9 +15,9 @@
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
-#define PLAYERTOP_MOVESPEED		(1.5f)
-#define PLAYERTOP_RANGE_X		(80.0f)
-#define PLAYERTOP_RANGE_Z		(70.0f)
+#define PLAYERTOP_MOVESPEED		(2.5f)
+#define PLAYERTOP_RANGE_X		(120.0f)
+#define PLAYERTOP_RANGE_Z		(100.0f)
 
 #define PLAYERTOP_SHOTPOS_L		(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
 #define PLAYERTOP_SHOTPOS_R		(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
