@@ -146,6 +146,7 @@ void UninitBattleController(int num)
 {
 	UninitStageData(num);
 }
+
 #include "input.h"
 /**************************************
 更新処理
@@ -186,36 +187,56 @@ bool IsBonusTime(void)
 ***************************************/
 void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 {
-	float valueLength[BATTLE_SPACE_MAX];
-	float valueTime[BATTLE_SPACE_MAX];
-	float fuzzyValue[BATTLE_SPACE_MAX];
-	int decidedPos = 0;
-
-	D3DXVECTOR3 playerPos;
-	float maxValue = -9999.9f;
-
-	D3DXVec3TransformCoord(&playerPos, &GetPlayerAdr(0)->pos, &GetBattleCameraView());
-	D3DXVec3TransformCoord(&playerPos, &playerPos, &GetBattleCameraProjection());
-	TranslateViewPort(&playerPos, &playerPos);
-
-	//各生成座標に対してファジィ理論で重みを計算
-	for (int i = 0; i < BATTLE_SPACE_MAX; i++)
+	//現時点でファジーがFPS視点にしか対応していないので分岐
+	if (controller->viewMove == BattleViewFPS)
 	{
-		float length = D3DXVec2Length(&(D3DXVECTOR2)(playerPos - controller->checkPos[i]));
-		float elapsedTime = (float)(controller->cntFrame - controller->lastEmittFrame[i]);
+		float valueLength[BATTLE_SPACE_MAX];
+		float valueTime[BATTLE_SPACE_MAX];
+		float fuzzyValue[BATTLE_SPACE_MAX];
+		int decidedPos = 0;
 
-		valueLength[i] = fFuzzyTriangle(length, BATTLE_FUZZY_NEAR_BORDER, BATTLE_FUZZY_MIDDLE_BORDER, BATTLE_FUZZY_FAR_BORDER);
-		valueTime[i] = fFuzzyRightGrade(elapsedTime, BATTLE_FUZZY_RECENTLY_BORDER, BATTLE_FUZZY_LATELY_BORDER);
-		fuzzyValue[i] = valueLength[i] * valueTime[i];
-		if (maxValue < fuzzyValue[i])
+		D3DXVECTOR3 playerPos;
+		float maxValue = -9999.9f;
+
+		D3DXVec3TransformCoord(&playerPos, &GetPlayerAdr(0)->pos, &GetBattleCameraView());
+		D3DXVec3TransformCoord(&playerPos, &playerPos, &GetBattleCameraProjection());
+		TranslateViewPort(&playerPos, &playerPos);
+
+		//各生成座標に対してファジィ理論で重みを計算
+		for (int i = 0; i < BATTLE_SPACE_MAX; i++)
 		{
-			decidedPos = i;
-			maxValue = fuzzyValue[i];
-		}
-	}
+			float length = D3DXVec2Length(&(D3DXVECTOR2)(playerPos - controller->checkPos[i]));
+			float elapsedTime = (float)(controller->cntFrame - controller->lastEmittFrame[i]);
 
-	EmmittCubeObject(EmmittNum[GetLockonLevel()], &(controller->emmittPos[decidedPos]), EmmittSpeed[GetLockonLevel()]);
-	controller->lastEmittFrame[decidedPos] = controller->cntFrame;
+			valueLength[i] = fFuzzyTriangle(length, BATTLE_FUZZY_NEAR_BORDER, BATTLE_FUZZY_MIDDLE_BORDER, BATTLE_FUZZY_FAR_BORDER);
+			valueTime[i] = fFuzzyRightGrade(elapsedTime, BATTLE_FUZZY_RECENTLY_BORDER, BATTLE_FUZZY_LATELY_BORDER);
+			fuzzyValue[i] = valueLength[i] * valueTime[i];
+			if (maxValue < fuzzyValue[i])
+			{
+				decidedPos = i;
+				maxValue = fuzzyValue[i];
+			}
+		}
+
+		EmmittCubeObject(EmmittNum[GetLockonLevel()], &(controller->emmittPos[decidedPos]), EmmittSpeed[GetLockonLevel()]);
+		controller->lastEmittFrame[decidedPos] = controller->cntFrame;
+	}
+	//トップビュー時の放出
+	else if(controller->viewMove == BattleViewTop)
+	{
+		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, 2000.0f);
+		basePos.x += RandomRangef(-500.0f, 500.0f);
+		basePos.y -= RandomRangef(100.0f, 500.0f);
+		EmmittCubeObject(EmmittNum[GetLockonLevel()], &basePos, RandomRangef(3.0f, 9.0f));
+	}
+	//サイドビュー時の放出
+	else if (controller->viewMove == BattleViewSide)
+	{
+		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, 1500.0f);
+		basePos.x = RandomRangef(-600.0f, -200.0f);
+		basePos.y = RandomRangef(-400.0f, 400.0f);
+		EmmittCubeObject(EmmittNum[GetLockonLevel()], &basePos, RandomRangef(2.0f, 6.0f));
+	}
 }
 
 /**************************************
