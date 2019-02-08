@@ -75,12 +75,13 @@ void UpdateLockonNumGUI(void)
 /**************************************
 •`‰æˆ—
 ***************************************/
-void DrawLockonNumGUI(void)
+void DrawLockonNumGUI(float alpha)
 {
 	NumGUI *numGui = NumGUI::GetInstance();
 
 	//GUI”wŒi‚ð•`‰æ
 	back->SetVertex(LOCKONNUMGUI_TEX_INITPOS);
+	back->SetAlpha(alpha);
 	back->Draw();
 
 	//ƒƒbƒNƒIƒ“”‚ð•`‰æ

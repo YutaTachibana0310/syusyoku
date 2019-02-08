@@ -9,6 +9,8 @@
 #include "debugWindow.h"
 #include "numGUI.h"
 #include "baseGUI.h"
+#include "playerModel.h"
+#include "Easing.h"
 
 /*****************************************************************************
 マクロ定義
@@ -35,6 +37,7 @@
 グローバル変数
 *****************************************************************************/
 static BaseGUI* back;
+static float alpha;
 
 /******************************************************************************
 初期化処理
@@ -50,6 +53,7 @@ HRESULT InitScoreGUI(int num)
 		back = new BaseGUI((LPSTR)SCOREGUI_TEXTURE_NAME, SCOREGUI_TEXTURE_SIZE_X, SCOREGUI_TEXTURE_SIZE_Y);
 	}
 
+	alpha = 1.0f;
 	return S_OK;
 }
 
@@ -76,12 +80,13 @@ void UpdateScoreGUI(void)
 /******************************************************************************
 描画処理
 ******************************************************************************/
-void DrawScoreGUI(void)
+void DrawScoreGUI(float alpha)
 {
 	NumGUI* numGui = NumGUI::GetInstance();
 
 	//描画
 	back->SetVertex(SCOREGUI_INITPOS);
+	back->SetAlpha(alpha);
 	back->Draw();
 
 	//スコア数字を描画

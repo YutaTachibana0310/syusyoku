@@ -21,5 +21,5 @@
 HRESULT InitScoreGUI(int num);							//スコアGUI初期化処理
 void UninitScoreGUI(int num);							//スコアGUI終了処理
 void UpdateScoreGUI(void);								//スコアGUI更新処理
-void DrawScoreGUI(void);								//スコアGUI描画処理
+void DrawScoreGUI(float alpha);								//スコアGUI描画処理
 #endif

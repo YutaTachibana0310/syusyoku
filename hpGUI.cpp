@@ -72,12 +72,13 @@ void UpdateHpGUI(void)
 /**************************************
 •`‰æˆ—
 ***************************************/
-void DrawHpGUI(void)
+void DrawHpGUI(float alpha)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	//GUI”wŒi‚ð•`‰æ
 	back->SetVertex(HPGUI_TEXTURE_INITPOS);
+	back->SetAlpha(alpha);
 	back->Draw();
 
 	//”Žš‚ð•`‰æ

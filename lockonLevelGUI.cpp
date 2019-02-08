@@ -72,10 +72,11 @@ void UpdateLockonLevelGUI(void)
 /**************************************
 •`‰æˆ—
 ***************************************/
-void DrawLockonLevelGUI(void)
+void DrawLockonLevelGUI(float alpha)
 {
 	//GUI”wŒi‚ð•`‰æ
 	back->SetVertex(LOCKONLEVELGUI_TEX_INITPOS);
+	back->SetAlpha(alpha);
 	back->Draw();
 
 	//”Žš‚ð•`‰æ

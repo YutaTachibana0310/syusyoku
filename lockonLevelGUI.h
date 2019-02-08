@@ -23,5 +23,5 @@
 void InitLockonLevelGUI(int num);
 void UninitLockonLevelGUI(int num);
 void UpdateLockonLevelGUI(void);
-void DrawLockonLevelGUI(void);
+void DrawLockonLevelGUI(float alpha);
 #endif

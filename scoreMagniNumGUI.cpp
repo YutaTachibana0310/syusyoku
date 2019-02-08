@@ -75,9 +75,10 @@ void UpdateScoreMagniNumGUI(void)
 /**************************************
 •`‰æˆ—
 ***************************************/
-void DrawScoreMagniNumGUI(void)
+void DrawScoreMagniNumGUI(float alpha)
 {
 	//GUI”wŒi‚ð•`‰æ
+	gui->SetAlpha(alpha);
 	gui->Draw();
 
 	//GUI”Žš‚ð•`‰æ

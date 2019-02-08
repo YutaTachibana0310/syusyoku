@@ -23,6 +23,6 @@
 void InitScoreMagniNumGUI(int num);
 void UninitScoreMagniNumGUI(int num);
 void UpdateScoreMagniNumGUI(void);
-void DrawScoreMagniNumGUI(void);
+void DrawScoreMagniNumGUI(float alpha);
 
 #endif

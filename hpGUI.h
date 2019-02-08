@@ -25,6 +25,6 @@ typedef struct {
 void InitHpGUI(int num);
 void UninitHpGUI(int num);
 void UpdateHpGUI(void);
-void DrawHpGUI(void);
+void DrawHpGUI(float alpha);
 
 #endif
