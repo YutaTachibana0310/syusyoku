@@ -27,6 +27,7 @@
 #include "bonusPositinoTelop.h"
 #include "scoreMagniNumGUI.h"
 #include "scoreMagniGauge.h"
+#include "numGUI.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -82,6 +83,8 @@ static DrawGUI Draw[DefineSceneMax] = {
 	DrawGUIonNameEntryScene
 };
 
+NumGUI* NumGUI::instance = nullptr;
+
 /**************************************
 èâä˙âªèàóù
 ***************************************/
@@ -98,6 +101,8 @@ void InitGUIManager(int num)
 		}
 		initialized = true;
 	}
+
+	NumGUI::Create();
 
 	InitScoreGUI(num);
 	InitHpGUI(num);
@@ -136,6 +141,8 @@ void UninitGUIManager(int num)
 			SAFE_RELEASE(texture[i]);
 		}
 	}
+
+	NumGUI::Release();
 
 	UninitScoreGUI(num);
 	UninitHpGUI(num);

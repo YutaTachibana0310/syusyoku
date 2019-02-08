@@ -7,6 +7,7 @@
 #include "scoreGUI.h"
 #include "dataContainer.h"
 #include "debugWindow.h"
+#include "numGUI.h"
 
 /*****************************************************************************
 マクロ定義
@@ -104,6 +105,7 @@ void UpdateScoreGUI(void)
 void DrawScoreGUI(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	NumGUI* numGui = NumGUI::GetInstance();
 
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 
@@ -127,13 +129,17 @@ void DrawScoreGUI(void)
 		num = score % 10;
 
 		//頂点座標を設定
-		SetVertexScoreNum(SCOREGUI_NUM_OFFSETPOS * i);
+		//SetVertexScoreNum(SCOREGUI_NUM_OFFSETPOS * i);
+		D3DXVECTOR3 pos = SCOREGUI_NUM_INITPOS + D3DXVECTOR3(SCOREGUI_NUM_OFFSETPOS * i, 0.0f, 0.0f);
+		numGui->SetVertex(pos, SCOREGUI_NUMTEX_SIZE_X, SCOREGUI_NUMTEX_SIZE_Y);
 
 		// テクスチャ座標を設定
-		SetTextureScoreNum(num);
+		//SetTextureScoreNum(num);
+		numGui->SetTexture(num);
 
 		// ポリゴンの描画
-		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
+		//pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
+		numGui->Draw(NumScore);
 	}
 }
 
