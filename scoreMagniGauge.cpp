@@ -13,7 +13,7 @@
 #define SCOREMAGNIGAUGE_SIZE_X			(450.0f)
 #define SCOREMAGNIGAUGE_SIZE_Y			(20.0f)
 #define SCOREMAGNIGAUGE_PER_MAX			(120.0f)
-#define SCOREMAGNIGAUGE_BASEPOS			(D3DXVECTOR3(0.0f, 350.0f, 0.0f))
+#define SCOREMAGNIGAUGE_BASEPOS			(D3DXVECTOR3(0.0f, 160.0f, 0.0f))
 
 /**************************************
 ç\ë¢ëÃíËã`

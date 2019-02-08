@@ -251,29 +251,6 @@ void DrawGUIonBattleScene(void)
 	DrawLockonNumGUI();
 	DrawBonusPositionTelop();
 	DrawScoreMagniGauge();
-
-#ifdef _DEBUG
-	DrawLockNumlevelGUIDebug();
-	DrawLockOnlevelGUIDebug();
-	DrawHPGUIDebug();
-	DrawScoreGUIDebug();
-
-	if (DebugButton("Save"))
-	{
-		FILE *fp = NULL;
-		fp = fopen("data/SETTINGS/gui.ini", "wb");
-
-		if (fp == NULL)
-			return;
-
-		SaveSettingLockonNumGUI(fp);
-		SaveSettingLockonLevelGUI(fp);
-		SaveSettinghpGUIGUI(fp);
-		SaveSettingScoreGUI(fp);
-
-		fclose(fp);
-	}
-#endif
 }
 
 /**************************************
@@ -326,23 +303,4 @@ void DrawGUINum(GUI_NUMTEXTURE textureID, int num, VERTEX_2D *vtxWk)
 	pDevice->SetTexture(0, texture[textureID]);
 	
 	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
-}
-
-/**************************************
-ê›íËì«Ç›çûÇ›èàóù
-**************************************/
-void LoadSettingsGUI(void)
-{
-	FILE *fp = NULL;
-	fp = fopen("data/SETTINGS/gui.ini", "rb");
-
-	if (fp == NULL)
-		return;
-
-	LoadSettingsLockonNumGUI(fp);
-	LoadSettingsLockonLevelGUI(fp);
-	LoadSettingshpGUIGUI(fp);
-	LoadSettingsScoreGUI(fp);
-
-	fclose(fp);
 }

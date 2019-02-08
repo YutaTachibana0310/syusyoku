@@ -35,7 +35,7 @@ typedef struct {
 	DWORD bonusStartFrame;								//ボーナスタイム開始タイミング
 	int currentState;									//現在の状態
 	int prevState;										//一つ前の状態
-	int viewMove;										//視点モード
+	int viewMode;										//視点モード
 }BATTLECONTROLLER;
 
 //バトルコントローラの各ステート

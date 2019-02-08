@@ -157,7 +157,7 @@ void UpdateBattleController(void)
 
 	if (GetKeyboardTrigger(DIK_M))
 	{
-		ChangeViewModeBattleController(++controller.viewMove % 3);
+		ChangeViewModeBattleController(++controller.viewMode % 3);
 	}
 }
 
@@ -188,7 +188,7 @@ bool IsBonusTime(void)
 void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 {
 	//現時点でファジーがFPS視点にしか対応していないので分岐
-	if (controller->viewMove == BattleViewFPS)
+	if (controller->viewMode == BattleViewFPS)
 	{
 		float valueLength[BATTLE_SPACE_MAX];
 		float valueTime[BATTLE_SPACE_MAX];
@@ -222,7 +222,7 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 		controller->lastEmittFrame[decidedPos] = controller->cntFrame;
 	}
 	//トップビュー時の放出
-	else if(controller->viewMove == BattleViewTop)
+	else if(controller->viewMode == BattleViewTop)
 	{
 		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, 2000.0f);
 		basePos.x += RandomRangef(-500.0f, 500.0f);
@@ -230,7 +230,7 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 		EmmittCubeObject(EmmittNum[GetLockonLevel()], &basePos, RandomRangef(3.0f, 9.0f));
 	}
 	//サイドビュー時の放出
-	else if (controller->viewMove == BattleViewSide)
+	else if (controller->viewMode == BattleViewSide)
 	{
 		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, 1500.0f);
 		basePos.x = RandomRangef(-600.0f, -200.0f);
@@ -247,7 +247,15 @@ void ChangeViewModeBattleController(int next)
 	if (next >= BattleViewMax)
 		return;
 
-	controller.viewMove = next;
+	controller.viewMode = next;
 	SetBattleCameraMove(next);
 	ChangeStatePlayerModel(next);
+}
+
+/**************************************
+バトル視点情報処理
+***************************************/
+int GetBattleViewMode(void)
+{
+	return controller.viewMode;
 }

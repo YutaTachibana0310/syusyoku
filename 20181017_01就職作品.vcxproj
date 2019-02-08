@@ -231,7 +231,6 @@
     <ClCompile Include="nameEntryInput.cpp" />
     <ClCompile Include="nameEntryRanking.cpp" />
     <ClCompile Include="nameEntryScene.cpp" />
-    <ClCompile Include="numGUI.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
@@ -268,7 +267,6 @@
     <ClCompile Include="scoreMagniNumGUI.cpp" />
     <ClCompile Include="screenBG.cpp" />
     <ClCompile Include="shockBlur.cpp" />
-    <ClCompile Include="singleton.cpp" />
     <ClCompile Include="skyBG.cpp" />
     <ClCompile Include="smallEnemyAttack.cpp" />
     <ClCompile Include="smallEnemyEscape.cpp" />
@@ -401,7 +399,6 @@
     <ClInclude Include="scoreMagniNumGUI.h" />
     <ClInclude Include="screenBG.h" />
     <ClInclude Include="shockBlur.h" />
-    <ClInclude Include="singleton.h" />
     <ClInclude Include="skyBG.h" />
     <ClInclude Include="smallEnemyModel.h" />
     <ClInclude Include="sound.h" />
