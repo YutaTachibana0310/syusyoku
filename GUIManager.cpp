@@ -53,7 +53,6 @@ typedef void(*DrawGUI)(void);
 void DrawGUIonBattleScene(void);
 void DrawGUIonLogoScene(void);
 void DrawGUIonTitleScene(void);
-void LoadSettingsGUI(void);
 void DrawGUIonGameoverScene(void);
 void DrawGUIonStageClearScene(void);
 void DrawGUIonNameEntryScene(void);

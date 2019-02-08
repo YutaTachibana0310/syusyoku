@@ -104,7 +104,7 @@ public:
 		float sizeX = 1.0f / NUMTEX_DIV_X;
 		float sizeY = 1.0f / NUMTEX_DIV_Y;
 		int x = num % NUMTEX_DIV_X;
-		int y = num / NUMTEX_DIV_Y;
+		int y = num / NUMTEX_DIV_X;
 
 		instance->vtxWk[0].tex = D3DXVECTOR2(x * sizeX, y * sizeY);
 		instance->vtxWk[1].tex = D3DXVECTOR2((x + 1) * sizeX, y * sizeY);

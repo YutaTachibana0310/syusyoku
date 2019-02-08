@@ -17,12 +17,12 @@
 #define LOCKONLEVELGUI_TEX_NAME					"data/TEXTURE/UI/lockonlevel.png"
 #define LOCKONLEVELGUI_TEX_SIZE_X				(200.0f)
 #define LOCKONLEVELGUI_TEX_SIZE_Y				(100.0f)
-#define LOCKONLEVELGUI_TEX_INITPOS				(D3DXVECTOR3(SCREEN_WIDTH - LOCKONLEVELGUI_TEX_SIZE_X, 220.0f, 0.0f))
+#define LOCKONLEVELGUI_TEX_INITPOS				(D3DXVECTOR3(170.0f, 770.0f, 0.0f))
 
 #define LOCKONLEVELGUI_NUMTEX_SIZE_X			(40.0f)
 #define LOCKONLEVELGUI_NUMTEX_SIZE_Y			(40.0f)
 #define LOCKONLEVELGUI_NUMTEX_OFFSET			(-50.0f)
-#define LOCKONLEVELGUI_NUMTEX_INITPOS			(D3DXVECTOR3(SCREEN_WIDTH - 120.0f, 305.0f, 0.0f))
+#define LOCKONLEVELGUI_NUMTEX_INITPOS			(D3DXVECTOR3(240.0f, 795.0f, 0.0f))
 
 /**************************************
 \‘¢‘Ì’è‹`
@@ -81,7 +81,7 @@ void DrawLockonLevelGUI(void)
 	//”Žš‚ð•`‰æ
 	NumGUI *numGui = NumGUI::GetInstance();
 	numGui->SetVertex(LOCKONLEVELGUI_NUMTEX_INITPOS, LOCKONLEVELGUI_NUMTEX_SIZE_X, LOCKONLEVELGUI_NUMTEX_SIZE_Y);
-	numGui->SetTexture(GetLockonLevel());
+	numGui->SetTexture(GetLockonLevel() + 1);
 	numGui->Draw(NumScore);
 }
 
