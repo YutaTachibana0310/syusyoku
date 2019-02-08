@@ -68,8 +68,9 @@ void UpdatePlayerModelSideView(PLAYERMODEL *player)
 	}
 
 	//ターゲットサイト移動処理
-	TARGETSITE *site = GetTargetSiteAdr(player->id);
-	site->pos = player->pos + PLAYERSIDE_TARGETSITE_OFFSET;
+	//TARGETSITE *site = GetTargetSiteAdr(player->id);
+	//site->pos = player->pos + PLAYERSIDE_TARGETSITE_OFFSET;
+	SetTargetSitePosition(player->pos, player->id, D3DXVECTOR3(800.0f, 0.0f, 0.0f));
 	UpdateTargetSite(GetAttackButtonPress());
 
 	//ロックオンサイトセット処理

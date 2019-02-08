@@ -19,8 +19,8 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define TARGETSITE_SIZE_X				(40.0f)
-#define TARGETSITE_SIZE_Y				(40.0f)
+#define TARGETSITE_SIZE_X				(300.0f)
+#define TARGETSITE_SIZE_Y				(300.0f)
 #define TARGETSITE_TEXTURE				"data/TEXTURE/targetSite1.png"
 #define TARGETSITE_MAX					PLAYERMODEL_MAX
 #define TARGETSITE_MOVEVALUE			(3.0f)
@@ -43,11 +43,10 @@ enum TARGETSITE_TEXTUREINDEX
 /**************************************
 グローバル変数
 ***************************************/
-static LPDIRECT3DVERTEXBUFFER9 vtxBuff;
 static LPDIRECT3DTEXTURE9 texture[TARGETSITE_TEXTUREMAX];
-static D3DXMATRIX mtxWorld;
-
 static TARGETSITE targetSite[TARGETSITE_MAX];
+static VERTEX_2D vtxWk[NUM_VERTEX];
+static float vtxRadius, vtxAngle;
 
 static const char* texturePath[] = {
 	"data/TEXTURE/targetSite1_1.png",
@@ -64,6 +63,7 @@ static const float ScaleLevel[DATACONTAINER_LOCKLEVEL_MAX] = {
 プロトタイプ宣言
 ***************************************/
 void MakeVertexTargetSite(void);
+void SetVertexTargetSite(TARGETSITE *ptr, float rotation);
 
 /**************************************
 初期化処理
@@ -109,7 +109,6 @@ void UninitTargetSite(int num)
 		for (int j = 0; j < TARGETSITE_TEXTUREMAX; j++)
 		{
 			SAFE_RELEASE(texture[j]);
-			SAFE_RELEASE(vtxBuff);
 		}
 	}
 }
@@ -134,10 +133,9 @@ void UpdateTargetSite(bool isOpen)
 		float addValue = isOpen ? TARGETSITE_OPEN_VALUE : -TARGETSITE_OPEN_VALUE;
 		ptr->baseScale = Clampf(0.0f, 1.0f, ptr->baseScale + addValue);
 
-		//スクリーン座標更新
-		D3DXVec3TransformCoord(&ptr->screenPos, &ptr->pos, &GetBattleCameraView());
-		D3DXVec3TransformCoord(&ptr->screenPos, &ptr->screenPos, &GetBattleCameraProjection());
-		TranslateViewPort(&ptr->screenPos, &ptr->screenPos);
+		//スクリーン座標制限
+		ptr->screenPos.x = Clampf(0.0f, SCREEN_WIDTH, ptr->screenPos.x);
+		ptr->screenPos.y = Clampf(0.0f, SCREEN_HEIGHT, ptr->screenPos.y);
 
 		//内側のサークルを回転
 		ptr->insideRot.z += TARGETSITE_INCIRCLE_ROTVALUE;
@@ -153,17 +151,9 @@ void UpdateTargetSite(bool isOpen)
 void DrawTargetSite(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-	D3DXMATRIX mtxTranslate, mtxRot, mtxScale;
 	float scale = ScaleLevel[GetLockonLevel()];
 
 	pDevice->SetFVF(FVF_VERTEX_3D);
-
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
-	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-	pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-	pDevice->SetStreamSource(0, vtxBuff, 0, sizeof(VERTEX_3D));
 
 	TARGETSITE *ptr = &targetSite[0];
 	for (int i = 0; i < TARGETSITE_MAX; i++, ptr++)
@@ -173,58 +163,16 @@ void DrawTargetSite(void)
 			continue;
 		}
 
-		/*内側の円を描画*/
-		D3DXMatrixIdentity(&mtxWorld);
-
-		//scaling
-		D3DXMatrixScaling(&mtxScale, scale * ptr->baseScale, scale * ptr->baseScale, scale * ptr->baseScale);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
-
-		//rotaiton
-		D3DXVECTOR3 rot = ptr->insideRot;
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
-
-		//billboard
-		GetInvRotBattleCamera(&mtxRot);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
-
-		//translation
-		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
-
-		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		pDevice->SetFVF(FVF_VERTEX_2D);
 
 		pDevice->SetTexture(0, texture[TARGETSITE_INCIRCLE]);
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
-
-		/*外側の円を描画*/
-		D3DXMatrixIdentity(&mtxWorld);
-
-		//scaling
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
-
-		//rotation
-		rot = ptr->outsideRot;
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
-
-		//billboard
-		GetInvRotBattleCamera(&mtxRot);
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
-
-		//translation
-		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
-
-		pDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		SetVertexTargetSite(ptr, ptr->insideRot.z);
+		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
 
 		pDevice->SetTexture(0, texture[TARGETSITE_OUTCIRCLE]);
-		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+		SetVertexTargetSite(ptr, ptr->outsideRot.z);
+		pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
 	}
-
-	pDevice->SetRenderState(D3DRS_LIGHTING, true);
-	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
-	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 }
 
 /**************************************
@@ -232,58 +180,55 @@ void DrawTargetSite(void)
 ***************************************/
 void MakeVertexTargetSite(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	vtxWk[0].rhw =
+		vtxWk[1].rhw =
+		vtxWk[2].rhw =
+		vtxWk[3].rhw = 1.0f;
 
-	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_3D,
-		D3DPOOL_MANAGED,
-		&vtxBuff,
-		NULL)))
-	{
-		return;
-	}
+	vtxWk[0].diffuse =
+		vtxWk[1].diffuse =
+		vtxWk[2].diffuse =
+		vtxWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 
-	VERTEX_3D *pVtx;
+	vtxWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	vtxWk[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	vtxWk[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	vtxWk[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
-	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	pVtx[0].vtx = D3DXVECTOR3(-TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y, 0.0f);
-	pVtx[1].vtx = D3DXVECTOR3(TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y, 0.0f);
-	pVtx[2].vtx = D3DXVECTOR3(-TARGETSITE_SIZE_X, -TARGETSITE_SIZE_Y, 0.0f);
-	pVtx[3].vtx = D3DXVECTOR3(TARGETSITE_SIZE_X, -TARGETSITE_SIZE_Y, 0.0f);
-
-	pVtx[0].nor =
-		pVtx[1].nor =
-		pVtx[2].nor =
-		pVtx[3].nor = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
-
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
-	pVtx[0].diffuse =
-		pVtx[1].diffuse =
-		pVtx[2].diffuse =
-		pVtx[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-	vtxBuff->Unlock();
+	vtxAngle = atan2f(TARGETSITE_SIZE_Y, TARGETSITE_SIZE_X);
+	vtxRadius = D3DXVec2Length(&D3DXVECTOR2(TARGETSITE_SIZE_X, TARGETSITE_SIZE_Y));
 
 	return;
 }
 
 /**************************************
+頂点設定処理
+***************************************/
+void SetVertexTargetSite(TARGETSITE *ptr, float rotation)
+{
+	float scale = ScaleLevel[GetLockonLevel()];
+
+	vtxWk[0].vtx.x = ptr->screenPos.x - cosf(vtxAngle + rotation) * vtxRadius * ptr->baseScale * scale;
+	vtxWk[0].vtx.y = ptr->screenPos.y - sinf(vtxAngle + rotation) * vtxRadius * ptr->baseScale * scale;
+	vtxWk[1].vtx.x = ptr->screenPos.x + cosf(vtxAngle - rotation) * vtxRadius * ptr->baseScale * scale;
+	vtxWk[1].vtx.y = ptr->screenPos.y - sinf(vtxAngle - rotation) * vtxRadius * ptr->baseScale * scale;
+	vtxWk[2].vtx.x = ptr->screenPos.x - cosf(vtxAngle - rotation) * vtxRadius * ptr->baseScale * scale;
+	vtxWk[2].vtx.y = ptr->screenPos.y + sinf(vtxAngle - rotation) * vtxRadius * ptr->baseScale * scale;
+	vtxWk[3].vtx.x = ptr->screenPos.x + cosf(vtxAngle + rotation) * vtxRadius * ptr->baseScale * scale;
+	vtxWk[3].vtx.y = ptr->screenPos.y + sinf(vtxAngle + rotation) * vtxRadius * ptr->baseScale * scale;
+}
+
+/**************************************
 座標セット処理
 ***************************************/
-void SetTargetSitePosition(D3DXVECTOR3 pos, int id)
+void SetTargetSitePosition(D3DXVECTOR3 pos, int id, D3DXVECTOR3 offset)
 {
 	D3DXVECTOR3 screenPos;
 	D3DXVec3TransformCoord(&screenPos, &pos, &GetBattleCameraView());
 	D3DXVec3TransformCoord(&screenPos, &screenPos, &GetBattleCameraProjection());
+	TranslateViewPort(&screenPos, &screenPos);
 
-
-	targetSite[id].pos = pos;
+	targetSite[id].screenPos = screenPos + offset;
 }
 
 /**************************************
@@ -321,37 +266,3 @@ bool CollisionTargetSite(int id, const D3DXVECTOR3* pos)
 
 	return false;
 }
-
-
-
-#if 0
-/**************************************
-エネミーロックオン判定
-***************************************/
-void RockonEnemy(int id)
-{
-	ENEMYMISSILE *enemy = GetEnemyMissileAdr(0);
-	D3DXVECTOR3 siteScreenPos;
-
-	if (GetPlayerAdr(id)->atkInterbal < PLAYER_HOMINGATK_INTERBAL)
-	{
-		return;
-	}
-
-	//座標をスクリーン座標に変換
-
-	//判定
-	for (int i = 0; i < ENEMYMISSILE_MAX; i++, enemy++)
-	{
-		if (!enemy->active)
-		{
-			continue;
-		}
-
-		if (CollisionTargetSite(id, &enemy->pos, &siteScreenPos))
-		{
-			AddRockonTarget(id, &enemy->pos, &enemy->active, &enemy->hp);
-		}
-	}
-}
-#endif
