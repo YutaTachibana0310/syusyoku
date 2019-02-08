@@ -99,6 +99,9 @@ void UninitScoreMagniGUI(int num)
 	{
 		SAFE_RELEASE(vtxBuff);
 		SAFE_RELEASE(texture);
+		SAFE_RELEASE(uvBuff);
+		SAFE_RELEASE(colorBuff);
+		SAFE_RELEASE(worldBuff);
 	}
 
 	for (int i = 0; i < SCOREMAGNIGUI_MAX; i++)

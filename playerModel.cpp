@@ -20,6 +20,7 @@
 #include "soundEffectManager.h"
 #include "collisionManager.h"
 #include "scoreMagniGauge.h"
+#include "shadow.h"
 
 #ifdef _DEBUG
 #include "debugproc.h"
@@ -225,6 +226,9 @@ void UpdatePlayerModel(void)
 		{
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_PLAYER);
 		}
+
+		//‰e‚ðÝ’è
+		SetShadow(ptr->pos);
 	}
 
 
