@@ -1007,6 +1007,9 @@
     <ClInclude Include="debugScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="numGUI.h">
+      <Filter>ヘッダー ファイル\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\EFFECT\particle.fx">

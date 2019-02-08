@@ -33,6 +33,7 @@ void EnterPlayerModelTransition(PLAYERMODEL *player)
 	player->cntFrame = 0;
 	GetTargetSiteAdr(player->id)->active = false;
 	GetLockonGUIAdr(player->id)->active = false;
+	player->initPos = player->pos;
 }
 
 /**************************************

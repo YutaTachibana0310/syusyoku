@@ -17,7 +17,6 @@
 #include "playerMissile.h"
 #include "playerMissileSmog.h"
 #include "particleManager.h"
-//#include "GUIManager.h"
 #include "enemyManager.h"
 #include "playerBulletTrail.h"
 #include "collisionManager.h"
@@ -76,6 +75,7 @@ HRESULT InitBattleScene(int num)
 	RegisterDebugTimer(BATTLESCENE_LABEL);
 	PlayBGM(BGM_BATTLESCENE);
 
+	
 	return S_OK;
 }
 
@@ -106,6 +106,8 @@ void UninitBattleScene(int num)
 void UpdateBattleScene(void)
 {
 	UpdateBattleController();
+
+	UpdateBattleCamera();
 
 	//GetTimerCount(&startPlayerUpdate);
 	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");

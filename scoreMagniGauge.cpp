@@ -13,7 +13,7 @@
 #define SCOREMAGNIGAUGE_SIZE_X			(450.0f)
 #define SCOREMAGNIGAUGE_SIZE_Y			(20.0f)
 #define SCOREMAGNIGAUGE_PER_MAX			(120.0f)
-#define SCOREMAGNIGAUGE_BASEPOS			(D3DXVECTOR3(0.0f, 350.0f, 0.0f))
+#define SCOREMAGNIGAUGE_BASEPOS			(D3DXVECTOR3(0.0f, 160.0f, 0.0f))
 
 /**************************************
 構造体定義
@@ -35,6 +35,8 @@ void SetTextureScoreGaugeBG(void);
 
 void SetVertexScoreGauge(float percent);
 void SetTextureScoreGauge(float percent);
+
+void SetDiffuseScoreGauge(float alpha);
 
 /**************************************
 初期化処理
@@ -76,11 +78,13 @@ void UpdateScoreMagniGauge(void)
 /**************************************
 描画処理
 ***************************************/
-void DrawScoreMagniGauge(void)
+void DrawScoreMagniGauge(float alpha)
 {
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	pDevice->SetTexture(0, texture);
+
+	SetDiffuseScoreGauge(alpha);
 
 	//ゲージ本体描画
 	if (cntFrame > 0)
@@ -156,6 +160,17 @@ void SetVertexScoreGauge(float percent)
 	vtxWk[1].tex = D3DXVECTOR2(1.0f * percent, 0.5f);
 	vtxWk[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	vtxWk[3].tex = D3DXVECTOR2(1.0f * percent, 1.0f);
+}
+
+/**************************************
+ディフューズ設定処理
+***************************************/
+void SetDiffuseScoreGauge(float alpha)
+{
+	vtxWk[0].diffuse =
+		vtxWk[1].diffuse =
+		vtxWk[2].diffuse =
+		vtxWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
 }
 
 /**************************************

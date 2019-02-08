@@ -362,6 +362,7 @@
     <ClInclude Include="nameEntryCursor.h" />
     <ClInclude Include="nameEntryRanking.h" />
     <ClInclude Include="nameEntryScene.h" />
+    <ClInclude Include="numGUI.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerBulletTrail.h" />
     <ClInclude Include="playerMissile.h" />

@@ -34,7 +34,7 @@ void InitTargetSite(int num);
 void UninitTargetSite(int num);
 void UpdateTargetSite(bool isOpen);
 void DrawTargetSite(void);
-void SetTargetSitePosition(D3DXVECTOR3 pos, int id);
+void SetTargetSitePosition(D3DXVECTOR3 pos, int id, D3DXVECTOR3 offset);
 TARGETSITE *GetTargetSiteAdr(int id);
 bool CollisionTargetSite(int id, const D3DXVECTOR3* pos);
 #endif

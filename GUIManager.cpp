@@ -27,6 +27,9 @@
 #include "bonusPositinoTelop.h"
 #include "scoreMagniNumGUI.h"
 #include "scoreMagniGauge.h"
+#include "numGUI.h"
+#include "playerModel.h"
+#include "Easing.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -52,7 +55,6 @@ typedef void(*DrawGUI)(void);
 void DrawGUIonBattleScene(void);
 void DrawGUIonLogoScene(void);
 void DrawGUIonTitleScene(void);
-void LoadSettingsGUI(void);
 void DrawGUIonGameoverScene(void);
 void DrawGUIonStageClearScene(void);
 void DrawGUIonNameEntryScene(void);
@@ -82,6 +84,8 @@ static DrawGUI Draw[DefineSceneMax] = {
 	DrawGUIonNameEntryScene
 };
 
+NumGUI* NumGUI::instance = nullptr;
+
 /**************************************
 èâä˙âªèàóù
 ***************************************/
@@ -98,6 +102,8 @@ void InitGUIManager(int num)
 		}
 		initialized = true;
 	}
+
+	NumGUI::Create();
 
 	InitScoreGUI(num);
 	InitHpGUI(num);
@@ -136,6 +142,8 @@ void UninitGUIManager(int num)
 			SAFE_RELEASE(texture[i]);
 		}
 	}
+
+	NumGUI::Release();
 
 	UninitScoreGUI(num);
 	UninitHpGUI(num);
@@ -233,40 +241,35 @@ void DrawGUIonTutorialScene(void)
 ***************************************/
 void DrawGUIonBattleScene(void)
 {
-	DrawScoreGUI();
-	DrawHpGUI();
-	DrawScoreMagniNumGUI();
+	PLAYERMODEL *player = GetPlayerAdr(0);
+	D3DXVECTOR3 screenPos;
+	D3DXMATRIX view, proj;
+	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+
+	pDevice->GetTransform(D3DTS_VIEW, &view);
+	pDevice->GetTransform(D3DTS_PROJECTION, &proj);
+
+	D3DXVec3TransformCoord(&screenPos, &player->pos, &view);
+	D3DXVec3TransformCoord(&screenPos, &screenPos, &proj);
+	TranslateViewPort(&screenPos, &screenPos);
+
+	float alpha = EaseLinear((screenPos.x - 100.0f) / 600.0f, 0.2f, 1.0f);
+
 	DrawLockonGUI();
+
+	NumGUI::GetInstance()->SetAlpha(alpha);
+	DrawScoreGUI(alpha);
+	DrawHpGUI(alpha);
+	DrawScoreMagniNumGUI(alpha);
+	DrawLockonLevelGUI(alpha);
+	DrawLockonNumGUI(alpha);
+	DrawScoreMagniGauge(alpha);
+	NumGUI::GetInstance()->SetAlpha(1.0f);
+
 	DrawPowerUpTelop();
 	DrawBonusTelop();
 	DrawBonusTimeGUI();
-	DrawLockonLevelGUI();
-	DrawLockonNumGUI();
 	DrawBonusPositionTelop();
-	DrawScoreMagniGauge();
-
-#ifdef _DEBUG
-	DrawLockNumlevelGUIDebug();
-	DrawLockOnlevelGUIDebug();
-	DrawHPGUIDebug();
-	DrawScoreGUIDebug();
-
-	if (DebugButton("Save"))
-	{
-		FILE *fp = NULL;
-		fp = fopen("data/SETTINGS/gui.ini", "wb");
-
-		if (fp == NULL)
-			return;
-
-		SaveSettingLockonNumGUI(fp);
-		SaveSettingLockonLevelGUI(fp);
-		SaveSettinghpGUIGUI(fp);
-		SaveSettingScoreGUI(fp);
-
-		fclose(fp);
-	}
-#endif
 }
 
 /**************************************
@@ -319,23 +322,4 @@ void DrawGUINum(GUI_NUMTEXTURE textureID, int num, VERTEX_2D *vtxWk)
 	pDevice->SetTexture(0, texture[textureID]);
 	
 	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vtxWk, sizeof(VERTEX_2D));
-}
-
-/**************************************
-ê›íËì«Ç›çûÇ›èàóù
-**************************************/
-void LoadSettingsGUI(void)
-{
-	FILE *fp = NULL;
-	fp = fopen("data/SETTINGS/gui.ini", "rb");
-
-	if (fp == NULL)
-		return;
-
-	LoadSettingsLockonNumGUI(fp);
-	LoadSettingsLockonLevelGUI(fp);
-	LoadSettingshpGUIGUI(fp);
-	LoadSettingsScoreGUI(fp);
-
-	fclose(fp);
 }

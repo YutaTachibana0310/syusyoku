@@ -8,7 +8,7 @@
 #define _LOCKONLEVELGUI_H_
 
 #include "main.h"
-#include <stdio.h>
+
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -23,8 +23,5 @@
 void InitLockonLevelGUI(int num);
 void UninitLockonLevelGUI(int num);
 void UpdateLockonLevelGUI(void);
-void DrawLockonLevelGUI(void);
-void DrawLockOnlevelGUIDebug(void);
-void SaveSettingLockonNumGUI(FILE *fp);
-void LoadSettingsLockonLevelGUI(FILE *fp);
+void DrawLockonLevelGUI(float alpha);
 #endif

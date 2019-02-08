@@ -23,6 +23,6 @@
 void InitScoreMagniGauge(int num);
 void UninitScoreMagniGauge(int num);
 void UpdateScoreMagniGauge(void);
-void DrawScoreMagniGauge(void);
+void DrawScoreMagniGauge(float alpha);
 void SetScoreMagniGauge(void);
 #endif
