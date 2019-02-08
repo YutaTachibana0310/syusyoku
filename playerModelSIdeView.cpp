@@ -17,8 +17,8 @@
 ***************************************/
 #define PLAYERSIDE_BULLETSPEED			(20.0f)
 #define PLAYERSIDE_RANGE_Y				(90.0f)
-#define PLAYEYSIDE_RANGE_Z				(170.0f)
-#define PLAYERSIDE_MOVESPEED			(3.0f)
+#define PLAYERSIDE_RANGE_Z				(170.0f)
+#define PLAYERSIDE_MOVESPEED			(3.5f)
 
 #define PLAYERSIDE_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
 #define PLAYERSIDE_SHOTPOS_R			(D3DXVECTOR3(10.0f, 0.0f, 5.0f))
@@ -35,7 +35,7 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-
+void ClampPlayerPositionSide(PLAYERMODEL *player);
 
 /**************************************
 更新処理
@@ -50,8 +50,9 @@ void UpdatePlayerModelSideView(PLAYERMODEL *player)
 	D3DXVec3Normalize(&moveDir, &moveDir);
 	player->pos += moveDir * PLAYERSIDE_MOVESPEED;
 
-	player->pos.y = Clampf(-PLAYERSIDE_RANGE_Y, PLAYERSIDE_RANGE_Y, player->pos.y);
-	player->pos.z = Clampf(-PLAYEYSIDE_RANGE_Z, PLAYEYSIDE_RANGE_Z, player->pos.z);
+	//player->pos.y = Clampf(-PLAYERSIDE_RANGE_Y, PLAYERSIDE_RANGE_Y, player->pos.y);
+	ClampPlayerPositionSide(player);
+	player->pos.z = Clampf(-PLAYERSIDE_RANGE_Z, PLAYERSIDE_RANGE_Z, player->pos.z);
 
 	//ロックオンターゲットの更新確認
 	for (int i = 0; i < PLAYER_ROCKON_MAX; i++)
@@ -141,4 +142,14 @@ void EnterPlayerModelSideView(PLAYERMODEL *player)
 void ExitPlayerModelSideView(PLAYERMODEL *player)
 {
 	
+}
+
+/**************************************
+移動範囲制限処理
+***************************************/
+void ClampPlayerPositionSide(PLAYERMODEL *player)
+{
+	float posZ = player->pos.z + PLAYERSIDE_RANGE_Z;
+	float border = posZ / (PLAYERSIDE_RANGE_Z * 2) * 40.0f + PLAYERSIDE_RANGE_Y;
+	player->pos.y = Clampf(-border, border, player->pos.y);
 }

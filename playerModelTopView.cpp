@@ -16,7 +16,7 @@
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
-#define PLAYERTOP_MOVESPEED		(3.5f)
+#define PLAYERTOP_MOVESPEED		(3.0f)
 #define PLAYERTOP_RANGE_X		(120.0f)
 #define PLAYERTOP_RANGE_Z		(100.0f)
 
