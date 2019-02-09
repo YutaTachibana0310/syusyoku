@@ -25,6 +25,7 @@
 #include "dataContainer.h"
 #include "stageData.h"
 #include "hardCubeObject.h"
+#include "shadow.h"
 
 #include "debugWindow.h"
 #include "DebugTimer.h"
@@ -70,7 +71,7 @@ HRESULT InitBattleScene(int num)
 	InitPlayerBulletTrail(num);
 	InitEnemyManager(num);
 	InitBattleController(num);
-	
+	InitShadow(num);
 
 	RegisterDebugTimer(BATTLESCENE_LABEL);
 	PlayBGM(BGM_BATTLESCENE);
@@ -144,6 +145,10 @@ void UpdateBattleScene(void)
 	UpdateCollisionManager();
 	CountDebugTimer(BATTLESCENE_LABEL, "CollisionUpdate");
 
+	CountDebugTimer(BATTLESCENE_LABEL, "ShadowUpdate");
+	UpdateShadow();
+	CountDebugTimer(BATTLESCENE_LABEL, "ShadowUpdate");
+
 	//ゲームオーバー判定
 	if (GetPlayerHP() <= 0.0f)
 	{
@@ -164,7 +169,10 @@ void DrawBattleScene(void)
 {
 	SetBattleCamera();
 	DrawMeshCylinder();
-	//DrawCloud();
+
+	CountDebugTimer(BATTLESCENE_LABEL, "DrawShadow");
+	DrawShadow();
+	CountDebugTimer(BATTLESCENE_LABEL, "DrawShadow");
 
 	CountDebugTimer(BATTLESCENE_LABEL, "EnemyDraw");
 	DrawEnemyManager();

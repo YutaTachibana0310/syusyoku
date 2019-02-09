@@ -23,6 +23,6 @@
 void InitShadow(int num);
 void UninitShadow(int num);
 void UpdateShadow(void);
-void DrawShadow(LPD3DXEFFECT effect);
+void DrawShadow(void);
 void SetShadow(D3DVECTOR pos);
 #endif

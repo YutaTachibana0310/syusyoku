@@ -17,7 +17,6 @@
 #include "playerBullet.h"
 #include "playerBulletTrail.h"
 #include "playerMissileSmog.h"
-#include "shadow.h"
 
 /**************************************
 マクロ定義
@@ -87,7 +86,6 @@ void InitParticleManager(int num)
 	InitBulletParticle(num);
 	InitScoreMagniGUI(num);
 	InitPlayerMissileSmog(num);
-	InitShadow(num);
 }
 
 /**************************************
@@ -103,7 +101,12 @@ void UninitParticleManager(int num)
 	UninitBulletParticle(num);
 	UninitScoreMagniGUI(num);
 	UninitPlayerMissileSmog(num);
-	UninitShadow(num);
+
+	if (num == 0)
+	{
+		SAFE_RELEASE(effect);
+		SAFE_RELEASE(declare);
+	}
 }
 
 /**************************************
@@ -133,8 +136,6 @@ void UpdateParticleManager(void)
 
 	UpdatePlayerMissileSmog();
 
-	UpdateShadow();
-
 	DrawDebugWindowParticle();
 }
 
@@ -157,7 +158,6 @@ void DrawParticleManager(void)
 	//頂点要素宣言
 	pDevice->SetVertexDeclaration(declare);
 
-	DrawShadow(effect);
 	DrawPlayerMissileSmog(effect);
 	DrawExplosionSmog(declare, effect);
 	DrawExplosionFlare(declare, effect);

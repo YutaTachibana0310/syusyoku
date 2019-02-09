@@ -16,6 +16,7 @@
 #include "soundEffectManager.h"
 #include "shockBlur.h"
 #include "scoreMagniGUI.h"
+#include "shadow.h"
 
 #include "stageData.h"
 
@@ -423,6 +424,7 @@ void RegisterHardCubeToSpace(void)
 		if (ptr->active)
 		{
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_HARDCUBE);
+			SetShadow(ptr->pos);
 		}
 	}
 }

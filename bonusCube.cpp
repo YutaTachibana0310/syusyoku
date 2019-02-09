@@ -18,6 +18,7 @@
 #include "shockBlur.h"
 #include "dataContainer.h"
 #include "scoreMagniGUI.h"
+#include "shadow.h"
 
 #include "debugWindow.h"
 #include <math.h>
@@ -434,6 +435,7 @@ void RegisterBonusCubeToSpace(void)
 
 		if (ptr->active)
 		{
+			SetShadow(ptr->pos);
 			RegisterObjectToSpace(&ptr->collider, oft, OFT_BONUSCUBE);
 		}
 	}
