@@ -266,6 +266,7 @@
     <ClCompile Include="scoreMagniGUI.cpp" />
     <ClCompile Include="scoreMagniNumGUI.cpp" />
     <ClCompile Include="screenBG.cpp" />
+    <ClCompile Include="shadow.cpp" />
     <ClCompile Include="shockBlur.cpp" />
     <ClCompile Include="skyBG.cpp" />
     <ClCompile Include="smallEnemyAttack.cpp" />
@@ -398,6 +399,7 @@
     <ClInclude Include="scoreMagniGUI.h" />
     <ClInclude Include="scoreMagniNumGUI.h" />
     <ClInclude Include="screenBG.h" />
+    <ClInclude Include="shadow.h" />
     <ClInclude Include="shockBlur.h" />
     <ClInclude Include="skyBG.h" />
     <ClInclude Include="smallEnemyModel.h" />

@@ -14,6 +14,7 @@
 #include "soundEffectManager.h"
 #include "scoreMagniGUI.h"
 #include "DebugTimer.h"
+#include "shadow.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -399,6 +400,10 @@ void MoveCubeObject(void)
 		if (ptr->pos.z < -1000.0f)
 		{
 			DisableCubeObject(ptr);
+		}
+		else
+		{
+			SetShadow(ptr->pos);
 		}
 	}
 }

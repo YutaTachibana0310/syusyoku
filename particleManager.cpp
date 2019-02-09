@@ -101,6 +101,12 @@ void UninitParticleManager(int num)
 	UninitBulletParticle(num);
 	UninitScoreMagniGUI(num);
 	UninitPlayerMissileSmog(num);
+
+	if (num == 0)
+	{
+		SAFE_RELEASE(effect);
+		SAFE_RELEASE(declare);
+	}
 }
 
 /**************************************
@@ -141,6 +147,7 @@ void DrawParticleManager(void)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 
 	DrawCubeParticle();
+
 
 	DrawPlayerBullet();
 	DrawPlayerBulletTrail();
