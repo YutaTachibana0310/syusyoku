@@ -158,7 +158,7 @@ void InitBattleController(int num)
 	controller.nextViewMode = BattleViewTop;
 
 	ChangeStateBattleController(controller.currentState);
-	ChangeViewModeBattleController(BattleViewTop);
+	ChangeViewModeBattleController(BattleViewSide);
 
 }
 
