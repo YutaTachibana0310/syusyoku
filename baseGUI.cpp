@@ -119,6 +119,17 @@ void BaseGUI::SetAlpha(float alpha)
 }
 
 /**************************************
+テクスチャループ設定処理
+**************************************/
+void BaseGUI::SetLoop(float loopX, float loopY, float offsetX, float offsetY)
+{
+	vtxWk[0].tex = D3DXVECTOR2(0.0f + offsetX, 0.0f + offsetY);
+	vtxWk[1].tex = D3DXVECTOR2(loopX + offsetX, 0.0f + offsetY);
+	vtxWk[2].tex = D3DXVECTOR2(0.0f + offsetX, loopY + offsetY);
+	vtxWk[3].tex = D3DXVECTOR2(loopX + offsetX, loopY + offsetY);
+}
+
+/**************************************
 描画処理
 **************************************/
 void BaseGUI::Draw()

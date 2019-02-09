@@ -33,6 +33,7 @@ public:
 	void SetVertex(D3DXVECTOR3 pos, D3DXVECTOR2 scale = D3DXVECTOR2(1.0f, 1.0f));
 	void SetTexture(int dixX, int divY, int pattern);
 	void SetAlpha(float alpha);
+	void SetLoop(float loopX, float loopY, float offsetX, float offsetY);
 	void Draw();
 	~BaseGUI();
 };

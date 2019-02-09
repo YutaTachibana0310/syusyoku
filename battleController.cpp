@@ -50,12 +50,14 @@ void OnEnterBattleNormalTime(BATTLECONTROLLER *controller);
 void OnEnterBattleWaitBonusTimeBegin(BATTLECONTROLLER *controller);
 void OnEnterBattleBonusTime(BATTLECONTROLLER *controller);
 void OnEnterBattleBonusInterbal(BATTLECONTROLLER *controller);
+void OnEnterBattleChangeView(BATTLECONTROLLER *controller);
 
 //更新処理
 void OnUpdateBattleNormalTime(BATTLECONTROLLER *controller);
 void OnUpdateBattleWaitBonusTimeBegin(BATTLECONTROLLER *controller);
 void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller);
 void OnUpdateBattleBonusInterbal(BATTLECONTROLLER *controller);
+void OnUpdateBattleChangeView(BATTLECONTROLLER *controller);
 
 /**************************************
 グローバル変数
@@ -70,7 +72,8 @@ static funcBattleController Enter[BattleStateMax] = {
 	OnEnterBattleNormalTime,
 	OnEnterBattleWaitBonusTimeBegin,
 	OnEnterBattleBonusTime,
-	OnEnterBattleBonusInterbal
+	OnEnterBattleBonusInterbal,
+	OnEnterBattleChangeView
 };
 
 //更新処理テーブル
@@ -78,7 +81,8 @@ static funcBattleController Update[BattleStateMax] = {
 	OnUpdateBattleNormalTime,
 	OnUpdateBattleWaitBonusTimeBegin,
 	OnUpdateBattleBonusTime,
-	OnUpdateBattleBonusInterbal
+	OnUpdateBattleBonusInterbal,
+	OnUpdateBattleChangeView
 };
 
 //放出数
@@ -132,9 +136,11 @@ void InitBattleController(int num)
 		controller.lastEmittFrame[i] = 0xffffffff;
 	}
 
-	controller.currentState = BattleNormalTime;
+	controller.currentState = BattleChangeView;//BattleNormalTime;
 	controller.prevState = BattleNormalTime;
+	controller.nextViewMode = BattleViewTop;
 
+	ChangeStateBattleController(controller.currentState);
 	ChangeViewModeBattleController(BattleViewFPS);
 
 }
