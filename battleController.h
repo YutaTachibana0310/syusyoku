@@ -33,9 +33,12 @@ typedef struct {
 	D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];				//判定座標
 	D3DXVECTOR3 emmittPos[BATTLE_SPACE_MAX];			//エネミー生成位置
 	DWORD bonusStartFrame;								//ボーナスタイム開始タイミング
+
 	int currentState;									//現在の状態
 	int prevState;										//一つ前の状態
+
 	int viewMode;										//視点モード
+	int nextViewMode;									//次に遷移する視点モード
 }BATTLECONTROLLER;
 
 //バトルコントローラの各ステート
@@ -44,6 +47,7 @@ enum BATTLECONTROLLER_STATE {
 	BattleWaitBonusTimeBegin,
 	BattleBonusTime,
 	BattleBonusIntebal,
+	BattleChangeView,
 	BattleStateMax
 };
 

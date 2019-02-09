@@ -30,6 +30,7 @@
 #include "numGUI.h"
 #include "playerModel.h"
 #include "Easing.h"
+#include "cautionTelop.h"
 
 #include "logoScene.h"
 #include "titleScene.h"
@@ -126,6 +127,7 @@ void InitGUIManager(int num)
 	InitBonusPositionTelop(num);
 	InitScoreMagniNumGUI(num);
 	InitScoreMagniGauge(num);
+	InitCautionTelop(num);
 
 	//LoadSettingsGUI();
 }
@@ -166,6 +168,7 @@ void UninitGUIManager(int num)
 	UninitBonusPositionTelop(num);
 	UninitScoreMagniNumGUI(num);
 	UninitScoreMagniGauge(num);
+	UninitCautionTelop(num);
 }
 
 /**************************************
@@ -194,6 +197,7 @@ void UpdateGUIManager(void)
 	UpdateBonusPositionTelop();
 	UpdateScoreMagniNumGUI();
 	UpdateScoreMagniGauge();
+	UpdateCautionTelop();
 }
 
 /**************************************
@@ -270,6 +274,7 @@ void DrawGUIonBattleScene(void)
 	DrawBonusTelop();
 	DrawBonusTimeGUI();
 	DrawBonusPositionTelop();
+	DrawCautionTelop();
 }
 
 /**************************************

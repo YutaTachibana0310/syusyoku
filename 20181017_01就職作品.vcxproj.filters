@@ -654,6 +654,12 @@
     <ClCompile Include="shadow.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="cautionTelop.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="battleChangeViewMode.cpp">
+      <Filter>ソース ファイル\Controller\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -1015,6 +1021,9 @@
     </ClInclude>
     <ClInclude Include="shadow.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="cautionTelop.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

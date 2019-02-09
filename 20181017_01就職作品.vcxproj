@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="baseGUI.cpp" />
     <ClCompile Include="battleBonusInterbal.cpp" />
+    <ClCompile Include="battleChangeViewMode.cpp" />
     <ClCompile Include="battleWaitBonusTimeBegin.cpp" />
     <ClCompile Include="battleBonusTime.cpp" />
     <ClCompile Include="battleCamera.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="bossCubeObject.cpp" />
     <ClCompile Include="bulletParticle.cpp" />
     <ClCompile Include="cameraShaker.cpp" />
+    <ClCompile Include="cautionTelop.cpp" />
     <ClCompile Include="collisionBonusCube.cpp" />
     <ClCompile Include="collisionEnemyBullet.cpp" />
     <ClCompile Include="collisionEnemyHomingBullet.cpp" />
@@ -305,6 +307,7 @@
     <ClInclude Include="bossCubeObject.h" />
     <ClInclude Include="bulletParticle.h" />
     <ClInclude Include="cameraShaker.h" />
+    <ClInclude Include="cautionTelop.h" />
     <ClInclude Include="collisionManager.h" />
     <ClInclude Include="cubeObject.h" />
     <ClInclude Include="cubeParticle.h" />
