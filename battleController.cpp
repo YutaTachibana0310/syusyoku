@@ -130,18 +130,21 @@ void InitBattleController(int num)
 	}
 
 	//各パラメータを初期化
-	controller.cntFrame = 0;
+	for (int i = 0; i < BattleViewMax; i++)
+	{
+		controller.cntFrame[i]= 0;
+	}
 	for (int i = 0; i < BATTLE_SPACE_MAX; i++)
 	{
 		controller.lastEmittFrame[i] = 0xffffffff;
 	}
 
-	controller.currentState = BattleChangeView;//BattleNormalTime;
+	controller.currentState = BattleNormalTime;
 	controller.prevState = BattleNormalTime;
 	controller.nextViewMode = BattleViewTop;
 
 	ChangeStateBattleController(controller.currentState);
-	ChangeViewModeBattleController(BattleViewFPS);
+	ChangeViewModeBattleController(BattleViewSide);
 
 }
 
@@ -212,7 +215,7 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 		for (int i = 0; i < BATTLE_SPACE_MAX; i++)
 		{
 			float length = D3DXVec2Length(&(D3DXVECTOR2)(playerPos - controller->checkPos[i]));
-			float elapsedTime = (float)(controller->cntFrame - controller->lastEmittFrame[i]);
+			float elapsedTime = (float)(controller->cntFrame[BattleViewFPS] - controller->lastEmittFrame[i]);
 
 			valueLength[i] = fFuzzyTriangle(length, BATTLE_FUZZY_NEAR_BORDER, BATTLE_FUZZY_MIDDLE_BORDER, BATTLE_FUZZY_FAR_BORDER);
 			valueTime[i] = fFuzzyRightGrade(elapsedTime, BATTLE_FUZZY_RECENTLY_BORDER, BATTLE_FUZZY_LATELY_BORDER);
@@ -225,7 +228,7 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 		}
 
 		EmmittCubeObject(EmmittNum[GetLockonLevel()], &(controller->emmittPos[decidedPos]), EmmittSpeed[GetLockonLevel()]);
-		controller->lastEmittFrame[decidedPos] = controller->cntFrame;
+		controller->lastEmittFrame[decidedPos] = controller->cntFrame[BattleViewFPS];
 	}
 	//トップビュー時の放出
 	else if(controller->viewMode == BattleViewTop)

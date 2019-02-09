@@ -48,10 +48,10 @@ void OnEnterBattleNormalTime(BATTLECONTROLLER *controller)
 ***************************************/
 void OnUpdateBattleNormalTime(BATTLECONTROLLER *controller)
 {
-	controller->cntFrame++;
+	controller->cntFrame[controller->viewMode]++;
 	EmittFromStageData(controller);
 
-	if (controller->cntFrame % EmmittInterbal[GetLockonLevel()] == 0)
+	if (controller->cntFrame[controller->viewMode] % EmmittInterbal[GetLockonLevel()] == 0)
 		EmmittFromFuzzy(controller);
 
 }
@@ -67,7 +67,7 @@ void EmittFromStageData(BATTLECONTROLLER *controller)
 	*/
 	int cntData = 0;
 	STAGE_DATA *data = NULL;
-	cntData = UpdateStageData(&data, controller->cntFrame);
+	cntData = UpdateStageData(&data, controller->cntFrame[controller->viewMode], controller->viewMode);
 	for (int i = 0; i < cntData; i++, data++)
 	{
 		if (data->type < HardCubeTypeMax)
