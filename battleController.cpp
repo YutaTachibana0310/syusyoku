@@ -33,6 +33,20 @@
 
 #define BATTLE_CUBE_INITEMMITT_SPEED	(15.0f)
 
+#define BATTLE_EMMITTPOS_Z_TOP			(2000.0f)
+#define BATTLE_EMMITTPOS_X_TOP			(500.0f)
+#define BATTLE_EMMITTPOS_Y_TOPMIN		(-500.0f)
+#define BATTLE_EMMITTPOS_Y_TOPMAX		(100.0f)
+#define BATTLE_EMMITT_TOP_SPEEDMIN		(3.0f)
+#define BATTLE_EMMITT_TOP_SPEEDMAX		(9.0f)
+
+#define BATTLE_EMMITTPOS_Z_SIDE			(1500.0f)
+#define BATTLE_EMMITTPOS_X_SIDEMIN		(-600.0f)
+#define BATTLE_EMMITTPOS_X_SIDEMAX		(-200.0f)
+#define BATTLE_EMMITTPOS_Y_SIDE			(400.0f)
+#define BATTLE_EMMIT_SIDE_SPEEDMIN		(2.0f)
+#define BATTLE_EMMIT_SIDE_SPEEDMAX		(6.0f)
+
 /**************************************
 構造体定義
 ***************************************/
@@ -144,7 +158,7 @@ void InitBattleController(int num)
 	controller.nextViewMode = BattleViewTop;
 
 	ChangeStateBattleController(controller.currentState);
-	ChangeViewModeBattleController(BattleViewSide);
+	ChangeViewModeBattleController(BattleViewTop);
 
 }
 
@@ -233,18 +247,18 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 	//トップビュー時の放出
 	else if(controller->viewMode == BattleViewTop)
 	{
-		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, 2000.0f);
-		basePos.x += RandomRangef(-500.0f, 500.0f);
-		basePos.y -= RandomRangef(100.0f, 500.0f);
-		EmmittCubeObject(EmmittNum[GetLockonLevel()], &basePos, RandomRangef(3.0f, 9.0f));
+		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, BATTLE_EMMITTPOS_Z_TOP);
+		basePos.x += RandomRangef(-BATTLE_EMMITTPOS_X_TOP, BATTLE_EMMITTPOS_X_TOP);
+		basePos.y += RandomRangef(BATTLE_EMMITTPOS_Y_TOPMIN, BATTLE_EMMITTPOS_Y_TOPMAX);
+		EmmittCubeObject(EmmittNum[GetLockonLevel()], &basePos, RandomRangef(BATTLE_EMMITT_TOP_SPEEDMIN, BATTLE_EMMITT_TOP_SPEEDMAX));
 	}
 	//サイドビュー時の放出
 	else if (controller->viewMode == BattleViewSide)
 	{
-		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, 1500.0f);
-		basePos.x = RandomRangef(-600.0f, -200.0f);
-		basePos.y = RandomRangef(-400.0f, 400.0f);
-		EmmittCubeObject(EmmittNum[GetLockonLevel()], &basePos, RandomRangef(2.0f, 6.0f));
+		D3DXVECTOR3 basePos = D3DXVECTOR3(0.0f, 0.0f, BATTLE_EMMITTPOS_Z_SIDE);
+		basePos.x = RandomRangef(BATTLE_EMMITTPOS_X_SIDEMIN, BATTLE_EMMITTPOS_X_SIDEMAX);
+		basePos.y = RandomRangef(-BATTLE_EMMITTPOS_Y_SIDE, BATTLE_EMMITTPOS_Y_SIDE);
+		EmmittCubeObject(EmmittNum[GetLockonLevel()], &basePos, RandomRangef(BATTLE_EMMIT_SIDE_SPEEDMIN, BATTLE_EMMIT_SIDE_SPEEDMAX));
 	}
 }
 

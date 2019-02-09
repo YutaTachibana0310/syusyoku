@@ -23,6 +23,7 @@
 #define PLAYERSIDE_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
 #define PLAYERSIDE_SHOTPOS_R			(D3DXVECTOR3(10.0f, 0.0f, 5.0f))
 #define PLAYERSIDE_TARGETSITE_OFFSET	(D3DXVECTOR3(0.0f, 0.0, 200.0f))
+#define PLAYERSIDE_GUI_OFFSET			(D3DXVECTOR3(0.0f, -20.0f, 0.0f))
 
 /**************************************
 構造体定義
@@ -85,7 +86,7 @@ void UpdatePlayerModelSideView(PLAYERMODEL *player)
 	}
 
 	//ロックオンGUIセット処理
-	SetLockonGUIPos(player->id, player->pos + D3DXVECTOR3(0.0f, -10.0f, 0.0f));
+	SetLockonGUIPos(player->id, player->pos + PLAYERSIDE_GUI_OFFSET);
 
 	//攻撃処理
 	player->atkInterbal++;

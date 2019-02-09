@@ -100,7 +100,7 @@ void UninitBattleScene(int num)
 	//UninitEnemyManager(num);
 	FadeOutBGM(BGM_BATTLESCENE, 30);
 }
-
+#include "input.h"
 /******************************************************************************
 çXêVèàóù
 ******************************************************************************/
@@ -159,6 +159,11 @@ void UpdateBattleScene(void)
 	if (IsStageEnd() && IsAllHardCubeDisable())
 	{
 		SetScene(StageClearScene);
+	}
+
+	if (GetKeyboardTrigger(DIK_RETURN))
+	{
+		SetScene(BattleScene);
 	}
 }
 

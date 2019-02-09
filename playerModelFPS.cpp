@@ -25,6 +25,7 @@
 #define PLAYERFPS_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
 #define PLAYERFPS_SHOTPOS_R			(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
 #define PLAYERFPS_BULLETSPEED		(40.0f)
+#define PLAYERFPS_GUI_OFFSET		(D3DXVECTOR3(0.0f, -10.0f, 0.0))
 /**************************************
 構造体定義
 ***************************************/
@@ -90,7 +91,7 @@ void UpdatePlayerModelFPS(PLAYERMODEL *player)
 	}
 
 	//ロックオンGUIセット処理
-	SetLockonGUIPos(player->id, player->pos + D3DXVECTOR3(0.0f, -10.0f, 0.0f));
+	SetLockonGUIPos(player->id, player->pos + PLAYERFPS_GUI_OFFSET);
 
 	//攻撃処理
 	player->atkInterbal++;
