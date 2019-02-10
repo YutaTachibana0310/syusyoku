@@ -58,7 +58,7 @@ void OnEnterBattleBonusTime(BATTLECONTROLLER *controller)
 		StartBonusTelopAnim(true);
 
 		//開始タイミングを保存
-		controller->bonusStartFrame = controller->cntFrame;
+		controller->bonusStartFrame = controller->cntFrame[controller->viewMode];
 
 		//BGM切り替え
 		FadeInBGM(BGM_BONUSTIME, BATTLEBONUS_BGM_FADE_DURATION);
@@ -75,9 +75,9 @@ void OnEnterBattleBonusTime(BATTLECONTROLLER *controller)
 ***************************************/
 void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 {
-	controller->cntFrame++;
+	controller->cntFrame[controller->viewMode]++;
 
-	int elapsedFrame = (int)(controller->cntFrame - controller->bonusStartFrame);
+	int elapsedFrame = (int)(controller->cntFrame[controller->viewMode] - controller->bonusStartFrame);
 
 	//ボーナスタイム中にキューブを放出する期間
 	if (elapsedFrame < BATTLE_BONUS_DURATION)
@@ -97,7 +97,7 @@ void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 	//ボーナスタイム終了判定
 	if (elapsedFrame > BATTLE_BONUS_DURATION + BATTLE_BONUS_WAIT)
 	{
-		controller->cntFrame = controller->bonusStartFrame;
+		controller->cntFrame[controller->viewMode] = controller->bonusStartFrame;
 		FadeOutBGM(BGM_BONUSTIME, BATTLEBONUS_BGM_FADE_DURATION);
 		FadeInBGM(BGM_BATTLESCENE, BATTLEBONUS_BGM_FADE_DURATION, true);
 		SetStateBonusPositionTelop(false);

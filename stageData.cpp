@@ -12,22 +12,31 @@
 マクロ定義
 ***************************************/
 #define STAGEDATA_PATH	"data/STAGE/StageData.dat"
+#define STAGEDATA_MODEMAX	(3)
 
 /**************************************
 構造体定義
 ***************************************/
-
+typedef struct {
+	STAGE_DATA *head;
+	int current;
+	int dataMax;
+}CONTAINER_STAGEDATA;
 /**************************************
 グローバル変数
 ***************************************/
-static STAGE_DATA *dataHead;
-static int currentIndex;
-static int dataMax;
+static CONTAINER_STAGEDATA container[STAGEDATA_MODEMAX];
+
+static const char* FilePath[STAGEDATA_MODEMAX] = {
+	"data/STAGE/StageDataFPS.dat",
+	"data/STAGE/StageDataTop.dat",
+	"data/STAGE/StageDataSide.dat"
+};
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-bool LoadStageData(void);
+bool LoadStageData(int i);
 
 /**************************************
 初期化処理
@@ -35,11 +44,13 @@ bool LoadStageData(void);
 void InitStageData(int num)
 {
 	static bool initialized = false;
-	currentIndex = 0;
+	for(int i = 0; i < STAGEDATA_MODEMAX; i++)
+		container[i].current = 0;
 
 	if (!initialized)
 	{
-		LoadStageData();
+		for(int i = 0; i < STAGEDATA_MODEMAX; i++)
+			LoadStageData(i);
 		initialized = true;
 	}
 }
@@ -51,21 +62,23 @@ void UninitStageData(int num)
 {
 	if (num == 0)
 	{
-		free(dataHead);
+		for(int i = -0; i < STAGEDATA_MODEMAX; i++)
+			free(container[i].head);
 	}
 }
 
 /**************************************
 更新処理
 ***************************************/
-int UpdateStageData(STAGE_DATA **out, DWORD currentFrame)
+int UpdateStageData(STAGE_DATA **out, DWORD currentFrame, int mode)
 {
 	int cntData = 0;
-	while (currentIndex < dataMax && dataHead[currentIndex].emmittFrame == currentFrame)
+	CONTAINER_STAGEDATA *ptr = &container[mode];
+	while (ptr->current < ptr->dataMax && ptr->head[ptr->current].emmittFrame == currentFrame)
 	{
 		if (cntData == 0)
-			*out = &dataHead[currentIndex];
-		currentIndex++;
+			*out = &ptr->head[ptr->current];
+		ptr->current++;
 		cntData++;
 	}
 
@@ -76,29 +89,30 @@ int UpdateStageData(STAGE_DATA **out, DWORD currentFrame)
 /**************************************
 ステージデータ読み込み処理
 ***************************************/
-bool LoadStageData(void)
+bool LoadStageData(int mode)
 {
 	FILE *fp = NULL;
+	CONTAINER_STAGEDATA *entity = &container[mode];
 
 	//ファイル読み込み
-	fp = fopen(STAGEDATA_PATH, "r");
+	fp = fopen(FilePath[mode], "r");
 	if (fp == NULL)
 		return false;
 
 	//メモリ確保
-	dataMax = 0;
-	int loadRes = fscanf(fp, "%d", &dataMax);
+	entity->dataMax = 0;
+	int loadRes = fscanf(fp, "%d", &entity->dataMax);
 
 	if (loadRes == EOF)
 		return false;
 
-	dataHead = (STAGE_DATA*)malloc(sizeof(STAGE_DATA) * dataMax);
-	ZeroMemory(dataHead, sizeof(STAGE_DATA) * dataMax);
+	entity->head = (STAGE_DATA*)malloc(sizeof(STAGE_DATA) * entity->dataMax);
+	ZeroMemory(entity->head, sizeof(STAGE_DATA) * entity->dataMax);
 
 	//データ読み込み
-	STAGE_DATA *ptr = dataHead;
+	STAGE_DATA *ptr = entity->head;
 	int sumEmmittFrame = 0;
-	for (int i = 0; i < dataMax; i++, ptr++)
+	for (int i = 0; i < entity->dataMax; i++, ptr++)
 	{
 		fscanf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
 			&ptr->emmittFrame,
@@ -129,5 +143,14 @@ bool LoadStageData(void)
 ***************************************/
 bool IsStageEnd(void)
 {
-	return (currentIndex == dataMax) ? true : false;
+	bool res = true;
+	for (int i = 0; i < STAGEDATA_MODEMAX; i++)
+	{
+		if (container[i].current != container[i].dataMax)
+		{
+			res = false;
+			break;
+		}
+}
+	return res;
 }

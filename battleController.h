@@ -26,21 +26,6 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef struct {
-	D3DXVECTOR2 enemyEmmittPos[BATTLE_SPACE_MAX];		//エネミー生成座標
-	DWORD lastEmittFrame[BATTLE_SPACE_MAX];				//各空間にエネミーが生成された最後のフレーム
-	DWORD cntFrame;										//フレームカウント
-	D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];				//判定座標
-	D3DXVECTOR3 emmittPos[BATTLE_SPACE_MAX];			//エネミー生成位置
-	DWORD bonusStartFrame;								//ボーナスタイム開始タイミング
-
-	int currentState;									//現在の状態
-	int prevState;										//一つ前の状態
-
-	int viewMode;										//視点モード
-	int nextViewMode;									//次に遷移する視点モード
-}BATTLECONTROLLER;
-
 //バトルコントローラの各ステート
 enum BATTLECONTROLLER_STATE {
 	BattleNormalTime,
@@ -58,6 +43,23 @@ enum BATTLE_VIEWMODE {
 	BattleViewSide,
 	BattleViewMax
 };
+
+//バトルコントローラー構造体
+typedef struct {
+	D3DXVECTOR2 enemyEmmittPos[BATTLE_SPACE_MAX];		//エネミー生成座標
+	DWORD lastEmittFrame[BATTLE_SPACE_MAX];				//各空間にエネミーが生成された最後のフレーム
+	DWORD cntFrame[BattleViewMax];						//フレームカウント
+	D3DXVECTOR3 checkPos[BATTLE_SPACE_MAX];				//判定座標
+	D3DXVECTOR3 emmittPos[BATTLE_SPACE_MAX];			//エネミー生成位置
+	DWORD bonusStartFrame;								//ボーナスタイム開始タイミング
+
+	int currentState;									//現在の状態
+	int prevState;										//一つ前の状態
+
+	int viewMode;										//視点モード
+	int nextViewMode;									//次に遷移する視点モード
+}BATTLECONTROLLER;
+
 
 /**************************************
 プロトタイプ宣言

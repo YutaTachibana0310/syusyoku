@@ -6,6 +6,7 @@
 //=====================================
 #include "battleController.h"
 #include "cautionTelop.h"
+#include "hardCubeObject.h"
 
 /**************************************
 マクロ定義
@@ -21,6 +22,7 @@
 グローバル変数
 ***************************************/
 static int cntFrame;
+static bool playedTelop;
 
 /**************************************
 プロトタイプ宣言
@@ -32,7 +34,8 @@ static int cntFrame;
 void OnEnterBattleChangeView(BATTLECONTROLLER *entity)
 {
 	cntFrame = 0;
-	SetCautionTelop();
+	playedTelop = false;
+	//SetCautionTelop();
 }
 
 /**************************************
@@ -40,8 +43,18 @@ void OnEnterBattleChangeView(BATTLECONTROLLER *entity)
 ***************************************/
 void OnUpdateBattleChangeView(BATTLECONTROLLER *entity)
 {
-	cntFrame++;
+	//すべてのハードキューブが非アクティブになったらテロップ再生
+	if (!playedTelop && IsAllHardCubeDisable())
+	{
+		SetCautionTelop();
+		playedTelop = true;
+	}
 
+	//テロップが再生されてからカウントを開始する
+	if (!playedTelop)
+		return;
+
+	cntFrame++;
 	if (cntFrame == BATTLE_CHANGEVIEW_TIMING)
 	{
 		ChangeViewModeBattleController(entity->nextViewMode);

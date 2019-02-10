@@ -30,7 +30,7 @@ typedef struct
 ***************************************/
 void InitStageData(int num);
 void UninitStageData(int num);
-int UpdateStageData(STAGE_DATA **out, DWORD currentFrame);
+int UpdateStageData(STAGE_DATA **out, DWORD currentFrame, int mode);
 bool IsStageEnd(void);
 
 #endif

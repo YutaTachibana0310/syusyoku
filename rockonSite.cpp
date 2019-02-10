@@ -18,7 +18,7 @@
 #define ROCKONSITE_MAX				(PLAYER_ROCKON_MAX * PLAYERMODEL_MAX)
 #define ROCKONSITE_INITSCALE		(20.0f)
 #define ROCKONSITE_ENDSCALE			(1.0f)
-#define ROCKONSITE_ANIMATIONFRAME	(15)
+#define ROCKONSITE_ANIMATIONFRAME	(20)
 #define ROCKONSITE_ROT_VALUE		(0.02f)
 #define ROCKONSITE_ROT_INTERBAL		(30)
 
@@ -107,7 +107,7 @@ void UpdateRockonSite(void)
 
 		ptr->cntFrame++;
 		//アニメーション
-		if (ptr->cntFrame < ROCKONSITE_ANIMATIONFRAME)
+		if (ptr->cntFrame <= ROCKONSITE_ANIMATIONFRAME)
 		{
 			float t = (float)ptr->cntFrame / ROCKONSITE_ANIMATIONFRAME;
 			ptr->scale = EaseOutCubic(t, ROCKONSITE_INITSCALE, ROCKONSITE_ENDSCALE);
