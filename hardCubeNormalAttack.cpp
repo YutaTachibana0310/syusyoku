@@ -7,14 +7,15 @@
 #include "hardCubeObject.h"
 #include "playerModel.h"
 #include "enemyBullet.h"
+#include "battleController.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define HARDCUBE_NORMALATTACK_INTERBAL		(120)
-#define HARDCUBE_NORMALATTACK_DURATION		(HARDCUBE_NORMALATTACK_INTERBAL*5)
-#define HARDCUBE_NORNALATTACL_BULLETSPEED	(10.0f)
-
+#define HARDCUBE_NORMALATTACK_INTERBAL			(120)
+#define HARDCUBE_NORMALATTACK_DURATION			(HARDCUBE_NORMALATTACK_INTERBAL*5)
+#define HARDCUBE_NORNALATTACL_BULLETSPEED		(6.0f)
+#define HARDCUBE_NORMALATTACK_BULLETSPEED_FPS	(10.0f)
 /**************************************
 構造体定義
 ***************************************/
@@ -44,7 +45,8 @@ void OnUpdateHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr)
 	{
 		D3DXVECTOR3 dir = GetPlayerAdr(0)->pos - ptr->pos;
 		D3DXVec3Normalize(&dir, &dir);
-		SetEnemyBullet(ptr->pos, dir, HARDCUBE_NORNALATTACL_BULLETSPEED);
+		float speed = (GetBattleViewMode() == BattleViewFPS) ? HARDCUBE_NORMALATTACK_BULLETSPEED_FPS : HARDCUBE_NORNALATTACL_BULLETSPEED;
+		SetEnemyBullet(ptr->pos, dir, speed);
 	}
 
 	ptr->cntFrame++;
