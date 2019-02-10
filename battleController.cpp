@@ -158,7 +158,7 @@ void InitBattleController(int num)
 	controller.nextViewMode = BattleViewTop;
 
 	ChangeStateBattleController(controller.currentState);
-	ChangeViewModeBattleController(BattleViewSide);
+	ChangeViewModeBattleController(BattleViewFPS);
 
 }
 
@@ -170,18 +170,12 @@ void UninitBattleController(int num)
 	UninitStageData(num);
 }
 
-#include "input.h"
 /**************************************
 çXêVèàóù
 ***************************************/
 void UpdateBattleController(void)
 {
 	Update[controller.currentState](&controller);
-
-	if (GetKeyboardTrigger(DIK_M))
-	{
-		ChangeViewModeBattleController(++controller.viewMode % 3);
-	}
 }
 
 /**************************************

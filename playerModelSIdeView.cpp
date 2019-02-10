@@ -51,6 +51,8 @@ void UpdatePlayerModelSideView(PLAYERMODEL *player)
 	D3DXVec3Normalize(&moveDir, &moveDir);
 	player->pos += moveDir * PLAYERSIDE_MOVESPEED;
 
+	player->destRot.z = x * PLAYER_DESTROT_MAX;
+
 	//player->pos.y = Clampf(-PLAYERSIDE_RANGE_Y, PLAYERSIDE_RANGE_Y, player->pos.y);
 	ClampPlayerPositionSide(player);
 	player->pos.z = Clampf(-PLAYERSIDE_RANGE_Z, PLAYERSIDE_RANGE_Z, player->pos.z);

@@ -17,7 +17,7 @@
 /**************************************
 マクロ定義
 ***************************************/
-
+#define BATTLE_DATATYPE_VIEWCHANGE		(999)
 /**************************************
 構造体定義
 ***************************************/
@@ -73,6 +73,11 @@ void EmittFromStageData(BATTLECONTROLLER *controller)
 		if (data->type < HardCubeTypeMax)
 		{
 			SetHardCubeObjectFromData(data);
+		}
+		else if (data->type == BATTLE_DATATYPE_VIEWCHANGE)
+		{
+			controller->nextViewMode = data->initPos.x;		//ステージデータのX座標に次の視点情報が格納されている
+			ChangeStateBattleController(BattleChangeView);
 		}
 		else
 		{
