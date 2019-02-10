@@ -93,7 +93,7 @@ void UpdatePlayerModelSideView(PLAYERMODEL *player)
 	//UŒ‚ˆ—
 	player->atkInterbal++;
 	if (player->atkInterbal == PLAYER_HOMINGATK_INTERBAL)
-		PlaySE(SOUND_READY);
+		PlaySE(DefineSE::READY);
 
 	if (GetAttackButtonRelease())
 	{
@@ -108,7 +108,7 @@ void UpdatePlayerModelSideView(PLAYERMODEL *player)
 	player->cntFrame++;
 	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0)// && !GetAttackButtonPress())
 	{
-		PlaySE(SOUND_SHOT);
+		PlaySE(DefineSE::SHOT);
 		SetPlayerBullet(player->shotpos1, PLAYERSIDE_BULLETSPEED);
 		SetPlayerBullet(player->shotpos2, PLAYERSIDE_BULLETSPEED);
 	}

@@ -60,7 +60,7 @@ void OnUpdateNameEntryInput(NAMEENTRY *entity)
 		return;
 	else
 	{
-		PlaySE(SOUND_CURSOR);
+		PlaySE(DefineSE::CURSOR);
 	}
 
 	if (entity->nameIndex == DATACONTAINER_PLAYERNAME_MAX)

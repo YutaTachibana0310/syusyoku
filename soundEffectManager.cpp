@@ -9,6 +9,9 @@
 #include <tchar.h>
 #include "debugWindow.h"
 #include <stdio.h>
+#include <type_traits>
+
+#include <map>
 
 #pragma comment ( lib, "dxguid.lib" )
 #pragma comment ( lib, "dsound.lib" )
@@ -26,7 +29,7 @@
 /**************************************
 グローバル変数
 ***************************************/
-const TCHAR* soundFileName[SOUND_MAX] =
+static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
 {
 	_T("data/SOUND/lockon.wav"),
 	_T("data/SOUND/burst00.wav"),
@@ -39,9 +42,27 @@ const TCHAR* soundFileName[SOUND_MAX] =
 	_T("data/SOUND/magic-attack-holy1.wav"),
 	_T("data/SOUND/bom30.wav"),
 	_T("data/SOUND/cursor2.wav"),
+	_T("data/SOUND/decision24.wav")
 };
 
-static SOUNDEFFECT se[SOUND_MAX];
+static const map<DefineSE, char*> defSEname = {
+	{ DefineSE::LOCKON, STR(LOCKON)},
+	{ DefineSE::MISSILELAUNCH,STR(MISSILELAUNCH) },
+	{ DefineSE::SMALLEXPL, STR(SMALLEXPL) },
+	{ DefineSE::READY, STR(READY) },
+	{ DefineSE::DECISION,STR(DECISION) },
+	{ DefineSE::SHOT,STR(SHOT) },
+	{ DefineSE::MIDDLEEXPL,STR(MIDDLEEXPL) },
+	{ DefineSE::BONUSEXPL, STR(BONUSEXPL) },
+	{ DefineSE::BONUSSTART,STR(BONUSSTART) },
+	{ DefineSE::NORMALEXPL, STR(NORMALEXPL) },
+	{ DefineSE::CURSOR,STR(CURSOR) },
+	{ DefineSE::POWERUP, STR(POWEUP)},
+	{ DefineSE::MAX, STR(MAX) },
+};
+
+//static SOUNDEFFECT se[static_cast<unsigned int>(DefineSE::MAX)];
+static map<DefineSE, SOUNDEFFECT> container;
 
 /**************************************
 プロトタイプ宣言
@@ -49,6 +70,13 @@ static SOUNDEFFECT se[SOUND_MAX];
 bool SaveSettingsSoundEffect(void);
 bool LoadSettingsSoundEffect(void);
 void DrawDebugWindowSoundEffect(void);
+
+DefineSE begin(DefineSE) { return DefineSE::LOCKON; }
+DefineSE end(DefineSE) { return DefineSE::MAX; }
+DefineSE operator*(DefineSE se) { return se; }
+DefineSE operator++(DefineSE& se) {
+	return se = DefineSE(underlying_type<DefineSE>::type(se) + 1);
+}
 
 /**************************************
 初期化処理
@@ -60,11 +88,10 @@ void InitSoundEffectManager(int num)
 	if (!initialized)
 	{
 		bool res = LoadSettingsSoundEffect();
-		SOUNDEFFECT *ptr = &se[0];
-		for (int i = 0; i < SOUND_MAX; i++, ptr++)
+		for (auto i : DefineSE())
 		{
-			ptr->clip = LoadSound(&soundFileName[i][0]);
-			SetSoundVolume(ptr->clip, ptr->volume);
+			container[i].clip = LoadSound(&soundFileName[static_cast<unsigned int>(i)][0]);
+			SetSoundVolume(container[i].clip, container[i].volume);
 		}
 
 		initialized = true;
@@ -80,10 +107,9 @@ void UninitSoundEffectManager(int num)
 {
 	if (num == 0)
 	{
-		SOUNDEFFECT *ptr = &se[0];
-		for (int i = 0; i < SOUND_MAX; i++, ptr++)
+		for (auto i : DefineSE())
 		{
-			SAFE_RELEASE(ptr->clip);
+			SAFE_RELEASE(container[i].clip);
 		}
 	}
 }
@@ -99,51 +125,52 @@ void UpdateSoundEffectManager(void)
 /**************************************
 再生処理
 ***************************************/
-void PlaySE(DEFINE_SOUNDEFFECT sound)
+void PlaySE(DefineSE sound)
 {
-	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
+	PlaySoundBuffer(container[sound].clip, E_DS8_FLAG_NONE, true);
 }
 
 /**************************************
 再生処理(3D版)
 ***************************************/
-void PlaySE_3D(DEFINE_SOUNDEFFECT sound, float posZ)
+void PlaySE_3D(DefineSE sound, float posZ)
 {
 	float decay = 1.0f - posZ / SOUND_POS_FAR_END;
-	SetSoundVolume(se[sound].clip, se[sound].volume * decay);
-	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, true);
+
+	SetSoundVolume(container[sound].clip, container[sound].volume * decay);
+	PlaySoundBuffer(container[sound].clip, E_DS8_FLAG_NONE, true);
 }
 
 /**************************************
 停止処理
 ***************************************/
-void StopSE(DEFINE_SOUNDEFFECT sound)
+void StopSE(DefineSE sound)
 {
-	StopSoundBuffer(se[sound].clip);
+	StopSoundBuffer(container[sound].clip);
 }
 
 /**************************************
 再開処理
 ***************************************/
-void ResumeSE(DEFINE_SOUNDEFFECT sound)
+void ResumeSE(DefineSE sound)
 {
-	PlaySoundBuffer(se[sound].clip, E_DS8_FLAG_NONE, false);
+	PlaySoundBuffer(container[sound].clip, E_DS8_FLAG_NONE, false);
 }
 
 /**************************************
 再生中判定
 ***************************************/
-bool IsPlayingSE(DEFINE_SOUNDEFFECT sound)
+bool IsPlayingSE(DefineSE sound)
 {
-	return IsPlaying(se[sound].clip);
+	return IsPlaying(container[sound].clip);
 }
 
 /**************************************
 音量設定
 ***************************************/
-void SetSEVolume(DEFINE_SOUNDEFFECT sound, float volume)
+void SetSEVolume(DefineSE sound, float volume)
 {
-	SetSoundVolume(se[sound].clip, volume);
+	SetSoundVolume(container[sound].clip, volume);
 }
 
 /**************************************
@@ -152,35 +179,19 @@ void SetSEVolume(DEFINE_SOUNDEFFECT sound, float volume)
 void DrawDebugWindowSoundEffect(void)
 {
 	BeginDebugWindow("SoundEffect");
+	DebugText("SoundNum : %d", container.size());
 
-	DebugSliderFloat(STR(SOUND_LOCKON), &se[SOUND_LOCKON].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_MISSILELAUNCH), &se[SOUND_MISSILELAUNCH].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_SMALLEXPL), &se[SOUND_SMALLEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_READY), &se[SOUND_READY].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_DECISION), &se[SOUND_DECISION].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_SHOT), &se[SOUND_SHOT].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_MIDDLEEXPL), &se[SOUND_MIDDLEEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_BONUSEXPL), &se[SOUND_BONUSEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_BONUSSTART), &se[SOUND_BONUSSTART].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_NORMALEXPL), &se[SOUND_NORMALEXPL].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
-
-	DebugSliderFloat(STR(SOUND_CURSOR), &se[SOUND_CURSOR].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	for (auto i : DefineSE())
+	{
+		DebugSliderFloat(defSEname.at(i), &container[i].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+	}
 
 	if (DebugButton("Save Settings"))
 	{
 		SaveSettingsSoundEffect();
-		for (int i = 0; i < SOUND_MAX; i++)
+		for (auto i : DefineSE())
 		{
-			SetSoundVolume(se[i].clip, se[i].volume);
+			SetSoundVolume(container[i].clip, container[i].volume);
 		}
 	}
 
@@ -188,26 +199,10 @@ void DrawDebugWindowSoundEffect(void)
 
 	BeginDebugWindow("PlaySound");
 
-	if (DebugButton(STR(SOUND_LOCKON)))	{ PlaySE(SOUND_LOCKON); }
-	if (DebugButton(STR(SOUND_MISSILELAUNCH))) { PlaySE(SOUND_MISSILELAUNCH); }
-	if (DebugButton(STR(SOUND_SMALLEXPL))) { PlaySE(SOUND_SMALLEXPL); }
-	if (DebugButton(STR(SOUND_READY))) { PlaySE(SOUND_READY); }
-	if (DebugButton(STR(SOUND_DECISION))) { PlaySE(SOUND_DECISION); }
-	if (DebugButton(STR(SOUND_SHOT))) { PlaySE(SOUND_SHOT); }
-	if (DebugButton(STR(SOUND_MIDDLEEXPL))) { PlaySE(SOUND_MIDDLEEXPL); }
-	if (DebugButton(STR(SOUND_BONUSEXPL))) { PlaySE(SOUND_BONUSEXPL); }
-	if (DebugButton(STR(SOUND_BONUSSTART))) { PlaySE(SOUND_BONUSSTART); }
-	if (DebugButton(STR(SOUND_NORMALEXPL))) { PlaySE(SOUND_NORMALEXPL); }
-	if (DebugButton(STR(SOUND_CURSOR))) { PlaySE(SOUND_CURSOR); }
-
-	DebugNewLine();
-	static float length = 5000.0f;
-	DebugSliderFloat("Length", &length, 0.0f, SOUND_POS_FAR_END);
-	if (DebugButton("Play 3D"))
+	for (auto i : DefineSE())
 	{
-		PlaySE_3D(SOUND_SMALLEXPL, length);
+		if (DebugButton(defSEname.at(i))) { PlaySE(i); }
 	}
-
 
 	EndDebugWindow("PlaySound");
 }
@@ -225,9 +220,9 @@ bool SaveSettingsSoundEffect(void)
 		return false;
 	}
 
-	for (int i = 0; i < SOUND_MAX; i++)
+	for (auto i : DefineSE())
 	{
-		fwrite(&se[i].volume, sizeof(float), 1, fp);
+		fwrite(&container[i].volume, sizeof(float), 1, fp);
 	}
 
 	fclose(fp);
@@ -245,19 +240,19 @@ bool LoadSettingsSoundEffect(void)
 
 	if (fp == NULL)
 	{
-		SOUNDEFFECT *ptr = &se[0];
-		for (int i = 0; i < SOUND_MAX; i++, ptr++)
+		for (auto i : DefineSE())
 		{
-			ptr->volume = SOUND_VOLUME_INIT;
+			container[i].volume = SOUND_VOLUME_INIT;
 		}
+
 		return false;
 	}
 
-	for (int i = 0; i < SOUND_MAX; i++)
+	for (auto i : DefineSE())
 	{
-		int res = fread(&se[i].volume, sizeof(float), 1, fp);
+		int res = fread(&container[i].volume, sizeof(float), 1, fp);
 		if (res == EOF)
-			se[i].volume = SOUND_VOLUME_INIT;
+			container[i].volume = SOUND_VOLUME_INIT;
 	}
 
 	fclose(fp);

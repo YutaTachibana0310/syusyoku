@@ -366,7 +366,7 @@ ROCKONTARGET *AddRockonTarget(int id, D3DXVECTOR3 *targetPos, bool *targetActive
 		ptr->target[i].use = true;
 		ActivateRockonSite(ptr->id * PLAYER_ROCKON_MAX + i);
 		ptr->lockonNum++;
-		PlaySE(SOUND_LOCKON);
+		PlaySE(DefineSE::LOCKON);
 		return &ptr->target[i];
 	}
 
@@ -426,7 +426,7 @@ void AttackPlayerMissile(PLAYERMODEL *player)
 		player->target[i].use = false;
 	}
 
-	PlaySE(SOUND_MISSILELAUNCH);
+	PlaySE(DefineSE::MISSILELAUNCH);
 	player->lockonNum = 0;
 
 	if (!player->boostMode)

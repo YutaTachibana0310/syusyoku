@@ -7,6 +7,7 @@
 #include "powerUpTelop.h"
 #include "EasingVector.h"
 #include "Easing.h"
+#include "soundEffectManager.h"
 
 #include "input.h"
 
@@ -228,4 +229,5 @@ void StartPowerUpTelopAnimation(int num)
 	currentSequence = 0;
 	cntFrame = 0;
 	SetTexturePowerUpTelop(num);
+	PlaySE(DefineSE::POWERUP);
 }
