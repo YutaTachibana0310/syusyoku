@@ -349,6 +349,7 @@ void MoveBonusCube(void)
 				D3DXVECTOR3 dir = GetPlayerAdr(0)->pos - ptr->pos;
 				D3DXVec3Normalize(&dir, &dir);
 				SetEnemyBullet(ptr->pos, dir, BONUSCUBE_BULLETSPEED);
+				PlaySE(DefineSE::ENEMYBULLET);
 				StartBonusCubeMove(ptr);
 			}
 		}

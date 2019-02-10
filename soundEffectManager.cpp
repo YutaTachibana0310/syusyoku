@@ -42,7 +42,9 @@ static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
 	_T("data/SOUND/magic-attack-holy1.wav"),
 	_T("data/SOUND/bom30.wav"),
 	_T("data/SOUND/cursor2.wav"),
-	_T("data/SOUND/decision24.wav")
+	_T("data/SOUND/decision24.wav"),
+	_T("data/SOUND/shoot13.wav"),
+	_T("data/SOUND/shoot09.wav"),
 };
 
 static const map<DefineSE, char*> defSEname = {
@@ -58,6 +60,8 @@ static const map<DefineSE, char*> defSEname = {
 	{ DefineSE::NORMALEXPL, STR(NORMALEXPL) },
 	{ DefineSE::CURSOR,STR(CURSOR) },
 	{ DefineSE::POWERUP, STR(POWEUP)},
+	{ DefineSE::HOMINGBULLET, STR(HOMINGBULLET)},
+	{ DefineSE::ENEMYBULLET, STR(ENEMYBULLET)},
 	{ DefineSE::MAX, STR(MAX) },
 };
 

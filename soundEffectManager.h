@@ -38,6 +38,8 @@ enum class  DefineSE : unsigned int
 	NORMALEXPL,
 	CURSOR,
 	POWERUP,
+	HOMINGBULLET,
+	ENEMYBULLET,
 	MAX
 };
 

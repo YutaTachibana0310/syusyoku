@@ -6,6 +6,7 @@
 //=====================================
 #include "hardCubeObject.h"
 #include "enemyHomingBullet.h"
+#include "soundEffectManager.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -51,6 +52,7 @@ void OnUpdateHardCubeHomingAttack(HARD_CUBE_OBJECT *ptr)
 	{
 		for (int i = 0; i < HARDCUBE_HOMINGATTACK_DIRNUM; i++)
 		{
+			PlaySE(DefineSE::HOMINGBULLET);
 			SetEnemyHomingBullet(ptr->pos, bulletVelocity[i], HARDCUBE_HOMINGATTACK_REACHFRAME);
 		}
 	}
