@@ -94,7 +94,7 @@ void UpdatePlayerModelTopView(PLAYERMODEL *player)
 	//UŒ‚ˆ—
 	player->atkInterbal++;
 	if (player->atkInterbal == PLAYER_HOMINGATK_INTERBAL)
-		PlaySE(SOUND_READY);
+		PlaySE(DefineSE::READY);
 
 	if (GetAttackButtonRelease())
 	{
@@ -109,7 +109,7 @@ void UpdatePlayerModelTopView(PLAYERMODEL *player)
 	player->cntFrame++;
 	if (player->cntFrame % PLAYER_SHOT_INTERBAL == 0)// && !GetAttackButtonPress())
 	{
-		PlaySE(SOUND_SHOT);
+		PlaySE(DefineSE::SHOT);
 		SetPlayerBullet(player->shotpos1, PLAYERTOP_BULLETSPEED);
 		SetPlayerBullet(player->shotpos2, PLAYERTOP_BULLETSPEED);
 	}

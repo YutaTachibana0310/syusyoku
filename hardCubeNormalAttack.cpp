@@ -8,6 +8,7 @@
 #include "playerModel.h"
 #include "enemyBullet.h"
 #include "battleController.h"
+#include "soundEffectManager.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`
@@ -47,6 +48,7 @@ void OnUpdateHardCubeNormalAttack(HARD_CUBE_OBJECT *ptr)
 		D3DXVec3Normalize(&dir, &dir);
 		float speed = (GetBattleViewMode() == BattleViewFPS) ? HARDCUBE_NORMALATTACK_BULLETSPEED_FPS : HARDCUBE_NORNALATTACL_BULLETSPEED;
 		SetEnemyBullet(ptr->pos, dir, speed);
+		PlaySE(DefineSE::ENEMYBULLET);
 	}
 
 	ptr->cntFrame++;

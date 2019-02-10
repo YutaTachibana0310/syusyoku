@@ -12,6 +12,8 @@
 #include <dsound.h>
 #include <mmsystem.h>
 
+using namespace std;
+
 /**************************************
 マクロ定義
 ***************************************/
@@ -21,21 +23,24 @@
 /**************************************
 構造体定義
 ***************************************/
-enum DEFINE_SOUNDEFFECT
+enum class  DefineSE : unsigned int
 {
 	//サウンド通しナンバー
-	SOUND_LOCKON,
-	SOUND_MISSILELAUNCH,
-	SOUND_SMALLEXPL,
-	SOUND_READY,
-	SOUND_DECISION,
-	SOUND_SHOT,
-	SOUND_MIDDLEEXPL,
-	SOUND_BONUSEXPL,
-	SOUND_BONUSSTART,
-	SOUND_NORMALEXPL,
-	SOUND_CURSOR,
-	SOUND_MAX
+	LOCKON,
+	MISSILELAUNCH,
+	SMALLEXPL,
+	READY,
+	DECISION,
+	SHOT,
+	MIDDLEEXPL,
+	BONUSEXPL,
+	BONUSSTART,
+	NORMALEXPL,
+	CURSOR,
+	POWERUP,
+	HOMINGBULLET,
+	ENEMYBULLET,
+	MAX
 };
 
 typedef struct
@@ -52,10 +57,10 @@ void InitSoundEffectManager(int num);
 void UninitSoundEffectManager(int num);
 void UpdateSoundEffectManager(void);
 
-void PlaySE(DEFINE_SOUNDEFFECT sound);
-void PlaySE_3D(DEFINE_SOUNDEFFECT sound, float posZ);
-void StopSE(DEFINE_SOUNDEFFECT sound);
-void ResumeSE(DEFINE_SOUNDEFFECT sound);
-bool IsPlayingSE(DEFINE_SOUNDEFFECT sound);
+void PlaySE(DefineSE sound);
+void PlaySE_3D(DefineSE sound, float posZ);
+void StopSE(DefineSE sound);
+void ResumeSE(DefineSE sound);
+bool IsPlayingSE(DefineSE sound);
 
 #endif

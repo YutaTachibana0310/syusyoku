@@ -144,7 +144,7 @@ void UpdateTitleScene(void)
 		state = TITLESCENE_STATEMAX;
 		ChangeStatePlayerModel(PlayerTitleLaunch);
 		SetSceneFade(TutorialScene);
-		PlaySE(SOUND_DECISION);
+		PlaySE(DefineSE::DECISION);
 		FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 	}
 

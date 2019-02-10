@@ -233,5 +233,5 @@ void StartBonusTelopAnim(bool isStart)
 
 	//開始テロップのみSE再生
 	if(isStart)
-		PlaySE(SOUND_BONUSSTART);
+		PlaySE(DefineSE::BONUSSTART);
 }

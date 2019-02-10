@@ -387,14 +387,14 @@ void CheckDestroyHardCube(void)
 		if (ptr->hp <= 0.0f)
 		{
 			SetCubeExplosion(ptr->pos, PARTICLE_HARDCUBE_COLOR);
-			PlaySE(SOUND_SMALLEXPL);
+			PlaySE(DefineSE::SMALLEXPL);
 			//DamageAllCubeObject();
 
 			if (ptr->type == HardCubeHomingType)
 			{
 				SetCameraShaker(HARDCUBEHOMING_CAMERA_SHAKE_LENGTH);
 				SetShockBlur(ptr->pos);
-				PlaySE(SOUND_MIDDLEEXPL);
+				PlaySE(DefineSE::MIDDLEEXPL);
 			}
 
 			AddScore(HARDCUBE_ADDSCORE * ptr->scale);

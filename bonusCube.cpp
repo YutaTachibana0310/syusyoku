@@ -349,6 +349,7 @@ void MoveBonusCube(void)
 				D3DXVECTOR3 dir = GetPlayerAdr(0)->pos - ptr->pos;
 				D3DXVec3Normalize(&dir, &dir);
 				SetEnemyBullet(ptr->pos, dir, BONUSCUBE_BULLETSPEED);
+				PlaySE(DefineSE::ENEMYBULLET);
 				StartBonusCubeMove(ptr);
 			}
 		}
@@ -409,8 +410,8 @@ void CheckDestroyBonusCube(void)
 		if (ptr->hp <= 0.0f)
 		{
 			//TODO:Œø‰Ê‰¹‚ðê—p‚Ì‚à‚Ì‚É·‚µ‘Ö‚¦
-			//PlaySE(SOUND_BONUSEXPL);
-			PlaySE(SOUND_NORMALEXPL);
+			//PlaySE(DefineSE::BONUSEXPL);
+			PlaySE(DefineSE::NORMALEXPL);
 			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			SetShockBlur(ptr->pos);
