@@ -19,6 +19,8 @@
 #include "dataContainer.h"
 #include "scoreMagniGUI.h"
 #include "shadow.h"
+#include "enemyBullet.h"
+#include "playerModel.h"
 
 #include "debugWindow.h"
 #include <math.h>
@@ -36,8 +38,8 @@
 #define BONUSCUBE_MOVE_Z_NEAR			(300.0f)
 #define BONUSCUBE_MOVE_Z_FAR			(1000.0f)
 #define BONUSCUBE_MOVE_END_Z			(10000.0f)
-#define BONUSCUBE_MOVE_X_RANGE			(300.0f)
-#define BONUSCUBE_MOVE_Y_RANGE			(200.0f)
+#define BONUSCUBE_MOVE_X_RANGE			(250.0f)
+#define BONUSCUBE_MOVE_Y_RANGE			(150.0f)
 #define BONUSCUBE_MOVE_DURATION			(90)
 #define BONUSCUBE_MOVE_WAIT				(30)
 #define PARTICLE_BONUSCUBE_COLOR		(D3DCOLOR_RGBA(255, 228, 121, 255))
@@ -45,6 +47,7 @@
 #define BONUSCUBE_EMMITT_OFFST			(300.0f)
 #define BONUSCUBE_EMMITT_BASE			(D3DXVECTOR3(-BONUSCUBE_EMMITT_OFFST, -BONUSCUBE_EMMITT_OFFST, -100.0f))
 #define BONUSCUBE_ADDSCORE				(100)
+#define BONUSCUBE_BULLETSPEED			(15.0f)
 
 static const char* TextureName[BONUSCUBE_TEX_NUM] = {
 	"data/TEXTURE/OBJECT/circuit09.png",
@@ -343,6 +346,9 @@ void MoveBonusCube(void)
 			}
 			else
 			{
+				D3DXVECTOR3 dir = GetPlayerAdr(0)->pos - ptr->pos;
+				D3DXVec3Normalize(&dir, &dir);
+				SetEnemyBullet(ptr->pos, dir, BONUSCUBE_BULLETSPEED);
 				StartBonusCubeMove(ptr);
 			}
 		}
