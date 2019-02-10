@@ -219,6 +219,18 @@ bool DebugButton(const char *label)
 }
 
 /*************************************
+デバッグボタン表示処理(string版)
+***************************************/
+bool DebugButton(const std::string *label)
+{
+#ifdef USE_DEBUGFUNC
+	return ImGui::Button(label->c_str());
+#else
+	return false;
+#endif
+}
+
+/*************************************
 デバッグスライダー処理
 ***************************************/
 bool DebugSliderFloat(const char *label, float *adr, float min, float max)
@@ -226,6 +238,18 @@ bool DebugSliderFloat(const char *label, float *adr, float min, float max)
 #ifdef USE_DEBUGFUNC
 	return ImGui::SliderFloat(label, adr, min, max);
 
+#else
+	return false;
+#endif
+}
+
+/*************************************
+デバッグスライダー処理(string版)
+***************************************/
+bool DebugSliderFloat(const std::string *label, float *adr, float min, float max)
+{
+#ifdef USE_DEBUGFUNC
+	return ImGui::SliderFloat(label->c_str(), adr, min, max);
 #else
 	return false;
 #endif

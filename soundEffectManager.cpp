@@ -47,7 +47,7 @@ static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
 	_T("data/SOUND/shoot09.wav"),
 };
 
-static const map<DefineSE, char*> defSEname = {
+static const map<DefineSE, string> defSEname = {
 	{ DefineSE::LOCKON, STR(LOCKON)},
 	{ DefineSE::MISSILELAUNCH,STR(MISSILELAUNCH) },
 	{ DefineSE::SMALLEXPL, STR(SMALLEXPL) },
@@ -92,6 +92,7 @@ void InitSoundEffectManager(int num)
 	if (!initialized)
 	{
 		bool res = LoadSettingsSoundEffect();
+		
 		for (auto i : DefineSE())
 		{
 			container[i].clip = LoadSound(&soundFileName[static_cast<unsigned int>(i)][0]);
@@ -187,7 +188,7 @@ void DrawDebugWindowSoundEffect(void)
 
 	for (auto i : DefineSE())
 	{
-		DebugSliderFloat(defSEname.at(i), &container[i].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
+		DebugSliderFloat(&defSEname.at(i), &container[i].volume, SOUND_VOLUME_MIN, SOUND_VOLUME_MAX);
 	}
 
 	if (DebugButton("Save Settings"))
@@ -205,7 +206,7 @@ void DrawDebugWindowSoundEffect(void)
 
 	for (auto i : DefineSE())
 	{
-		if (DebugButton(defSEname.at(i))) { PlaySE(i); }
+		if (DebugButton(&defSEname.at(i))) { PlaySE(i); }
 	}
 
 	EndDebugWindow("PlaySound");

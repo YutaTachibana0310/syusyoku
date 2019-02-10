@@ -9,6 +9,8 @@
 
 #include "main.h"
 
+#include <string>
+
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/
@@ -38,7 +40,9 @@ void BeginDebugWindow(const char *label);
 void EndDebugWindow(const char* label);
 void DebugText(const char *str, ...);
 bool DebugButton(const char *label);
+bool DebugButton(const std::string *label);
 bool DebugSliderFloat(const char *label, float *adr, float min, float max);
+bool DebugSliderFloat(const std::string *label, float *adr, float min, float max);
 void DebugColorEditor(const char *label, float array[4]);
 void DebugNewLine(void);
 void DebugSameLine(void);
