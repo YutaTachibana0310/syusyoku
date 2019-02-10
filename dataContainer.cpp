@@ -18,7 +18,7 @@
 #define DATACONTAINER_PlAYERHP_INIT			(100.0f)	//HP初期値
 #define DATACONTAINER_SAVEDATA_PATH			"data/SETTINGS/data.ini"	//ハイスコアデータのファイルパス	
 #define DATACONTAINER_MAGNICOUNT_DURATION	(120)
-#define DATACONTAINER_SCOREMAGNI_MAX		(16.0f)
+#define DATACONTAINER_SCOREMAGNI_MAX		(15.0f)
 
 /**************************************
 構造体定義
@@ -48,7 +48,7 @@ static const int PowerUpBorder[DATACONTAINER_POWEUP_MAX] = {
 
 //各ロックオンレベルでの最大ロックオン数
 static const int LockonMax[DATACONTAINER_LOCKLEVEL_MAX] = {
-	18, 26, 34, 42, 50, 58, 66
+	18, 22, 26, 30, 34, 38, 42
 };
 
 //プレイヤーHP
@@ -299,8 +299,11 @@ void SetScoreMagni(int lockonNum)
 	//現在の最大ロック数に対して割合算出
 	float per = (float)lockonNum / (float)LockonMax[lockLevel];
 
-	//割合を0から16の間に線形補間
+	//割合を0からmaxの間に線形補間
 	scoreMagni = per * DATACONTAINER_SCOREMAGNI_MAX;
+
+	//最低値の1を加算
+	scoreMagni += 1.0f;
 
 	//カウンタセット
 	cntFrameMagni = 0;

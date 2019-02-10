@@ -56,39 +56,6 @@ typedef struct
 グローバル変数
 ***************************************/
 //キューブオブジェクトの単位頂点
-//static CUBE_VTX vtx[CUBEOBJECT_VTX_NUM] = {
-//	//上
-//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f },
-//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f },
-//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-//	//前
-//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f },
-//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f },
-//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f },
-//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f },
-//	//下
-//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f },
-//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f },
-//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f },
-//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f },
-//	//後ろ
-//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f },
-//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f },
-//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
-//	//左
-//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f },
-//	{ -CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f },
-//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f },
-//	{ -CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f },
-//	//右
-//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-//	{ CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f },
-//	{ CUBEOBJECT_SIZE,-CUBEOBJECT_SIZE, CUBEOBJECT_SIZE, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
-//};
-
 static CUBE_VTX vtx[24] = {
 	{ 0.0f, 2 * CUBEOBJECT_SIZE,0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f} ,
 	{ CUBEOBJECT_SIZE, 0.0f, -CUBEOBJECT_SIZE, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f},
@@ -152,6 +119,7 @@ void InitCubeObject(int num)
 {
 	static bool initialized = false;
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
+	cntCube = 0;
 
 	//キューブ生成範囲
 	const float PosRange = 150.0f;
@@ -219,18 +187,6 @@ void InitCubeObject(int num)
 			D3DDECL_END()
 		};
 		pDevice->CreateVertexDeclaration(declareElems, &declare);
-
-		//インデックスバッファ作成
-		/*WORD index[6 * CUBEOBJECT_FIELD_NUM];
-		for (int i = 0; i < 6; i++)
-		{
-			index[i * 6] = i * NUM_VERTEX;
-			index[i * 6 + 1] = i * NUM_VERTEX + 1;
-			index[i * 6 + 2] = i * NUM_VERTEX + 2;
-			index[i * 6 + 3] = i * NUM_VERTEX + 2;
-			index[i * 6 + 4] = i * NUM_VERTEX + 1;
-			index[i * 6 + 5] = i * NUM_VERTEX + 3;
-		}*/
 
 		WORD index[24];
 		for (int i = 0; i < 24; i++)
@@ -382,6 +338,10 @@ void DrawCubeObject(void)
 		DrawBoundingCube(&ptr->collider);
 	}
 #endif
+
+	BeginDebugWindow("Cube");
+	DebugText("cubeCnt : %d", cntCube);
+	EndDebugWindow("Cube");
 
 }
 

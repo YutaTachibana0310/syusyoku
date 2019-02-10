@@ -21,9 +21,7 @@
 #define BATTLE_BONUS_SPEED				(35.0f)				//ボーナスタイムのキューブスピード
 #define BATTLE_BONUS_EMMITTPOS_MAX		(6)
 #define BATTLE_BONUS_SWITCH_TIMING		(150)
-
-#define BATTLE_BONUS_EMMITT_X			(50.0)
-#define BATTLE_BONUS_EMMITT_Y			(35.0)
+#define BATTLE_BONUS_EMMITT_NUM			(11)
 
 /**************************************
 構造体定義
@@ -32,16 +30,6 @@
 /**************************************
 グローバル変数
 ***************************************/
-static const D3DXVECTOR3 EmmittPos[BATTLE_BONUS_EMMITTPOS_MAX] = {
-	D3DXVECTOR3(-BATTLE_BONUS_EMMITT_X, BATTLE_BONUS_EMMITT_Y, 0.0f),
-	D3DXVECTOR3(0.0f, BATTLE_BONUS_EMMITT_Y, 0.0f),
-	D3DXVECTOR3(BATTLE_BONUS_EMMITT_X, BATTLE_BONUS_EMMITT_Y, 0.0f),
-	D3DXVECTOR3(-BATTLE_BONUS_EMMITT_X, -BATTLE_BONUS_EMMITT_Y, 0.0f),
-	D3DXVECTOR3(0.0f, -BATTLE_BONUS_EMMITT_Y, 0.0f),
-	D3DXVECTOR3(BATTLE_BONUS_EMMITT_X, -BATTLE_BONUS_EMMITT_Y, 0.0f)
-};
-
-static int posIndex;
 
 /**************************************
 プロトタイプ宣言
@@ -64,10 +52,6 @@ void OnEnterBattleBonusTime(BATTLECONTROLLER *controller)
 		FadeInBGM(BGM_BONUSTIME, BATTLEBONUS_BGM_FADE_DURATION);
 		FadeOutBGM(BGM_BATTLESCENE, BATTLEBONUS_BGM_FADE_DURATION);
 	}
-	//位置表示
-	//posIndex = RandomRange(0, BATTLE_BONUS_EMMITTPOS_MAX);
-	//SetStateBonusPositionTelop(true);
-	//SetPositionBonusPositionTelop(EmmittPos[posIndex]);
 }
 
 /**************************************
@@ -82,11 +66,11 @@ void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 	//ボーナスタイム中にキューブを放出する期間
 	if (elapsedFrame < BATTLE_BONUS_DURATION)
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < BATTLE_BONUS_EMMITT_NUM; i++)
 		{
 			D3DXVECTOR3 emmittPos;
-			emmittPos.x = /*EmmittPos[posIndex].x +*/ RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
-			emmittPos.y = /*EmmittPos[posIndex].y +*/ RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.x = RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
+			emmittPos.y = RandomRangef(-BATTLE_BONUS_EMMITT_RANGE, BATTLE_BONUS_EMMITT_RANGE);
 			emmittPos.z = BATTLE_BONUS_POS_Z;
 
 			EmmittCubeObject(1, &emmittPos, BATTLE_BONUS_SPEED);
@@ -104,11 +88,4 @@ void OnUpdateBattleBonusTime(BATTLECONTROLLER *controller)
 		ChangeStateBattleController(BattleNormalTime);
 		return;
 	}
-
-	//インターバル判定
-	//if (elapsedFrame % BATTLE_BONUS_SWITCH_TIMING == 0 && elapsedFrame + BATTLE_BONUS_SWITCH_TIMING < BATTLE_BONUS_DURATION + BATTLE_BONUS_WAIT)
-	//{
-	//	ChangeStateBattleController(BattleBonusIntebal);
-	//	return;
-	//}
 }
