@@ -235,6 +235,7 @@
     <ClCompile Include="nameEntryScene.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
+    <ClCompile Include="pauseController.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="playerBullet.cpp" />
     <ClCompile Include="playerBulletTrail.cpp" />
@@ -367,6 +368,7 @@
     <ClInclude Include="nameEntryRanking.h" />
     <ClInclude Include="nameEntryScene.h" />
     <ClInclude Include="numGUI.h" />
+    <ClInclude Include="pauseController.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerBulletTrail.h" />
     <ClInclude Include="playerMissile.h" />

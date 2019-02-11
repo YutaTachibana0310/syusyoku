@@ -660,6 +660,9 @@
     <ClCompile Include="battleChangeViewMode.cpp">
       <Filter>ソース ファイル\Controller\States</Filter>
     </ClCompile>
+    <ClCompile Include="pauseController.cpp">
+      <Filter>ソース ファイル\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -1024,6 +1027,9 @@
     </ClInclude>
     <ClInclude Include="cautionTelop.h">
       <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="pauseController.h">
+      <Filter>ヘッダー ファイル\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
