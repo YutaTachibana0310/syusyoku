@@ -30,6 +30,7 @@ static int cntFrame;
 void OnEnterBattleWaitBonusTimeBegin(BATTLECONTROLLER *controller)
 {
 	cntFrame = 0;
+	SetBonusCube();
 }
 
 /**************************************

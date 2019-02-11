@@ -154,3 +154,61 @@ bool IsStageEnd(void)
 }
 	return res;
 }
+
+/**************************************
+ボーナスタイムプレゼン用のデータ読み込み
+***************************************/
+void LoadBonusPresenData(void)
+{
+	CONTAINER_STAGEDATA *entity = &container[0];
+
+	//既にデータが読み込まれていたら初期化
+	if (entity->head != NULL)
+	{
+		free(entity->head);
+		ZeroMemory(entity->head, sizeof(STAGE_DATA) * entity->dataMax);
+	}
+
+	FILE *fp = NULL;
+	//ファイル読み込み
+	fp = fopen("data/STAGE/StageDataBonus.dat", "r");
+	if (fp == NULL)
+		return;
+
+	//メモリ確保
+	entity->dataMax = 0;
+	int loadRes = fscanf(fp, "%d", &entity->dataMax);
+
+	if (loadRes == EOF)
+		return;
+
+	entity->head = (STAGE_DATA*)malloc(sizeof(STAGE_DATA) * entity->dataMax);
+	ZeroMemory(entity->head, sizeof(STAGE_DATA) * entity->dataMax);
+
+	//データ読み込み
+	STAGE_DATA *ptr = entity->head;
+	int sumEmmittFrame = 0;
+	for (int i = 0; i < entity->dataMax; i++, ptr++)
+	{
+		fscanf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
+			&ptr->emmittFrame,
+			&ptr->type,
+			&ptr->initPos.x,
+			&ptr->initPos.y,
+			&ptr->initPos.z,
+			&ptr->targetPos.x,
+			&ptr->targetPos.y,
+			&ptr->targetPos.z,
+			&ptr->controller1.x,
+			&ptr->controller1.y,
+			&ptr->controller1.z,
+			&ptr->controller2.x,
+			&ptr->controller2.y,
+			&ptr->controller2.z);
+
+		ptr->emmittFrame += sumEmmittFrame;
+		sumEmmittFrame = ptr->emmittFrame;
+	}
+
+	fclose(fp);
+}

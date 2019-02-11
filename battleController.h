@@ -73,4 +73,5 @@ void ChangeStateBattleController(int next);
 bool CheckEscapedBonusCube(void);
 void ChangeViewModeBattleController(int next);
 int GetBattleViewMode(void);
+void SetBonusTimePresen(void);
 #endif

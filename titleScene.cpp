@@ -16,6 +16,7 @@
 #include "sceneFade.h"
 #include "bgmManager.h"
 #include "soundEffectManager.h"
+#include "battleController.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -144,6 +145,16 @@ void UpdateTitleScene(void)
 		state = TITLESCENE_STATEMAX;
 		ChangeStatePlayerModel(PlayerTitleLaunch);
 		SetSceneFade(TutorialScene);
+		PlaySE(DefineSE::DECISION);
+		FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
+	}
+
+	if (GetKeyboardTrigger(DIK_B))
+	{
+		SetBonusTimePresen();
+		state = TITLESCENE_STATEMAX;
+		ChangeStatePlayerModel(PlayerTitleLaunch);
+		SetSceneFade(BattleScene);
 		PlaySE(DefineSE::DECISION);
 		FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 	}

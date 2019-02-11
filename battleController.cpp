@@ -76,10 +76,8 @@ void OnUpdateBattleChangeView(BATTLECONTROLLER *controller);
 /**************************************
 グローバル変数
 ***************************************/
-//static bool isBonusTime;
-//static bool countState;
-
 static BATTLECONTROLLER controller;
+static bool flgBonusPresen = false;
 
 //入場処理テーブル
 static funcBattleController Enter[BattleStateMax] = {
@@ -153,12 +151,18 @@ void InitBattleController(int num)
 		controller.lastEmittFrame[i] = 0xffffffff;
 	}
 
-	controller.currentState = BattleNormalTime;
-	controller.prevState = BattleNormalTime;
+	int requestState = (flgBonusPresen) ? BattleBonusTime : BattleNormalTime;
+	controller.currentState = (flgBonusPresen) ? BattleWaitBonusTimeBegin : BattleNormalTime;
 	controller.nextViewMode = BattleViewTop;
 
-	ChangeStateBattleController(controller.currentState);
+	ChangeStateBattleController(requestState);
 	ChangeViewModeBattleController(BattleViewFPS);
+
+	if (flgBonusPresen)
+	{
+		LoadBonusPresenData();
+		flgBonusPresen = false;
+	}
 
 }
 
@@ -275,4 +279,12 @@ void ChangeViewModeBattleController(int next)
 int GetBattleViewMode(void)
 {
 	return controller.viewMode;
+}
+
+/**************************************
+開幕ボーナスタイムスタート機能
+***************************************/
+void SetBonusTimePresen(void)
+{
+	flgBonusPresen = true;
 }

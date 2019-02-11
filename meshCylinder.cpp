@@ -110,17 +110,7 @@ void UpdateMeshCylinder(void)
 		{
 			offset[i] -= 1.0f;
 		}
-	}
-
-	if (GetKeyboardPress(DIK_N))
-	{
-		speedMagni += 0.5f;
-	}
-	if (GetKeyboardPress(DIK_B))
-	{
-		speedMagni -= 0.5f;
-	}
-	
+	}	
 }
 
 //*****************************************************************************
