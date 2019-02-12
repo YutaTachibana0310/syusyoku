@@ -30,6 +30,7 @@
 ***************************************/
 void EnterPlayerModelTransition(PLAYERMODEL *player)
 {
+	player->rot = player->destRot = D3DXVECTOR3(0, D3DXToRadian(180.0f), 0);
 	player->cntFrame = 0;
 	GetTargetSiteAdr(player->id)->active = false;
 	GetLockonGUIAdr(player->id)->active = false;
