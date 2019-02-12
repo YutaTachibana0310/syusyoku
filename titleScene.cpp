@@ -17,6 +17,8 @@
 #include "bgmManager.h"
 #include "soundEffectManager.h"
 #include "battleController.h"
+#include "baseGUI.h"
+#include "titleTelop.h"
 
 /*****************************************************************************
 マクロ定義
@@ -31,11 +33,8 @@
 /*****************************************************************************
 プロトタイプ宣言
 *****************************************************************************/
-HRESULT MakeVertexTitleScene(void);			//頂点作成関数
-
-void SetTextureTitleLogo(void);				// テクスチャ座標の計算処理
-void SetVertexTitleLogo(void);				// 頂点の計算処理
-void SetTitleTextureAlpha(float alpha);		//アルファ設定処理
+void StartGame(void);
+void StartGameFromBonus(void);
 
 /*****************************************************************************
 構造体定義
@@ -46,16 +45,21 @@ enum TITLESCENE_STATE
 	TITLESCENE_INPUTWAIT,
 	TITLESCENE_STATEMAX
 };
+
+typedef void(*FuncTitleMenu)(void);
+
 /*****************************************************************************
 グローバル変数
 *****************************************************************************/
-static LPDIRECT3DTEXTURE9 logoTex, bgTex, animTex;
-static VERTEX_2D vertexWk[NUM_VERTEX];					//頂点情報格納ワーク
-static float logoRadius;
-static float logoAngle;
-static D3DXVECTOR3 logoPos;
+static BaseGUI *titleLogo;
 static int cntFrame;
 static TITLESCENE_STATE state;
+
+//タイトルメニュー処理テーブル
+static FuncTitleMenu TitleMenu[2] = {
+	StartGame,
+	StartGameFromBonus
+};
 
 /******************************************s************************************
 初期化処理
@@ -65,18 +69,11 @@ HRESULT InitTitleScene(int num)
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
 	static bool initialized = false;
 
-	//ロゴの初期設定
-	logoPos = TITLESCENE_LOGOTEX_POS;
-	logoAngle = atan2f(TITLESCENE_LOGOTEX_SIZE_Y, TITLESCENE_LOGOTEX_SIZE_X);
-	logoRadius = D3DXVec2Length(&D3DXVECTOR2(TITLESCENE_LOGOTEX_SIZE_X, TITLESCENE_LOGOTEX_SIZE_Y));
-
-	// 頂点情報の作成
-	MakeVertexTitleScene();
-
 	if (!initialized)
 	{
 		// テクスチャの読み込み
-		logoTex = CreateTextureFromFile((LPSTR)TITLESCENE_LOGOTEX_NAME, pDevice);
+		titleLogo = new BaseGUI((LPSTR)TITLESCENE_LOGOTEX_NAME, TITLESCENE_LOGOTEX_SIZE_X, TITLESCENE_LOGOTEX_SIZE_Y);
+		titleLogo->SetVertex(TITLESCENE_LOGOTEX_POS);
 		initialized = true;
 	}
 
@@ -89,7 +86,7 @@ HRESULT InitTitleScene(int num)
 	{
 		//SetBackColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		PlayBGM(BGM_TITLESCENE);
-		SetTitleTextureAlpha(0.0f);
+		titleLogo->SetAlpha(0.0f);
 
 		state = TITLESCENE_FADEIN;
 		cntFrame = 0;
@@ -108,9 +105,7 @@ void UninitTitleScene(int num)
 {
 	if (num == 0)
 	{
-		SAFE_RELEASE(logoTex);
-		SAFE_RELEASE(bgTex);
-		SAFE_RELEASE(animTex);
+		delete titleLogo;
 	}
 	else
 	{
@@ -132,7 +127,7 @@ void UpdateTitleScene(void)
 		cntFrame++;
 		float t = (float)cntFrame / TITLESCENE_FADEIN_END;
 
-		SetTitleTextureAlpha(EaseLinear(t, 0.0f, 1.0f));
+		titleLogo->SetAlpha(EaseLinear(t, 0.0f, 1.0f));
 		if (cntFrame == TITLESCENE_FADEIN_END)
 		{
 			state = TITLESCENE_INPUTWAIT;
@@ -141,22 +136,8 @@ void UpdateTitleScene(void)
 
 	if (GetAttackButtonTrigger() && state == TITLESCENE_INPUTWAIT)
 	{
-		//SetScene(BattleScene);
-		state = TITLESCENE_STATEMAX;
-		ChangeStatePlayerModel(PlayerTitleLaunch);
-		SetSceneFade(TutorialScene);
-		PlaySE(DefineSE::DECISION);
-		FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
-	}
-
-	if (GetKeyboardTrigger(DIK_B))
-	{
-		SetBonusTimePresen();
-		state = TITLESCENE_STATEMAX;
-		ChangeStatePlayerModel(PlayerTitleLaunch);
-		SetSceneFade(BattleScene);
-		PlaySE(DefineSE::DECISION);
-		FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
+		int selected = GetTitleMenuIndex();
+		TitleMenu[selected]();
 	}
 
 	UpdateMeshCylinder();
@@ -183,75 +164,31 @@ void DrawTitleScene(void)
 ******************************************************************************/
 void DrawTitleLogo(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	// 頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
-
 	//ロゴ描画
-	pDevice->SetTexture(0, logoTex);
-	SetVertexTitleLogo();
-	SetTextureTitleLogo();
-	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, NUM_POLYGON, vertexWk, sizeof(VERTEX_2D));
+	titleLogo->Draw();
 }
 
 /******************************************************************************
-頂点の作成
+ゲームスタート処理
 ******************************************************************************/
-HRESULT MakeVertexTitleScene(void)
+void StartGame(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = GetDevice();
-
-	// rhwの設定
-	vertexWk[0].rhw =
-		vertexWk[1].rhw =
-		vertexWk[2].rhw =
-		vertexWk[3].rhw = 1.0f;
-
-	// 反射光の設定
-	vertexWk[0].diffuse = D3DCOLOR_RGBA(255, 255, 255, 255);
-	vertexWk[1].diffuse = D3DCOLOR_RGBA(255, 255, 255, 255);
-	vertexWk[2].diffuse = D3DCOLOR_RGBA(255, 255, 255, 255);
-	vertexWk[3].diffuse = D3DCOLOR_RGBA(255, 255, 255, 255);
-
-	return S_OK;
+	state = TITLESCENE_STATEMAX;
+	ChangeStatePlayerModel(PlayerTitleLaunch);
+	SetSceneFade(TutorialScene);
+	PlaySE(DefineSE::DECISION);
+	FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 }
 
 /******************************************************************************
-テクスチャ座標の設定
+ボーナスタイムからのスタート処理
 ******************************************************************************/
-void SetTextureTitleLogo(void)
+void StartGameFromBonus(void)
 {
-	// テクスチャ座標の設定
-	vertexWk[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	vertexWk[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	vertexWk[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	vertexWk[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-}
-
-/******************************************************************************
-頂点座標の設定
-******************************************************************************/
-void SetVertexTitleLogo(void)
-{
-	// 頂点座標の設定
-	vertexWk[0].vtx.x = logoPos.x - cosf(logoAngle) * logoRadius;
-	vertexWk[0].vtx.y = logoPos.y - sinf(logoAngle) * logoRadius;
-	vertexWk[1].vtx.x = logoPos.x + cosf(logoAngle) * logoRadius;
-	vertexWk[1].vtx.y = logoPos.y - sinf(logoAngle) * logoRadius;
-	vertexWk[2].vtx.x = logoPos.x - cosf(logoAngle) * logoRadius;
-	vertexWk[2].vtx.y = logoPos.y + sinf(logoAngle) * logoRadius;
-	vertexWk[3].vtx.x = logoPos.x + cosf(logoAngle) * logoRadius;
-	vertexWk[3].vtx.y = logoPos.y + sinf(logoAngle) * logoRadius;
-}
-
-/******************************************************************************
-テクスチャアルファ設定
-******************************************************************************/
-void SetTitleTextureAlpha(float alpha)
-{
-	vertexWk[0].diffuse =
-		vertexWk[1].diffuse =
-		vertexWk[2].diffuse =
-		vertexWk[3].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, alpha);
+	SetBonusTimePresen();
+	state = TITLESCENE_STATEMAX;
+	ChangeStatePlayerModel(PlayerTitleLaunch);
+	SetSceneFade(BattleScene);
+	PlaySE(DefineSE::DECISION);
+	FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 }

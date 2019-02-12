@@ -24,5 +24,5 @@ void InitTitleTelop(int num);
 void UninitTitleTelop(int num);
 void UpdateTitleTelop(void);
 void DrawTitleTelop(void);
-
+int GetTitleMenuIndex(void);
 #endif
