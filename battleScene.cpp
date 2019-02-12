@@ -120,6 +120,8 @@ void UninitBattleScene(int num)
 		FadeOutBGM(BGM_BATTLESCENE, 30);
 	}
 
+	SetBonusPresenFlag(false);
+
 }
 #include "input.h"
 /******************************************************************************

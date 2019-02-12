@@ -26,6 +26,7 @@ typedef struct {
 グローバル変数
 ***************************************/
 static CONTAINER_STAGEDATA container[STAGEDATA_MODEMAX];
+static CONTAINER_STAGEDATA bonusData;
 
 static const char* FilePath[STAGEDATA_MODEMAX] = {
 	"data/STAGE/StageDataFPS.dat",
@@ -33,10 +34,13 @@ static const char* FilePath[STAGEDATA_MODEMAX] = {
 	"data/STAGE/StageDataSide.dat"
 };
 
+static bool flgBonusPresen;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
 bool LoadStageData(int i);
+void LoadBonusPresenData(void);
 
 /**************************************
 初期化処理
@@ -51,6 +55,7 @@ void InitStageData(int num)
 	{
 		for(int i = 0; i < STAGEDATA_MODEMAX; i++)
 			LoadStageData(i);
+		LoadBonusPresenData();
 		initialized = true;
 	}
 }
@@ -73,7 +78,17 @@ void UninitStageData(int num)
 int UpdateStageData(STAGE_DATA **out, DWORD currentFrame, int mode)
 {
 	int cntData = 0;
-	CONTAINER_STAGEDATA *ptr = &container[mode];
+	CONTAINER_STAGEDATA *ptr = NULL;
+	
+	if (mode == 0 && flgBonusPresen)
+	{
+		ptr = &bonusData;
+	}
+	else
+	{
+		ptr = &container[mode];
+	}
+
 	while (ptr->current < ptr->dataMax && ptr->head[ptr->current].emmittFrame == currentFrame)
 	{
 		if (cntData == 0)
@@ -160,14 +175,7 @@ bool IsStageEnd(void)
 ***************************************/
 void LoadBonusPresenData(void)
 {
-	CONTAINER_STAGEDATA *entity = &container[0];
-
-	//既にデータが読み込まれていたら初期化
-	if (entity->head != NULL)
-	{
-		free(entity->head);
-		ZeroMemory(entity->head, sizeof(STAGE_DATA) * entity->dataMax);
-	}
+	CONTAINER_STAGEDATA *entity = &bonusData;
 
 	FILE *fp = NULL;
 	//ファイル読み込み
@@ -211,4 +219,12 @@ void LoadBonusPresenData(void)
 	}
 
 	fclose(fp);
+}
+
+/**************************************
+ボーナスタイムプレゼンセット
+***************************************/
+void SetBonusPresenFlag(bool state)
+{
+	flgBonusPresen = state;
 }

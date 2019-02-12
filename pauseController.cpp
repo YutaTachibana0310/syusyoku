@@ -95,21 +95,26 @@ void UninitPauseController(int num)
 ***************************************/
 void UpdatePauseController(void)
 {
-	if (GetKeyboardTrigger(DIK_Q))
-	{
-		flgPause = !flgPause;
+	//バトルシーン以外はポーズメニューを開かない
+	if (GetCurrentScene() != BattleScene)
 		return;
-	}
 
+	//ポーズボタン入力判定
+	if (GetPauseButtonTrigger())
+		flgPause = !flgPause;
+
+	//ポーズ状態でなければ以下は実行しない
 	if (!flgPause)
 		return;
 
+	//カーソルアニメーション
 	cntFrame++;
 	if (cntFrame % PAUSEMENU_ANIMTIME == 0)
 	{
 		animIndex = WrapAround(0, PAUSEMENU_ANIMPATTERN, animIndex + 1);
 	}
 
+	//カーソルセット
 	cursor->SetTexture(PAUSEMENU_TEX_DIV_X, PAUSEMENU_TEX_DIV_Y, animIndex);
 	cursor->SetVertex(cursorPos[menuIndex]);
 

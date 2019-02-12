@@ -188,6 +188,12 @@ void UninitCubeParticle(int num)
 			SAFE_RELEASE(texture[i]);
 		}
 	}
+
+	for (int i = 0; i < CUBEPARTICLE_NUM_MAX; i++)
+	{
+		scale[i] = 0.0f;
+		cube[i].active = false;
+	}
 }
 
 /**************************************

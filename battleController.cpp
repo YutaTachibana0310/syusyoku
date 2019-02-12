@@ -160,7 +160,7 @@ void InitBattleController(int num)
 
 	if (flgBonusPresen)
 	{
-		LoadBonusPresenData();
+		SetBonusPresenFlag(true);
 		flgBonusPresen = false;
 	}
 
@@ -172,6 +172,7 @@ void InitBattleController(int num)
 void UninitBattleController(int num)
 {
 	UninitStageData(num);
+	controller.currentState = BattleNormalTime;
 }
 
 #include "input.h"

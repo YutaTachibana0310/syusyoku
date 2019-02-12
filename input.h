@@ -44,6 +44,7 @@ int GetVerticalInputRepeat(void);
 bool GetAttackButtonTrigger(void);
 bool GetAttackButtonPress(void);
 bool GetAttackButtonRelease(void);
+bool GetPauseButtonTrigger(void);
 
 bool GetKeyboardPress(int nKey);
 bool GetKeyboardTrigger(int nKey);
