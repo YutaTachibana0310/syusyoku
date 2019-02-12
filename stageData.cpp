@@ -26,6 +26,7 @@ typedef struct {
 グローバル変数
 ***************************************/
 static CONTAINER_STAGEDATA container[STAGEDATA_MODEMAX];
+static CONTAINER_STAGEDATA bonusData;
 
 static const char* FilePath[STAGEDATA_MODEMAX] = {
 	"data/STAGE/StageDataFPS.dat",
@@ -33,10 +34,13 @@ static const char* FilePath[STAGEDATA_MODEMAX] = {
 	"data/STAGE/StageDataSide.dat"
 };
 
+static bool flgBonusPresen;
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
 bool LoadStageData(int i);
+void LoadBonusPresenData(void);
 
 /**************************************
 初期化処理
@@ -51,6 +55,7 @@ void InitStageData(int num)
 	{
 		for(int i = 0; i < STAGEDATA_MODEMAX; i++)
 			LoadStageData(i);
+		LoadBonusPresenData();
 		initialized = true;
 	}
 }
@@ -73,7 +78,17 @@ void UninitStageData(int num)
 int UpdateStageData(STAGE_DATA **out, DWORD currentFrame, int mode)
 {
 	int cntData = 0;
-	CONTAINER_STAGEDATA *ptr = &container[mode];
+	CONTAINER_STAGEDATA *ptr = NULL;
+	
+	if (mode == 0 && flgBonusPresen)
+	{
+		ptr = &bonusData;
+	}
+	else
+	{
+		ptr = &container[mode];
+	}
+
 	while (ptr->current < ptr->dataMax && ptr->head[ptr->current].emmittFrame == currentFrame)
 	{
 		if (cntData == 0)
@@ -153,4 +168,63 @@ bool IsStageEnd(void)
 		}
 }
 	return res;
+}
+
+/**************************************
+ボーナスタイムプレゼン用のデータ読み込み
+***************************************/
+void LoadBonusPresenData(void)
+{
+	CONTAINER_STAGEDATA *entity = &bonusData;
+
+	FILE *fp = NULL;
+	//ファイル読み込み
+	fp = fopen("data/STAGE/StageDataBonus.dat", "r");
+	if (fp == NULL)
+		return;
+
+	//メモリ確保
+	entity->dataMax = 0;
+	int loadRes = fscanf(fp, "%d", &entity->dataMax);
+
+	if (loadRes == EOF)
+		return;
+
+	entity->head = (STAGE_DATA*)malloc(sizeof(STAGE_DATA) * entity->dataMax);
+	ZeroMemory(entity->head, sizeof(STAGE_DATA) * entity->dataMax);
+
+	//データ読み込み
+	STAGE_DATA *ptr = entity->head;
+	int sumEmmittFrame = 0;
+	for (int i = 0; i < entity->dataMax; i++, ptr++)
+	{
+		fscanf(fp, "%d,%d,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
+			&ptr->emmittFrame,
+			&ptr->type,
+			&ptr->initPos.x,
+			&ptr->initPos.y,
+			&ptr->initPos.z,
+			&ptr->targetPos.x,
+			&ptr->targetPos.y,
+			&ptr->targetPos.z,
+			&ptr->controller1.x,
+			&ptr->controller1.y,
+			&ptr->controller1.z,
+			&ptr->controller2.x,
+			&ptr->controller2.y,
+			&ptr->controller2.z);
+
+		ptr->emmittFrame += sumEmmittFrame;
+		sumEmmittFrame = ptr->emmittFrame;
+	}
+
+	fclose(fp);
+}
+
+/**************************************
+ボーナスタイムプレゼンセット
+***************************************/
+void SetBonusPresenFlag(bool state)
+{
+	flgBonusPresen = state;
 }

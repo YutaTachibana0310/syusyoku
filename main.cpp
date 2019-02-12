@@ -24,12 +24,13 @@
 #include "postEffectManager.h"
 #include "screenBG.h"
 #include "GUIManager.h"
+#include "pauseController.h"
 
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
 #define CLASS_NAME		"AppClass"		// ウインドウのクラス名
-#define WINDOW_NAME		"サイバライド"		// ウインドウのキャプション名
+#define WINDOW_NAME		"CYBERIDE -サイバライド-"		// ウインドウのキャプション名
 
 //*****************************************************************************
 // 構造体定義
@@ -310,6 +311,8 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);	// 最初のアルファ引数
 	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);	// ２番目のアルファ引数
 
+	g_pD3DDevice->SetRenderState(D3DRS_NORMALIZENORMALS, true);
+
 	D3DCAPS9 caps;
 	ZeroMemory(&caps, sizeof(D3DCAPS9));
 	g_pD3DDevice->GetDeviceCaps(&caps);
@@ -379,10 +382,13 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitPostEffectManager(0);
 
 	//GUIマネージャ初期化
-	InitGUIManager(0);
+	//InitGUIManager(0);
 
 	//シーンマネージャ初期化
 	InitSceneManager(&currentScene);
+
+	//ポーズコントローラ初期化
+	InitPauseController(0);
 
 	//デバッグウィンドウ初期化
 #ifdef USE_DEBUGWINDOW
@@ -457,6 +463,9 @@ void Uninit(void)
 	//GUIマネージャ終了処理
 	UninitGUIManager(0);
 
+	//ポーズコントローラ終了処理
+	UninitPauseController(0);
+
 #ifdef USE_DEBUGWINDOW
 	UninitDebugWindow(0);
 #endif
@@ -467,19 +476,17 @@ void Uninit(void)
 //=============================================================================
 void Update(void)
 {
-	if (GetKeyboardTrigger(DIK_P))
-	{
-		flgPause = !flgPause;
-	}
-
 	// 入力更新
 	UpdateInput();
+
+	//ポーズコントローラ更新
+	UpdatePauseController();
 
 	UpdateDebugWindow();
 	UpdateBgmManager();
 	UpdateSoundEffectManager();
 
-	if (flgPause)
+	if (GetPauseState())
 	{
 		return;
 	}
@@ -511,6 +518,8 @@ void Draw(void)
 		DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface);
 
 		DrawGUIManager();
+
+		DrawPauseController();
 
 		DrawDebugWindow();
 

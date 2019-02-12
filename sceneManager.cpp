@@ -14,6 +14,7 @@
 #include "gameoverScene.h"
 #include "stageClearScene.h"
 #include "nameEntryScene.h"
+#include "GUIManager.h"
 
 /**************************************
 マクロ定義
@@ -30,6 +31,7 @@ typedef void(*SceneUninit)(int num);	//シーンの終了処理の関数ポインタ定義
 グローバル変数
 ***************************************/
 static int* currentSceneId;
+static int nextScene;
 
 //各シーン初期化処理
 static SceneInit Init[] =
@@ -149,8 +151,18 @@ void DrawSceneManager(void)
 ***************************************/
 void SetScene(DefineScene sceneId)
 {
+	nextScene = sceneId;
 	UninitScene(1);
 	UninitParticleManager(1);
 	*currentSceneId = sceneId;
+	InitGUIManager(1);
 	InitScene(1);
+}
+
+/**************************************
+ネクストシーン取得処理
+***************************************/
+int GetNextScene(void)
+{
+	return nextScene;
 }

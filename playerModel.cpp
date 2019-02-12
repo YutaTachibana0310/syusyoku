@@ -154,7 +154,7 @@ void InitPlayerModel(int num)
 		ptr->pos = D3DXVECTOR3(0, 0, 0);
 		
 		ptr->rot = ptr->destRot = D3DXVECTOR3(0, D3DXToRadian(180.0f), 0);
-		ptr->scale = D3DXVECTOR3(10.0f, 10.0f, 10.0f);
+		ptr->scale = D3DXVECTOR3(1.5f, 1.5f, 1.5f);
 
 		ptr->id = i;
 
@@ -262,7 +262,7 @@ void DrawPlayerModel(void)
 		D3DXMatrixRotationYawPitchRoll(&mtxRot, ptr->rot.y, ptr->rot.x, ptr->rot.z);
 		D3DXMatrixTranslation(&mtxTranslate, ptr->pos.x, ptr->pos.y, ptr->pos.z);
 
-		//D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
+		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxScale);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxRot);
 		D3DXMatrixMultiply(&mtxWorld, &mtxWorld, &mtxTranslate);
 

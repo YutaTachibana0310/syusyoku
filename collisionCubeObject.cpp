@@ -11,7 +11,7 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define CUBEOBJ_PLAYERBULLET_DAMAGE						(1.0f)
+#define CUBEOBJ_PLAYERBULLET_DAMAGE		(1.0f)
 #define USE_DIVIDESPACE
 /**************************************
 構造体定義
@@ -20,6 +20,7 @@
 /**************************************
 グローバル変数
 ***************************************/
+static bool useDivideSpace;
 
 /**************************************
 プロトタイプ宣言
@@ -33,34 +34,39 @@ void CheckCollisionAllCubeAndBullet(void);
 ***************************************/
 void CheckCollisionCubeObject(COLLISION_MANAGER *manager)
 {
-#ifdef USE_DIVIDESPACE
-	for (DWORD cntCell = 0; cntCell < manager->cellNum; cntCell++)
+	//四分木空間分割を使う場合
+	if (useDivideSpace)
 	{
-		//空間が作成されていない場合の判定
-		if (!manager->cellArray[OFT_PLAYERBULLET][cntCell])
-			continue;
-
-		//空間にオブジェクトが登録されていない場合の判定
-		if (manager->cellArray[OFT_PLAYERBULLET][cntCell]->latestObj == NULL)
-			continue;
-
-		//空間に登録されているバレット全てに対して判定
-		OBJECT_FOR_TREE *playerBulletOFT = manager->cellArray[OFT_PLAYERBULLET][cntCell]->latestObj;
-		for (; playerBulletOFT != NULL; playerBulletOFT = playerBulletOFT->next)
+		for (DWORD cntCell = 0; cntCell < manager->cellNum; cntCell++)
 		{
-			PLAYERBULLET *playerBullet = (PLAYERBULLET*)playerBulletOFT->object;
-			//キューブオブジェクトとの判定
+			//空間が作成されていない場合の判定
+			if (!manager->cellArray[OFT_PLAYERBULLET][cntCell])
+				continue;
+
+			//空間にオブジェクトが登録されていない場合の判定
+			if (manager->cellArray[OFT_PLAYERBULLET][cntCell]->latestObj == NULL)
+				continue;
+
+			//空間に登録されているバレット全てに対して判定
+			OBJECT_FOR_TREE *playerBulletOFT = manager->cellArray[OFT_PLAYERBULLET][cntCell]->latestObj;
+			for (; playerBulletOFT != NULL; playerBulletOFT = playerBulletOFT->next)
 			{
-				bool result;
-				result = CheckCollisionCubeObjLower(cntCell, playerBullet, false, manager);
-				if (result)
-					continue;
+				PLAYERBULLET *playerBullet = (PLAYERBULLET*)playerBulletOFT->object;
+				//キューブオブジェクトとの判定
+				{
+					bool result;
+					result = CheckCollisionCubeObjLower(cntCell, playerBullet, false, manager);
+					if (result)
+						continue;
+				}
 			}
 		}
 	}
-#else
-	CheckCollisionAllCubeAndBullet();
-#endif
+	//空間分割を使わない場合
+	else
+	{
+		CheckCollisionAllCubeAndBullet();
+	}
 }
 
 /**************************************
@@ -180,4 +186,12 @@ void CheckCollisionAllCubeAndBullet(void)
 			}
 		}
 	}
+}
+
+/*************************************
+空間分割の使用切り替え処理
+**************************************/
+void SetUseDivideSpace(bool state)
+{
+	useDivideSpace = state;
 }

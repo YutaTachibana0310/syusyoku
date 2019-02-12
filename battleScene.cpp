@@ -26,6 +26,7 @@
 #include "stageData.h"
 #include "hardCubeObject.h"
 #include "shadow.h"
+#include "sceneManager.h"
 
 #include "debugWindow.h"
 #include "DebugTimer.h"
@@ -76,6 +77,7 @@ HRESULT InitBattleScene(int num)
 	RegisterDebugTimer(BATTLESCENE_LABEL);
 	PlayBGM(BGM_BATTLESCENE);
 
+	SetUseDivideSpace(true);
 	
 	return S_OK;
 }
@@ -85,20 +87,42 @@ HRESULT InitBattleScene(int num)
 ******************************************************************************/
 void UninitBattleScene(int num)
 {
-	//NOTE:ゲームオーバーシーンで状態を使い回すのでマスク
+	int next = GetNextScene();
 
-	UninitBattleController(num);
-	//UninitCloud(num);
-	//UninitPlayerModel(num);
-	//UninitPlayerBullet(num);
-	//UninitTargetSite(num);
-	//UninitRockonSite(num);
-	//UninitMeshCylinder(num);
-	//UninitPlayerMissile(num);
-	//UninitPlayerMissileSmog(num);
-	//UninitPlayerBulletTrail(num);
-	//UninitEnemyManager(num);
-	FadeOutBGM(BGM_BATTLESCENE, 30);
+	//NOTE:ゲームオーバーシーンで状態を使い回すのでマスク
+	if (next == GamveoverScene || next == StageClearScene)
+	{
+		UninitBattleController(num);
+		//UninitCloud(num);
+		//UninitPlayerModel(num);
+		//UninitPlayerBullet(num);
+		//UninitTargetSite(num);
+		//UninitRockonSite(num);
+		//UninitMeshCylinder(num);
+		//UninitPlayerMissile(num);
+		//UninitPlayerMissileSmog(num);
+		//UninitPlayerBulletTrail(num);
+		//UninitEnemyManager(num);
+		FadeOutBGM(BGM_BATTLESCENE, 30);
+	}
+	else
+	{
+		UninitBattleController(num);
+		UninitCloud(num);
+		UninitPlayerModel(num);
+		UninitPlayerBullet(num);
+		UninitTargetSite(num);
+		UninitRockonSite(num);
+		UninitMeshCylinder(num);
+		UninitPlayerMissile(num);
+		UninitPlayerMissileSmog(num);
+		UninitPlayerBulletTrail(num);
+		UninitEnemyManager(num);
+		FadeOutBGM(BGM_BATTLESCENE, 30);
+	}
+
+	SetBonusPresenFlag(false);
+
 }
 #include "input.h"
 /******************************************************************************

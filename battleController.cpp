@@ -76,10 +76,8 @@ void OnUpdateBattleChangeView(BATTLECONTROLLER *controller);
 /**************************************
 グローバル変数
 ***************************************/
-//static bool isBonusTime;
-//static bool countState;
-
 static BATTLECONTROLLER controller;
+static bool flgBonusPresen = false;
 
 //入場処理テーブル
 static funcBattleController Enter[BattleStateMax] = {
@@ -153,12 +151,18 @@ void InitBattleController(int num)
 		controller.lastEmittFrame[i] = 0xffffffff;
 	}
 
-	controller.currentState = BattleNormalTime;
-	controller.prevState = BattleNormalTime;
+	int requestState = (flgBonusPresen) ? BattleBonusTime : BattleNormalTime;
+	controller.currentState = (flgBonusPresen) ? BattleWaitBonusTimeBegin : BattleNormalTime;
 	controller.nextViewMode = BattleViewTop;
 
-	ChangeStateBattleController(controller.currentState);
-	ChangeViewModeBattleController(BattleViewFPS);
+	ChangeStateBattleController(requestState);
+	ChangeViewModeBattleController(BattleViewSide);
+
+	if (flgBonusPresen)
+	{
+		SetBonusPresenFlag(true);
+		flgBonusPresen = false;
+	}
 
 }
 
@@ -168,14 +172,22 @@ void InitBattleController(int num)
 void UninitBattleController(int num)
 {
 	UninitStageData(num);
+	controller.currentState = BattleNormalTime;
 }
 
+#include "input.h"
 /**************************************
 更新処理
 ***************************************/
 void UpdateBattleController(void)
 {
 	Update[controller.currentState](&controller);
+
+	if (GetKeyboardTrigger(DIK_M))
+	{
+		int next = WrapAround(0, 3, controller.viewMode + 1);
+		ChangeViewModeBattleController(next);
+	}
 }
 
 /**************************************
@@ -275,4 +287,12 @@ void ChangeViewModeBattleController(int next)
 int GetBattleViewMode(void)
 {
 	return controller.viewMode;
+}
+
+/**************************************
+開幕ボーナスタイムスタート機能
+***************************************/
+void SetBonusTimePresen(void)
+{
+	flgBonusPresen = true;
 }

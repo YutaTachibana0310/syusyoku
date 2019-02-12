@@ -113,6 +113,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -138,6 +139,7 @@
     <ClCompile Include="baseGUI.cpp" />
     <ClCompile Include="battleBonusInterbal.cpp" />
     <ClCompile Include="battleChangeViewMode.cpp" />
+    <ClCompile Include="BattleSceneGUI.cpp" />
     <ClCompile Include="battleWaitBonusTimeBegin.cpp" />
     <ClCompile Include="battleBonusTime.cpp" />
     <ClCompile Include="battleCamera.cpp" />
@@ -192,6 +194,7 @@
     <ClCompile Include="fractal.cpp" />
     <ClCompile Include="fuzzyLogic.cpp" />
     <ClCompile Include="gameoverScene.cpp" />
+    <ClCompile Include="GameoverSceneGUI.cpp" />
     <ClCompile Include="gameoverTelop.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="hardCubeBezier.cpp" />
@@ -216,6 +219,7 @@
     <ClCompile Include="lockonLevelGUI.cpp" />
     <ClCompile Include="lockonNumGUI.cpp" />
     <ClCompile Include="logoScene.cpp" />
+    <ClCompile Include="LogoSceneGUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="memoryAllocater.cpp" />
     <ClCompile Include="meshCylinder.cpp" />
@@ -233,8 +237,10 @@
     <ClCompile Include="nameEntryInput.cpp" />
     <ClCompile Include="nameEntryRanking.cpp" />
     <ClCompile Include="nameEntryScene.cpp" />
+    <ClCompile Include="NameEntrySceneGUI.cpp" />
     <ClCompile Include="particleFramework.cpp" />
     <ClCompile Include="particleManager.cpp" />
+    <ClCompile Include="pauseController.cpp" />
     <ClCompile Include="perlinNoise.cpp" />
     <ClCompile Include="playerBullet.cpp" />
     <ClCompile Include="playerBulletTrail.cpp" />
@@ -279,10 +285,12 @@
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
     <ClCompile Include="stageClearScene.cpp" />
+    <ClCompile Include="StageclearSceneGUI.cpp" />
     <ClCompile Include="stageClearTelop.cpp" />
     <ClCompile Include="stageData.cpp" />
     <ClCompile Include="targetSite.cpp" />
     <ClCompile Include="titleScene.cpp" />
+    <ClCompile Include="TitleSceneGUI.cpp" />
     <ClCompile Include="titleTelop.cpp" />
     <ClCompile Include="tutorialBonusCube.cpp" />
     <ClCompile Include="tutorialBonusTime.cpp" />
@@ -293,6 +301,7 @@
     <ClCompile Include="tutorialLockon.cpp" />
     <ClCompile Include="tutorialMove.cpp" />
     <ClCompile Include="tutorialScene.cpp" />
+    <ClCompile Include="TutorialSceneGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseGUI.h" />
@@ -367,6 +376,7 @@
     <ClInclude Include="nameEntryRanking.h" />
     <ClInclude Include="nameEntryScene.h" />
     <ClInclude Include="numGUI.h" />
+    <ClInclude Include="pauseController.h" />
     <ClInclude Include="playerBullet.h" />
     <ClInclude Include="playerBulletTrail.h" />
     <ClInclude Include="playerMissile.h" />

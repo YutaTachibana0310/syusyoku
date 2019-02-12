@@ -1,11 +1,11 @@
 //=====================================
 //
-//タイトルテロップヘッダ[titleTelop.h]
+//ポーズコントローラーヘッダ[pauseController.h]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
-#ifndef _TITLETELOP_H_
-#define _TITLETELOP_H_
+#ifndef _PAUSECONTROLLER_H_
+#define _PAUSECONTROLLER_H_
 
 #include "main.h"
 
@@ -20,9 +20,10 @@
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void InitTitleTelop(int num);
-void UninitTitleTelop(int num);
-void UpdateTitleTelop(void);
-void DrawTitleTelop(void);
-int GetTitleMenuIndex(void);
+void InitPauseController(int num);
+void UninitPauseController(int num);
+void UpdatePauseController(void);
+void DrawPauseController(void);
+bool GetPauseState(void);
+
 #endif

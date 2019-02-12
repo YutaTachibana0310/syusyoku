@@ -92,7 +92,7 @@ void UninitPlayerMissileSmog(int num)
 		smog[i].active = false;
 		color[i].a = 0.0f;
 	}
-	CopyVtxBuff(sizeof(color), color, colorBuff);
+	//CopyVtxBuff(sizeof(color), color, colorBuff);
 
 	if (num == 0)
 	{

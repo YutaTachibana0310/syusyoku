@@ -32,5 +32,5 @@ void InitStageData(int num);
 void UninitStageData(int num);
 int UpdateStageData(STAGE_DATA **out, DWORD currentFrame, int mode);
 bool IsStageEnd(void);
-
+void SetBonusPresenFlag(bool state);
 #endif

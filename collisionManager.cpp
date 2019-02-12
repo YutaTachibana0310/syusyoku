@@ -104,7 +104,7 @@ void UninitCollisionManager(int num)
 		}
 	}
 }
-
+#include "input.h"
 /**************************************
 XVˆ—
 ***************************************/

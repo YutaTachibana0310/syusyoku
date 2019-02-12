@@ -110,17 +110,7 @@ void UpdateMeshCylinder(void)
 		{
 			offset[i] -= 1.0f;
 		}
-	}
-
-	if (GetKeyboardPress(DIK_N))
-	{
-		speedMagni += 0.5f;
-	}
-	if (GetKeyboardPress(DIK_B))
-	{
-		speedMagni -= 0.5f;
-	}
-	
+	}	
 }
 
 //*****************************************************************************
@@ -192,6 +182,7 @@ void SetVertexBufferCylinder(void)
 
 	vtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
+	D3DXCOLOR diffuseColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	for (int z = 0; z < (numBlockZ + 1); z++)
 	{
 		for (int x = 0; x < (numBlockX + 1); x++)
@@ -202,7 +193,7 @@ void SetVertexBufferCylinder(void)
 			pVtx[z * (numBlockX + 1) + x].vtx.z = basePos.z + z * sizeBlockZ;
 
 			//”½ŽËŒõÝ’è
-			pVtx[z * (numBlockZ * 1) + x].diffuse = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+			pVtx[z * (numBlockZ * 1) + x].diffuse = diffuseColor;
 
 			//UVÀ•WÝ’è
 			pVtx[z * (numBlockX + 1) + x].tex.x = x * MESHCYLINDER_TEXSIZE;
