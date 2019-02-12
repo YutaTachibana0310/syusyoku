@@ -77,6 +77,7 @@ HRESULT InitBattleScene(int num)
 	RegisterDebugTimer(BATTLESCENE_LABEL);
 	PlayBGM(BGM_BATTLESCENE);
 
+	SetUseDivideSpace(true);
 	
 	return S_OK;
 }

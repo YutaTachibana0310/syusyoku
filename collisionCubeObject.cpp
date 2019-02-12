@@ -191,7 +191,7 @@ void CheckCollisionAllCubeAndBullet(void)
 /*************************************
 ‹óŠÔ•ªŠ„‚Ìg—pØ‚è‘Ö‚¦ˆ—
 **************************************/
-void SetUseDivideSpace(void)
+void SetUseDivideSpace(bool state)
 {
-	useDivideSpace = !useDivideSpace;
+	useDivideSpace = state;
 }

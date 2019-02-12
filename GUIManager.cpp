@@ -48,18 +48,37 @@
 /**************************************
 構造体定義
 ***************************************/
-typedef void(*DrawGUI)(void);
+typedef void(*FuncGUI)(void);
 
 /**************************************
 プロトタイプ宣言
 ***************************************/
-void DrawGUIonBattleScene(void);
-void DrawGUIonLogoScene(void);
-void DrawGUIonTitleScene(void);
-void DrawGUIonGameoverScene(void);
-void DrawGUIonStageClearScene(void);
-void DrawGUIonNameEntryScene(void);
-void DrawGUIonTutorialScene(void);
+//入場処理テーブル
+void OnEnterLogoSceneGUI(void);
+void OnEnterTitleSceneGUI(void);
+void OnEnterTutorialSceneGUI(void);
+void OnEnterBattleSceneGUI(void);
+void OnEnterGameoverSceneGUI(void);
+void OnEnterStageclearSceneGUI(void);
+void OnEnterNameEntrySceneGUI(void);
+
+//更新処理テーブル
+void OnUpdateLogoSceneGUI(void);
+void OnUpdateTitleSceneGUI(void);
+void OnUpdateTutorialSceneGUI(void);
+void OnUpdateBattleSceneGUI(void);
+void OnUpdateGameoverSceneGUI(void);
+void OnUpdateStageclearSceneGUI(void);
+void OnUpdateNameEntrySceneGUI(void);
+
+//描画処理テーブル
+void OnDrawLogoSceneGUI(void);
+void OnDrawTitleSceneGUI(void);
+void OnDrawTutorialSceneGUI(void);
+void OnDrawBattleSceneGUI(void);
+void OnDrawGameoverSceneGUI(void);
+void OnDrawStageclearSceneGUI(void);
+void OnDrawNameEntrySceneGUI(void);
 
 /**************************************
 グローバル変数
@@ -73,16 +92,40 @@ static const char* texturePath[GUI_NUMTEX_MAX] =
 	"data/TEXTURE/UI/rankingNum.png"
 };
 
-//各シーンのGUI描画処理テーブル
-static DrawGUI Draw[DefineSceneMax] = {
-	DrawGUIonLogoScene,
-	DrawGUIonTitleScene,
-	DrawGUIonBattleScene,
+//各シーンのGUI入場処理テーブル
+static FuncGUI Init[DefineSceneMax] = {
+	OnEnterLogoSceneGUI,//EnterGUIonLogoScene,
+	OnEnterTitleSceneGUI,//EnterGUIonTitleScene,
+	OnEnterBattleSceneGUI,//EnterGUIonBattleScene,
 	NULL,
-	DrawGUIonTutorialScene,
-	DrawGUIonGameoverScene,
-	DrawGUIonStageClearScene,
-	DrawGUIonNameEntryScene
+	OnEnterTutorialSceneGUI,//EnterGUIonTutorialScene,
+	OnEnterGameoverSceneGUI,//EnterGUIonGameoverScene,
+	OnEnterStageclearSceneGUI,//EnterGUIonStageClearScene,
+	OnEnterNameEntrySceneGUI//EnterGUIonNameEntryScene
+};
+
+//各シーンのGUI更新処理テーブル
+static FuncGUI Update[DefineSceneMax] = {
+	OnUpdateLogoSceneGUI,//UpdateGUIonLogoScene,
+	OnUpdateTitleSceneGUI,//UpdateGUIonTitleScene,
+	OnUpdateBattleSceneGUI,//UpdateGUIonBattleScene,
+	NULL,
+	OnUpdateTutorialSceneGUI,//UpdateGUIonTutorialScene,
+	OnUpdateGameoverSceneGUI,//UpdateGUIonGameoverScene,
+	OnUpdateStageclearSceneGUI,//UpdateGUIonStageClearScene,
+	OnUpdateNameEntrySceneGUI//UpdateGUIonNameEntryScene
+};
+
+//各シーンのGUI描画処理テーブル
+static FuncGUI Draw[DefineSceneMax] = {
+	OnDrawLogoSceneGUI,//DrawGUIonLogoScene,
+	OnDrawTitleSceneGUI,//DrawGUIonTitleScene,
+	OnDrawBattleSceneGUI,//DrawGUIonBattleScene,
+	NULL,
+	OnDrawTutorialSceneGUI,//DrawGUIonTutorialScene,
+	OnDrawGameoverSceneGUI,//DrawGUIonGameoverScene,
+	OnDrawStageclearSceneGUI,//DrawGUIonStageClearScene,
+	OnDrawNameEntrySceneGUI//DrawGUIonNameEntryScene
 };
 
 NumGUI* NumGUI::instance = nullptr;
@@ -101,34 +144,36 @@ void InitGUIManager(int num)
 		{
 			texture[i] = CreateTextureFromFile((LPSTR)texturePath[i], pDevice);
 		}
+		NumGUI::Create();
 		initialized = true;
 	}
 
-	NumGUI::Create();
-
-	InitScoreGUI(num);
-	InitHpGUI(num);
-	InitLockonGUI(num);
-	InitPowerUpTelop(num);
-	InitBonusTelop(num);
-	InitBonusTimeGUI(num);
+	int scene = GetCurrentScene();
+	Init[scene]();
 	InitSceneFade(num);
-	InitLockonLevelGUI(num);
-	InitLockonNumGUI(num);
-	InitGameoverTelop(num);
-	InitStageClearTelop(num);
-	InitNameEntryRanking(num);
-	InitRankingScore(num);
-	InitRankingName(num);
-	InitNameEntryCursor(num);
-	InitRankingTelop(num);
-	InitTitleTelop(num);
-	InitEntryTelop(num);
-	InitBonusPositionTelop(num);
-	InitScoreMagniNumGUI(num);
-	InitScoreMagniGauge(num);
-	InitCautionTelop(num);
 
+	//InitScoreGUI(num);
+	//InitHpGUI(num);
+	//InitLockonGUI(num);
+	//InitPowerUpTelop(num);
+	//InitBonusTelop(num);
+	//InitBonusTimeGUI(num);
+	//InitSceneFade(num);
+	//InitLockonLevelGUI(num);
+	//InitLockonNumGUI(num);
+	//InitGameoverTelop(num);
+	//InitStageClearTelop(num);
+	//InitNameEntryRanking(num);
+	//InitRankingScore(num);
+	//InitRankingName(num);
+	//InitNameEntryCursor(num);
+	//InitRankingTelop(num);
+	//InitTitleTelop(num);
+	//InitEntryTelop(num);
+	//InitBonusPositionTelop(num);
+	//InitScoreMagniNumGUI(num);
+	//InitScoreMagniGauge(num);
+	//InitCautionTelop(num);
 	//LoadSettingsGUI();
 }
 
@@ -176,28 +221,32 @@ void UninitGUIManager(int num)
 ***************************************/
 void UpdateGUIManager(void)
 {
-	UpdateScoreGUI();
-	UpdateHpGUI();
-	UpdateLockonGUI();
-	UpdatePowerUpTelop();
-	UpdateBonusTelop();
-	UpdateBonusTimeGUI();
+	int scene = GetCurrentScene();
+	Update[scene]();
 	UpdateSceneFade();
-	UpdateLockonLevelGUI();
-	UpdateLockonNumGUI();
-	UpdateGameoverTelop();
-	UpdateStageClearTelop();
-	UpdateNameEntryRanking();
-	UpdateRankingScore();
-	UpdateRankingName();
-	UpdateNameEntryCursor();
-	UpdateRankingTelop();
-	UpdateTitleTelop();
-	UpdateEntryTelop();
-	UpdateBonusPositionTelop();
-	UpdateScoreMagniNumGUI();
-	UpdateScoreMagniGauge();
-	UpdateCautionTelop();
+
+	//UpdateScoreGUI();
+	//UpdateHpGUI();
+	//UpdateLockonGUI();
+	//UpdatePowerUpTelop();
+	//UpdateBonusTelop();
+	//UpdateBonusTimeGUI();
+	//UpdateSceneFade();
+	//UpdateLockonLevelGUI();
+	//UpdateLockonNumGUI();
+	//UpdateGameoverTelop();
+	//UpdateStageClearTelop();
+	//UpdateNameEntryRanking();
+	//UpdateRankingScore();
+	//UpdateRankingName();
+	//UpdateNameEntryCursor();
+	//UpdateRankingTelop();
+	//UpdateTitleTelop();
+	//UpdateEntryTelop();
+	//UpdateBonusPositionTelop();
+	//UpdateScoreMagniNumGUI();
+	//UpdateScoreMagniGauge();
+	//UpdateCautionTelop();
 }
 
 /**************************************

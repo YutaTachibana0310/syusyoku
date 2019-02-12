@@ -110,11 +110,6 @@ void UninitCollisionManager(int num)
 ***************************************/
 void UpdateCollisionManager(void)
 {
-	if (GetKeyboardTrigger(DIK_U))
-	{
-		SetUseDivideSpace();
-	}
-
 	static DWORD cnt = 0, cntFrame = 0;
 
 	CheckCollisionCubeObject(&manager);

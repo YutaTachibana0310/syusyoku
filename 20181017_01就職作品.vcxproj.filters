@@ -184,6 +184,9 @@
     <Filter Include="ヘッダー ファイル\GUI\BattleScene">
       <UniqueIdentifier>{0a354a3e-06dd-4ba0-8067-e28c73540f16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GUI\States">
+      <UniqueIdentifier>{070d7504-883c-44d9-803b-b94bdc7f644c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="light.cpp">
@@ -662,6 +665,27 @@
     </ClCompile>
     <ClCompile Include="pauseController.cpp">
       <Filter>ソース ファイル\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoSceneGUI.cpp">
+      <Filter>ソース ファイル\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleSceneGUI.cpp">
+      <Filter>ソース ファイル\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialSceneGUI.cpp">
+      <Filter>ソース ファイル\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleSceneGUI.cpp">
+      <Filter>ソース ファイル\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="NameEntrySceneGUI.cpp">
+      <Filter>ソース ファイル\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="GameoverSceneGUI.cpp">
+      <Filter>ソース ファイル\GUI\States</Filter>
+    </ClCompile>
+    <ClCompile Include="StageclearSceneGUI.cpp">
+      <Filter>ソース ファイル\GUI\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@
 #include "gameoverScene.h"
 #include "stageClearScene.h"
 #include "nameEntryScene.h"
+#include "GUIManager.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -154,6 +155,7 @@ void SetScene(DefineScene sceneId)
 	UninitScene(1);
 	UninitParticleManager(1);
 	*currentSceneId = sceneId;
+	InitGUIManager(1);
 	InitScene(1);
 }
 

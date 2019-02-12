@@ -382,7 +382,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	InitPostEffectManager(0);
 
 	//GUIマネージャ初期化
-	InitGUIManager(0);
+	//InitGUIManager(0);
 
 	//シーンマネージャ初期化
 	InitSceneManager(&currentScene);
