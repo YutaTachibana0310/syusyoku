@@ -156,7 +156,7 @@ void InitBattleController(int num)
 	controller.nextViewMode = BattleViewTop;
 
 	ChangeStateBattleController(requestState);
-	ChangeViewModeBattleController(BattleViewFPS);
+	ChangeViewModeBattleController(BattleViewSide);
 
 	if (flgBonusPresen)
 	{
@@ -174,12 +174,19 @@ void UninitBattleController(int num)
 	UninitStageData(num);
 }
 
+#include "input.h"
 /**************************************
 çXêVèàóù
 ***************************************/
 void UpdateBattleController(void)
 {
 	Update[controller.currentState](&controller);
+
+	if (GetKeyboardTrigger(DIK_M))
+	{
+		int next = WrapAround(0, 3, controller.viewMode + 1);
+		ChangeViewModeBattleController(next);
+	}
 }
 
 /**************************************

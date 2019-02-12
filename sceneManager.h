@@ -35,6 +35,7 @@ enum SceneResult
 	SceneFinished,
 	SceneResultMax
 };
+
 /**************************************
 プロトタイプ宣言
 ***************************************/
@@ -44,4 +45,5 @@ void UninitScene(int num);
 void UpdateSceneManager(void);
 void DrawSceneManager(void);
 void SetScene(DefineScene sceneId);
+int GetNextScene(void);
 #endif
