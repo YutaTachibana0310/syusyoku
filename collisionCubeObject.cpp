@@ -35,7 +35,7 @@ void CheckCollisionAllCubeAndBullet(void);
 void CheckCollisionCubeObject(COLLISION_MANAGER *manager)
 {
 	//Žl•ª–Ø‹óŠÔ•ªŠ„‚ðŽg‚¤ê‡
-	if (useDivideSpace)
+	if (manager->useDivSpace)
 	{
 		for (DWORD cntCell = 0; cntCell < manager->cellNum; cntCell++)
 		{

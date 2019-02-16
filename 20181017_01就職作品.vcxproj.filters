@@ -687,6 +687,9 @@
     <ClCompile Include="StageclearSceneGUI.cpp">
       <Filter>ソース ファイル\GUI\States</Filter>
     </ClCompile>
+    <ClCompile Include="pauseGUI.cpp">
+      <Filter>ソース ファイル\GUI\BattleScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -1054,6 +1057,9 @@
     </ClInclude>
     <ClInclude Include="pauseController.h">
       <Filter>ヘッダー ファイル\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="pauseGUI.h">
+      <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

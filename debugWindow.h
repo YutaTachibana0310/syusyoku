@@ -30,6 +30,8 @@ void UninitDebugWindow(int num);
 void UpdateDebugWindow(void);
 void DrawDebugWindow(void);
 
+void SetActiveDebugWindow(bool state = true);	//表示切替処理
+
 void BeginTimerCount(void);				//高解像度タイマー計測開始
 double GetProgressTimerCount(void);		//タイマー経過時間取得処理
 void GetTimerCount(LARGE_INTEGER *ptr);	//タイマーカウント取得(20フレーム間隔)

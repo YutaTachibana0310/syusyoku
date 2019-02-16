@@ -25,6 +25,7 @@
 ***************************************/
 LARGE_INTEGER timeCountBegin;
 static unsigned int cntFrame = 0;
+static bool enableDraw = false;
 
 /**************************************
 プロトタイプ宣言
@@ -89,11 +90,6 @@ void UpdateDebugWindow(void)
 void DrawDebugWindow(void)
 {
 #ifdef USE_DEBUGFUNC
-	static bool enableDraw = true;
-
-	if (GetKeyboardTrigger(DIK_D) && GetKeyboardPress(DIK_LCONTROL))
-		enableDraw = !enableDraw;
-
 	if (!enableDraw)
 	{
 		ImGui::EndFrame();
@@ -170,6 +166,14 @@ double CalcProgressTime(LARGE_INTEGER start, LARGE_INTEGER end)
 #else
 	return 0.0f;
 #endif
+}
+
+/*************************************
+表示切り替え処理
+***************************************/
+void SetActiveDebugWindow(bool state)
+{
+	enableDraw = state;
 }
 
 /*************************************

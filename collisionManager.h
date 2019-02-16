@@ -54,6 +54,7 @@ typedef struct {
 	unsigned int spaceNum[COLLISION_DIVISIONSPACE_LEVEL_MAX];	//各レベルの空間数
 	DWORD cellNum;												//空間数の総和
 	CCell **cellArray[OFT_ID_MAX];								//オブジェクトが登録される空間配列
+	bool useDivSpace;											//空間分割を使用するかどうか
 
 }COLLISION_MANAGER;
 /**************************************
@@ -62,7 +63,8 @@ typedef struct {
 void InitCollisionManager(int num);
 void UninitCollisionManager(int num);
 void UpdateCollisionManager(void);
-void SetUseDivideSpace(bool state);			//空間分割の使用切り替え処理
+void SetUseDivisionSpace(bool state);		//空間分割の使用切り替え処理
+//void SetUseDivideSpace(bool state);			
 
 //空間にオブジェクトを登録する処理
 //bool RegisterObjectToSpace(float left, float top, float right, float bottom, OBJECT_FOR_TREE *obj, OFT_ID id);

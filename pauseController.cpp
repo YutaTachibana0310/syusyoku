@@ -1,6 +1,6 @@
 //=====================================
 //
-//テンプレート処理[pauseController.cpp]
+//ポーズコントローラー処理[pauseController.cpp]
 //Author:GP11A341 21 立花雄太
 //
 //=====================================
@@ -9,54 +9,74 @@
 #include "input.h"
 #include "bgmManager.h"
 #include "sceneFade.h"
+#include "pauseGUI.h"
+#include "debugWindow.h"
+#include "debugWindow.h"
+#include "battleController.h"
+#include "collisionManager.h"
 
 /**************************************
 マクロ定義
 ***************************************/
-#define PAUSEMENU_TEXTURE_NAME		"data/TEXTURE/UI/pauseMenu.png"
-#define PAUSEMENU_CURSOE_TEX_NAME	"data/TEXTURE/UI/menuCusor.png"
-#define PAUSEMENU_CURSOR_SIZE		(50.0f)
-#define PAUSEMENU_MAXNUM			(3)
+#define PAUSEMENU_TEXTURE_NAME		"data/TEXTURE/UI/pausebg.png"
+#define PAUSEMENU_MAXNUM			(8)
 #define PAUSEMENU_ANIMTIME			(5)
 #define PAUSEMENU_ANIMPATTERN		(6)
 #define PAUSEMENU_TEX_DIV_X			(3)
 #define PAUSEMENU_TEX_DIV_Y			(2)
+#define PAUSEMENU_MENUMAX			(8)
 
 /**************************************
 構造体定義
 ***************************************/
 typedef void(*funcPause)(void);
 
+enum class DefinePauseMenu {
+	Resume,
+	Restart,
+	ReturnTitle,
+	SwitchDebugWindow,
+	SwitchUseDivSpace,
+	SwitchFPSView,
+	SwitchSideView,
+	SwitchTopView
+};
 /**************************************
 プロトタイプ宣言
 ***************************************/
 void PauseFuncResume(void);
 void PauseFuncRestart(void);
 void PauseFuncReturnTitle(void);
+void SwitchDebugWindow(void);
+void SwitchUseDivisionSpace(void);
+void SwitchFPSView(void);
+void SwitchTopView(void);
+void SwitchSideView(void);
+bool IsSetStateMenu(int index, bool *pState);
 
 /**************************************
 グローバル変数
 ***************************************/
 static bool flgPause;
 static BaseGUI *back;
-static BaseGUI *cursor;
-
-static const D3DXVECTOR3 cursorPos[PAUSEMENU_MAXNUM] = {
-	D3DXVECTOR3(500.0f, 370.0f, 0.0f),		//500, 370, 0
-	D3DXVECTOR3(630.0f, 500.0f, 0.0f),		//630, 500, 0
-	D3DXVECTOR3(820.0f, 640.0f, 0.0f),		//760, 630, 0
-};
 
 static int menuIndex;
 static int cntFrame;
-static int cursorPattern;
-static int animIndex;
+
+static bool useDivSpace = true;;
+static bool drawDebug = false;
+
 
 //ポーズメニュー処理テーブル
 static funcPause menuTable[PAUSEMENU_MAXNUM] = {
 	PauseFuncResume,
 	PauseFuncRestart,
-	PauseFuncReturnTitle
+	PauseFuncReturnTitle,
+	SwitchDebugWindow,
+	SwitchUseDivisionSpace,
+	SwitchFPSView,
+	SwitchSideView,
+	SwitchTopView,
 };
 
 /**************************************
@@ -69,13 +89,14 @@ void InitPauseController(int num)
 	if (!initialized)
 	{
 		back = new BaseGUI((LPSTR)PAUSEMENU_TEXTURE_NAME, SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f);
-		cursor = new BaseGUI((LPSTR)PAUSEMENU_CURSOE_TEX_NAME, PAUSEMENU_CURSOR_SIZE, PAUSEMENU_CURSOR_SIZE);
 		back->SetVertex(D3DXVECTOR3(SCREEN_CENTER_X, SCREEN_CENTER_Y, 0.0f));
 		initialized = true;
 	}
 
+	InitPauseGUI(num);
+
 	flgPause = false;
-	
+
 }
 
 /**************************************
@@ -86,8 +107,10 @@ void UninitPauseController(int num)
 	if (num == 0)
 	{
 		delete back;
-		delete cursor;
+
 	}
+
+	UninitPauseGUI(num);
 }
 
 /**************************************
@@ -107,23 +130,12 @@ void UpdatePauseController(void)
 	if (!flgPause)
 		return;
 
-	//カーソルアニメーション
-	cntFrame++;
-	if (cntFrame % PAUSEMENU_ANIMTIME == 0)
-	{
-		animIndex = WrapAround(0, PAUSEMENU_ANIMPATTERN, animIndex + 1);
-	}
-
 	//カーソルセット
-	cursor->SetTexture(PAUSEMENU_TEX_DIV_X, PAUSEMENU_TEX_DIV_Y, animIndex);
-	cursor->SetVertex(cursorPos[menuIndex]);
-
-	//カーソル移動
 	int inputY = GetVerticalInputRepeat();
-	menuIndex = WrapAround(0, PAUSEMENU_MAXNUM, menuIndex - inputY);
-	
+	menuIndex = WrapAround(0, PAUSEMENU_MENUMAX, menuIndex - inputY);
+
 	//選択された処理を実行
-	if(GetAttackButtonTrigger())
+	if (GetAttackButtonTrigger())
 		menuTable[menuIndex]();
 }
 
@@ -136,7 +148,15 @@ void DrawPauseController(void)
 		return;
 
 	back->Draw();
-	cursor->Draw();
+
+	for (int i = 0; i < PAUSEMENU_MENUMAX; i++)
+	{
+		DrawPauseGUI(i, i == menuIndex);
+
+		bool state;
+		if (IsSetStateMenu(i, &state))
+			DrawPauseMenuState(i, i == menuIndex, state);
+	}
 }
 
 /**************************************
@@ -171,4 +191,69 @@ void PauseFuncReturnTitle(void)
 {
 	SetSceneFade(TitleScene);
 	flgPause = false;
+}
+
+/**************************************
+デバッグウィンドウONOFF処理
+***************************************/
+void SwitchDebugWindow(void)
+{
+	drawDebug = !drawDebug;
+	SetActiveDebugWindow(drawDebug);
+}
+
+/**************************************
+空間分割切替処理
+***************************************/
+void SwitchUseDivisionSpace(void)
+{
+	useDivSpace = !useDivSpace;
+	SetUseDivisionSpace(useDivSpace);
+}
+
+/**************************************
+FPSビューに切替
+***************************************/
+void SwitchFPSView(void)
+{
+	ChangeViewModeBattleController(BattleViewFPS);
+	flgPause = false;
+}
+
+/**************************************
+トップビューに切り替え
+***************************************/
+void SwitchTopView(void)
+{
+	ChangeViewModeBattleController(BattleViewTop);
+	flgPause = false;
+}
+
+/**************************************
+サイドビューに切り替え
+***************************************/
+void SwitchSideView(void)
+{
+	ChangeViewModeBattleController(BattleViewSide);
+	flgPause = false;
+}
+
+/**************************************
+ステート設定できるメニューかどうか
+***************************************/
+bool IsSetStateMenu(int index, bool *pState)
+{
+	if (index == static_cast<int>(DefinePauseMenu::SwitchDebugWindow))
+	{
+		*pState = drawDebug;
+		return true;
+	}
+
+	if (index == static_cast<int>(DefinePauseMenu::SwitchUseDivSpace))
+	{
+		*pState = useDivSpace;
+		return true;
+	}
+
+	return false;
 }

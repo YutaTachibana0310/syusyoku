@@ -86,6 +86,10 @@ void InitCollisionManager(int num)
 		manager.cellArray[OFTid] = (CCell**)AllocMemory(sizeof(CCell*) * manager.cellNum, "CollisionManager");
 		ZeroMemory(manager.cellArray[OFTid], sizeof(CCell*) * manager.cellNum);
 	}
+
+	//空間分割を使用
+	manager.useDivSpace = true;
+
 	initialized = true;
 }
 
@@ -153,6 +157,14 @@ bool RegisterObjectToSpace(COLLIDER_CUBE *collider, OBJECT_FOR_TREE *obj, OFT_ID
 	}
 
 	return false;
+}
+
+/**************************************
+空間分割使用切り替え処理
+***************************************/
+void SetUseDivisionSpace(bool state)
+{
+	manager.useDivSpace = state;
 }
 
 /**************************************
