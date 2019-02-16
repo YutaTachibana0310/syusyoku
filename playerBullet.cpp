@@ -19,12 +19,12 @@
 ***************************************/
 #define PLAYERULLET_SPEED			(25.0f)
 #define PLAYERBULLET_TEXNAME		"data/TEXTURE/PLAYER/playerbullet.png"
-#define PLAYERBULLET_TEXSIZE_X		(10.0f)
-#define PLAYERBULLET_TEXSIZE_Y		(10.0f)
+#define PLAYERBULLET_TEXSIZE_X		(15.0f)
+#define PLAYERBULLET_TEXSIZE_Y		(15.0f)
 #define PLAYERBULLET_ROTVALUE		(0.05f)
 #define PLAYERbULLET_MOVE_END		(120)
 #define PLAYERBULLET_SHADER_NAME	"data/EFFECT/playerBullet.fx"
-#define PLAYERBULLET_TRAIL_OFFSET	(-5.0f)
+#define PLAYERBULLET_TRAIL_OFFSET	(-3.0f)
 #define PLAYERBULLET_TRAIL_ALPHA	(0.2f)
 #define PLAYERBULLET_TRAIL_NUM		(3)
 
@@ -168,7 +168,7 @@ void UpdatePlayerBullet(void)
 		//トレイルセット
 		for (int j = 0; j < PLAYERBULLET_TRAIL_NUM; j++)
 		{
-			SetPlayerBulletTrail(ptr->pos + ptr->moveDir * PLAYERBULLET_TRAIL_OFFSET * j, 1.0f - PLAYERBULLET_TRAIL_ALPHA * j );
+			SetPlayerBulletTrail(ptr->pos + ptr->moveDir * PLAYERBULLET_TRAIL_OFFSET * (j + 1), 1.0f - PLAYERBULLET_TRAIL_ALPHA * j );
 		}
 
 		//境界判定

@@ -136,8 +136,8 @@ void UpdateBattleScene(void)
 
 	//GetTimerCount(&startPlayerUpdate);
 	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
-	UpdatePlayerBullet();
 	UpdatePlayerModel();
+	UpdatePlayerBullet();
 	UpdatePlayerBulletTrail();
 	CountDebugTimer(BATTLESCENE_LABEL, "PlayerUpdate");
 

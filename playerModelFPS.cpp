@@ -22,8 +22,8 @@
 #define PLAYERFPS_RANGE_Y			(55.0f)
 #define PLAYERFPS_MOVESPEED			(1.5f)
 
-#define PLAYERFPS_SHOTPOS_L			(D3DXVECTOR3(-10.0f, 0.0f, 5.0f))
-#define PLAYERFPS_SHOTPOS_R			(D3DXVECTOR3( 10.0f, 0.0f, 5.0f))
+#define PLAYERFPS_SHOTPOS_L			(D3DXVECTOR3(-5.0f, 0.0f, -15.0f))
+#define PLAYERFPS_SHOTPOS_R			(D3DXVECTOR3( 5.0f, 0.0f, -15.0f))
 #define PLAYERFPS_BULLETSPEED		(40.0f)
 #define PLAYERFPS_GUI_OFFSET		(D3DXVECTOR3(0.0f, -10.0f, 0.0))
 /**************************************
