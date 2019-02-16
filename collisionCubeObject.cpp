@@ -8,11 +8,16 @@
 #include "cubeObject.h"
 #include "playerBullet.h"
 
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
 /**************************************
 マクロ定義
 ***************************************/
 #define CUBEOBJ_PLAYERBULLET_DAMAGE		(1.0f)
-#define USE_DIVIDESPACE
+
 /**************************************
 構造体定義
 ***************************************/
@@ -21,6 +26,8 @@
 グローバル変数
 ***************************************/
 static bool useDivideSpace;
+static vector<PLAYERBULLET *> stackBullet;
+static vector<CUBE_OBJECT *> stackCube;
 
 /**************************************
 プロトタイプ宣言
@@ -28,6 +35,7 @@ static bool useDivideSpace;
 bool CheckCollisionCubeObjLower(DWORD elem, PLAYERBULLET *bullet, bool isCheckUpper, COLLISION_MANAGER *manager);
 bool CheckCollisionCubeObjUpper(DWORD elem, PLAYERBULLET *bullet, COLLISION_MANAGER *manager);
 void CheckCollisionAllCubeAndBullet(void);
+void CheckCollisionCubeAndBulletStack(DWORD elem, COLLISION_MANAGER *manager);
 
 /**************************************
 衝突判定
@@ -188,10 +196,73 @@ void CheckCollisionAllCubeAndBullet(void)
 	}
 }
 
-/*************************************
-空間分割の使用切り替え処理
-**************************************/
-void SetUseDivideSpace(bool state)
+/*****************************************
+衝突判定（探索1回版）
+******************************************/
+void CheckCollisionCubeAndBulletStack(DWORD elem, COLLISION_MANAGER *manager)
 {
-	useDivideSpace = state;
+	if (elem >= manager->cellNum)
+		return;
+
+	if (!manager->cellArray[OFT_CUBEOBJECT][elem] || !manager->cellArray[OFT_PLAYERBULLET][elem])
+		return;
+
+	int pushNumCube = 0;
+	int pushNumBullet = 0;
+
+	//キューブをスタックへ追加
+	if (manager->cellArray[OFT_CUBEOBJECT][elem]->latestObj != NULL)
+	{
+		OBJECT_FOR_TREE *oft = manager->cellArray[OFT_CUBEOBJECT][elem]->latestObj;
+		while (oft != NULL)
+		{
+			stackCube.push_back((CUBE_OBJECT*)oft->object);
+			pushNumCube++;
+			oft = oft->next;
+		}
+	}
+
+	//バレットをスタックへ追加
+	if (manager->cellArray[OFT_CUBEOBJECT][elem]->latestObj != NULL)
+	{
+		OBJECT_FOR_TREE *oft = manager->cellArray[OFT_PLAYERBULLET][elem]->latestObj;
+		while (oft != NULL)
+		{
+			stackBullet.push_back((PLAYERBULLET*)oft->object);
+			pushNumBullet++;
+			oft = oft->next;
+		}
+	}
+
+	//衝突判定
+	for (auto cube = stackCube.begin(); cube != stackCube.end(); cube++)
+	{
+		for (auto bullet = stackBullet.begin(); bullet != stackBullet.end(); bullet++)
+		{
+			if(ChechHitBoundingCube(&(*cube)->collider, &(*bullet)->collider2))
+			{
+				(*cube)->hp -= CUBEOBJ_PLAYERBULLET_DAMAGE;
+				(*bullet)->destroyRequest = true;
+				//return true;
+			}
+		}
+	}
+
+	//子の空間へ
+	for (int i = 0; i < 4; i++)
+	{
+		DWORD nextElem = elem * 4 + 1 + i;
+		CheckCollisionCubeAndBulletStack(nextElem, manager);
+	}
+
+	//スタックからポップ
+	for (int i = 0; i < pushNumCube; i++)
+	{
+		stackCube.pop_back();
+	}
+	for (int i = 0; i < pushNumBullet; i++)
+	{
+		stackBullet.pop_back();
+	}
+
 }
