@@ -156,7 +156,7 @@ void InitBattleController(int num)
 	controller.nextViewMode = BattleViewTop;
 
 	ChangeStateBattleController(requestState);
-	ChangeViewModeBattleController(BattleViewSide);
+	ChangeViewModeBattleController(BattleViewFPS);
 
 	if (flgBonusPresen)
 	{
@@ -274,6 +274,9 @@ void EmmittFromFuzzy(BATTLECONTROLLER *controller)
 void ChangeViewModeBattleController(int next)
 {
 	if (next >= BattleViewMax)
+		return;
+
+	if (next == controller.viewMode)
 		return;
 
 	controller.viewMode = next;

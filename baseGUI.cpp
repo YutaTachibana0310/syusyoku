@@ -108,6 +108,17 @@ void BaseGUI::SetTexture(int divX, int divY, int pattern)
 }
 
 /**************************************
+ディフューズ設定処理
+**************************************/
+void BaseGUI::SetColor(D3DXCOLOR color)
+{
+	vtxWk[0].diffuse =
+		vtxWk[1].diffuse =
+		vtxWk[2].diffuse =
+		vtxWk[3].diffuse = color;
+}
+
+/**************************************
 アルファ設定処理
 **************************************/
 void BaseGUI::SetAlpha(float alpha)
