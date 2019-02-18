@@ -175,7 +175,11 @@ void StartGame(void)
 {
 	state = TITLESCENE_STATEMAX;
 	ChangeStatePlayerModel(PlayerTitleLaunch);
-	SetSceneFade(TutorialScene);
+
+	/*就プレ用に直接バトルシーンへ繊維*/
+	//SetSceneFade(TutorialScene);
+	SetSceneFade(BattleScene);
+
 	PlaySE(DefineSE::DECISION);
 	FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 }
