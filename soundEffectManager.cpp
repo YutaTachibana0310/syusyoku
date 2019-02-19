@@ -45,6 +45,8 @@ static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
 	_T("data/SOUND/decision24.wav"),
 	_T("data/SOUND/shoot13.wav"),
 	_T("data/SOUND/shoot09.wav"),
+	_T("data/SOUND/decision9.wav"),
+	_T("data/SOUND/decision26.wav"),
 };
 
 static const map<DefineSE, string> defSEname = {
@@ -62,6 +64,8 @@ static const map<DefineSE, string> defSEname = {
 	{ DefineSE::POWERUP, STR(POWEUP)},
 	{ DefineSE::HOMINGBULLET, STR(HOMINGBULLET)},
 	{ DefineSE::ENEMYBULLET, STR(ENEMYBULLET)},
+	{ DefineSE::MENUDICISION, STR(MENUDICISION)},
+	{ DefineSE::PAUSE, STR(PAUSE)},
 	{ DefineSE::MAX, STR(MAX) },
 };
 
@@ -92,7 +96,7 @@ void InitSoundEffectManager(int num)
 	if (!initialized)
 	{
 		bool res = LoadSettingsSoundEffect();
-		
+
 		for (auto i : DefineSE())
 		{
 			container[i].clip = LoadSound(&soundFileName[static_cast<unsigned int>(i)][0]);

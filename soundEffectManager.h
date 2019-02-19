@@ -40,6 +40,8 @@ enum class  DefineSE : unsigned int
 	POWERUP,
 	HOMINGBULLET,
 	ENEMYBULLET,
+	MENUDICISION,
+	PAUSE,
 	MAX
 };
 

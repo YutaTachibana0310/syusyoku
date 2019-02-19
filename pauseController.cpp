@@ -14,6 +14,7 @@
 #include "debugWindow.h"
 #include "battleController.h"
 #include "collisionManager.h"
+#include "soundEffectManager.h"
 
 /**************************************
 マクロ定義
@@ -124,7 +125,10 @@ void UpdatePauseController(void)
 
 	//ポーズボタン入力判定
 	if (GetPauseButtonTrigger())
+	{
+		PlaySE(DefineSE::PAUSE);
 		flgPause = !flgPause;
+	}
 
 	//ポーズ状態でなければ以下は実行しない
 	if (!flgPause)
@@ -134,9 +138,15 @@ void UpdatePauseController(void)
 	int inputY = GetVerticalInputRepeat();
 	menuIndex = WrapAround(0, PAUSEMENU_MENUMAX, menuIndex - inputY);
 
+	if (inputY != 0)
+		PlaySE(DefineSE::CURSOR);
+
 	//選択された処理を実行
 	if (GetAttackButtonTrigger())
+	{
+		PlaySE(DefineSE::MENUDICISION);
 		menuTable[menuIndex]();
+	}
 }
 
 /**************************************
