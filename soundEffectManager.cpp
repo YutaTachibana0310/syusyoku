@@ -38,7 +38,7 @@ static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
 	_T("data/SOUND/decision16.wav"),
 	_T("data/SOUND/gun29.wav"),
 	_T("data/SOUND/bom16.wav"),
-	_T("data/SOUND/freeze06.wav"),
+	_T("data/SOUND/magic-ice1.wav"),
 	_T("data/SOUND/magic-attack-holy1.wav"),
 	_T("data/SOUND/bom30.wav"),
 	_T("data/SOUND/cursor2.wav"),

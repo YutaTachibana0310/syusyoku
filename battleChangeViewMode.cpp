@@ -11,8 +11,8 @@
 /**************************************
 マクロ定義
 ***************************************/
-#define BATTLE_CHANGEVIEWMODE_DURATION		(150)
-#define BATTLE_CHANGEVIEW_TIMING			(120)
+#define BATTLE_CHANGEVIEWMODE_DURATION		(270)
+#define BATTLE_CHANGEVIEW_TIMING			(240)
 
 /**************************************
 構造体定義
