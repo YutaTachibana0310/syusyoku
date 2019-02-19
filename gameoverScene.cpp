@@ -23,6 +23,7 @@
 #include "bgmManager.h"
 #include "monotone.h"
 #include "gameoverTelop.h"
+#include "particleManager.h"
 #include "sceneFade.h"
 
 
@@ -72,6 +73,7 @@ void UninitGameoverScene(int num)
 	//UninitPlayerMissileSmog(num);
 	UninitPlayerBulletTrail(num);
 	UninitEnemyManager(num);
+	//UninitParticleManager(num);
 
 	SetMonotoneEffect(false);
 	FadeOutBGM(BGM_GAMEOVER, 10);

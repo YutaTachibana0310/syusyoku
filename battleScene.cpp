@@ -27,6 +27,7 @@
 #include "hardCubeObject.h"
 #include "shadow.h"
 #include "sceneManager.h"
+#include "particleManager.h"
 
 #include "debugWindow.h"
 #include "DebugTimer.h"
@@ -118,6 +119,7 @@ void UninitBattleScene(int num)
 		UninitPlayerMissileSmog(num);
 		UninitPlayerBulletTrail(num);
 		UninitEnemyManager(num);
+		//UninitParticleManager(num);
 		FadeOutBGM(BGM_BATTLESCENE, 30);
 	}
 

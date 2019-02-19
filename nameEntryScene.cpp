@@ -10,6 +10,7 @@
 #include "battleCamera.h"
 #include "nameEntryController.h"
 #include "bgmManager.h"
+#include "particleManager.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`

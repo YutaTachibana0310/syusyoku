@@ -153,7 +153,10 @@ void SetScene(DefineScene sceneId)
 {
 	nextScene = sceneId;
 	UninitScene(1);
-	UninitParticleManager(1);
+
+	if(nextScene != StageClearScene && nextScene != GamveoverScene)
+		UninitParticleManager(1);
+
 	*currentSceneId = sceneId;
 	InitGUIManager(1);
 	InitScene(1);

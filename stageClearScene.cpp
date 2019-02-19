@@ -25,6 +25,7 @@
 #include "gameoverTelop.h"
 #include "sceneFade.h"
 #include "stageClearTelop.h"
+#include "particleManager.h"
 
 /**************************************
 É}ÉNÉçíËã`

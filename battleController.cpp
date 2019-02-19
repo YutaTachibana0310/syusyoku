@@ -175,19 +175,12 @@ void UninitBattleController(int num)
 	controller.currentState = BattleNormalTime;
 }
 
-#include "input.h"
 /**************************************
 更新処理
 ***************************************/
 void UpdateBattleController(void)
 {
 	Update[controller.currentState](&controller);
-
-	if (GetKeyboardTrigger(DIK_M))
-	{
-		int next = WrapAround(0, 3, controller.viewMode + 1);
-		ChangeViewModeBattleController(next);
-	}
 }
 
 /**************************************
@@ -298,4 +291,12 @@ int GetBattleViewMode(void)
 void SetBonusTimePresen(void)
 {
 	flgBonusPresen = true;
+}
+
+/**************************************
+バトルモードセット処理
+***************************************/
+void SetBattleMode(BattleMode mode)
+{
+
 }

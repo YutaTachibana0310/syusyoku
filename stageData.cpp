@@ -13,7 +13,7 @@
 ***************************************/
 #define STAGEDATA_PATH	"data/STAGE/StageData.dat"
 #define STAGEDATA_MODEMAX	(3)
-
+#define STAGEDATA_CONTAINERMAX	(STAGEDATA_MODEMAX*3)
 /**************************************
 構造体定義
 ***************************************/
@@ -25,16 +25,26 @@ typedef struct {
 /**************************************
 グローバル変数
 ***************************************/
-static CONTAINER_STAGEDATA container[STAGEDATA_MODEMAX];
+static CONTAINER_STAGEDATA container[STAGEDATA_CONTAINERMAX];
 static CONTAINER_STAGEDATA bonusData;
 
-static const char* FilePath[STAGEDATA_MODEMAX] = {
+//通常ステージデータのファイルパス
+static const char* FilePath[STAGEDATA_CONTAINERMAX] = {
 	"data/STAGE/StageDataFPS.dat",
 	"data/STAGE/StageDataTop.dat",
-	"data/STAGE/StageDataSide.dat"
+	"data/STAGE/StageDataSide.dat",
+
+	"data/STAGE/StageDataBonus.dat",
+	"data/STAGE/StageDataTop.dat",
+	"data/STAGE/StageDataSide.dat",
+
+	"data/STAGE/StageDataFPSPresen.dat",
+	"data/STAGE/StageDataTopPresen.dat",
+	"data/STAGE/StageDataSidePresen.dat",
 };
 
 static bool flgBonusPresen;
+static int headIndex;
 
 /**************************************
 プロトタイプ宣言
@@ -48,12 +58,12 @@ void LoadBonusPresenData(void);
 void InitStageData(int num)
 {
 	static bool initialized = false;
-	for(int i = 0; i < STAGEDATA_MODEMAX; i++)
+	for(int i = 0; i < STAGEDATA_CONTAINERMAX; i++)
 		container[i].current = 0;
 
 	if (!initialized)
 	{
-		for(int i = 0; i < STAGEDATA_MODEMAX; i++)
+		for(int i = 0; i < STAGEDATA_CONTAINERMAX; i++)
 			LoadStageData(i);
 		LoadBonusPresenData();
 		initialized = true;
@@ -78,17 +88,8 @@ void UninitStageData(int num)
 int UpdateStageData(STAGE_DATA **out, DWORD currentFrame, int mode)
 {
 	int cntData = 0;
-	CONTAINER_STAGEDATA *ptr = NULL;
+	CONTAINER_STAGEDATA *ptr = &container[STAGEDATA_MODEMAX * headIndex + mode];
 	
-	if (mode == 0 && flgBonusPresen)
-	{
-		ptr = &bonusData;
-	}
-	else
-	{
-		ptr = &container[mode];
-	}
-
 	while (ptr->current < ptr->dataMax && ptr->head[ptr->current].emmittFrame == currentFrame)
 	{
 		if (cntData == 0)
@@ -227,4 +228,12 @@ void LoadBonusPresenData(void)
 void SetBonusPresenFlag(bool state)
 {
 	flgBonusPresen = state;
+}
+
+/**************************************
+ステージコンテナヘッド設定処理
+***************************************/
+void SetStageDataContainerHead(int n)
+{
+	headIndex = n;
 }

@@ -119,8 +119,8 @@ void UninitPauseController(int num)
 void UpdatePauseController(void)
 {
 	//バトルシーン以外はポーズメニューを開かない
-	if (GetCurrentScene() != BattleScene)
-		return;
+	//if (GetCurrentScene() != BattleScene)
+	//	return;
 
 	//ポーズボタン入力判定
 	if (GetPauseButtonTrigger())

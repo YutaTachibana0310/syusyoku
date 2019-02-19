@@ -44,6 +44,13 @@ enum BATTLE_VIEWMODE {
 	BattleViewMax
 };
 
+//バトルモード
+enum class BattleMode {
+	Normal,
+	BonusPresen,
+	Presen
+};
+
 //バトルコントローラー構造体
 typedef struct {
 	D3DXVECTOR2 enemyEmmittPos[BATTLE_SPACE_MAX];		//エネミー生成座標

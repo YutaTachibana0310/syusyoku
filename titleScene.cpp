@@ -19,6 +19,7 @@
 #include "battleController.h"
 #include "baseGUI.h"
 #include "titleTelop.h"
+#include "particleManager.h"
 
 /*****************************************************************************
 マクロ定義
@@ -47,6 +48,12 @@ enum TITLESCENE_STATE
 };
 
 typedef void(*FuncTitleMenu)(void);
+
+enum class GameMode {
+	Default,
+	BonusPresen,
+	Presen
+};
 
 /*****************************************************************************
 グローバル変数
@@ -113,6 +120,7 @@ void UninitTitleScene(int num)
 		UninitPlayerModel(num);
 		UninitPlayerBullet(num);
 		UninitPlayerBulletTrail(num);
+		//UninitParticleManager(num);
 	}
 }
 
@@ -190,9 +198,12 @@ void StartGame(void)
 void StartGameFromBonus(void)
 {
 	SetBonusTimePresen();
+
 	state = TITLESCENE_STATEMAX;
 	ChangeStatePlayerModel(PlayerTitleLaunch);
+
 	SetSceneFade(BattleScene);
+
 	PlaySE(DefineSE::DECISION);
 	FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 }

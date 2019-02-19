@@ -33,4 +33,5 @@ void UninitStageData(int num);
 int UpdateStageData(STAGE_DATA **out, DWORD currentFrame, int mode);
 bool IsStageEnd(void);
 void SetBonusPresenFlag(bool state);
+void SetStageDataContainerHead(int n);
 #endif
