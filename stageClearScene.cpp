@@ -26,6 +26,7 @@
 #include "sceneFade.h"
 #include "stageClearTelop.h"
 #include "particleManager.h"
+#include "cubeObject.h"
 
 /**************************************
 マクロ定義
@@ -55,9 +56,9 @@ HRESULT InitStageClearScene(int num)
 	//TODO:テロップ再生,BGM再生
 
 	SetStageClearTelop();
-	ChangeStatePlayerModel(PlayerTitleLaunch);
 	cntFrame = 0;
 	FadeInBGM(BGM_STAGECLEAR, 30);
+	DamageAllCubeObject();
 	return S_OK;
 }
 
@@ -104,6 +105,7 @@ void UpdateStageClearScene(void)
 	cntFrame++;
 	if (cntFrame == STAGECLEAR_DURATION)
 	{
+		ChangeStatePlayerModel(PlayerTitleLaunch);
 		SetSceneFade(NameEntryScene);
 		FadeOutBGM(BGM_STAGECLEAR, 60);
 	}

@@ -40,7 +40,7 @@ static int currentState;
 static int cntFrame;
 
 static const int AnimDuration[CAUTIONTELOP_ANIM_MAX] = {
-	60, 120, 60
+	30, 60, 30
 };
 
 static const float StartAlpha[CAUTIONTELOP_ANIM_MAX] = {
