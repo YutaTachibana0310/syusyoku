@@ -42,6 +42,7 @@ enum class  DefineSE : unsigned int
 	ENEMYBULLET,
 	MENUDICISION,
 	PAUSE,
+	CAUTION,
 	MAX
 };
 

@@ -285,6 +285,7 @@
     <ClCompile Include="smallEnemyWait.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="soundEffectManager.cpp" />
+    <ClCompile Include="spikeNoise.cpp" />
     <ClCompile Include="stageClearScene.cpp" />
     <ClCompile Include="StageclearSceneGUI.cpp" />
     <ClCompile Include="stageClearTelop.cpp" />
@@ -420,6 +421,7 @@
     <ClInclude Include="smallEnemyModel.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="soundEffectManager.h" />
+    <ClInclude Include="spikeNoise.h" />
     <ClInclude Include="stageClearScene.h" />
     <ClInclude Include="stageClearTelop.h" />
     <ClInclude Include="stageData.h" />
@@ -485,6 +487,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">2.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\spikeNoise.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">2.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -10,6 +10,7 @@
 #include "cameraShaker.h"
 #include "bulletParticle.h"
 #include "dataContainer.h"
+#include "spikeNoise.h"
 
 /**************************************
 マクロ定義
@@ -36,6 +37,9 @@ bool CheckCollisionEnemyBulletUpper(DWORD elem, PLAYERMODEL *player, COLLISION_M
 ***************************************/
 void CheckCollisionEnemyBullet(COLLISION_MANAGER *manager)
 {
+	if (GetPlayerHP() <= 0)
+		return;
+
 	for (DWORD cntCell = 0; cntCell < manager->cellNum; cntCell++)
 	{
 		//空間が作成されていない場合の判定
@@ -97,6 +101,9 @@ bool CheckCollisionEnemyBulletLower(DWORD elem, PLAYERMODEL *player, bool isChec
 				//プレイヤーを無敵にセット
 				player->invincibleStart = player->cntFrame;
 				player->isInvincible = true;
+
+				//被弾エフェクトをセット
+				SetSpikeNoise();
 			}
 
 			//登録されている次のバレットへ
@@ -142,6 +149,9 @@ bool CheckCollisionEnemyBulletUpper(DWORD elem, PLAYERMODEL *player, COLLISION_M
 					//プレイヤーを無敵にセット
 					player->invincibleStart = player->cntFrame;
 					player->isInvincible = true;
+
+					//被弾エフェクトをセット
+					SetSpikeNoise();
 				}
 
 				//次のバレットへ

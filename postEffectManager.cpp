@@ -7,6 +7,7 @@
 #include "postEffectManager.h"
 #include "shockBlur.h"
 #include "monotone.h"
+#include "spikeNoise.h"
 
 /**************************************
 マクロ定義
@@ -38,6 +39,7 @@ void InitPostEffectManager(int num)
 	//ポストエフェクト初期化
 	InitShcokBlur(num);
 	InitMonotone(num);
+	InitSpikeNoise(num);
 
 	//頂点バッファが作成済みであればリターン
 	if (initialized)
@@ -87,6 +89,7 @@ void UninitPostEffectManager(int num)
 {
 	UninitShcokBlur(num);
 	UninitMonotone(num);
+	UninitSpikeNoise(num);
 
 	if (num == 0)
 	{
@@ -101,6 +104,7 @@ void UpdatePostEffectManager(void)
 {
 	UpdateShcokBlur();
 	UpdateMonotone();
+	UpdateSpikeNoise();
 }
 
 /**************************************
@@ -136,6 +140,15 @@ void DrawPostEffectManager(LPDIRECT3DTEXTURE9 tex[2], LPDIRECT3DSURFACE9 suf[2],
 		pDevice->SetRenderTarget(0, suf[1 - cntDraw % 2]);
 		pDevice->SetTexture(0, tex[cntDraw % 2]);
 		DrawMonotone();
+		cntDraw++;
+	}
+
+	//スパイクノイズ描画
+	if (CheckActivePostEffect(EFFECT_SPIKENOISE))
+	{
+		pDevice->SetRenderTarget(0, suf[1 - cntDraw % 2]);
+		pDevice->SetTexture(0, tex[cntDraw % 2]);
+		DrawSpikeNoise();
 		cntDraw++;
 	}
 

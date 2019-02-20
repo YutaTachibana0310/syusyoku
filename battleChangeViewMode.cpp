@@ -7,6 +7,7 @@
 #include "battleController.h"
 #include "cautionTelop.h"
 #include "hardCubeObject.h"
+#include "soundEffectManager.h"
 
 /**************************************
 マクロ定義
@@ -46,6 +47,7 @@ void OnUpdateBattleChangeView(BATTLECONTROLLER *entity)
 	//すべてのハードキューブが非アクティブになったらテロップ再生
 	if (!playedTelop && IsAllHardCubeDisable())
 	{
+		PlaySE(DefineSE::CAUTION);
 		SetCautionTelop();
 		playedTelop = true;
 	}
