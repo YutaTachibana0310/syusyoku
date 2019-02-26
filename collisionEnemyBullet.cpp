@@ -11,7 +11,6 @@
 #include "bulletParticle.h"
 #include "dataContainer.h"
 #include "spikeNoise.h"
-
 /**************************************
 É}ÉNÉçíËã`
 ***************************************/

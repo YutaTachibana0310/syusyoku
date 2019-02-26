@@ -8,6 +8,7 @@
 #include "debugWindow.h"
 #include "postEffectManager.h"
 #include "Easing.h"
+#include "soundEffectManager.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -122,4 +123,5 @@ void SetSpikeNoise(void)
 	cntFrame = 0;
 	active = true;
 	SetPostEffectUse(EFFECT_SPIKENOISE, true);
+	//PlaySE(DefineSE::NOISE);
 }

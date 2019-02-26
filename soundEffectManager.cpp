@@ -48,6 +48,7 @@ static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
 	_T("data/SOUND/decision9.wav"),
 	_T("data/SOUND/decision26.wav"),
 	_T("data/SOUND/data-analysis2.wav"),
+	_T("data/SOUND/noise.wav")
 };
 
 static const map<DefineSE, string> defSEname = {
@@ -68,6 +69,7 @@ static const map<DefineSE, string> defSEname = {
 	{ DefineSE::MENUDICISION, STR(MENUDICISION)},
 	{ DefineSE::PAUSE, STR(PAUSE)},
 	{ DefineSE::CAUTION, STR(CAUTION)},
+	{ DefineSE::NOISE, STR(NOISE) },
 	{ DefineSE::MAX, STR(MAX) },
 };
 

@@ -20,6 +20,7 @@
 #include "baseGUI.h"
 #include "titleTelop.h"
 #include "particleManager.h"
+#include "shockBlur.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`
@@ -146,6 +147,7 @@ void UpdateTitleScene(void)
 	{
 		int selected = GetTitleMenuIndex();
 		TitleMenu[selected]();
+		SetShockBlur(D3DXVECTOR3(0.0f, 0.0f, 500.0f));
 	}
 
 	UpdateMeshCylinder();

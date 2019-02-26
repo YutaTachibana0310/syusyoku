@@ -15,17 +15,18 @@
 #include "battleController.h"
 #include "collisionManager.h"
 #include "soundEffectManager.h"
+#include "shockBlur.h"
+#include "spikeNoise.h"
 
 /**************************************
 マクロ定義
 ***************************************/
 #define PAUSEMENU_TEXTURE_NAME		"data/TEXTURE/UI/pausebg.png"
-#define PAUSEMENU_MAXNUM			(8)
 #define PAUSEMENU_ANIMTIME			(5)
 #define PAUSEMENU_ANIMPATTERN		(6)
 #define PAUSEMENU_TEX_DIV_X			(3)
 #define PAUSEMENU_TEX_DIV_Y			(2)
-#define PAUSEMENU_MENUMAX			(8)
+#define PAUSEMENU_MENUMAX			(10)
 
 /**************************************
 構造体定義
@@ -40,7 +41,9 @@ enum class DefinePauseMenu {
 	SwitchUseDivSpace,
 	SwitchFPSView,
 	SwitchSideView,
-	SwitchTopView
+	SwitchTopView,
+	SetShockBlur,
+	SetSpikeNoise
 };
 /**************************************
 プロトタイプ宣言
@@ -48,11 +51,13 @@ enum class DefinePauseMenu {
 void PauseFuncResume(void);
 void PauseFuncRestart(void);
 void PauseFuncReturnTitle(void);
-void SwitchDebugWindow(void);
-void SwitchUseDivisionSpace(void);
-void SwitchFPSView(void);
-void SwitchTopView(void);
-void SwitchSideView(void);
+void PuaseFuncSwitchDebugWindow(void);
+void PauseFuncSwitchUseDivisionSpace(void);
+void PauseFuncSwitchFPSView(void);
+void PauseFuncSwitchTopView(void);
+void PauseFuncSwitchSideView(void);
+void PauseFuncSetShockBlur(void);
+void PauseFuncSpikeNoise(void);
 bool IsSetStateMenu(int index, bool *pState);
 
 /**************************************
@@ -69,15 +74,18 @@ static bool drawDebug = false;
 
 
 //ポーズメニュー処理テーブル
-static funcPause menuTable[PAUSEMENU_MAXNUM] = {
+static funcPause menuTable[PAUSEMENU_MENUMAX] = {
 	PauseFuncResume,
 	PauseFuncRestart,
 	PauseFuncReturnTitle,
-	SwitchDebugWindow,
-	SwitchUseDivisionSpace,
-	SwitchFPSView,
-	SwitchSideView,
-	SwitchTopView,
+	PuaseFuncSwitchDebugWindow,
+	PauseFuncSwitchUseDivisionSpace,
+	PauseFuncSwitchFPSView,
+	PauseFuncSwitchSideView,
+	PauseFuncSwitchTopView,
+	PauseFuncSetShockBlur,
+	PauseFuncSpikeNoise
+
 };
 
 /**************************************
@@ -206,7 +214,7 @@ void PauseFuncReturnTitle(void)
 /**************************************
 デバッグウィンドウONOFF処理
 ***************************************/
-void SwitchDebugWindow(void)
+void PuaseFuncSwitchDebugWindow(void)
 {
 	drawDebug = !drawDebug;
 	SetActiveDebugWindow(drawDebug);
@@ -215,7 +223,7 @@ void SwitchDebugWindow(void)
 /**************************************
 空間分割切替処理
 ***************************************/
-void SwitchUseDivisionSpace(void)
+void PauseFuncSwitchUseDivisionSpace(void)
 {
 	useDivSpace = !useDivSpace;
 	SetUseDivisionSpace(useDivSpace);
@@ -224,7 +232,7 @@ void SwitchUseDivisionSpace(void)
 /**************************************
 FPSビューに切替
 ***************************************/
-void SwitchFPSView(void)
+void PauseFuncSwitchFPSView(void)
 {
 	ChangeViewModeBattleController(BattleViewFPS);
 	flgPause = false;
@@ -233,7 +241,7 @@ void SwitchFPSView(void)
 /**************************************
 トップビューに切り替え
 ***************************************/
-void SwitchTopView(void)
+void PauseFuncSwitchTopView(void)
 {
 	ChangeViewModeBattleController(BattleViewTop);
 	flgPause = false;
@@ -242,10 +250,28 @@ void SwitchTopView(void)
 /**************************************
 サイドビューに切り替え
 ***************************************/
-void SwitchSideView(void)
+void PauseFuncSwitchSideView(void)
 {
 	ChangeViewModeBattleController(BattleViewSide);
 	flgPause = false;
+}
+
+/**************************************
+爆発ブラー表示
+***************************************/
+void PauseFuncSetShockBlur(void)
+{
+	SetShockBlur(D3DXVECTOR3(RandomRangef(-200.0f, 200.0f), RandomRangef(-100.0f, 100.0f), 500.0f), 50.0f);
+	//flgPause = false;
+}
+
+/**************************************
+スパイクノイズ表示
+***************************************/
+void PauseFuncSpikeNoise(void)
+{
+	SetSpikeNoise();
+	//flgPause = false;
 }
 
 /**************************************

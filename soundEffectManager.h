@@ -43,6 +43,7 @@ enum class  DefineSE : unsigned int
 	MENUDICISION,
 	PAUSE,
 	CAUTION,
+	NOISE,
 	MAX
 };
 
