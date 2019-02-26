@@ -24,6 +24,7 @@
 #include "input.h"
 #include "sceneFade.h"
 #include "soundEffectManager.h"
+#include "particleManager.h"
 
 /**************************************
 ƒ}ƒNƒ’è‹`

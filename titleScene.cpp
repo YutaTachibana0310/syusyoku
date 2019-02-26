@@ -19,6 +19,8 @@
 #include "battleController.h"
 #include "baseGUI.h"
 #include "titleTelop.h"
+#include "particleManager.h"
+#include "shockBlur.h"
 
 /*****************************************************************************
 マクロ定義
@@ -47,6 +49,12 @@ enum TITLESCENE_STATE
 };
 
 typedef void(*FuncTitleMenu)(void);
+
+enum class GameMode {
+	Default,
+	BonusPresen,
+	Presen
+};
 
 /*****************************************************************************
 グローバル変数
@@ -113,6 +121,7 @@ void UninitTitleScene(int num)
 		UninitPlayerModel(num);
 		UninitPlayerBullet(num);
 		UninitPlayerBulletTrail(num);
+		//UninitParticleManager(num);
 	}
 }
 
@@ -138,6 +147,7 @@ void UpdateTitleScene(void)
 	{
 		int selected = GetTitleMenuIndex();
 		TitleMenu[selected]();
+		SetShockBlur(D3DXVECTOR3(0.0f, 0.0f, 500.0f));
 	}
 
 	UpdateMeshCylinder();
@@ -175,7 +185,11 @@ void StartGame(void)
 {
 	state = TITLESCENE_STATEMAX;
 	ChangeStatePlayerModel(PlayerTitleLaunch);
-	SetSceneFade(TutorialScene);
+
+	/*就プレ用に直接バトルシーンへ繊維*/
+	//SetSceneFade(TutorialScene);
+	SetSceneFade(BattleScene);
+
 	PlaySE(DefineSE::DECISION);
 	FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 }
@@ -186,9 +200,12 @@ void StartGame(void)
 void StartGameFromBonus(void)
 {
 	SetBonusTimePresen();
+
 	state = TITLESCENE_STATEMAX;
 	ChangeStatePlayerModel(PlayerTitleLaunch);
+
 	SetSceneFade(BattleScene);
+
 	PlaySE(DefineSE::DECISION);
 	FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);
 }

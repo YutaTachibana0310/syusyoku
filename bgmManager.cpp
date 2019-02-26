@@ -116,6 +116,7 @@ void PlayBGM(DEFINE_BGM bgm)
 {
 	SetSoundVolume(bgmData[bgm].clip, bgmData[bgm].volume);
 	PlaySoundBuffer(bgmData[bgm].clip, E_DS8_FLAG_LOOP, true);
+	bgmData[bgm].state = BGM_NORMAL;
 }
 
 /**************************************

@@ -11,6 +11,7 @@
 #include "enemyMissile.h"
 #include "playerModel.h"
 #include "camera.h"
+#include "particleManager.h"
 
 /*****************************************************************************
 É}ÉNÉçíËã`

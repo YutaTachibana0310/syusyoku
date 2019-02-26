@@ -171,7 +171,7 @@ bool GetAttackButtonRelease(void)
 //=============================================================================
 bool GetPauseButtonTrigger(void)
 {
-	return GetKeyboardTrigger(DIK_Q);
+	return GetKeyboardTrigger(DIK_Q) || IsButtonTriggered(0, BUTTON_M);
 }
 
 //=============================================================================

@@ -11,18 +11,18 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define PAUSEGUI_TEXTURE_NAME			"data/TEXTURE/UI/pausemenu.png"
-#define PAUSEGUI_TEX_SIZE_X				(210.0f)
-#define PAUSEGUI_TEX_SIZE_Y				(70.0f)
+#define PAUSEGUI_TEX_SIZE_X				(150.0f)
+#define PAUSEGUI_TEX_SIZE_Y				(50.0f)
 #define PAUSEGUI_DIV_X					(5)
 #define PAUSEGUI_DIV_Y					(2)
 
-#define PAUSEGUI_BASEPOS				(D3DXVECTOR3(400.0f, 80.0f, 0.0f))
-#define PAUSEGUI_OFFSET_X				(150.0f)
-#define PAUSEGUI_OFFSET_Y				(120.0f)
+#define PAUSEGUI_BASEPOS				(D3DXVECTOR3(400.0f, 60.0f, 0.0f))
+#define PAUSEGUI_OFFSET_X				(100.0f)
+#define PAUSEGUI_OFFSET_Y				(80.0f)
 
 #define PAUSEGUI_STATETEX_NAME			"data/TEXTURE/UI/menuonoff.png"
-#define PAUSEGUI_STATETEX_SIZE_X		(60.0f)
-#define PAUSEGUI_STATETEX_SIZE_Y		(40.0f)
+#define PAUSEGUI_STATETEX_SIZE_X		(40.0f)
+#define PAUSEGUI_STATETEX_SIZE_Y		(30.0f)
 #define PAUSEGUI_STATETEX_OFFSET		(260.0f)
 #define PAUSEGUI_STATETEX_DIV_X			(1)
 #define PAUSEGUI_STATETEX_DIV_Y			(2)

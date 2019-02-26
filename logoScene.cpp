@@ -10,6 +10,7 @@
 #include "input.h"
 #include "Easing.h"
 #include "titleScene.h"
+#include "particleManager.h"
 
 /*****************************************************************************
 ƒ}ƒNƒ’è‹`

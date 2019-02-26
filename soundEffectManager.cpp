@@ -38,13 +38,17 @@ static const TCHAR* soundFileName[static_cast<unsigned int>(DefineSE::MAX)] =
 	_T("data/SOUND/decision16.wav"),
 	_T("data/SOUND/gun29.wav"),
 	_T("data/SOUND/bom16.wav"),
-	_T("data/SOUND/freeze06.wav"),
+	_T("data/SOUND/magic-ice1.wav"),
 	_T("data/SOUND/magic-attack-holy1.wav"),
 	_T("data/SOUND/bom30.wav"),
 	_T("data/SOUND/cursor2.wav"),
 	_T("data/SOUND/decision24.wav"),
 	_T("data/SOUND/shoot13.wav"),
 	_T("data/SOUND/shoot09.wav"),
+	_T("data/SOUND/decision9.wav"),
+	_T("data/SOUND/decision26.wav"),
+	_T("data/SOUND/data-analysis2.wav"),
+	_T("data/SOUND/noise.wav")
 };
 
 static const map<DefineSE, string> defSEname = {
@@ -62,6 +66,10 @@ static const map<DefineSE, string> defSEname = {
 	{ DefineSE::POWERUP, STR(POWEUP)},
 	{ DefineSE::HOMINGBULLET, STR(HOMINGBULLET)},
 	{ DefineSE::ENEMYBULLET, STR(ENEMYBULLET)},
+	{ DefineSE::MENUDICISION, STR(MENUDICISION)},
+	{ DefineSE::PAUSE, STR(PAUSE)},
+	{ DefineSE::CAUTION, STR(CAUTION)},
+	{ DefineSE::NOISE, STR(NOISE) },
 	{ DefineSE::MAX, STR(MAX) },
 };
 
@@ -92,7 +100,7 @@ void InitSoundEffectManager(int num)
 	if (!initialized)
 	{
 		bool res = LoadSettingsSoundEffect();
-		
+
 		for (auto i : DefineSE())
 		{
 			container[i].clip = LoadSound(&soundFileName[static_cast<unsigned int>(i)][0]);

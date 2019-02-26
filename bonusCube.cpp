@@ -410,8 +410,7 @@ void CheckDestroyBonusCube(void)
 		if (ptr->hp <= 0.0f)
 		{
 			//TODO:Œø‰Ê‰¹‚ðê—p‚Ì‚à‚Ì‚É·‚µ‘Ö‚¦
-			//PlaySE(DefineSE::BONUSEXPL);
-			PlaySE(DefineSE::NORMALEXPL);
+			PlaySE(DefineSE::BONUSEXPL);
 			SetCameraShaker(BONUSCUBE_CAMERASHAKE_LENGTH);
 			SetCubeExplosion(ptr->pos, PARTICLE_BONUSCUBE_COLOR);
 			SetShockBlur(ptr->pos);

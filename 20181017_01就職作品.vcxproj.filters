@@ -690,6 +690,9 @@
     <ClCompile Include="pauseGUI.cpp">
       <Filter>ソース ファイル\GUI\BattleScene</Filter>
     </ClCompile>
+    <ClCompile Include="spikeNoise.cpp">
+      <Filter>ソース ファイル\Effect\PostEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -1061,6 +1064,9 @@
     <ClInclude Include="pauseGUI.h">
       <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
     </ClInclude>
+    <ClInclude Include="spikeNoise.h">
+      <Filter>ヘッダー ファイル\Effect\PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="data\EFFECT\particle.fx">
@@ -1079,6 +1085,9 @@
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="data\EFFECT\monotone.fx">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="data\EFFECT\spikeNoise.fx">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>

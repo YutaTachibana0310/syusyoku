@@ -116,7 +116,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		NULL);
 
 	// 初期化処理(ウィンドウを作成してから行う)
-	if (FAILED(Init(hInstance, hWnd, true)))
+	if (FAILED(Init(hInstance, hWnd, false)))
 	{
 		return -1;
 	}
@@ -377,7 +377,7 @@ HRESULT Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	//スクリーン背景初期化
 	InitScreenBG(0);
-	
+
 	//ポストエフェクト初期化
 	InitPostEffectManager(0);
 
@@ -486,18 +486,17 @@ void Update(void)
 	UpdateBgmManager();
 	UpdateSoundEffectManager();
 
-	if (GetPauseState())
+	if (!GetPauseState())
 	{
-		return;
+		UpdateCamera();
+		UpdateLight();
+		UpdateDataContainer();
+		UpdateSceneManager();
+		UpdateMemoryAllocater();
+		UpdateGUIManager();
 	}
 
-	UpdateCamera();
-	UpdateLight();
-	UpdateDataContainer();
-	UpdateSceneManager();
-	UpdateMemoryAllocater();
 	UpdatePostEffectManager();
-	UpdateGUIManager();
 }
 
 //=============================================================================
@@ -508,18 +507,23 @@ void Draw(void)
 	LPDIRECT3DSURFACE9 oldSurface = NULL;
 	g_pD3DDevice->GetRenderTarget(0, &oldSurface);
 	g_pD3DDevice->SetRenderTarget(0, fullScreenSurface[0]);
-;	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
+	;	g_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), backColor, 1.0f, 0);
 	if (SUCCEEDED(g_pD3DDevice->BeginScene()))
 	{
 		DrawScreenBG();
 
 		DrawSceneManager();
 
-		DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface);
+		if(!GetPauseState())
+			DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface);
 
 		DrawGUIManager();
 
 		DrawPauseController();
+
+		//ポーズ画面の上からポストエフェクトをかけたいのでここで描画
+		if(GetPauseState())
+			DrawPostEffectManager(fullScreenTexture, fullScreenSurface, oldSurface);
 
 		DrawDebugWindow();
 

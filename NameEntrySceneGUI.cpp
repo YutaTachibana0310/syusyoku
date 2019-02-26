@@ -9,6 +9,7 @@
 #include "nameEntryCursor.h"
 #include "rankingTelop.h"
 #include "entryTelop.h"
+#include "rankingName.h"
 
 /**************************************
 É}ÉNÉçíËã`
@@ -36,6 +37,7 @@ void OnEnterNameEntrySceneGUI(void)
 	InitNameEntryCursor(0);
 	InitRankingTelop(0);
 	InitEntryTelop(0);
+	InitRankingName(0);
 }
 
 /**************************************
@@ -48,6 +50,7 @@ void OnUpdateNameEntrySceneGUI(void)
 	UpdateNameEntryCursor();
 	UpdateRankingTelop();
 	UpdateEntryTelop();
+	UpdateRankingName();
 }
 
 /**************************************
@@ -55,6 +58,7 @@ void OnUpdateNameEntrySceneGUI(void)
 ***************************************/
 void OnDrawNameEntrySceneGUI(void)
 {
+	DrawRankingName();
 	DrawNameEntryRanking();
 	DrawRankingScore();
 	DrawNameEntryCursor();
