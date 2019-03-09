@@ -21,7 +21,6 @@
 ***************************************/
 #define TARGETSITE_SIZE_X				(300.0f)
 #define TARGETSITE_SIZE_Y				(300.0f)
-#define TARGETSITE_TEXTURE				"data/TEXTURE/targetSite1.png"
 #define TARGETSITE_MAX					PLAYERMODEL_MAX
 #define TARGETSITE_MOVEVALUE			(3.0f)
 #define TARGETSITE_INCIRCLE_ROTVALUE	(0.01f)
@@ -49,8 +48,8 @@ static VERTEX_2D vtxWk[NUM_VERTEX];
 static float vtxRadius, vtxAngle;
 
 static const char* texturePath[] = {
-	"data/TEXTURE/targetSite1_1.png",
-	"data/TEXTURE/targetSite1_2.png"
+	"data/TEXTURE/UI/targetSite1_1.png",
+	"data/TEXTURE/UI/targetSite1_2.png"
 };
 
 //ロックオンレベルに応じたターゲットサイトのスケール
