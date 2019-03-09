@@ -32,7 +32,7 @@
 #define PLAYERMODEL_MODELNAME			"data/MODEL/player001.x"
 #define PLAYER_ROTATEMAGNI				(0.2f)
 #define PLATER_ROTATEVALUE_MAX			(0.085f)
-#define PLAYER_TEXTURE_MAX				(19)
+#define PLAYER_TEXTURE_MAX				(9)
 #define PLAYERMODEL_MODELNAME_DEBUG		"data/MODEL/airplane000.x"
 #define PLAYERMODEL_COLLIDER_LENGTH		(D3DXVECTOR3(6.0f, 4.0f, 14.0f))
 #define PLAYERMODE_INVINCIBLE_DURATION	(180)
@@ -95,24 +95,14 @@ static funcPlayerModel Exit[PlayerStateMax] = {
 //テクスチャ名
 static const char* textureName[PLAYER_TEXTURE_MAX] = {
 	NULL,
-	"data/TEXTURE/PLAYER/d10.jpg",
-	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg",
 	NULL,
 	NULL,
-	"data/TEXTURE/PLAYER/d17.jpg",
-	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
-	NULL,
-	NULL,
-	"data/TEXTURE/PLAYER/d17b.jpg",
 	NULL,
 	NULL,
 	"data/TEXTURE/PLAYER/vj2c.jpg",
+	"data/TEXTURE/PLAYER/door_mtl1_diffcol.jpg",
 	NULL,
-	NULL,
-	"data/TEXTURE/PLAYER/cockpit_mtl1_diffcol.jpg",
-	NULL,
-	"data/TEXTURE/PLAYER/yx1_02_01_01.jpg",
-	"data/TEXTURE/PLAYER/bmq1.jpg",
+	"data/TEXTURE/PLAYER/door_mtl2_diffcol.jpg"
 };
 
 static LPDIRECT3DTEXTURE9 texture[PLAYER_TEXTURE_MAX];		//テクスチャ
