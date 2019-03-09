@@ -10,9 +10,9 @@
 //*****************************************************************************
 // É}ÉNÉçíËã`
 //*****************************************************************************
-#define MESHCYLINDER_TEXTURE        "data/TEXTURE/circuit00.jpg"
-#define MESHCYLINDER_CIRCUIT1		"data/TEXTURE/circuit02.png"
-#define MESHCYLINDER_CIRCUIT2		"data/TEXTURE/circuit04.png"
+#define MESHCYLINDER_TEXTURE        "data/TEXTURE/BG/circuit00.jpg"
+#define MESHCYLINDER_CIRCUIT1		"data/TEXTURE/BG/circuit02.png"
+#define MESHCYLINDER_CIRCUIT2		"data/TEXTURE/BG/circuit04.png"
 #define MESHCYLINDER_BLOCKNUM		(50)
 #define MESHCYLINDER_BLOCKSIZE		(800.0f)
 #define MESHCYLINDER_RADIUS			(1000.0f)

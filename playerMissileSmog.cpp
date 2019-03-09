@@ -13,7 +13,7 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define PLAYERMISSILESMOG_MAX		(2048)
-#define PLAYERMISSILESMOG_TEX_NAME	"data/TEXTURE/playerMissileSmog.png"
+#define PLAYERMISSILESMOG_TEX_NAME	"data/TEXTURE/EFFECT/playerMissileSmog.png"
 #define PLAYERMISSILESMOG_SIZE		(2.0f)
 #define PLAYERMISSILESMOG_TEXDEVIDE_X	(4)
 #define PLAYERMISSILESMOG_TEXDEVIDE_Y	(2)

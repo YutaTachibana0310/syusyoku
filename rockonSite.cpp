@@ -14,7 +14,7 @@
 É}ÉNÉçíËã`
 ***************************************/
 #define ROCKONSITE_SIZE				(20)
-#define ROCKONSITE_TEXTURE			"data/TEXTURE/rockonSite.png"
+#define ROCKONSITE_TEXTURE			"data/TEXTURE/UI/rockonSite.png"
 #define ROCKONSITE_MAX				(PLAYER_ROCKON_MAX * PLAYERMODEL_MAX)
 #define ROCKONSITE_INITSCALE		(20.0f)
 #define ROCKONSITE_ENDSCALE			(1.0f)
@@ -22,7 +22,7 @@
 #define ROCKONSITE_ROT_VALUE		(0.02f)
 #define ROCKONSITE_ROT_INTERBAL		(30)
 
-#define ROCKONSITE_TEXT_NAME		"data/TEXTURE/rockonText.png"
+#define ROCKONSITE_TEXT_NAME		"data/TEXTURE/UI/rockonText.png"
 #define ROCKONSITE_TEXT_OFFSET		(25.0f)
 
 /**************************************

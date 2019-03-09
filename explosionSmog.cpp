@@ -13,7 +13,7 @@
 É}ÉNÉçíËã`
 **********************************************/
 #define EXPLOSIONSMOG_MAX (1024)
-#define EXPLOSIONSMOG_TEXNAME "data/TEXTURE/explosionSmog.png"
+#define EXPLOSIONSMOG_TEXNAME "data/TEXTURE/EFFECT/explosionSmog.png"
 #define EXPLOSIONSMOG_SIZE (6)
 #define EXPLOSIONSMOG_POSRANGE (10.0f)
 /**********************************************

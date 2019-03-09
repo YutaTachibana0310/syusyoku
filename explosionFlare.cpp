@@ -15,7 +15,7 @@
 É}ÉNÉçíËã`
 **********************************************/
 #define EXPLOSIONFLARE_MAX (2048)
-#define EXPLOSIONFLARE_TEXNAME "data/TEXTURE/explosionFlare.png"
+#define EXPLOSIONFLARE_TEXNAME "data/TEXTURE/EFFECT/explosionFlare.png"
 #define EXPLOSIONFLARE_SIZE (4)
 
 /**********************************************
