@@ -7,7 +7,6 @@
 #include "main.h"
 #include "battleScene.h"
 #include "input.h"
-#include "cloud.h"
 #include "playerModel.h"
 #include "battleCamera.h"
 #include "playerBullet.h"
@@ -61,7 +60,6 @@ HRESULT InitBattleScene(int num)
 	}
 
 	InitDataContainer(num);
-	InitCloud(num);
 	InitTargetSite(num);
 	InitRockonSite(num);
 	InitPlayerModel(num);
@@ -109,7 +107,6 @@ void UninitBattleScene(int num)
 	else
 	{
 		UninitBattleController(num);
-		UninitCloud(num);
 		UninitPlayerModel(num);
 		UninitPlayerBullet(num);
 		UninitTargetSite(num);

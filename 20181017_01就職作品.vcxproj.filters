@@ -198,36 +198,6 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="desertField.cpp">
-      <Filter>ソース ファイル\Battle\BackGround</Filter>
-    </ClCompile>
-    <ClCompile Include="buildingField.cpp">
-      <Filter>ソース ファイル\Battle\BackGround</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyMissile.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyMissileLaunch.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyMissileHoming.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyMissileStraight.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClCompile>
-    <ClCompile Include="desertScene.cpp">
-      <Filter>ソース ファイル\Battle\BattleScene</Filter>
-    </ClCompile>
-    <ClCompile Include="flare.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="cloud.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="skyBG.cpp">
-      <Filter>ソース ファイル\Battle\BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="explosionFire.cpp">
       <Filter>ソース ファイル\Effect\Particle</Filter>
     </ClCompile>
@@ -236,9 +206,6 @@
     </ClCompile>
     <ClCompile Include="explosionSmog.cpp">
       <Filter>ソース ファイル\Effect\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="enemyMissileSmog.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyMissile</Filter>
     </ClCompile>
     <ClCompile Include="particleManager.cpp">
       <Filter>ソース ファイル\Effect\Particle</Filter>
@@ -333,9 +300,6 @@
     <ClCompile Include="playerModelTransition.cpp">
       <Filter>ソース ファイル\Battle\Player\PlayerStates</Filter>
     </ClCompile>
-    <ClCompile Include="middleEnemyModel.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
-    </ClCompile>
     <ClCompile Include="enemyBullet.cpp">
       <Filter>ソース ファイル\Battle\Enemy\EnemyBullet</Filter>
     </ClCompile>
@@ -348,38 +312,11 @@
     <ClCompile Include="enemyManager.cpp">
       <Filter>ソース ファイル\Battle\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="middleEnemyAttack.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="middleEnemyEscape.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="middleEnemyWait.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="middleEnemyMove.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\MiddleEnemy</Filter>
-    </ClCompile>
     <ClCompile Include="playerBullet.cpp">
       <Filter>ソース ファイル\Battle\Player\PlayerBullet</Filter>
     </ClCompile>
     <ClCompile Include="playerBulletTrail.cpp">
       <Filter>ソース ファイル\Battle\Player\PlayerBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="smallEnemyModel.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="smallEnemyMove.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="smallEnemyAttack.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="smallEnemyEscape.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="smallEnemyWait.cpp">
-      <Filter>ソース ファイル\Battle\Enemy\EnemyModel\SmallEnemy</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>ソース ファイル\imgui</Filter>
@@ -651,9 +588,6 @@
     <ClCompile Include="scoreMagniGauge.cpp">
       <Filter>ソース ファイル\GUI\BattleScene</Filter>
     </ClCompile>
-    <ClCompile Include="debugScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="shadow.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
@@ -704,36 +638,6 @@
     <ClInclude Include="main.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="buildingField.h">
-      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
-    </ClInclude>
-    <ClInclude Include="enemyMissile.h">
-      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClInclude>
-    <ClInclude Include="enemyMissileLaunch.h">
-      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClInclude>
-    <ClInclude Include="enemyMissileHoming.h">
-      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClInclude>
-    <ClInclude Include="enemyMissileStraight.h">
-      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
-    </ClInclude>
-    <ClInclude Include="desertScene.h">
-      <Filter>ヘッダー ファイル\Battle\BattleScene</Filter>
-    </ClInclude>
-    <ClInclude Include="flare.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="cloud.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="skyBG.h">
-      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
-    </ClInclude>
-    <ClInclude Include="desertField.h">
-      <Filter>ヘッダー ファイル\Battle\BackGround</Filter>
-    </ClInclude>
     <ClInclude Include="explosionFire.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
     </ClInclude>
@@ -742,9 +646,6 @@
     </ClInclude>
     <ClInclude Include="explosionSmog.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="enemyMissileSmog.h">
-      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyMissile</Filter>
     </ClInclude>
     <ClInclude Include="particleManager.h">
       <Filter>ヘッダー ファイル\Effect\Particle</Filter>
@@ -827,9 +728,6 @@
     <ClInclude Include="playerModelTransition.h">
       <Filter>ヘッダー ファイル\Battle\Player\playerStates</Filter>
     </ClInclude>
-    <ClInclude Include="middleEnemyModel.h">
-      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyModel</Filter>
-    </ClInclude>
     <ClInclude Include="enemyBullet.h">
       <Filter>ヘッダー ファイル\Battle\Enemy\EnemyBullet</Filter>
     </ClInclude>
@@ -847,9 +745,6 @@
     </ClInclude>
     <ClInclude Include="playerBulletTrail.h">
       <Filter>ヘッダー ファイル\Battle\Player\PlayerBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="smallEnemyModel.h">
-      <Filter>ヘッダー ファイル\Battle\Enemy\EnemyModel</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>ヘッダー ファイル\imgui</Filter>
@@ -1045,9 +940,6 @@
     </ClInclude>
     <ClInclude Include="scoreMagniGauge.h">
       <Filter>ヘッダー ファイル\GUI\BattleScene</Filter>
-    </ClInclude>
-    <ClInclude Include="debugScene.h">
-      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="numGUI.h">
       <Filter>ヘッダー ファイル\GUI</Filter>

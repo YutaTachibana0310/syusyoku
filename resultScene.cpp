@@ -7,8 +7,6 @@
 #include "main.h"
 #include "resultScene.h"
 #include "input.h"
-#include "cloud.h"
-#include "enemyMissile.h"
 #include "playerModel.h"
 #include "camera.h"
 #include "particleManager.h"
