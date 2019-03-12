@@ -7,7 +7,6 @@
 #include "targetSite.h"
 #include "playerModel.h"
 #include "battleCamera.h"
-#include "enemyMissile.h"
 #include "debugproc.h"
 #include "rockonSite.h"
 #include "soundEffectManager.h"

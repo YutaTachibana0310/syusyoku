@@ -188,7 +188,7 @@ void StartGame(void)
 
 	/*就プレ用に直接バトルシーンへ繊維*/
 	//SetSceneFade(TutorialScene);
-	SetSceneFade(BattleScene);
+	SetSceneFade(TutorialScene);
 
 	PlaySE(DefineSE::DECISION);
 	FadeOutBGM(BGM_TITLESCENE, TITLESCENE_FADEIN_END);

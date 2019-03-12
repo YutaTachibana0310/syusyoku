@@ -5,9 +5,6 @@
 //
 //=====================================
 #include "enemyManager.h"
-#include "enemyMissile.h"
-#include "middleEnemyModel.h"
-#include "smallEnemyModel.h"
 #include "enemyBullet.h"
 #include "enemyHomingBullet.h"
 #include "enemyBulletTrail.h"
@@ -39,9 +36,6 @@
 ***************************************/
 void InitEnemyManager(int num)
 {
-	InitEnemyMissile(num);
-	//InitMiddleEnemy(num);
-	//InitSmallEnemy(num);
 	InitCubeObject(num);
 	InitHardCubeObject(num);
 	InitBonusCube(num);
@@ -58,9 +52,6 @@ void InitEnemyManager(int num)
 ***************************************/
 void UninitEnemyManager(int num)
 {
-	UninitEnemyMissile(num);
-	//UninitMiddleEnemy(num);
-	//UninitSmallEnemy(num);
 	UninitCubeObject(num);
 	UninitHardCubeObject(num);
 	UninitBonusCube(num);
@@ -75,10 +66,6 @@ void UninitEnemyManager(int num)
 ***************************************/
 void UpdateEnemyManager(void)
 {
-	UpdateEnemyMissile();
-	//UpdateMiddleEnemy();
-	//UpdateSmallEnemy();
-
 	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectUpdate");
 	UpdateCubeObject();
 	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectUpdate");
@@ -101,10 +88,6 @@ void UpdateEnemyManager(void)
 ***************************************/
 void DrawEnemyManager(void)
 {
-	//DrawMiddleEnemy();
-	DrawEnemyMissile();
-	//DrawSmallEnemy();
-
 	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectDraw");
 	DrawCubeObject();
 	CountDebugTimer(ENEMYMANAGER_LABEL, "CubeObjectDraw");
@@ -129,16 +112,9 @@ void DrawEnemyManager(void)
 ***************************************/
 void CheckEnemyCollision(void)
 {
-	LockonMiddleEnemy();
-	LockonEnemyMissile();
-	LockonSmallEnemy();
 	LockonBonusCube();
 	LockonHardCubeObject();
 	LockonCubeObject();
-
-	CollisionMiddleEnemyAndBullet();
-	CollisionSmallEnemyAndBullet();
-	//CollisionCubeObjectAndBullet();
 }
 
 /**************************************

@@ -8,7 +8,6 @@
 #include "playerBullet.h"
 #include "input.h"
 #include "targetSite.h"
-#include "enemyMissile.h"
 #include "lockonGUI.h"
 #include "dataContainer.h"
 #include "soundEffectManager.h"
